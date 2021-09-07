@@ -24,14 +24,13 @@ Get the list of products from the Comtrade API
 
 
 # First party modules
-import urllib.request
+import logging
 import re
+import urllib.request
 
 # Third party modules
 import json
 import pandas
-import logging
-
 
 class Pump:
     """
