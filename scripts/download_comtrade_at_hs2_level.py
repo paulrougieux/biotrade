@@ -19,9 +19,8 @@ import logging
 
 # First party modules
 from biotrade.comtrade import comtrade
-import biotrade.logger
 
-logger = logging.getLogger('biotrade.comtrade')
+logger = logging.getLogger("biotrade.comtrade")
 
 ##########################################
 # Load metadata on product and countries #
@@ -66,6 +65,17 @@ wood_it = comtrade.pump.download(
     head="M",
 )
 # Write to the database
+comtrade.database.append_to_db(wood_it, "yearly_2_digit")
+
+# Bash command to export the table structure after logging in as the rdb user
+# sudo -i -u rdb
+# pg_dump -t 'raw_comtrade.yearly_2_digit' --schema-only biotrade  >> /tmp/comtrade_yearly.sql
+
+
+# TODO add the combination of codes and period as a unique constraint
+# UNIQUE (period, trade_flow_code, reporter_code, partner_code,
+#         commodity_code, qty_unit_code, flag)
+# https://www.postgresql.org/docs/9.4/ddl-constraints.html#DDL-CONSTRAINTS-UNIQUE-CONSTRAINT
 
 
 #########################
@@ -91,15 +101,15 @@ for reporter_code in reporters.id:
         head="M",
     )
     RECORDS_DOWNLOADED += len(wood[reporter_code])
-    logger.info(f"Downloaded {len(wood[reporter_code])} records for " +
-                f"{reporters.text[reporters.id == reporter_code].to_string(index=False)} " +
-                f"(code {reporter_code}).\n" +
-                f"{RECORDS_DOWNLOADED} records downloaded in total.")
+    logger.info(
+        f"Downloaded {len(wood[reporter_code])} records for "
+        + f"{reporters.text[reporters.id == reporter_code].to_string(index=False)} "
+        + f"(code {reporter_code}).\n"
+        + f"{RECORDS_DOWNLOADED} records downloaded in total."
+    )
 
 #############################################
 # Loop on all products at the 2 digit level #
 #############################################
 
 # Loop on products with a one hour pause every 10 000 records
-
-

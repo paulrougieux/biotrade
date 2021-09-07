@@ -32,12 +32,14 @@ import urllib.request
 import json
 import pandas
 
+
 class Pump:
     """
     Download trade data from the Comtrade API and store it inside a database.
     """
+
     # Log debug and error messages
-    logger = logging.getLogger('biotrade.comtrade')
+    logger = logging.getLogger("biotrade.comtrade")
 
     # Base URL to load trade trade data from the API
     url_api_base = "http://comtrade.un.org/api/get?"
@@ -89,7 +91,8 @@ class Pump:
         :param str p : partner country
         :param str rg : trade flow
         :param str cc : product code
-        :param str fmt : data format, defaults to json, usage of csv is discouraged as it can cause data type issues
+        :param str fmt : data format, defaults to "json",
+                         usage of "csv" is discouraged as it can cause data type issues
         :param str head : human (H) or machine (M) readable headers
 
         """
@@ -101,7 +104,7 @@ class Pump:
             f"{self.url_api_base}max={max}&type={type}&freq={freq}&px={px}"
             + f"&ps={ps}&r={r}&p={p}&rg={rg}&cc={cc}&fmt={fmt}&head={head}"
         )
-        self.logger.info(f"Downloading a data frame from:\n {url_api_call}")
+        self.logger.info("Downloading a data frame from:\n %s", url_api_call)
 
         # Load the data in csv format
         if fmt == "csv":
