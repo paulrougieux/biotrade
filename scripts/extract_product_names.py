@@ -19,7 +19,7 @@ import csv
 import pandas
 
 # Internal modules
-from env_impact_imports.comtrade import comtrade
+from biotrade.comtrade import comtrade
 
 # Show more rows
 pandas.options.display.max_rows = 100

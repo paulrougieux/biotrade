@@ -13,7 +13,7 @@ Unit D1 Bioeconomy.
 import pandas
 
 # Internal modules
-from env_impact_imports.comtrade import comtrade
+from biotrade.comtrade import comtrade
 
 # Download with human readable headings
 swd99_h = comtrade.pump.download(cc="440799", head="H")

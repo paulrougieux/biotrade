@@ -17,7 +17,7 @@ import datetime
 # Third party modules
 
 # First party modules
-from env_impact_imports.comtrade import comtrade
+from biotrade.comtrade import comtrade
 
 # Keep only bioeconomy related products
 hs2d = comtrade.products.hs2d
