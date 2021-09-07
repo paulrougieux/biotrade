@@ -1,0 +1,258 @@
+id,text,eu27
+all,All,0
+4,Afghanistan,0
+8,Albania,0
+12,Algeria,0
+20,Andorra,0
+24,Angola,0
+660,Anguilla,0
+28,Antigua and Barbuda,0
+32,Argentina,0
+51,Armenia,0
+533,Aruba,0
+36,Australia,0
+40,Austria,1
+31,Azerbaijan,0
+44,Bahamas,0
+48,Bahrain,0
+50,Bangladesh,0
+52,Barbados,0
+112,Belarus,0
+56,Belgium,1
+58,Belgium-Luxembourg,0
+84,Belize,0
+204,Benin,0
+60,Bermuda,0
+64,Bhutan,0
+68,Bolivia (Plurinational State of),0
+535,Bonaire,0
+70,Bosnia Herzegovina,0
+72,Botswana,0
+92,Br. Virgin Isds,0
+76,Brazil,0
+96,Brunei Darussalam,0
+100,Bulgaria,1
+854,Burkina Faso,0
+108,Burundi,0
+132,Cabo Verde,0
+116,Cambodia,0
+120,Cameroon,0
+124,Canada,0
+136,Cayman Isds,0
+140,Central African Rep.,0
+148,Chad,0
+152,Chile,0
+156,China,0
+344,"China, Hong Kong SAR",0
+446,"China, Macao SAR",0
+170,Colombia,0
+174,Comoros,0
+178,Congo,0
+184,Cook Isds,0
+188,Costa Rica,0
+384,Côte d'Ivoire,0
+191,Croatia,1
+192,Cuba,0
+531,Curaçao,0
+196,Cyprus,1
+203,Czechia,1
+200,Czechoslovakia,0
+408,Dem. People's Rep. of Korea,0
+180,Dem. Rep. of the Congo,0
+208,Denmark,1
+262,Djibouti,0
+212,Dominica,0
+214,Dominican Rep.,0
+588,East and West Pakistan,0
+218,Ecuador,0
+818,Egypt,0
+222,El Salvador,0
+226,Equatorial Guinea,0
+232,Eritrea,0
+233,Estonia,1
+231,Ethiopia,0
+97,EU-28,0
+234,Faeroe Isds,0
+238,Falkland Isds (Malvinas),0
+242,Fiji,0
+246,Finland,1
+886,Fmr Arab Rep. of Yemen,0
+278,Fmr Dem. Rep. of Germany,0
+866,Fmr Dem. Rep. of Vietnam,0
+720,Fmr Dem. Yemen,0
+230,Fmr Ethiopia,0
+280,Fmr Fed. Rep. of Germany,0
+582,Fmr Pacific Isds,0
+590,"Fmr Panama, excl.Canal Zone",0
+592,Fmr Panama-Canal-Zone,0
+868,Fmr Rep. of Vietnam,0
+717,Fmr Rhodesia Nyas,0
+736,Fmr Sudan,0
+835,Fmr Tanganyika,0
+810,Fmr USSR,0
+890,Fmr Yugoslavia,0
+836,Fmr Zanzibar and Pemba Isd,0
+251,France,1
+254,French Guiana,0
+258,French Polynesia,0
+583,FS Micronesia,0
+266,Gabon,0
+270,Gambia,0
+268,Georgia,0
+276,Germany,1
+288,Ghana,0
+292,Gibraltar,0
+300,Greece,1
+304,Greenland,0
+308,Grenada,0
+312,Guadeloupe,0
+320,Guatemala,0
+324,Guinea,0
+624,Guinea-Bissau,0
+328,Guyana,0
+332,Haiti,0
+336,Holy See (Vatican City State),0
+340,Honduras,0
+348,Hungary,1
+352,Iceland,0
+699,India,0
+356,"India, excl. Sikkim",0
+360,Indonesia,0
+364,Iran,0
+368,Iraq,0
+372,Ireland,1
+376,Israel,0
+381,Italy,1
+388,Jamaica,0
+392,Japan,0
+400,Jordan,0
+398,Kazakhstan,0
+404,Kenya,0
+296,Kiribati,0
+414,Kuwait,0
+417,Kyrgyzstan,0
+418,Lao People's Dem. Rep.,0
+428,Latvia,1
+422,Lebanon,0
+426,Lesotho,0
+430,Liberia,0
+434,Libya,0
+440,Lithuania,1
+442,Luxembourg,1
+450,Madagascar,0
+454,Malawi,0
+458,Malaysia,0
+462,Maldives,0
+466,Mali,0
+470,Malta,1
+584,Marshall Isds,0
+474,Martinique,0
+478,Mauritania,0
+480,Mauritius,0
+175,Mayotte,0
+484,Mexico,0
+496,Mongolia,0
+499,Montenegro,0
+500,Montserrat,0
+504,Morocco,0
+508,Mozambique,0
+104,Myanmar,0
+580,N. Mariana Isds,0
+516,Namibia,0
+524,Nepal,0
+530,Neth. Antilles,0
+532,Neth. Antilles and Aruba,0
+528,Netherlands,1
+540,New Caledonia,0
+554,New Zealand,0
+558,Nicaragua,0
+562,Niger,0
+566,Nigeria,0
+579,Norway,0
+512,Oman,0
+490,"Other Asia, nes",0
+586,Pakistan,0
+585,Palau,0
+591,Panama,0
+598,Papua New Guinea,0
+600,Paraguay,0
+459,Peninsula Malaysia,0
+604,Peru,0
+608,Philippines,0
+616,Poland,1
+620,Portugal,1
+634,Qatar,0
+410,Rep. of Korea,0
+498,Rep. of Moldova,0
+638,Réunion,0
+642,Romania,1
+643,Russian Federation,0
+646,Rwanda,0
+647,Ryukyu Isd,0
+461,Sabah,0
+652,Saint Barthelemy,0
+654,Saint Helena,0
+659,Saint Kitts and Nevis,0
+658,"Saint Kitts, Nevis and Anguilla",0
+662,Saint Lucia,0
+534,Saint Maarten,0
+666,Saint Pierre and Miquelon,0
+670,Saint Vincent and the Grenadines,0
+882,Samoa,0
+674,San Marino,0
+678,Sao Tome and Principe,0
+457,Sarawak,0
+682,Saudi Arabia,0
+686,Senegal,0
+688,Serbia,0
+891,Serbia and Montenegro,0
+690,Seychelles,0
+694,Sierra Leone,0
+702,Singapore,0
+703,Slovakia,1
+705,Slovenia,1
+711,So. African Customs Union,0
+90,Solomon Isds,0
+706,Somalia,0
+710,South Africa,0
+728,South Sudan,0
+724,Spain,1
+144,Sri Lanka,0
+275,State of Palestine,0
+729,Sudan,0
+740,Suriname,0
+748,Eswatini,0
+752,Sweden,1
+757,Switzerland,0
+760,Syria,0
+762,Tajikistan,0
+807,North Macedonia,0
+764,Thailand,0
+626,Timor-Leste,0
+768,Togo,0
+772,Tokelau,0
+776,Tonga,0
+780,Trinidad and Tobago,0
+788,Tunisia,0
+792,Turkey,0
+795,Turkmenistan,0
+796,Turks and Caicos Isds,0
+798,Tuvalu,0
+800,Uganda,0
+804,Ukraine,0
+784,United Arab Emirates,0
+826,United Kingdom,0
+834,United Rep. of Tanzania,0
+858,Uruguay,0
+850,US Virgin Isds,0
+842,USA,0
+841,USA (before 1981),0
+860,Uzbekistan,0
+548,Vanuatu,0
+862,Venezuela,0
+704,Viet Nam,0
+876,Wallis and Futuna Isds,0
+887,Yemen,0
+894,Zambia,0
+716,Zimbabwe,0
+975,ASEAN,0

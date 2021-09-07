@@ -1,0 +1,98 @@
+"id","text","food","partly_food","bioeconomy"
+"01","01 - Animals; live",1,0,1
+"02","02 - Meat and edible meat offal",1,0,1
+"03","03 - Fish and crustaceans, molluscs and other aquatic invertebrates",1,0,1
+"04","04 - Dairy produce; birds' eggs; natural honey; edible products of animal origin, not elsewhere specified or included",1,0,1
+"05","05 - Animal originated products; not elsewhere specified or included",1,0,1
+"06","06 - Trees and other plants, live; bulbs, roots and the like; cut flowers and ornamental foliage",0,1,1
+"07","07 - Vegetables and certain roots and tubers; edible",1,0,1
+"08","08 - Fruit and nuts, edible; peel of citrus fruit or melons",1,0,1
+"09","09 - Coffee, tea, mate and spices",1,0,1
+"10","10 - Cereals",1,0,1
+"11","11 - Products of the milling industry; malt, starches, inulin, wheat gluten",0,1,1
+"12","12 - Oil seeds and oleaginous fruits; miscellaneous grains, seeds and fruit, industrial or medicinal plants; straw and fodder",0,1,1
+"13","13 - Lac; gums, resins and other vegetable saps and extracts",0,0,1
+"14","14 - Vegetable plaiting materials; vegetable products not elsewhere specified or included",0,0,1
+"15","15 - Animal or vegetable fats and oils and their cleavage products; prepared animal fats; animal or vegetable waxes",0,1,1
+"16","16 - Meat, fish or crustaceans, molluscs or other aquatic invertebrates; preparations thereof",1,0,1
+"17","17 - Sugars and sugar confectionery",0,1,1
+"18","18 - Cocoa and cocoa preparations",1,0,1
+"19","19 - Preparations of cereals, flour, starch or milk; pastrycooks' products",1,0,1
+"20","20 - Preparations of vegetables, fruit, nuts or other parts of plants",1,0,1
+"21","21 - Miscellaneous edible preparations",1,0,1
+"22","22 - Beverages, spirits and vinegar",1,0,1
+"23","23 - Food industries, residues and wastes thereof; prepared animal fodder",0,0,1
+"24","24 - Tobacco and manufactured tobacco substitutes",0,0,1
+"25","25 - Salt; sulphur; earths, stone; plastering materials, lime and cement",0,0,0
+"26","26 - Ores, slag and ash",0,0,0
+"27","27 - Mineral fuels, mineral oils and products of their distillation; bituminous substances; mineral waxes",0,0,0
+"28","28 - Inorganic chemicals; organic and inorganic compounds of precious metals; of rare earth metals, of radio-active elements and of isotopes",0,0,0
+"29","29 - Organic chemicals",0,0,0
+"30","30 - Pharmaceutical products",0,0,0
+"31","31 - Fertilizers",0,0,0
+"32","32 - Tanning or dyeing extracts; tannins and their derivatives; dyes, pigments and other colouring matter; paints, varnishes; putty, other mastics; inks",0,0,0
+"33","33 - Essential oils and resinoids; perfumery, cosmetic or toilet preparations",0,0,0
+"34","34 - Soap, organic surface-active agents; washing, lubricating, polishing or scouring preparations; artificial or prepared waxes, candles and similar articles, modelling pastes, dental waxes and dental preparations with a basis of plaster",0,0,0
+"35","35 - Albuminoidal substances; modified starches; glues; enzymes",0,0,0
+"36","36 - Explosives; pyrotechnic products; matches; pyrophoric alloys; certain combustible preparations",0,0,0
+"37","37 - Photographic or cinematographic goods",0,0,0
+"38","38 - Chemical products n.e.s.",0,0,0
+"39","39 - Plastics and articles thereof",0,0,0
+"40","40 - Rubber and articles thereof",0,0,1
+"41","41 - Raw hides and skins (other than furskins) and leather",0,0,1
+"42","42 - Articles of leather; saddlery and harness; travel goods, handbags and similar containers; articles of animal gut (other than silk-worm gut)",0,0,1
+"43","43 - Furskins and artificial fur; manufactures thereof",0,0,1
+"44","44 - Wood and articles of wood; wood charcoal",0,0,1
+"45","45 - Cork and articles of cork",0,0,1
+"46","46 - Manufactures of straw, esparto or other plaiting materials; basketware and wickerwork",0,0,1
+"47","47 - Pulp of wood or other fibrous cellulosic material; waste and scrap of paper or paperboard",0,0,1
+"48","48 - Paper and paperboard; articles of paper pulp, of paper or paperboard",0,0,1
+"49","49 - Printed books, newspapers, pictures and other products of the printing industry; manuscripts, typescripts and plans",0,0,1
+"50","50 - Silk",0,0,1
+"51","51 - Wool, fine or coarse animal hair; horsehair yarn and woven fabric",0,0,1
+"52","52 - Cotton",0,0,1
+"53","53 - Vegetable textile fibres; paper yarn and woven fabrics of paper yarn",0,0,1
+"54","54 - Man-made filaments; strip and the like of man-made textile materials",0,0,1
+"55","55 - Man-made staple fibres",0,0,1
+"56","56 - Wadding, felt and nonwovens, special yarns; twine, cordage, ropes and cables and articles thereof",0,0,1
+"57","57 - Carpets and other textile floor coverings",0,0,1
+"58","58 - Fabrics; special woven fabrics, tufted textile fabrics, lace, tapestries, trimmings, embroidery",0,0,1
+"59","59 - Textile fabrics; impregnated, coated, covered or laminated; textile articles of a kind suitable for industrial use",0,0,1
+"60","60 - Fabrics; knitted or crocheted",0,0,1
+"61","61 - Apparel and clothing accessories; knitted or crocheted",0,0,1
+"62","62 - Apparel and clothing accessories; not knitted or crocheted",0,0,1
+"63","63 - Textiles, made up articles; sets; worn clothing and worn textile articles; rags",0,0,1
+"64","64 - Footwear; gaiters and the like; parts of such articles",0,0,0
+"65","65 - Headgear and parts thereof",0,0,0
+"66","66 - Umbrellas, sun umbrellas, walking-sticks, seat sticks, whips, riding crops; and parts thereof",0,0,0
+"67","67 - Feathers and down, prepared; and articles made of feather or of down; artificial flowers; articles of human hair",0,0,1
+"68","68 - Stone, plaster, cement, asbestos, mica or similar materials; articles thereof",0,0,0
+"69","69 - Ceramic products",0,0,0
+"70","70 - Glass and glassware",0,0,0
+"71","71 - Natural, cultured pearls; precious, semi-precious stones; precious metals, metals clad with precious metal, and articles thereof; imitation jewellery; coin",0,0,0
+"72","72 - Iron and steel",0,0,0
+"73","73 - Iron or steel articles",0,0,0
+"74","74 - Copper and articles thereof",0,0,0
+"75","75 - Nickel and articles thereof",0,0,0
+"76","76 - Aluminium and articles thereof",0,0,0
+"78","78 - Lead and articles thereof",0,0,0
+"79","79 - Zinc and articles thereof",0,0,0
+"80","80 - Tin; articles thereof",0,0,0
+"81","81 - Metals; n.e.s., cermets and articles thereof",0,0,0
+"82","82 - Tools, implements, cutlery, spoons and forks, of base metal; parts thereof, of base metal",0,0,0
+"83","83 - Metal; miscellaneous products of base metal",0,0,0
+"84","84 - Nuclear reactors, boilers, machinery and mechanical appliances; parts thereof",0,0,0
+"85","85 - Electrical machinery and equipment and parts thereof; sound recorders and reproducers; television image and sound recorders and reproducers, parts and accessories of such articles",0,0,0
+"86","86 - Railway, tramway locomotives, rolling-stock and parts thereof; railway or tramway track fixtures and fittings and parts thereof; mechanical (including electro-mechanical) traffic signalling equipment of all kinds",0,0,0
+"87","87 - Vehicles; other than railway or tramway rolling stock, and parts and accessories thereof",0,0,0
+"88","88 - Aircraft, spacecraft and parts thereof",0,0,0
+"89","89 - Ships, boats and floating structures",0,0,0
+"90","90 - Optical, photographic, cinematographic, measuring, checking, medical or surgical instruments and apparatus; parts and accessories",0,0,0
+"91","91 - Clocks and watches and parts thereof",0,0,0
+"92","92 - Musical instruments; parts and accessories of such articles",0,0,0
+"93","93 - Arms and ammunition; parts and accessories thereof",0,0,0
+"94","94 - Furniture; bedding, mattresses, mattress supports, cushions and similar stuffed furnishings; lamps and lighting fittings, n.e.s.; illuminated signs, illuminated name-plates and the like; prefabricated buildings",0,0,0
+"95","95 - Toys, games and sports requisites; parts and accessories thereof",0,0,0
+"96","96 - Miscellaneous manufactured articles",0,0,0
+"97","97 - Works of art; collectors' pieces and antiques",0,0,0
+"99","99 - Commodities not specified according to kind",0,0,0

@@ -1,0 +1,47 @@
+# Ignore rds data files except cached files and metadata csv files
+*.rds
+
+# Other files
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.tar.gz
+*.xlsx
+
+# Ignore files generated from notebooks
+*.html
+!doc/*.html
+!inst/doc/*.html
+!visualizations/treemaps/web/*/*.html
+*.docx
+*.log
+*.png
+*.pdf
+site_libs/
+*.ipynb
+*.ipynb*
+# Except important reports
+!notebooks/CN2_overview/overview_CN2_all_products.pdf
+!notebooks/CN8_main_products/CN8_by_partners.pdf
+
+# Ignore the public folder used in development
+/public/*
+
+# Other automatically generated files
+*.pyc
+*.rdb
+*.rdx
+*.Rhistory
+*.RData
+*.RDATA
+*.rdata
+*.synctex.gz
+*.swp
+*.tex
+*.toc
+*.ods#
+*.csv#
+doc
+Meta
+.sync*
