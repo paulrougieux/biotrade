@@ -38,4 +38,6 @@ class Countries(object):
         >>> comtrade.pump.get_parameter_list("reporterAreas.json")
         """
         df = pandas.read_csv(self.config_data_dir / "comtrade_reporters.csv")
+        # Remove the special id "all"
+        df = df[df.id != "all"]
         return df

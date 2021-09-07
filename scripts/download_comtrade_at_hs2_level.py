@@ -19,10 +19,18 @@ import datetime
 # First party modules
 from biotrade.comtrade import comtrade
 
-# Keep only bioeconomy related products
+##########################################
+# Load metadata on product and countries #
+##########################################
+
+# Keep only bioeconomy related products at the 2 digit level
 hs2d = comtrade.products.hs2d
 hs2d_bio = hs2d[hs2d.bioeconomy == 1]
 print(hs2d_bio)
+
+# List of reporter countries
+reporters = comtrade.countries.reporters
+print(reporters)
 
 # The main variables along which the download will be spread are:
 # - product
@@ -38,18 +46,18 @@ YEAR = datetime.datetime.today().year
 # Convert each element of the list to a string
 YEARS = [str(YEAR - i) for i in range(1, 6)]
 YEARS = ",".join(YEARS)
-product_code = "44"
-reporter_code = "381"
-wood = comtrade.pump.download(
+PRODUCT_CODE = "44"
+REPORTER_CODE = "381"  # Italy
+wood_it = comtrade.pump.download(
     max="10000",
     type="C",
     freq="A",
     px="HS",
     ps=YEARS,
-    r=reporter_code,
+    r=REPORTER_CODE,
     p="all",
     rg="all",
-    cc=product_code,
+    cc=PRODUCT_CODE,
     fmt="json",
     head="M",
 )
@@ -60,9 +68,31 @@ wood = comtrade.pump.download(
 # Loop on all reporters #
 #########################
 # Download the last 5 years for one product, all reporters and all partners
+RECORDS_DOWNLOADED = 0
+PRODUCT_CODE = "44"
+# Download wood products "44" data for all countries
+wood = dict()
+for reporter_code in reporters.id:
+    wood[reporter_code] = comtrade.pump.download(
+        max="10000",
+        type="C",
+        freq="A",
+        px="HS",
+        ps=YEARS,
+        r=reporter_code,
+        p="all",
+        rg="all",
+        cc=PRODUCT_CODE,
+        fmt="json",
+        head="M",
+    )
+    RECORDS_DOWNLOADED += len(wood[reporter_code])
+    print(f"Downloading data for {reporter_code} " +
+          f"{reporters[reporters.id == reporter_code]}" +
+          f"{RECORDS_DOWNLOADED} records downloaded")
 
+#############################################
+# Loop on all products at the 2 digit level #
+#############################################
 
-########################
-# Loop on all products #
-########################
 # Loop on products with a one hour pause every 10 000 records
