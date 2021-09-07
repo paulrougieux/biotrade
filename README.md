@@ -34,3 +34,10 @@ Get the list of reporter and partner countries
 
     >>> comtrade.pump.get_parameter_list("reporterAreas.json")
     >>> comtrade.pump.get_parameter_list("partnerAreas.json")
+
+
+# Licence
+
+This software is dual-licenced under both MIT and EUPL 1.2.
+See the [LICENCE.md](LICENCE.md) file.
+
