@@ -30,12 +30,15 @@ import re
 # Third party modules
 import json
 import pandas
+import logging
 
 
 class Pump:
     """
     Download trade data from the Comtrade API and store it inside a database.
     """
+    # Log debug and error messages
+    logger = logging.getLogger('biotrade.comtrade')
 
     # Base URL to load trade trade data from the API
     url_api_base = "http://comtrade.un.org/api/get?"
@@ -99,7 +102,7 @@ class Pump:
             f"{self.url_api_base}max={max}&type={type}&freq={freq}&px={px}"
             + f"&ps={ps}&r={r}&p={p}&rg={rg}&cc={cc}&fmt={fmt}&head={head}"
         )
-        print(f"Downloading a data frame from:\n {url_api_call}")
+        self.logger.info(f"Downloading a data frame from:\n {url_api_call}")
 
         # Load the data in csv format
         if fmt == "csv":

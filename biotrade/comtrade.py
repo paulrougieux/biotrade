@@ -37,6 +37,10 @@ from biotrade.database import Database
 from biotrade.products import Products
 from biotrade.pump import Pump
 
+# Define a logging mechanism to keep track of errors and debug messages
+from biotrade.logger import create_logger
+create_logger()
+
 
 class Comtrade:
     """

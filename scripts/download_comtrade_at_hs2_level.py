@@ -9,15 +9,19 @@ Unit D1 Bioeconomy.
 The purpose of this script is to download yearly Comtrade data at the HS2 level
 for all reporter and all partner countries. The data is then stored into a
 PostgreSQL database.
-
 """
+
 # Internal modules
 import datetime
 
 # Third party modules
+import logging
 
 # First party modules
 from biotrade.comtrade import comtrade
+import biotrade.logger
+
+logger = logging.getLogger('biotrade.comtrade')
 
 ##########################################
 # Load metadata on product and countries #
@@ -87,12 +91,15 @@ for reporter_code in reporters.id:
         head="M",
     )
     RECORDS_DOWNLOADED += len(wood[reporter_code])
-    print(f"Downloading data for {reporter_code} " +
-          f"{reporters[reporters.id == reporter_code]}" +
-          f"{RECORDS_DOWNLOADED} records downloaded")
+    logger.info(f"Downloaded {len(wood[reporter_code])} records for " +
+                f"{reporters.text[reporters.id == reporter_code].to_string(index=False)} " +
+                f"(code {reporter_code}).\n" +
+                f"{RECORDS_DOWNLOADED} records downloaded in total.")
 
 #############################################
 # Loop on all products at the 2 digit level #
 #############################################
 
 # Loop on products with a one hour pause every 10 000 records
+
+
