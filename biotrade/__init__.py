@@ -11,7 +11,7 @@ Specify the module dir to make it possible to access the extra data.
 
 Usage:
 
-    >>> from env_impact_imports import module_dir
+    >>> from biotrade import module_dir
 
 """
 

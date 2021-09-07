@@ -11,7 +11,7 @@ You can use this object at the ipython console with the following examples.
 
 Download trade flows and return a data frame
 
-    >>> from env_impact_imports.comtrade import comtrade
+    >>> from biotrade.comtrade import comtrade
     >>> # Other sawnwood
     >>> swd99 = comtrade.pump.download(cc = "440799")
     >>> # Soy
@@ -149,7 +149,7 @@ class Pump:
 
         For example to get the list of reporters
 
-        >>> from env_impact_imports.comtrade.pump import comtrade.pump
+        >>> from biotrade.comtrade.pump import comtrade.pump
         >>> comtrade.pump.get_parameter_list("reporterAreas.json")
 
         Get the list of partners

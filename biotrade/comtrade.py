@@ -11,7 +11,7 @@ You can use this object at the ipython console with the following examples.
 
 Download only and return a data frame, for debugging purposes:
 
-    >>> from env_impact_imports.comtrade import comtrade
+    >>> from biotrade.comtrade import comtrade
     >>> # Other sawnwood
     >>> swd99 = comtrade.pump.download(cc = "440799")
     >>> # Soy
@@ -31,11 +31,11 @@ and dropping less important columns:
 import pandas
 
 # Internal modules
-from env_impact_imports import module_dir
-from env_impact_imports.countries import Countries
-from env_impact_imports.database import Database
-from env_impact_imports.products import Products
-from env_impact_imports.pump import Pump
+from biotrade import module_dir
+from biotrade.countries import Countries
+from biotrade.database import Database
+from biotrade.products import Products
+from biotrade.pump import Pump
 
 
 class Comtrade:

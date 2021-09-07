@@ -28,7 +28,7 @@ class Countries(object):
         """The module internal list of reporter countries
         Usage:
 
-        >>> from env_impact_imports.comtrade import comtrade
+        >>> from biotrade.comtrade import comtrade
         >>> comtrade.countries.reporters
 
         For information the internal list is a filtered version of

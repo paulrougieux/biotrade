@@ -28,7 +28,7 @@ class Products(object):
         """The module internal list of products at the 2 digits level.
         Usage:
 
-        >>> from env_impact_imports.comtrade import comtrade
+        >>> from biotrade.comtrade import comtrade
         >>> comtrade.products.hs2d
 
         For information the internal list is a filtered version of
