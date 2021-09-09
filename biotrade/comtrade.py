@@ -39,6 +39,7 @@ from biotrade.pump import Pump
 
 # Define a logging mechanism to keep track of errors and debug messages
 from biotrade.logger import create_logger
+
 create_logger()
 
 
@@ -55,12 +56,12 @@ class Comtrade:
 
     @property
     def countries(self):
-        """Identify Comtrade products (commodities) and metadata"""
+        """Identify reporter and partner countries and regions"""
         return Countries(self)
 
     @property
     def database(self):
-        """Store downloaded data in a database for further processing"""
+        """Store Comtrade data and make it available for further processing"""
         return Database(self)
 
     @property
@@ -70,7 +71,7 @@ class Comtrade:
 
     @property
     def pump(self):
-        """Download data from Comtrade"""
+        """Download data from Comtrade and send it to the database"""
         return Pump(self)
 
 
