@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
+r"""
 Written by Paul Rougieux.
 
 JRC biomass Project.
@@ -9,6 +9,20 @@ Unit D1 Bioeconomy.
 The purpose of this script is to download yearly Comtrade data at the HS2 level
 for all reporter and all partner countries. The data is then stored into a
 PostgreSQL database.
+
+
+Create the database structure from the sql file in the `config_data` folder
+
+    psql -d biotrade -h localhost -U rdb -f ~/rp/biotrade/biotrade/config_data/comtrade.sql
+
+Connect to the `biotrade` database using the PostgreSQl client
+
+    psql -d biotrade -h localhost -U rdb
+
+List schemas, and list tables in the raw_comext schema
+
+    \dn
+    \dt raw_comtrade.*;
 """
 
 # Internal modules
@@ -65,11 +79,23 @@ wood_it = comtrade.pump.download(
     head="M",
 )
 # Write to the database
-comtrade.database.append_to_db(wood_it, "yearly_2_digit")
+comtrade.database.append_to_db(wood_it, "yearly_hs2")
+
+
+# After adding the UNIQUE constraint, PostGreSQL returns the following error when
+# I try to insert the same content twice:
+#
+#     IntegrityError: (psycopg2.errors.UniqueViolation) duplicate key value
+#     violates unique constraint
+#     "yearly_hs2_period_trade_flow_code_reporter_code_partner_cod_key"
+#     DETAIL:  Key (period, trade_flow_code, reporter_code, partner_code,
+#     commodity_code, qty_unit_code, flag)=(2017, 1, 381, 0, 44, 1, 4) already
+#     exists.
+
 
 # Bash command to export the table structure after logging in as the rdb user
 # sudo -i -u rdb
-# pg_dump -t 'raw_comtrade.yearly_2_digit' --schema-only biotrade  >> /tmp/comtrade_yearly.sql
+# pg_dump -t 'raw_comtrade.yearly_hs2' --schema-only biotrade  >> /tmp/comtrade_yearly.sql
 
 
 # TODO add the combination of codes and period as a unique constraint

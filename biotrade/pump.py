@@ -22,7 +22,6 @@ Get the list of products from the Comtrade API
     >>> hs = comtrade.pump.get_parameter_list("classificationHS.json")
 """
 
-
 # First party modules
 import logging
 import re
