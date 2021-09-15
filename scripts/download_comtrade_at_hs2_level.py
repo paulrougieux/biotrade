@@ -10,8 +10,15 @@ The purpose of this script is to download yearly Comtrade data at the HS2 level
 for all reporter and all partner countries. The data is then stored into a
 PostgreSQL database.
 
+Drop the table in two different ways
 
+    >>> from biotrade.comtrade import comtrade
+    >>> comtrade.database.engine.execute("DROP TABLE raw_comtrade.yearly_hs2;")
+    >>> comtrade.database.yearly_hs2.drop()
+
+Alternative from bash and using the PostGreSQL client.
 Create the database structure from the sql file in the `config_data` folder
+This step can be skipped if the data is written the first time using pandas.to_sql().
 
     psql -d biotrade -h localhost -U rdb -f ~/rp/biotrade/biotrade/config_data/comtrade.sql
 
@@ -23,6 +30,12 @@ List schemas, and list tables in the raw_comext schema
 
     \dn
     \dt raw_comtrade.*;
+
+Generate SQL Alchemy metadata from the table structure
+
+    sqlacodegen --schema raw_comtrade --tables yearly_hs2 postgresql://rdb@localhost/biotrade
+
+
 """
 
 # Internal modules
@@ -35,6 +48,7 @@ import logging
 from biotrade.comtrade import comtrade
 
 logger = logging.getLogger("biotrade.comtrade")
+
 
 ##########################################
 # Load metadata on product and countries #
@@ -79,7 +93,7 @@ wood_it = comtrade.pump.download(
     head="M",
 )
 # Write to the database
-comtrade.database.append_to_db(wood_it, "yearly_hs2")
+comtrade.database.append(wood_it, "yearly_hs2")
 
 
 # After adding the UNIQUE constraint, PostGreSQL returns the following error when
