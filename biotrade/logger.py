@@ -37,7 +37,7 @@ def create_logger():
     # create file handler which logs even debug messages
     fh = logging.FileHandler(data_dir / "biotrade.log")
     fh.setLevel(logging.DEBUG)
-    # create console handler with a higher log level
+    # create console handler
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG)
     # create formatter and add it to the handlers

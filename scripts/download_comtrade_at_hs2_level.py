@@ -26,6 +26,10 @@ Connect to the `biotrade` database using the PostgreSQl client
 
     psql -d biotrade -h localhost -U rdb
 
+Sample query to see the reporter countries
+
+    select distinct(reporter) from raw_comtrade.yearly_hs2;
+
 List schemas, and list tables in the raw_comext schema
 
     \dn
@@ -43,11 +47,14 @@ import datetime
 
 # Third party modules
 import logging
+import pandas
 
 # First party modules
 from biotrade.comtrade import comtrade
 
+# Get a logger object
 logger = logging.getLogger("biotrade.comtrade")
+# For the location of the log file, see logger.py
 
 
 ##########################################
@@ -96,7 +103,7 @@ wood_it = comtrade.pump.download(
 comtrade.database.append(wood_it, "yearly_hs2")
 
 
-# After adding the UNIQUE constraint, PostGreSQL returns the following error when
+# After adding a UNIQUE constraint, PostGreSQL returns the following error when
 # I try to insert the same content twice:
 #
 #     IntegrityError: (psycopg2.errors.UniqueViolation) duplicate key value
@@ -112,12 +119,6 @@ comtrade.database.append(wood_it, "yearly_hs2")
 # pg_dump -t 'raw_comtrade.yearly_hs2' --schema-only biotrade  >> /tmp/comtrade_yearly.sql
 
 
-# TODO add the combination of codes and period as a unique constraint
-# UNIQUE (period, trade_flow_code, reporter_code, partner_code,
-#         commodity_code, qty_unit_code, flag)
-# https://www.postgresql.org/docs/9.4/ddl-constraints.html#DDL-CONSTRAINTS-UNIQUE-CONSTRAINT
-
-
 #########################
 # Loop on all reporters #
 #########################
@@ -125,31 +126,73 @@ comtrade.database.append(wood_it, "yearly_hs2")
 RECORDS_DOWNLOADED = 0
 PRODUCT_CODE = "44"
 # Download wood products "44" data for all countries
+# And store each data frame in a dictionary with country keys
+# Upon download failure, give a message, wait 10 seconds
+# then try to download again.
+# In case of new failure, double the wait time until the download works again
 wood = dict()
 for reporter_code in reporters.id:
-    wood[reporter_code] = comtrade.pump.download(
-        max="10000",
-        type="C",
-        freq="A",
-        px="HS",
-        ps=YEARS,
-        r=reporter_code,
-        p="all",
-        rg="all",
-        cc=PRODUCT_CODE,
-        fmt="json",
-        head="M",
-    )
+    reporter_name = reporters.text[reporters.id == reporter_code].to_string(index=False)
+    download_successful = False
+    sleep_time = 10
+    # Try to download doubling sleep time until it succeeds
+    while not download_successful:
+        try:
+            df = comtrade.pump.download(
+                max="10000",
+                type="C",
+                freq="A",
+                px="HS",
+                ps=YEARS,
+                r=reporter_code,
+                p="all",
+                rg="all",
+                cc=PRODUCT_CODE,
+                fmt="json",
+                head="M",
+            )
+            download_successful = True
+        except Exception as e:
+            logger.info("Failed to download %s \n %s", reporter_name, e)
+            sleep_time *= 2
+    # Store in a dictionary for debugging purposes
+    # Remove this for the production code
+    wood[reporter_code] = df
+    # Store in the database store the message if it fails
+    try:
+        comtrade.database.append(df, "yearly_hs2")
+    except Exception as e:
+        logger.info("Failed to store %s in the database\n %s", reporter_name, e)
+        sleep_time *= 2
+    # Keep track of the country name and length of the data downloaded
     RECORDS_DOWNLOADED += len(wood[reporter_code])
     logger.info(
-        f"Downloaded {len(wood[reporter_code])} records for "
-        + f"{reporters.text[reporters.id == reporter_code].to_string(index=False)} "
-        + f"(code {reporter_code}).\n"
-        + f"{RECORDS_DOWNLOADED} records downloaded in total."
+        "Downloaded %s records for %s (code %s).\n" + "%s records downloaded in total.",
+        len(df),
+        reporter_name,
+        reporter_code,
+        RECORDS_DOWNLOADED,
     )
+
+# On the first attempt, the query timed out after 9 downloads
+# leaving the dictionary with the following country codes:
+# In : wood.keys()
+# Out: dict_keys(['4', '8', '12', '20', '24', '660', '28', '32', '51'])
+
+# On the second attempt, the query timed out after 19 attempts,
+# leaving the dictionnary with the following coutnry codes:
+# In : wood.keys()
+# Out: dict_keys(['4', '8', '12', '20', '24', '660', '28', '32', '51',
+# '533', '36', '40', '31', '44', '48', '50', '52', '112', '56'])
+
+
+# Concatenate all data frames in the dictionary
+wood_df = pandas.concat(wood)
+print(wood_df.reporter.unique())
+len(wood_df)
 
 #############################################
 # Loop on all products at the 2 digit level #
 #############################################
-
+# TODO: use the API connection key
 # Loop on products with a one hour pause every 10 000 records
