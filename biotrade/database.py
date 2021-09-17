@@ -10,19 +10,26 @@ Unit D1 Bioeconomy.
 You can use this object at the ipython console with the following examples.
 
 Get yearly Comtrade data at the 2 digit level.
-First load the complete table into a pandas data frame
+Load the complete table into a pandas data frame.
 
     >>> import pandas
     >>> from biotrade.comtrade import comtrade
     >>> db = comtrade.database
     >>> df = pandas.read_sql_table("yearly_hs2", db.engine, schema="raw_comtrade")
 
-Select where year is 2017 using an SQL Alchemy select statement. Return results
-with a SQL Alchemy cursor or with a pandas data frame:
+Select data for the year 2017 using an SQL Alchemy select statement. Return results
+using an SQL Alchemy cursor or with a pandas data frame:
 
     >>> year = db.yearly_hs2.columns.get("year")
     >>> statement = db.yearly_hs2.select().where(year == 2017)
-    >>> results = db.engine.execute(statement).fetchall()
+    >>> # Get results as a list from the cursor
+    >>> with db.engine.connect() as connection:
+    >>>     result = connection.execute(statement)
+    >>> for row in result:
+    >>>     print(row)
+    >>> # Legacy cursor
+    >>> result_2 = db.engine.execute(statement).fetchall()
+    >>> # Results as a data frame
     >>> df_2017 = pandas.read_sql_query(statement, db.engine)
 
 Download and store in the database as used when updating the database
@@ -55,10 +62,14 @@ class Database:
         self.metadata = MetaData(schema=self.schema)
         self.metadata.bind = self.engine
         self.inspector = inspect(self.engine)
-        # Describe and create tables if they don't exist
-        self.yearly_hs2 = self.describe_yearly_hs2()
+        # Describe table metadata
+        self.yearly_hs2 = self.describe_table(name="yearly_hs2")
+        #  Create tables if they don't exist
         if not self.inspector.has_table(self.yearly_hs2.name, schema=self.schema):
             self.yearly_hs2.create()
+            self.logger.info(
+                "Created table %s in schema %s.", self.yearly_hs2.name, self.schema
+            )
 
     def append(self, df, table):
         """Store a data frame inside a given database table"""
@@ -71,16 +82,17 @@ class Database:
         )
         self.logger.info("Wrote %s rows to the database table %s", len(df), table)
 
-    def describe_yearly_hs2(self, name="yearly_hs2"):
-        """Define the metadata of a table which will contain the yearly
-        Comtrade data at the 2 digit level of the Harmonized System product
-        classification.
+    def describe_table(self, name):
+        """Define the metadata of a table containing Comtrade data.
 
-        Alternatively the structure could be automatically loaded with:
+        The unique constraint is a very important part of the table structure.
+        It makes sure that there will be no duplicated flows.
+
+        Alternatively a table metadata structure could be automatically loaded with:
 
             Table('yearly_hs2', self.metadata, autoload_with=self.engine)
 
-        The python code below was automatically generated with:
+        The python code below was originally generated with:
 
             sqlacodegen --schema raw_comtrade --tables yearly_hs2 postgresql://rdb@localhost/biotrade
         """
