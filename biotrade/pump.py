@@ -21,6 +21,8 @@ Get the list of products from the Comtrade API
 
     >>> hs = comtrade.pump.get_parameter_list("classificationHS.json")
 """
+# Internal modules
+import datetime
 
 # First party modules
 import logging
@@ -153,7 +155,7 @@ class Pump:
 
         For example to get the list of reporters
 
-        >>> from biotrade.comtrade.pump import comtrade.pump
+        >>> from biotrade.comtrade import comtrade
         >>> comtrade.pump.get_parameter_list("reporterAreas.json")
 
         Get the list of partners
@@ -178,3 +180,71 @@ class Pump:
         df = self.download(*args, **kwargs)
         # Remove the lengthy product description (to be stored in a dedicated table)
         df.drop(columns=["commodity"], inplace=True, errors="ignore")
+
+    def loop_on_reporters(self, product_code, table_name):
+        """Download data from the Comtrade API for all reporters for the given product code.
+
+        Download the last 5 years for one product, all reporters and all partners
+        Upon download failure, give a message, wait 10 seconds then try to download again.
+        In case of new failure, double the wait time until the download works again
+        Store the data in the PostGreSQL database.
+
+        For example download data for wood products 44
+
+        >>> from biotrade.comtrade import comtrade
+        >>> comtrade.pump.loop_on_reporters("44", "yearly_hs2")
+        """
+        records_downloaded = 0
+        reporters = self.parent.countries.reporters
+        # Download the last 5 years for one product, one reporter and all its partners
+        year = datetime.datetime.today().year
+        # Convert each element of the list to a string
+        years = [str(year - i) for i in range(1, 6)]
+        years = ",".join(years)
+        for reporter_code in reporters.id:
+            reporter_name = reporters.text[reporters.id == reporter_code].to_string(
+                index=False
+            )
+            download_successful = False
+            sleep_time = 10
+            # Try to download doubling sleep time until it succeeds
+            while not download_successful:
+                try:
+                    df = self.download(
+                        max="10000",
+                        type="C",
+                        freq="A",
+                        px="HS",
+                        ps=years,
+                        r=reporter_code,
+                        p="all",
+                        rg="all",
+                        cc=product_code,
+                        fmt="json",
+                        head="M",
+                    )
+                    download_successful = True
+                except Exception as error:
+                    self.logger.info(
+                        "Failed to download %s \n %s", reporter_name, error
+                    )
+                    sleep_time *= 2
+            # Remove the lengthy product description (to be stored in a dedicated table)
+            df.drop(columns=["commodity"], inplace=True, errors="ignore")
+            # Store in the database store the message if it fails
+            try:
+                self.parent.database.append(df, table_name)
+            except Exception as error:
+                self.logger.info(
+                    "Failed to store %s in the database\n %s", reporter_name, error
+                )
+            # Keep track of the country name and length of the data in the log file
+            records_downloaded += len(df)
+            self.logger.info(
+                "Downloaded %s records for %s (code %s).\n"
+                + "%s records downloaded in total.",
+                len(df),
+                reporter_name,
+                reporter_code,
+                records_downloaded,
+            )

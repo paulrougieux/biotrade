@@ -95,6 +95,10 @@ class Database:
         The python code below was originally generated with:
 
             sqlacodegen --schema raw_comtrade --tables yearly_hs2 postgresql://rdb@localhost/biotrade
+
+        Note the "commodity" column is left empty, removed from the data frame
+        before it is stored in the database because it would be too large. The
+        text description of a commodity is available in the products table.
         """
         table = Table(
             name,
