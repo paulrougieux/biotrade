@@ -23,6 +23,7 @@ Get the list of products from the Comtrade API
 """
 # Internal modules
 import datetime
+import time
 
 # First party modules
 import logging
@@ -206,6 +207,7 @@ class Pump:
                 index=False
             )
             download_successful = False
+            # Reset sleep time
             sleep_time = 10
             # Try to download doubling sleep time until it succeeds
             while not download_successful:
@@ -225,10 +227,14 @@ class Pump:
                     )
                     download_successful = True
                 except Exception as error:
-                    self.logger.info(
-                        "Failed to download %s \n %s", reporter_name, error
-                    )
                     sleep_time *= 2
+                    self.logger.info(
+                        "Failed to download %s \n %s. \nWaiting %s seconds...",
+                        reporter_name,
+                        error,
+                        sleep_time,
+                    )
+                    time.sleep(sleep_time)
             # Remove the lengthy product description (to be stored in a dedicated table)
             df.drop(columns=["commodity"], inplace=True, errors="ignore")
             # Store in the database store the message if it fails

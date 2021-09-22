@@ -36,6 +36,7 @@ beginning of this project. Drop the table in two different ways
 Alternative from bash and using the PostGreSQL client.
 Create the database structure from the sql file in the `config_data` folder
 This step can be skipped if the data is written the first time using pandas.to_sql().
+This step is now replaced by a structure defined in biotrade/database.py
 
     psql -d biotrade -h localhost -U rdb -f ~/rp/biotrade/biotrade/config_data/comtrade.sql
 
