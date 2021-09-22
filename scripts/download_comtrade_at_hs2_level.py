@@ -40,9 +40,12 @@ This step is now replaced by a structure defined in biotrade/database.py
 
     psql -d biotrade -h localhost -U rdb -f ~/rp/biotrade/biotrade/config_data/comtrade.sql
 
-Connect to the `biotrade` database using the PostgreSQl client
+Connect to the `biotrade` database using the PostgreSQl client and perform some queries.
 
     psql -d biotrade -h localhost -U rdb
+    select distinct(commodity_code) from raw_comtrade.yearly_hs2;
+    select distinct(year) from raw_comtrade.yearly_hs2;
+    select distinct(reporter) from raw_comtrade.yearly_hs2;
 
 Sample query to see the reporter countries
 
@@ -87,6 +90,11 @@ print(reporters)
 #############################################
 # TODO: use the API connection key
 # Loop on products with a one hour pause every 10 000 records
+# Remove some products which have already been downloaded
+# TODO check the database for complete and recent reporter data.
+# Remove product codes which already have up to date data in the database.
+to_remove = ["01"]
+hs2d_bio = hs2d_bio[~hs2d_bio.id.isin(to_remove)]
 for product_code in hs2d_bio.id:
     print(product_code)
     comtrade.pump.loop_on_reporters(product_code=product_code, table_name="yearly_hs2")
