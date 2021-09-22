@@ -113,7 +113,7 @@ for product_code in hs2d_bio.id:
 # REPORTER_CODE = "381"  # Italy
 # # One call to the download function
 # comtrade_data_it = comtrade.pump.download(
-#     max="10000",
+#     max="9000",
 #     type="C",
 #     freq="A",
 #     px="HS",

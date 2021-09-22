@@ -20,6 +20,13 @@ Download trade flows and return a data frame
 Get the list of products from the Comtrade API
 
     >>> hs = comtrade.pump.get_parameter_list("classificationHS.json")
+
+Potential server Error messages
+
+- 409 seems to be the error when the download limit has been reached
+- We also get this error HTTP Error 500: Internal Server Error. when the max
+  argument is greater than 9999.
+
 """
 # Internal modules
 import datetime
@@ -91,6 +98,8 @@ class Pump:
         Argument names are the same as the Comtrade API argument names.
 
         :param str max : maximum number of rows returned by the API
+         Note the server returns "HTTP Error 500: Internal Server Error" if
+         max is greater than 9999.
         :param str type : type of trade (c = commodities, s = services)
         :param str freq : frequency
         :param str px : classification
@@ -220,7 +229,7 @@ class Pump:
             while not download_successful:
                 try:
                     df = self.download(
-                        max="10000",
+                        max="9000",
                         type="C",
                         freq="A",
                         px="HS",
