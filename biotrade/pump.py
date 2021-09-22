@@ -24,6 +24,8 @@ Get the list of products from the Comtrade API
 # Internal modules
 import datetime
 import time
+from pathlib import Path
+import os
 
 # First party modules
 import logging
@@ -65,6 +67,10 @@ class Pump:
         self.parent = parent
         # Mapping table used to rename columns
         self.column_names = self.parent.column_names
+        # Get API authentication token from an environmental variable
+        self.token = ""
+        if os.environ.get("COMTRADE_TOKEN"):
+            self.token = Path(os.environ["COMTRADE_TOKEN"])
 
     def download(
         self,
@@ -105,6 +111,7 @@ class Pump:
         url_api_call = (
             f"{self.url_api_base}max={max}&type={type}&freq={freq}&px={px}"
             + f"&ps={ps}&r={r}&p={p}&rg={rg}&cc={cc}&fmt={fmt}&head={head}"
+            + f"&token={self.token}"
         )
         self.logger.info("Downloading a data frame from:\n %s", url_api_call)
 
