@@ -23,9 +23,10 @@ Get the list of products from the Comtrade API
 
 Potential server Error messages
 
-- 409 seems to be the error when the download limit has been reached
-- We also get this error HTTP Error 500: Internal Server Error. when the max
-  argument is greater than 9999.
+- HTTP Error 409 seems to be the error when the download limit has been reached
+and we don't use the authentication token.
+- We also get HTTP Error 500: "Internal Server Error" when the max argument is
+greater than 9999.
 
 """
 # Internal modules
@@ -223,7 +224,10 @@ class Pump:
                 index=False
             )
             download_successful = False
-            # Reset sleep time
+            # https://comtrade.un.org/data/doc/api
+            # "1 request every second (per IP address or authenticated user)."
+            time.sleep(2)
+            # Reset additional sleep time used in case of error
             sleep_time = 10
             # Try to download doubling sleep time until it succeeds
             while not download_successful:
