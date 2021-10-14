@@ -76,7 +76,7 @@ class Pump:
         # Mapping table used to rename columns
         self.column_names = self.parent.column_names
         # Get API authentication token from an environmental variable
-        self.token = ""
+        self.token = None
         if os.environ.get("COMTRADE_TOKEN"):
             self.token = Path(os.environ["COMTRADE_TOKEN"])
 
@@ -102,7 +102,7 @@ class Pump:
          Note the server returns "HTTP Error 500: Internal Server Error" if
          max is greater than 9999.
         :param str type : type of trade (c = commodities, s = services)
-        :param str freq : frequency
+        :param str freq : frequency A Annual, M Monthly
         :param str px : classification
         :param str ps : time period
         :param str r : reporter country
@@ -112,7 +112,6 @@ class Pump:
         :param str fmt : data format, defaults to "json",
                          usage of "csv" is discouraged as it can cause data type issues
         :param str head : human (H) or machine (M) readable headers
-
         """
         if fmt not in ("csv", "json"):
             raise ValueError(f"The data format '{fmt}' is not supported")
@@ -121,8 +120,9 @@ class Pump:
         url_api_call = (
             f"{self.url_api_base}max={max}&type={type}&freq={freq}&px={px}"
             + f"&ps={ps}&r={r}&p={p}&rg={rg}&cc={cc}&fmt={fmt}&head={head}"
-            + f"&token={self.token}"
         )
+        if self.token is not None:
+            url_api_call += f"&token={self.token}"
         self.logger.info("Downloading a data frame from:\n %s", url_api_call)
 
         # Load the data in csv format
