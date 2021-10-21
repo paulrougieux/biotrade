@@ -25,8 +25,9 @@ swd99_ukr_202106 = comtrade.pump.download(
 )
 # Save to the database
 comtrade.database_sqlite.append(swd99_ukr_202106, "monthly")
-# Save again should return an error!
+# Save again should return an error because of the unique constraint!
 # TODO: Check why the second save doesn't return an error
+# Try by appending all codes together and leaving the constraint on a single variable
 comtrade.database_sqlite.append(swd99_ukr_202106, "monthly")
 
 hs = comtrade.pump.get_parameter_list("classificationHS.json")

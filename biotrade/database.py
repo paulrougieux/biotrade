@@ -68,9 +68,9 @@ class Database:
         self.metadata.bind = self.engine
         self.inspector = inspect(self.engine)
         # Describe table metadata and create them if they don't exist
-        self.yearly_hs2 = self.describe_and_create_if_not_existing(name="yearly_hs2")
         self.monthly = self.describe_and_create_if_not_existing(name="monthly")
         self.yearly = self.describe_and_create_if_not_existing(name="yearly")
+        self.yearly_hs2 = self.describe_and_create_if_not_existing(name="yearly_hs2")
 
     def append(self, df, table, drop_description=True):
         """Store a data frame inside a given database table"""
