@@ -31,7 +31,7 @@ and dropping less important columns:
 import pandas
 
 # Internal modules
-from biotrade import module_dir
+from biotrade import module_dir, data_dir
 from biotrade.countries import Countries
 from biotrade.database import Database
 from biotrade.products import Products
@@ -48,11 +48,21 @@ class Comtrade:
     Parent to various objects dealing with data from the UN Comtrade API.
     """
 
+    # Location of the data
+    data_dir = data_dir
+
+    # Database URLs
+    database_url_postgresql = "postgresql://rdb@localhost/biotrade"
+    database_url_sqlite = f"sqlite:///{data_dir}/trade.db"
+
     # Location of module configuration data
     config_data_dir = module_dir / "config_data"
 
     # Load a mapping table used to rename columns
-    column_names = pandas.read_csv(config_data_dir / "column_names.csv")
+    df = pandas.read_csv(config_data_dir / "column_names.csv")
+    # Select only relevant columns and remove incomplete mappings
+    df = df[["jrc", "comtrade_machine"]]
+    column_names = df[df.isna().sum(axis=1) == 0]
 
     @property
     def countries(self):
@@ -60,9 +70,14 @@ class Comtrade:
         return Countries(self)
 
     @property
-    def database(self):
+    def database_postgresql(self):
         """Store Comtrade data and make it available for further processing"""
-        return Database(self)
+        return Database(self, self.database_url_postgresql)
+
+    @property
+    def database_sqlite(self):
+        """Store Comtrade data and make it available for further processing"""
+        return Database(self, self.database_url_sqlite)
 
     @property
     def products(self):

@@ -14,7 +14,7 @@ Load the complete table into a pandas data frame.
 
     >>> import pandas
     >>> from biotrade.comtrade import comtrade
-    >>> db = comtrade.database
+    >>> db = comtrade.database_postgresql
     >>> df = pandas.read_sql_table("yearly_hs2", db.engine, schema="raw_comtrade")
 
 Select data for the year 2017 using an SQL Alchemy select statement. Return results
@@ -48,16 +48,17 @@ class Database:
     Database to store UN Comtrade data.
     """
 
-    # Database configuration
-    engine = create_engine("postgresql://rdb@localhost/biotrade")
+    # Database schema configuration
     schema = "raw_comtrade"
 
     # Log debug and error messages
     logger = logging.getLogger("biotrade.comtrade")
 
-    def __init__(self, parent):
+    def __init__(self, parent, database_url):
         # Default attributes #
         self.parent = parent
+        # Database configuration
+        self.engine = create_engine(database_url)
         # SQL Alchemy metadata
         self.metadata = MetaData(schema=self.schema)
         self.metadata.bind = self.engine

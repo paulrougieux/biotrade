@@ -162,7 +162,7 @@ class Pump:
         # Replace $ sign by d, used only for human readable dataset
         df.rename(columns=lambda x: re.sub(r"\$", "d", x), inplace=True)
         # Rename columns based on the jrc naming convention
-        mapping = self.column_names.set_index("comtrade_m").to_dict()["jrc"]
+        mapping = self.column_names.set_index("comtrade_machine").to_dict()["jrc"]
         df.rename(columns=mapping, inplace=True)
         return df
 
