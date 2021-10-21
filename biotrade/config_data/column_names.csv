@@ -4,7 +4,7 @@ classification,,classification,pfcode,,,,,,VARCHAR(3)
 year,,year,yr,year,year,year,year,year,YEAR(4)
 period,PERIOD,period,period,year_code,year_code,year_code,year_code,year_code,INT
 period_description,,period_desc,perioddesc,,,,,,VARCHAR(255)
-aggr_level,,aggregate_level,aggrlevel,,,,,,TINYINT
+aggregate_level,,aggregate_level,aggrlevel,,,,,,TINYINT
 is_leaf,,is_leaf_code,isleaf,,,,,,TINYINT(1)
 flow_code,FLOW,trade_flow_code,rgcode,,,,,,TINYINT
 flow,,trade_flow,rgdesc,,,,,,VARCHAR(32)
@@ -20,7 +20,8 @@ product_description,,commodity,cmddesce,,,,,,TEXT
 unit_code,,qty_unit_code,qtcode,,,,,,TINYINT
 unit,,qty_unit,qtdesc,unit,unit,unit,unit,unit,VARCHAR(255)
 quantity,SUP_QUANTITY,qty,qtaltcode,,,,,,BIGINT
-weight,QUANTITY_TON,netweight_kg,netweight,,,,,,BIGINT
+weight,QUANTITY_TON,,,,,,,,BIGINT
+net_weight,,netweight_kg,netweight,,,,,,
 gross_weight,,gross_weight_kg,grossweight,,,,,,
 trade_value,VALUE_1000ECU,trade_value_usd,tradevalue,,,,,,BIGINT
 cif_value,,cif_trade_value_usd,cifvalue,,,,,,
@@ -38,9 +39,9 @@ export_quantity,,,,export_quantity,export_quantity,,export_quantity,,
 export_value,,,,export_value,export_value,,export_value,,
 import_quantity,,,,import_quantity,import_quantity,,import_quantity,,
 import_value,,,,import_value,import_value,,import_value,,
-partner_code_2,,2nd_partner_code,ptcode2,,,,,,
+partner_2_code,,2nd_partner_code,ptcode2,,,,,,
 partner_2,,2nd_partner,pttitle2,,,,,,
-partner_iso_2,,2nd_partner_iso,pt3iso2,,,,,,
+partner_2_iso,,2nd_partner_iso,pt3iso2,,,,,,
 customs_proc_code,,customs_proc_code,cstcode,,,,,,
 customs,,customs,cstdesc,,,,,,
 mode_of_transport_code,,mode_of_transport_code,motcode,,,,,,

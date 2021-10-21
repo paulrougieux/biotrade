@@ -33,7 +33,7 @@ import pandas
 # Internal modules
 from biotrade import module_dir, data_dir
 from biotrade.countries import Countries
-from biotrade.database import Database
+from biotrade.database import DatabasePostgresql, DatabaseSqlite
 from biotrade.products import Products
 from biotrade.pump import Pump
 
@@ -50,10 +50,6 @@ class Comtrade:
 
     # Location of the data
     data_dir = data_dir
-
-    # Database URLs
-    database_url_postgresql = "postgresql://rdb@localhost/biotrade"
-    database_url_sqlite = f"sqlite:///{data_dir}/trade.db"
 
     # Location of module configuration data
     config_data_dir = module_dir / "config_data"
@@ -72,12 +68,12 @@ class Comtrade:
     @property
     def database_postgresql(self):
         """Store Comtrade data and make it available for further processing"""
-        return Database(self, self.database_url_postgresql)
+        return DatabasePostgresql(self)
 
     @property
     def database_sqlite(self):
         """Store Comtrade data and make it available for further processing"""
-        return Database(self, self.database_url_sqlite)
+        return DatabaseSqlite(self)
 
     @property
     def products(self):

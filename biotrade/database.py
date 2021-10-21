@@ -42,38 +42,41 @@ from sqlalchemy import BigInteger, Float, Text, UniqueConstraint
 from sqlalchemy import Table, Column, MetaData
 from sqlalchemy import create_engine, inspect
 
+# Internal modules
+from biotrade import data_dir
+
 
 class Database:
     """
     Database to store UN Comtrade data.
     """
 
-    # Database schema configuration
-    schema = "raw_comtrade"
+    # To be overwritten by the children
+    database_url = None
+    schema = None
 
     # Log debug and error messages
     logger = logging.getLogger("biotrade.comtrade")
 
-    def __init__(self, parent, database_url):
+    def __init__(self, parent):
         # Default attributes #
         self.parent = parent
         # Database configuration
-        self.engine = create_engine(database_url)
+        self.engine = create_engine(self.database_url)
         # SQL Alchemy metadata
         self.metadata = MetaData(schema=self.schema)
         self.metadata.bind = self.engine
         self.inspector = inspect(self.engine)
-        # Describe table metadata
-        self.yearly_hs2 = self.describe_table(name="yearly_hs2")
-        #  Create tables if they don't exist
-        if not self.inspector.has_table(self.yearly_hs2.name, schema=self.schema):
-            self.yearly_hs2.create()
-            self.logger.info(
-                "Created table %s in schema %s.", self.yearly_hs2.name, self.schema
-            )
+        # Describe table metadata and create them if they don't exist
+        self.yearly_hs2 = self.describe_and_create_if_not_existing(name="yearly_hs2")
+        self.monthly = self.describe_and_create_if_not_existing(name="monthly")
+        self.yearly = self.describe_and_create_if_not_existing(name="yearly")
 
-    def append(self, df, table):
+    def append(self, df, table, drop_description=True):
         """Store a data frame inside a given database table"""
+        # Drop the lengthy product description
+        if drop_description and "product_description" in df.columns:
+            df.drop(columns=["product_description"], inplace=True)
         df.to_sql(
             name=table,
             con=self.engine,
@@ -82,6 +85,16 @@ class Database:
             index=False,
         )
         self.logger.info("Wrote %s rows to the database table %s", len(df), table)
+
+    def describe_and_create_if_not_existing(self, name):
+        """Create the table in the database if it doesn't exist already"""
+        # Describe table metadata
+        table = self.describe_table(name=name)
+        #  Create the table if it doesn't exist
+        if not self.inspector.has_table(table.name, schema=self.schema):
+            table.create()
+            self.logger.info("Created table %s in schema %s.", table.name, self.schema)
+        return table
 
     def describe_table(self, name):
         """Define the metadata of a table containing Comtrade data.
@@ -107,11 +120,11 @@ class Database:
             Column("classification", Text),
             Column("year", BigInteger),
             Column("period", BigInteger),
-            Column("period_desc", Text),
+            Column("period_description", Text),
             Column("aggregate_level", BigInteger),
-            Column("is_leaf_code", BigInteger),
-            Column("trade_flow_code", BigInteger),
-            Column("trade_flow", Text),
+            Column("is_leaf", BigInteger),
+            Column("flow_code", BigInteger),
+            Column("flow", Text),
             Column("reporter_code", BigInteger),
             Column("reporter", Text),
             Column("reporter_iso", Text),
@@ -125,29 +138,42 @@ class Database:
             Column("customs", Text),
             Column("mode_of_transport_code", Text),
             Column("mode_of_transport", Text),
-            Column("commodity_code", Text),
-            Column("commodity", Text),
-            Column("qty_unit_code", BigInteger),
-            Column("qty_unit", Text),
-            Column("qty", Text),
+            Column("product_code", Text),
+            Column("unit_code", BigInteger),
+            Column("unit", Text),
+            Column("quantity", Text),
             Column("alt_qty_unit_code", Text),
             Column("alt_qty_unit", BigInteger),
             Column("alt_qty", Text),
-            Column("netweight", Float(53)),
-            Column("grossweight", Text),
-            Column("tradevalue", BigInteger),
-            Column("cifvalue", Text),
-            Column("fobvalue", Text),
+            Column("net_weight", Float(53)),
+            Column("gross_weight", Text),
+            Column("trade_value", BigInteger),
+            Column("cif_value", Text),
+            Column("fob_value", Text),
             Column("flag", BigInteger),
             UniqueConstraint(
                 "period",
-                "trade_flow_code",
+                "flow_code",
                 "reporter_code",
                 "partner_code",
-                "commodity_code",
-                "qty_unit_code",
+                "product_code",
+                "unit_code",
                 "flag",
             ),
             schema=self.schema,
         )
         return table
+
+
+class DatabasePostgresql(Database):
+    """Database using the PostgreSQL engine"""
+
+    database_url = "postgresql://rdb@localhost/biotrade"
+    schema = "raw_comtrade"
+
+
+class DatabaseSqlite(Database):
+    """Database using the SQLite engine"""
+
+    database_url = f"sqlite:///{data_dir}/trade.db"
+    schema = "main"
