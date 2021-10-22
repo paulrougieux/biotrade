@@ -49,7 +49,7 @@ class Comtrade:
     """
 
     # Location of the data
-    data_dir = data_dir
+    data_dir = data_dir / "comtrade"
 
     # Location of module configuration data
     config_data_dir = module_dir / "config_data"
