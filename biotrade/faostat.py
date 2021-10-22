@@ -7,15 +7,18 @@ Written by Paul Rougieux.
 JRC biomass Project.
 Unit D1 Bioeconomy.
 
+Forestry production data from FAOSTAT
+
+    >>> from biotrade.faostat import faostat
+    >>> df = faostat.forestry_production
+
 Display information on column names used for renaming
 and dropping less important columns:
 
-    >>> from biotrade.faostat import faostat
     >>> faostat.column_names
 
-Download a zip file from FAOSTAT.
+Download or update a zip file from FAOSTAT.
 
-Read a zip file from FAOSTAT.
 
 
 """
@@ -53,7 +56,7 @@ class Faostat:
     non_na_values = (~df.filter(like="faostat").isna()).sum(axis=1)
     column_names = df[non_na_values > 0]
 
-    def read_zip_csv_to_df(self, directory, zip_file_name, column_renaming):
+    def read_zip_csv_to_df(self, zip_file, column_renaming):
         """Read a zip file downloaded from the FAOSTAT API rename columns and return a data frame
 
         The zip file contains 2 csv file, a large one with the data and a small one with flags.
@@ -62,22 +65,33 @@ class Faostat:
         Example use:
 
         >>> from biotrade.faostat import faostat
-        >>> from pathlib import Path
+        >>> zip_file = faostat.data_dir / "Forestry_E_All_Data_(Normalized).zip"
         >>> df = faostat.read_zip_csv_to_df(
-        >>>     directory=Path.home() / "repos/env_impact_imports/data_raw",
-        >>>     zip_file_name="Forestry_E_All_Data_(Normalized).zip",
-        >>>     column_renaming = "faostat_forestry_production")
+        >>>     zip_file=zip_file,
+        >>>     column_renaming="faostat_forestry_production")
 
         """
-        directory = Path(directory)
-        with ZipFile(directory / zip_file_name) as zipfile:
-            with zipfile.open(re.sub(".zip$", ".csv", zip_file_name)) as csvfile:
+        # Extract the name of the CSV file
+        zip_file_name = Path(zip_file).name
+        csv_file_name = re.sub(".zip$", ".csv", zip_file_name)
+        # Read to a pandas data frame
+        with ZipFile(zip_file) as zipfile:
+            with zipfile.open(csv_file_name) as csvfile:
                 df = pandas.read_csv(csvfile, encoding="latin1")
         # Rename to snake case
         df.rename(columns=lambda x: re.sub(r"\W+", "_", str(x)).lower(), inplace=True)
         # Rename using the naming convention defined in self.column_names
         mapping = self.column_names.set_index(column_renaming).to_dict()["jrc"]
         df.rename(columns=mapping, inplace=True)
+        return df
+
+    @property
+    def forestry_production(self):
+        """Forestry production data"""
+        zip_file = self.data_dir / "Forestry_E_All_Data_(Normalized).zip"
+        df = faostat.read_zip_csv_to_df(
+            zip_file=zip_file, column_renaming="faostat_forestry_production"
+        )
         return df
 
 
