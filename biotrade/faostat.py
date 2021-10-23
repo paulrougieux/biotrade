@@ -7,10 +7,11 @@ Written by Paul Rougieux.
 JRC biomass Project.
 Unit D1 Bioeconomy.
 
-Forestry production data from FAOSTAT
+Forestry production and trade data from FAOSTAT
 
     >>> from biotrade.faostat import faostat
-    >>> df = faostat.forestry_production
+    >>> fp = faostat.forestry_production
+    >>> ft = faostat.forestry_trade
 
 Display information on column names used for renaming
 and dropping less important columns:
@@ -62,6 +63,9 @@ class Faostat:
         The zip file contains 2 csv file, a large one with the data and a small one with flags.
         We want to open the large csv file which has the same name as the zip file.
 
+        Columns are renamed using the mapping table defined in config_data/column_names.csv.
+        The product and element columns are renamed to snake case.
+
         Example use:
 
         >>> from biotrade.faostat import faostat
@@ -83,14 +87,33 @@ class Faostat:
         # Rename using the naming convention defined in self.column_names
         mapping = self.column_names.set_index(column_renaming).to_dict()["jrc"]
         df.rename(columns=mapping, inplace=True)
+        # Rename products to snake case
+        # Using a compiled regex
+        regex_pat = re.compile(r"\W+")
+        df["product"] = (
+            df["product"].str.replace(regex_pat, "_", regex=True).str.lower()
+        )
+        # Rename elements to snake case
+        df["element"] = (
+            df["element"].str.replace(regex_pat, "_", regex=True).str.lower()
+        )
         return df
 
     @property
     def forestry_production(self):
         """Forestry production data"""
         zip_file = self.data_dir / "Forestry_E_All_Data_(Normalized).zip"
-        df = faostat.read_zip_csv_to_df(
+        df = self.read_zip_csv_to_df(
             zip_file=zip_file, column_renaming="faostat_forestry_production"
+        )
+        return df
+
+    @property
+    def forestry_trade(self):
+        """Forestry bilateral trade flows (trade matrix)"""
+        zip_file = self.data_dir / "Forestry_Trade_Flows_E_All_Data_(Normalized).zip"
+        df = self.read_zip_csv_to_df(
+            zip_file=zip_file, column_renaming="faostat_forestry_trade"
         )
         return df
 
