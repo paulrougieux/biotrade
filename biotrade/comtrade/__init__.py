@@ -32,10 +32,10 @@ import pandas
 
 # Internal modules
 from biotrade import module_dir, data_dir
-from biotrade.countries import Countries
-from biotrade.database import DatabasePostgresql, DatabaseSqlite
-from biotrade.products import Products
-from biotrade.pump import Pump
+from biotrade.comtrade.countries import Countries
+from biotrade.comtrade.database import DatabasePostgresql, DatabaseSqlite
+from biotrade.comtrade.products import Products
+from biotrade.comtrade.pump import Pump
 
 # Define a logging mechanism to keep track of errors and debug messages
 from biotrade.logger import create_logger
