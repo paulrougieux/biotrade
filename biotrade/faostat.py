@@ -118,5 +118,23 @@ class Faostat:
         return df
 
 
+def compare_aggregate_to_constituents(df, prod_aggregate, prod_constituents):
+    """Compare production and trade of aggregate products to the sum of their constituents
+
+    input data frame in long format
+    Return a reshaped data frame in wider format with aggregates and their constituents in columns.
+    """
+    prod_together = [prod_aggregate] + prod_constituents
+    index = ["reporter", "element", "unit", "year"]
+    df = (
+        df.query("product in @prod_together")
+        .pivot(index=index, columns="product", values="value")
+        .fillna(0)
+    )
+    df[prod_aggregate + "_agg"] = df.drop(columns=prod_aggregate).sum(axis=1)
+    df["diff"] = df[prod_aggregate] - df[prod_aggregate + "_agg"]
+    return df
+
+
 # Make a singleton #
 faostat = Faostat()
