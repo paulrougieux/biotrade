@@ -21,7 +21,7 @@ def compare_aggregate_to_constituents(df, prod_aggregate, prod_constituents):
     For example compare roundwood to the sum of industrial roundwood and fuel wood.
 
     >>> from biotrade.faostat import faostat
-    >>> from biotrade.faostat.tools import compare_aggregate_to_constituents
+    >>> from biotrade.faostat.quality import compare_aggregate_to_constituents
     >>> fp = faostat.forestry_production
     >>> rwd = compare_aggregate_to_constituents(
     >>>     fp, "roundwood", ["industrial_roundwood", "wood_fuel"]
