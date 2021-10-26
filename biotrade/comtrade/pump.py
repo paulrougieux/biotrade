@@ -235,8 +235,9 @@ class Pump:
             time.sleep(2)
             # Reset additional sleep time used in case of error
             sleep_time = 10
-            # Try to download doubling sleep time until it succeeds
-            while not download_successful:
+            # Try to download doubling sleep time until it succeeds.
+            # Abort when sleep time increases to more than half an hour.
+            while not download_successful and sleep_time < 1800:
                 try:
                     df = self.download(
                         max="9000",
