@@ -29,21 +29,22 @@ and we don't use the authentication token.
 greater than 9999.
 
 """
-# Internal modules
-import datetime
-import time
+# Built-in modules
 from pathlib import Path
-import os
 from warnings import warn
-
-# First party modules
-import logging
+import datetime
+import os
 import re
+import time
 import urllib.request
 
 # Third party modules
 import json
+import logging
 import pandas
+
+# Internal modules
+from biotrade.url_request_header import HEADER
 
 
 class Pump:
@@ -53,23 +54,12 @@ class Pump:
 
     # Log debug and error messages
     logger = logging.getLogger("biotrade.comtrade")
-
+    # Define URL request headers
+    header = HEADER
     # Base URL to load trade trade data from the API
     url_api_base = "http://comtrade.un.org/api/get?"
     # Base URL to load metadata
     url_metadata_base = "https://comtrade.un.org/Data/cache/"
-    # Define headers
-    # Based on https://stackoverflow.com/a/66591873/2641825
-    header = {
-        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) "
-        "AppleWebKit/537.11 (KHTML, like Gecko) "
-        "Chrome/23.0.1271.64 Safari/537.11",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Charset": "ISO-8859-1,utf-8;q=0.7,*;q=0.3",
-        "Accept-Encoding": "none",
-        "Accept-Language": "en-US,en;q=0.8",
-        "Connection": "keep-alive",
-    }
 
     def __init__(self, parent):
         # Default attributes #
@@ -117,7 +107,7 @@ class Pump:
         :param str cc : product code
         :param str fmt : data format, defaults to "json",
                          usage of "csv" is discouraged as it can cause data type issues
-        :param str head : human (H) or machine (M) readable headers
+        :param str head : human (H) or machine (M) readable column headers
         """
         if fmt not in ("csv", "json"):
             raise ValueError(f"The data format '{fmt}' is not supported")
