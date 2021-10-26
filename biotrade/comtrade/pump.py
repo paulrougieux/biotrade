@@ -34,6 +34,7 @@ import datetime
 import time
 from pathlib import Path
 import os
+from warnings import warn
 
 # First party modules
 import logging
@@ -80,7 +81,12 @@ class Pump:
         if os.environ.get("COMTRADE_TOKEN"):
             self.token = Path(os.environ["COMTRADE_TOKEN"])
 
-    def download(
+    def download(self, *args, **kwargs):
+        """Deprecated download function, see download_df instead"""
+        warn("Deprecated, please use the download_df method instead.")
+        return self.download_df(*args, **kwargs)
+
+    def download_df(
         self,
         max="500",
         type="C",
