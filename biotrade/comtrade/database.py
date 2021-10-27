@@ -69,11 +69,14 @@ class DatabaseComtrade(Database):
         self.metadata.bind = self.engine
         self.inspector = inspect(self.engine)
         # Describe table metadata and create them if they don't exist
-        self.monthly = self.describe_and_create_if_not_existing(name="monthly")
-        self.yearly = self.describe_and_create_if_not_existing(name="yearly")
-        self.yearly_hs2 = self.describe_and_create_if_not_existing(name="yearly_hs2")
+        self.monthly = self.describe_trade_table(name="monthly")
+        self.create_if_not_existing(self.monthly)
+        self.yearly = self.describe_trade_table(name="yearly")
+        self.create_if_not_existing(self.yearly)
+        self.yearly_hs2 = self.describe_trade_table(name="yearly_hs2")
+        self.create_if_not_existing(self.yearly_hs2)
 
-    def describe_table(self, name):
+    def describe_trade_table(self, name):
         """Define the metadata of a table containing Comtrade data.
 
         The unique constraint is a very important part of the table structure.

@@ -24,10 +24,6 @@ class Database:
     inspector = None
     logger = None
 
-    def describe_table(self, name):
-        """To be overwritten by the children"""
-        raise NotImplementedError(f"The {name} table is not described in {self}")
-
     def append(self, df, table, drop_description=True):
         """Store a data frame inside a given database table"""
         # Drop the lengthy product description
@@ -42,10 +38,11 @@ class Database:
         )
         self.logger.info("Wrote %s rows to the database table %s", len(df), table)
 
-    def describe_and_create_if_not_existing(self, name):
-        """Create the table in the database if it doesn't exist already"""
-        # Describe table metadata
-        table = self.describe_table(name=name)
+    def create_if_not_existing(self, table):
+        """Create a table in the database if it doesn't exist already
+
+        table sqlalchemy.sql.schema.Table instance description of a table structure
+        """
         #  Create the table if it doesn't exist
         if not self.inspector.has_table(table.name, schema=self.schema):
             table.create()
