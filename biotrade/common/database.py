@@ -24,9 +24,9 @@ class Database:
     inspector = None
     logger = None
 
-    def describe_table(self):
+    def describe_table(self, name):
         """To be overwritten by the children"""
-        return None
+        raise NotImplementedError(f"The {name} table is not described in {self}")
 
     def append(self, df, table, drop_description=True):
         """Store a data frame inside a given database table"""
