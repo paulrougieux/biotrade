@@ -33,7 +33,8 @@ import pandas
 # Internal modules
 from biotrade import module_dir, data_dir
 from biotrade.comtrade.countries import Countries
-from biotrade.comtrade.database import DatabasePostgresql, DatabaseSqlite
+from biotrade.comtrade.database import DatabaseComtradePostgresql
+from biotrade.comtrade.database import DatabaseComtradeSqlite
 from biotrade.comtrade.products import Products
 from biotrade.comtrade.pump import Pump
 
@@ -66,14 +67,14 @@ class Comtrade:
         return Countries(self)
 
     @property
-    def database_postgresql(self):
+    def db_pgsql(self):
         """Store Comtrade data and make it available for further processing"""
-        return DatabasePostgresql(self)
+        return DatabaseComtradePostgresql(self)
 
     @property
-    def database_sqlite(self):
+    def db_sqlite(self):
         """Store Comtrade data and make it available for further processing"""
-        return DatabaseSqlite(self)
+        return DatabaseComtradeSqlite(self)
 
     @property
     def products(self):

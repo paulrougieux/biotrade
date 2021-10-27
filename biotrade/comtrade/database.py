@@ -14,7 +14,7 @@ Load the complete table into a pandas data frame.
 
     >>> import pandas
     >>> from biotrade.comtrade import comtrade
-    >>> db = comtrade.database_postgresql
+    >>> db = comtrade.db_pgsql
     >>> df = pandas.read_sql_table("yearly_hs2", db.engine, schema="raw_comtrade")
 
 Select data for the year 2017 using an SQL Alchemy select statement. Return results
@@ -44,9 +44,10 @@ from sqlalchemy import create_engine, inspect
 
 # Internal modules
 from biotrade import data_dir
+from biotrade.common.database import Database
 
 
-class Database:
+class DatabaseComtrade(Database):
     """
     Database to store UN Comtrade data.
     """
@@ -71,30 +72,6 @@ class Database:
         self.monthly = self.describe_and_create_if_not_existing(name="monthly")
         self.yearly = self.describe_and_create_if_not_existing(name="yearly")
         self.yearly_hs2 = self.describe_and_create_if_not_existing(name="yearly_hs2")
-
-    def append(self, df, table, drop_description=True):
-        """Store a data frame inside a given database table"""
-        # Drop the lengthy product description
-        if drop_description and "product_description" in df.columns:
-            df.drop(columns=["product_description"], inplace=True)
-        df.to_sql(
-            name=table,
-            con=self.engine,
-            schema=self.schema,
-            if_exists="append",
-            index=False,
-        )
-        self.logger.info("Wrote %s rows to the database table %s", len(df), table)
-
-    def describe_and_create_if_not_existing(self, name):
-        """Create the table in the database if it doesn't exist already"""
-        # Describe table metadata
-        table = self.describe_table(name=name)
-        #  Create the table if it doesn't exist
-        if not self.inspector.has_table(table.name, schema=self.schema):
-            table.create()
-            self.logger.info("Created table %s in schema %s.", table.name, self.schema)
-        return table
 
     def describe_table(self, name):
         """Define the metadata of a table containing Comtrade data.
@@ -165,14 +142,14 @@ class Database:
         return table
 
 
-class DatabasePostgresql(Database):
+class DatabaseComtradePostgresql(DatabaseComtrade):
     """Database using the PostgreSQL engine"""
 
     database_url = "postgresql://rdb@localhost/biotrade"
     schema = "raw_comtrade"
 
 
-class DatabaseSqlite(Database):
+class DatabaseComtradeSqlite(DatabaseComtrade):
     """Database using the SQLite engine"""
 
     database_url = f"sqlite:///{data_dir}/trade.db"
