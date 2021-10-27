@@ -13,15 +13,19 @@ Read forestry production and trade data from FAOSTAT files
     >>> fp = faostat.pump.forestry_production
     >>> ft = faostat.pump.forestry_trade
 
+Download or update zipped CSV files from FAOSTAT.
+
+    >>> from biotrade.faostat import faostat
+    >>> faostat.pump.download_zip_csv("Forestry_E_All_Data_(Normalized).zip")
+
 Display information on column names used for renaming
 and dropping less important columns:
 
     >>> faostat.column_names
 
-Download or update zipped CSV files from FAOSTAT.
+Display the list of EU countries names in the FAOSTAT data
 
-    >>> from biotrade.faostat import faostat
-    >>> faostat.pump.download_zip_csv("Forestry_E_All_Data_(Normalized).zip")
+    >>> faostat.countries.eu_country_names
 
 """
 # Third party modules
@@ -31,6 +35,7 @@ import pandas
 from biotrade import module_dir, data_dir
 from biotrade.faostat.products import Products
 from biotrade.faostat.pump import Pump
+from biotrade.faostat.countries import Countries
 
 # Define a logging mechanism to keep track of errors and debug messages
 from biotrade.logger import create_logger
@@ -54,6 +59,11 @@ class Faostat:
     df = df.filter(regex="jrc|faostat")
     non_na_values = (~df.filter(like="faostat").isna()).sum(axis=1)
     column_names = df[non_na_values > 0]
+
+    @property
+    def countries(self):
+        """Identify reporter and partner countries and regions"""
+        return Countries(self)
 
     @property
     def products(self):

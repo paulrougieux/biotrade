@@ -38,3 +38,20 @@ EU_COUNTRY_NAMES = [
     "Spain",
     "Sweden",
 ]
+
+
+class Countries(object):
+    """
+    Comtrade product list, with additional information.
+    """
+
+    def __init__(self, parent):
+        # Default attributes #
+        self.parent = parent
+        # Directories #
+        self.config_data_dir = self.parent.config_data_dir
+
+    @property
+    def eu_country_names(self):
+        """EU country names in the FAOSTAT data"""
+        return EU_COUNTRY_NAMES
