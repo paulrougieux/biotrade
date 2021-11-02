@@ -14,6 +14,7 @@ from zipfile import ZipFile
 import re
 import shutil
 import urllib.request
+import tempfile
 
 # Third party modules
 import logging
@@ -149,6 +150,23 @@ class Pump:
         )
         return df
 
+    def transfer_csv_to_db_in_chunks(self, db, short_name):
+        """Transfer large CSV files to the database in chunks
+        so that a data frame with 40 million rows doesn't overload the memory.
+        """
+        # Unzip the CSV and write it to a temporary file on disk
+        zip_file = ZipFile(self.data_dir / self.datasets[short_name])
+        temp_dir = Path(tempfile.TemporaryDirectory().name)
+        csv_file_name = temp_dir / re.sub(".zip$", ".csv", self.datasets[short_name])
+        zip_file.extractall(temp_dir)
+        # Read in chunk and pass each chunk to the database
+        for df_chunk in pandas.read_csv(
+            csv_file_name, chunksize=10 ** 6, encoding="latin1"
+        ):
+            df_chunk = self.sanitize_variable_names(df_chunk, "faostat_" + short_name)
+            print(df_chunk.head(1))
+            db.append(df=df_chunk, table=short_name)
+
     @property
     def forestry_production(self):
         """Forestry production data"""
@@ -184,9 +202,17 @@ class Pump:
         db_sqlite.create_if_not_existing(db_sqlite.forestry_trade)
         db_sqlite.create_if_not_existing(db_sqlite.crop_production)
         db_sqlite.create_if_not_existing(db_sqlite.crop_trade)
-        # For all datasets, write data to the SQLite database
-        for table_name in self.datasets.keys():
+        # For smaller datasets, write entire data frames to the SQLite database
+        datasets_that_fit_in_memory = [
+            "forestry_production",
+            "forestry_trade",
+            "crop_production",
+        ]
+        for table_name in datasets_that_fit_in_memory:
             db_sqlite.append(
                 df=self.read_df(table_name),
                 table=table_name,
             )
+        # There is a memory error with the crop trade dataset.
+        # Read the file in chunks so that the memory doesn't get too full
+        self.transfer_csv_to_db_in_chunks(db_sqlite, "crop_trade")
