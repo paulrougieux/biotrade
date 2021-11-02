@@ -36,6 +36,7 @@ from biotrade import module_dir, data_dir
 from biotrade.faostat.products import Products
 from biotrade.faostat.pump import Pump
 from biotrade.faostat.countries import Countries
+from biotrade.faostat.database import DatabaseFaostatSqlite
 
 # Define a logging mechanism to keep track of errors and debug messages
 from biotrade.logger import create_logger
@@ -74,6 +75,11 @@ class Faostat:
     def pump(self):
         """Load data from FAOSTAT and read it into data frames"""
         return Pump(self)
+
+    @property
+    def db_sqlite(self):
+        """Store Comtrade data and make it available for further processing"""
+        return DatabaseFaostatSqlite(self)
 
 
 # Make a singleton #

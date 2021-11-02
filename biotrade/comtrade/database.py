@@ -121,7 +121,7 @@ class DatabaseComtrade(Database):
             Column("product_code", Text),
             Column("unit_code", BigInteger),
             Column("unit", Text),
-            Column("quantity", Text),
+            Column("quantity", BigInteger),
             Column("alt_qty_unit_code", Text),
             Column("alt_qty_unit", BigInteger),
             Column("alt_qty", Text),

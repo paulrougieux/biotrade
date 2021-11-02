@@ -14,7 +14,9 @@ Parent object to faostat.database.py and comtrade.database.py
 
 class Database:
     """
-    Database to store UN Comtrade data.
+    Database parent class
+
+    Keep methods and parameters commons to all databases in this file.
     """
 
     # To be overwritten by the children
