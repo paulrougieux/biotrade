@@ -26,6 +26,20 @@ from biotrade.url_request_header import HEADER
 class Pump:
     """
     Download trade data from FAOSTAT and store it locally.
+    Read the zipped csv files into pandas data frames.
+
+    For example load forestry production data:
+
+        >>> from biotrade.faostat import faostat
+        >>> fp = faostat.pump.forestry_production
+
+    Update the data by downloading it again from FAOSTAT:
+
+        >>> faostat.pump.download_zip_csv("Forestry_E_All_Data_(Normalized).zip")
+
+    Store the data in to a database
+
+        >>> faostat.db_sqlite.append(fp, "forestry_production")
     """
 
     # Log debug and error messages
@@ -53,14 +67,8 @@ class Pump:
          >>> faostat.pump.download_zip_csv("Production_Crops_Livestock_E_All_Data_(Normalized).zip")
          >>> faostat.pump.download_zip_csv("Trade_DetailedTradeMatrix_E_All_Data_(Normalized).zip")
 
-        # Before
-        !ls -al ~/rp/biotrade_data/faostat/
-
-         -rw-r--r-- 1 paul paul  14999598 Sep  9 20:46 Forestry_E_All_Data_(Normalized).zip
-         -rw-r--r-- 1 paul paul  21209419 Sep  9 21:40 Forestry_Trade_Flows_E_All_Data_(Normalized).zip
-         -rw-r--r-- 1 paul paul  28752686 Sep  9 20:47 Production_Crops_Livestock_E_All_Data_(Normalized).zip
-         -rw-r--r-- 1 paul paul 289147564 Sep 22 22:43 Trade_DetailedTradeMatrix_E_All_Data_(Normalized).zip
-
+        # Check the content of the destination folder for updates
+        !ls -al ~/repos/biotrade_data/faostat/
         """
         url_api_call = self.url_api_base + zip_file_name
         output_file = self.data_dir / zip_file_name

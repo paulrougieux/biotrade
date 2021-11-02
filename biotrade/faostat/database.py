@@ -25,6 +25,12 @@ from biotrade.common.database import Database
 class DatabaseFaostat(Database):
     """
     Database to store UN Comtrade data.
+
+    For example store forestry production data in the database:
+
+        >>> from biotrade.faostat import faostat
+        >>> fp = faostat.pump.forestry_production
+        >>> faostat.db_sqlite.append(fp, "forestry_production")
     """
 
     # To be overwritten by the children
@@ -43,6 +49,9 @@ class DatabaseFaostat(Database):
         self.metadata = MetaData(schema=self.schema)
         self.metadata.bind = self.engine
         self.inspector = inspect(self.engine)
+        # Describe table metadata and create them if they don't exist
+        self.forestry_production = self.describe_trade_table(name="forestry_production")
+        self.create_if_not_existing(self.forestry_production)
 
     def describe_trade_table(self, name):
         """Define the metadata of a table containing Comtrade data.
@@ -59,7 +68,7 @@ class DatabaseFaostat(Database):
             self.metadata,
             Column("reporter_code", Integer),
             Column("reporter", Text),
-            Column("product_code", Text),
+            Column("product_code", Integer),
             Column("product", Text),
             Column("element_code", Integer),
             Column("element", Text),
