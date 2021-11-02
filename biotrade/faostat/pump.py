@@ -28,12 +28,19 @@ class Pump:
     Download trade data from FAOSTAT and store it locally.
     Read the zipped csv files into pandas data frames.
 
-    For example load forestry production data:
+    Update all FAOSTAT datasets by downloading bulk files,
+    then storing them in the database:
 
         >>> from biotrade.faostat import faostat
+        >>> faostat.download_all_datasets()
+        >>> faostat.pump.update_sqlite_db()
+
+    Read an entire table directly from a CSV file to a data frame
+    (without going through the database):
+
         >>> fp = faostat.pump.forestry_production
 
-    Update the data by downloading it again from FAOSTAT:
+    Update a dataset by downloading it again from FAOSTAT:
 
         >>> faostat.pump.download_zip_csv("Forestry_E_All_Data_(Normalized).zip")
 
@@ -41,9 +48,6 @@ class Pump:
 
         >>> faostat.db_sqlite.write_df(fp, "forestry_production")
 
-    Update all tables in the database
-
-        >>> faostat.pump.update_sqlite_db()
     """
 
     # Log debug and error messages
@@ -52,6 +56,13 @@ class Pump:
     header = HEADER
     # Base URL to load data from the website
     url_api_base = "http://fenixservices.fao.org/faostat/static/bulkdownloads/"
+    # Dataset names on the FAOSTAT platform https://www.fao.org/faostat/en/#data
+    datasets = {
+        "forestry_production": "Forestry_E_All_Data_(Normalized).zip",
+        "forestry_trade": "Forestry_Trade_Flows_E_All_Data_(Normalized).zip",
+        "crop_production": "Production_Crops_Livestock_E_All_Data_(Normalized).zip",
+        "crop_trade": "Trade_DetailedTradeMatrix_E_All_Data_(Normalized).zip",
+    }
 
     def __init__(self, parent):
         # Default attributes #
@@ -125,35 +136,52 @@ class Pump:
         )
         return df
 
+    def read_df(self, short_name):
+        """Read an entire zip csv file to a data frame"""
+        df = self.read_zip_csv_to_df(
+            zip_file=self.data_dir / self.datasets[short_name],
+            column_renaming="faostat_" + short_name,
+        )
+        return df
+
     @property
     def forestry_production(self):
         """Forestry production data"""
-        df = self.read_zip_csv_to_df(
-            zip_file=self.data_dir / "Forestry_E_All_Data_(Normalized).zip",
-            column_renaming="faostat_forestry_production",
-        )
-        return df
+        return self.read_df("forestry_production")
 
     @property
     def forestry_trade(self):
         """Forestry bilateral trade flows (trade matrix)"""
-        df = self.read_zip_csv_to_df(
-            zip_file=self.data_dir / "Forestry_Trade_Flows_E_All_Data_(Normalized).zip",
-            column_renaming="faostat_forestry_trade",
-        )
-        return df
+        return self.read_df("forestry_trade")
+
+    def download_all_datasets(self):
+        """Download all files in the datasets dictionary"""
+        for zip_file_name in self.datasets.values():
+            self.download_zip_csv(zip_file_name)
+
+    def to_sqlite_db(self, short_name):
+        """Write a dataset to the sqlite db based on its short name"""
 
     def update_sqlite_db(self):
-        """Update the sqlite database replace table content with the content of the bulk zipped csv files.
+        """Update the sqlite database replace table content with the content of
+        the bulk zipped csv files.
 
         Usage:
 
         >>> from biotrade.faostat import faostat
         >>> faostat.pump.update_sqlite_db()
         """
-        self.parent.db_sqlite.write_df(
-            self.forestry_production, "forestry_production", if_exists="replace"
+        db_sqlite = self.parent.db_sqlite
+        # Drop and recreate the tables
+        db_sqlite.forestry_production.drop()
+        # Simply calling them creates the table
+        db_sqlite.forestry_production
+        # Write data to the database
+        db_sqlite.write_df(
+            self.read_df("forestry_production"),
+            "forestry_production",
         )
-        self.parent.db_sqlite.write_df(
-            self.forestry_trade, "forestry_trade", if_exists="replace"
+        db_sqlite.write_df(
+            self.read_df("forestry_production"),
+            "forestry_trade",
         )
