@@ -62,6 +62,27 @@ class DatabaseFaostat(Database):
         Note the "product" column is left empty, removed from the data frame
         before it is stored in the database because it would be too large. The
         text description of a product (commodity) is available in the products table.
+
+        Experiment on database size test: dropping the following text columns from the definition
+
+             Column("reporter", Text),
+             Column("product", Text),
+             Column("element", Text),
+             Column("unit", Text),
+             Column("flag", Text),
+
+        And dropping these columns from the data frame before loading it back to the database
+
+            >>> from biotrade.faostat import faostat
+            >>> fp = faostat.pump.forestry_production
+            >>> fp.drop(columns=["reporter", "product", "element", "unit", "flag"], inplace=True)
+            >>> faostat.db_sqlite.append(fp, "forestry_production")
+
+        Leads to a size reduction from 250 Mb to 99 Mb
+
+            ls -l ~/repos/biotrade_data/faostat/faostat.db
+            -rw-r--r-- 1 paul paul 99246080 Nov  2 05:34 /home/paul/repos/biotrade_data/faostat/faostat.db
+            -rw-r--r-- 1 paul paul 251060224 Nov  2 05:43 /home/paul/repos/biotrade_data/faostat/faostat.db
         """
         table = Table(
             name,
