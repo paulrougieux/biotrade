@@ -66,11 +66,19 @@ class DatabaseFaostat(Database):
         self.metadata.bind = self.engine
         self.inspector = inspect(self.engine)
         # Describe table metadata and create them if they don't exist
-        self.forestry_production = self.describe_trade_table(name="forestry_production")
+        self.forestry_production = self.describe_production_table(
+            name="forestry_production"
+        )
         self.create_if_not_existing(self.forestry_production)
+        self.forestry_trade = self.describe_trade_table(name="forestry_trade")
+        self.create_if_not_existing(self.forestry_trade)
+        self.crop_production = self.describe_production_table(name="crop_production")
+        self.create_if_not_existing(self.crop_production)
+        self.crop_trade = self.describe_trade_table(name="crop_trade")
+        self.create_if_not_existing(self.crop_trade)
 
-    def describe_trade_table(self, name):
-        """Define the metadata of a table containing Comtrade data.
+    def describe_production_table(self, name):
+        """Define the metadata of a table containing production data.
 
         The unique constraint is a very important part of the table structure.
         It makes sure that there will be no duplicated flows.
@@ -119,6 +127,37 @@ class DatabaseFaostat(Database):
             UniqueConstraint(
                 "period",
                 "reporter_code",
+                "product_code",
+                "element_code",
+                "unit",
+                "flag",
+            ),
+            schema=self.schema,
+        )
+        return table
+
+    def describe_trade_table(self, name):
+        """Define the metadata of a table containing production data."""
+        table = Table(
+            name,
+            self.metadata,
+            Column("reporter_code", Integer),
+            Column("reporter", Text),
+            Column("partner_code", Integer),
+            Column("partner", Text),
+            Column("product_code", Integer),
+            Column("product", Text),
+            Column("element_code", Integer),
+            Column("element", Text),
+            Column("period", Integer),
+            Column("year", Integer),
+            Column("unit", Text),
+            Column("value", Float),
+            Column("flag", Text),
+            UniqueConstraint(
+                "period",
+                "reporter_code",
+                "partner_code",
                 "product_code",
                 "element_code",
                 "unit",

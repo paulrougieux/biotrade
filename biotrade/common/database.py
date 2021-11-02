@@ -28,7 +28,14 @@ class Database:
 
     def append(self, df, table, drop_description=True):
         """Store a data frame inside a given database table
-        Note: we can only use append, since using replace would use a default db structure."""
+
+        Note: we can only use df.to_sql() with the argument if_exists="append".
+        Using if_exists="replace" would erase the table structure defined as
+        SQlAlchemy metadata and use a default table structure based on data
+        frame column types. We don't want the automated structure for several
+        reasons. In particular, we want the database engine to enforce unique
+        constraints and to return errors if data frame field types are not
+        compatible with table field types defined in the database."""
         # Drop the lengthy product description
         if drop_description and "product_description" in df.columns:
             df.drop(columns=["product_description"], inplace=True)
@@ -38,6 +45,7 @@ class Database:
             schema=self.schema,
             if_exists="append",
             index=False,
+            chunksize=10 ** 6,
         )
         self.logger.info("Wrote %s rows to the database table %s", len(df), table)
 

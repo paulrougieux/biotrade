@@ -29,10 +29,10 @@ class Pump:
     Read the zipped csv files into pandas data frames.
 
     Update all FAOSTAT datasets by downloading bulk files,
-    then storing them in the database:
+    then storing them in the SQLite database:
 
         >>> from biotrade.faostat import faostat
-        >>> faostat.download_all_datasets()
+        >>> faostat.pump.download_all_datasets()
         >>> faostat.pump.update_sqlite_db()
 
     Read an entire table directly from a CSV file to a data frame
@@ -40,12 +40,11 @@ class Pump:
 
         >>> fp = faostat.pump.forestry_production
 
+    Those lower level function are not needed for normal use.
     Update a dataset by downloading it again from FAOSTAT:
 
         >>> faostat.pump.download_zip_csv("Forestry_E_All_Data_(Normalized).zip")
-
-    Store the data in to a database
-
+        >>> fp = faostat.pump.read_df("forestry_production")
         >>> faostat.db_sqlite.write_df(fp, "forestry_production")
 
     """
@@ -159,9 +158,6 @@ class Pump:
         for zip_file_name in self.datasets.values():
             self.download_zip_csv(zip_file_name)
 
-    def to_sqlite_db(self, short_name):
-        """Write a dataset to the sqlite db based on its short name"""
-
     def update_sqlite_db(self):
         """Update the sqlite database replace table content with the content of
         the bulk zipped csv files.
@@ -174,14 +170,17 @@ class Pump:
         db_sqlite = self.parent.db_sqlite
         # Drop and recreate the tables
         db_sqlite.forestry_production.drop()
-        # Simply calling them creates the table
-        db_sqlite.forestry_production
-        # Write data to the database
-        db_sqlite.write_df(
-            self.read_df("forestry_production"),
-            "forestry_production",
-        )
-        db_sqlite.write_df(
-            self.read_df("forestry_production"),
-            "forestry_trade",
-        )
+        db_sqlite.forestry_trade.drop()
+        db_sqlite.crop_production.drop()
+        db_sqlite.crop_trade.drop()
+        # Create the tables
+        db_sqlite.create_if_not_existing(db_sqlite.forestry_production)
+        db_sqlite.create_if_not_existing(db_sqlite.forestry_trade)
+        db_sqlite.create_if_not_existing(db_sqlite.crop_production)
+        db_sqlite.create_if_not_existing(db_sqlite.crop_trade)
+        # For all datasets, write data to the SQLite database
+        for table_name in self.datasets.keys():
+            db_sqlite.append(
+                df=self.read_df(table_name),
+                table=table_name,
+            )
