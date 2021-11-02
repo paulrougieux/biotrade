@@ -119,6 +119,12 @@ class Pump:
         with ZipFile(zip_file) as zipfile:
             with zipfile.open(csv_file_name) as csvfile:
                 df = pandas.read_csv(csvfile, encoding=encoding)
+        df = self.sanitize_variable_names(df, column_renaming=column_renaming)
+        return df
+
+    def sanitize_variable_names(self, df, column_renaming):
+        """Sanitize column names using the mapping table.
+        Use snake case in product and element names"""
         # Rename columns to snake case
         df.rename(columns=lambda x: re.sub(r"\W+", "_", str(x)).lower(), inplace=True)
         # Rename columns using the naming convention defined in self.column_names
