@@ -38,7 +38,7 @@ Download and store in the database as used when updating the database
 import logging
 
 # Third party modules
-from sqlalchemy import BigInteger, Float, Text, UniqueConstraint
+from sqlalchemy import Integer, Float, Text, UniqueConstraint
 from sqlalchemy import Table, Column, MetaData
 from sqlalchemy import create_engine, inspect
 
@@ -90,25 +90,25 @@ class DatabaseComtrade(Database):
 
             sqlacodegen --schema raw_comtrade --tables yearly_hs2 postgresql://rdb@localhost/biotrade
 
-        Note the "commodity" column is left empty, removed from the data frame
+        Note the "product" column is left empty, removed from the data frame
         before it is stored in the database because it would be too large. The
-        text description of a commodity is available in the products table.
+        text description of a product (commodity) is available in the products table.
         """
         table = Table(
             name,
             self.metadata,
             Column("classification", Text),
-            Column("year", BigInteger),
-            Column("period", BigInteger),
+            Column("year", Integer),
+            Column("period", Integer),
             Column("period_description", Text),
-            Column("aggregate_level", BigInteger),
-            Column("is_leaf", BigInteger),
-            Column("flow_code", BigInteger),
+            Column("aggregate_level", Integer),
+            Column("is_leaf", Integer),
+            Column("flow_code", Integer),
             Column("flow", Text),
-            Column("reporter_code", BigInteger),
+            Column("reporter_code", Integer),
             Column("reporter", Text),
             Column("reporter_iso", Text),
-            Column("partner_code", BigInteger),
+            Column("partner_code", Integer),
             Column("partner", Text),
             Column("partner_iso", Text),
             Column("partner_2_code", Text),
@@ -119,18 +119,18 @@ class DatabaseComtrade(Database):
             Column("mode_of_transport_code", Text),
             Column("mode_of_transport", Text),
             Column("product_code", Text),
-            Column("unit_code", BigInteger),
+            Column("unit_code", Integer),
             Column("unit", Text),
-            Column("quantity", BigInteger),
+            Column("quantity", Float),
             Column("alt_qty_unit_code", Text),
-            Column("alt_qty_unit", BigInteger),
-            Column("alt_qty", Text),
-            Column("net_weight", Float(53)),
-            Column("gross_weight", Text),
-            Column("trade_value", BigInteger),
-            Column("cif_value", Text),
-            Column("fob_value", Text),
-            Column("flag", BigInteger),
+            Column("alt_qty_unit", Text),
+            Column("alt_qty", Float),
+            Column("net_weight", Float),
+            Column("gross_weight", Float),
+            Column("trade_value", Float),
+            Column("cif_value", Float),
+            Column("fob_value", Float),
+            Column("flag", Integer),
             UniqueConstraint(
                 "period",
                 "flow_code",
@@ -155,5 +155,5 @@ class DatabaseComtradePostgresql(DatabaseComtrade):
 class DatabaseComtradeSqlite(DatabaseComtrade):
     """Database using the SQLite engine"""
 
-    database_url = f"sqlite:///{data_dir}/trade.db"
+    database_url = f"sqlite:///{data_dir}/comtrade/comtrade.db"
     schema = "main"
