@@ -26,7 +26,7 @@ class Database:
     inspector = None
     logger = None
 
-    def append(self, df, table, drop_description=True):
+    def write_df(self, df, table, if_exists="fail", drop_description=True):
         """Store a data frame inside a given database table"""
         # Drop the lengthy product description
         if drop_description and "product_description" in df.columns:
@@ -35,10 +35,18 @@ class Database:
             name=table,
             con=self.engine,
             schema=self.schema,
-            if_exists="append",
+            if_exists=if_exists,
             index=False,
         )
         self.logger.info("Wrote %s rows to the database table %s", len(df), table)
+
+    def append(self, *args, if_exists="append", **kwargs):
+        """Store a data frame inside a given database table
+
+        Legacy version for compatibilty.
+        TODO: refactor this
+        """
+        self.write_df(if_exists=if_exists, *args, **kwargs)
 
     def create_if_not_existing(self, table):
         """Create a table in the database if it doesn't exist already

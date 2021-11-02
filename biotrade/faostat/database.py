@@ -32,21 +32,21 @@ class DatabaseFaostat(Database):
         >>> fp = faostat.pump.forestry_production
         >>> faostat.db_sqlite.append(fp, "forestry_production")
 
-    Store
-
     Select data for Italy using an SQL Alchemy select statement. Return results
-    using an SQL Alchemy cursor or with a pandas data frame:
+    using a pandas data frame:
 
+        >>> import pandas
         >>> db = faostat.db_sqlite
         >>> reporter = db.forestry_production.columns.get("reporter")
         >>> statement = db.forestry_production.select().where(reporter == "Italy")
-        >>> df_it = pandas.read_sql_query(statement, db.engine)
+        >>> fp_it = pandas.read_sql_query(statement, db.engine)
 
     Use a SQL select statement directly
 
-        >>> df_it = pandas.read_sql_query("SELECT * FROM forestry_production WHERE reporter = 'Italy'",
-        >>>                               db.engine)
-
+        >>> query = "SELECT * FROM forestry_production WHERE reporter = 'Italy'"
+        >>> fp_it = pandas.read_sql_query(query, db.engine)
+        >>> query = "SELECT * FROM forestry_trade WHERE reporter = 'Italy'"
+        >>> ft_it = pandas.read_sql_query(query, db.engine)
     """
 
     # To be overwritten by the children

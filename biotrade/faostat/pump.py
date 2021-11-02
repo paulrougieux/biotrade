@@ -39,7 +39,11 @@ class Pump:
 
     Store the data in to a database
 
-        >>> faostat.db_sqlite.append(fp, "forestry_production")
+        >>> faostat.db_sqlite.write_df(fp, "forestry_production")
+
+    Update all tables in the database
+
+        >>> faostat.pump.update_sqlite_db()
     """
 
     # Log debug and error messages
@@ -140,5 +144,16 @@ class Pump:
         return df
 
     def update_sqlite_db(self):
-        """Update the sqlite database drop and recreate the databases"""
-        self.parent.db_sqlite.append(self.forestry_production, "forestry_production")
+        """Update the sqlite database replace table content with the content of the bulk zipped csv files.
+
+        Usage:
+
+        >>> from biotrade.faostat import faostat
+        >>> faostat.pump.update_sqlite_db()
+        """
+        self.parent.db_sqlite.write_df(
+            self.forestry_production, "forestry_production", if_exists="replace"
+        )
+        self.parent.db_sqlite.write_df(
+            self.forestry_trade, "forestry_trade", if_exists="replace"
+        )
