@@ -31,6 +31,22 @@ class DatabaseFaostat(Database):
         >>> from biotrade.faostat import faostat
         >>> fp = faostat.pump.forestry_production
         >>> faostat.db_sqlite.append(fp, "forestry_production")
+
+    Store
+
+    Select data for Italy using an SQL Alchemy select statement. Return results
+    using an SQL Alchemy cursor or with a pandas data frame:
+
+        >>> db = faostat.db_sqlite
+        >>> reporter = db.forestry_production.columns.get("reporter")
+        >>> statement = db.forestry_production.select().where(reporter == "Italy")
+        >>> df_it = pandas.read_sql_query(statement, db.engine)
+
+    Use a SQL select statement directly
+
+        >>> df_it = pandas.read_sql_query("SELECT * FROM forestry_production WHERE reporter = 'Italy'",
+        >>>                               db.engine)
+
     """
 
     # To be overwritten by the children
@@ -83,6 +99,8 @@ class DatabaseFaostat(Database):
             ls -l ~/repos/biotrade_data/faostat/faostat.db
             -rw-r--r-- 1 paul paul 99246080 Nov  2 05:34 /home/paul/repos/biotrade_data/faostat/faostat.db
             -rw-r--r-- 1 paul paul 251060224 Nov  2 05:43 /home/paul/repos/biotrade_data/faostat/faostat.db
+
+        As a result, it is probably not worth using index tables, because the gain will not be very large.
         """
         table = Table(
             name,

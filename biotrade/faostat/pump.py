@@ -138,3 +138,7 @@ class Pump:
             column_renaming="faostat_forestry_trade",
         )
         return df
+
+    def update_sqlite_db(self):
+        """Update the sqlite database drop and recreate the databases"""
+        self.parent.db_sqlite.append(self.forestry_production, "forestry_production")
