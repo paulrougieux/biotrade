@@ -39,14 +39,12 @@ def convert_to_eq_rwd_level_1(
 
     Usage:
 
-    >>> import pandas
-    >>> from biotrade.faostat import faostat
     >>> from biotrade.faostat.convert import convert_to_eq_rwd_level_1
-    >>> reporter_selected = "Italy"
-    >>> fp_table = faostat.db_sqlite.forestry_production
-    >>> stmt = fp_table.select().where(fp_table.c.reporter == reporter_selected)
-    >>> fp1 = pandas.read_sql_query(stmt, faostat.db_sqlite.engine)
-    >>> fp1eqr = convert_to_eq_rwd_level_1(fp1)
+    >>> from biotrade.faostat import faostat
+    >>> fp_ita = faostat.db_sqlite.select(table="forestry_production",
+    >>>                                   reporter=["Italy"])
+    >>> fp_ita_eqr = convert_to_eq_rwd_level_1(fp_ita)
+
     """
     if selected_units is None:
         selected_units = ["m3", "tonnes"]

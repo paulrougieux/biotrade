@@ -27,11 +27,14 @@ class DatabaseFaostat(Database):
     """
     Database to store UN Comtrade data.
 
-    For example store forestry production data in the database:
+    Select forestry production data for Italy
 
         >>> from biotrade.faostat import faostat
-        >>> fp = faostat.pump.forestry_production
-        >>> faostat.db_sqlite.append(fp, "forestry_production")
+        >>> db = faostat.db_sqlite
+        >>> fp_ita = db.select(table="forestry_production",
+        >>>                    reporter=["Italy"])
+
+    More examples are available under the documentation of the `select` method below.
 
     Select data for Italy using an SQL Alchemy select statement. Return results
     using a pandas data frame:
@@ -48,6 +51,12 @@ class DatabaseFaostat(Database):
         >>> fp_it = pandas.read_sql_query(query, db.engine)
         >>> query = "SELECT * FROM forestry_trade WHERE reporter = 'Italy'"
         >>> ft_it = pandas.read_sql_query(query, db.engine)
+
+    Lower level method to store forestry production data in the database. This
+    should be taken care of by faostat.pump:
+
+        >>> fp = faostat.pump.forestry_production
+        >>> faostat.db_sqlite.append(fp, "forestry_production")
     """
 
     # To be overwritten by the children
