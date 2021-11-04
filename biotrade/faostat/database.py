@@ -16,6 +16,7 @@ import logging
 from sqlalchemy import Integer, Float, Text, UniqueConstraint
 from sqlalchemy import Table, Column, MetaData
 from sqlalchemy import create_engine, inspect
+import pandas
 
 # Internal modules
 from biotrade import data_dir
@@ -65,17 +66,22 @@ class DatabaseFaostat(Database):
         self.metadata = MetaData(schema=self.schema)
         self.metadata.bind = self.engine
         self.inspector = inspect(self.engine)
-        # Describe table metadata and create them if they don't exist
+        # Describe table metadata
         self.forestry_production = self.describe_production_table(
             name="forestry_production"
         )
-        self.create_if_not_existing(self.forestry_production)
         self.forestry_trade = self.describe_trade_table(name="forestry_trade")
-        self.create_if_not_existing(self.forestry_trade)
         self.crop_production = self.describe_production_table(name="crop_production")
-        self.create_if_not_existing(self.crop_production)
         self.crop_trade = self.describe_trade_table(name="crop_trade")
-        self.create_if_not_existing(self.crop_trade)
+        self.table = {
+            "forestry_production": self.forestry_production,
+            "forestry_trade": self.forestry_trade,
+            "crop_production": self.crop_production,
+            "crop_trade": self.crop_trade,
+        }
+        # Create tables if they don't exist
+        for table in self.table.values():
+            self.create_if_not_existing(table)
 
     def describe_production_table(self, name):
         """Define the metadata of a table containing production data.
@@ -104,11 +110,13 @@ class DatabaseFaostat(Database):
 
         Leads to a size reduction from 250 Mb to 99 Mb
 
-            ls -l ~/repos/biotrade_data/faostat/faostat.db
-            -rw-r--r-- 1 paul paul 99246080 Nov  2 05:34 /home/paul/repos/biotrade_data/faostat/faostat.db
-            -rw-r--r-- 1 paul paul 251060224 Nov  2 05:43 /home/paul/repos/biotrade_data/faostat/faostat.db
+            cd ~/repos/biotrade_data/faostat/ && ls -l faostat.db
+            -rw-r--r-- 1 paul paul 99246080 Nov  2 05:34 faostat.db
+            -rw-r--r-- 1 paul paul 251060224 Nov  2 05:43 faostat.db
 
-        As a result, it is probably not worth using index tables, because the gain will not be very large.
+        As a result of this little experiment, it is probably not worth using
+        product and country tables with joins on indexes, because the gain will
+        not be very large.
         """
         table = Table(
             name,
@@ -166,6 +174,54 @@ class DatabaseFaostat(Database):
             schema=self.schema,
         )
         return table
+
+    def select(self, table, reporter=None, partner=None):
+        """Select production data for the given arguments
+
+        :param list or str reporter: List of reporter names
+        :param list or str partner: List of partner names
+        :return: A data frame of trade flows
+
+        For example select crop production data for 2 countries
+
+        >>> from biotrade.faostat import faostat
+        >>> db = faostat.db_sqlite
+        >>> cp2 = db.select(table="crop_production",
+        >>>                 reporter=["Portugal", "Estonia"])
+
+        Select forestry trade flows data reported by all countries, with
+        Austria as a partner country:
+
+        >>> ft_aut = db.select(table="forestry_trade",
+        >>>                    partner=["Austria"])
+
+        Select crop trade flows reported by the Netherlands where Brazil was a
+        partner
+
+        >>> ct_nel_bra = db.select(table="crop_trade",
+        >>>                        reporter="Netherlands",
+        >>>                        partner="Brazil")
+
+        Select the mirror flows reported by Brazil, where the Netherlands was a partner
+
+        >>> ct_bra_bel = db.select(table="crop_trade",
+        >>>                        reporter="Brazil",
+        >>>                        partner="Netherlands")
+
+        """
+        table = self.table[table]
+        # Change character variables to a list suitable for a column.in_() clause
+        if isinstance(reporter, str):
+            reporter = [reporter]
+        if isinstance(partner, str):
+            partner = [partner]
+        stmt = table.select()
+        if reporter is not None:
+            stmt = stmt.where(table.c.reporter.in_(reporter))
+        if partner is not None:
+            stmt = stmt.where(table.c.partner.in_(partner))
+        df = pandas.read_sql_query(stmt, self.engine)
+        return df
 
 
 class DatabaseFaostatSqlite(DatabaseFaostat):
