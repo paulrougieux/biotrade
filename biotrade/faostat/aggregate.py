@@ -66,19 +66,20 @@ def agg_trade_eu_row(df, index_side="partner"):
         index = ["reporter_code", "reporter", country_group] + index
     if index_side == "reporter":
         index = [country_group, "partner_code", "partner"] + index
-    dfeurow = df.groupby(index).agg(value=("value", sum)).reset_index()
+    # Aggregate
+    df_agg = df.groupby(index).agg(value=("value", sum)).reset_index()
+    # When aggregating over partner groups, prefix elements by the group name
     if index_side == "partner":
-        dfeurow = dfeurow.assign(
+        df_agg = df_agg.assign(
             element=lambda x: x["partner_group"] + "_" + x["element"]
         ).drop(columns=country_group)
-    # When aggregating
+    # When aggregating over reporter groups, rename reporter_group to reporter
     if index_side == "reporter":
-        dfeurow = dfeurow.rename(columns={country_group: "reporter"})
-
+        df_agg = df_agg.rename(columns={country_group: "reporter"})
     # Check that the total value hasn't changed
-    if not sum(dfeurow["value"]) == sum(df["value"]):
+    if not sum(df_agg["value"]) == sum(df["value"]):
         raise ValueError(
-            f"The total value sum of the aggregated data {sum(dfeurow['value'])}"
+            f"The total value sum of the aggregated data {sum(df_agg['value'])}"
             + f"doesn't match with the sum of the input data frame {sum(df['value'])}"
         )
-    return dfeurow
+    return df_agg
