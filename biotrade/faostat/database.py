@@ -198,10 +198,15 @@ class DatabaseFaostat(Database):
         >>> cp2 = db.select(table="crop_production",
         >>>                 reporter=["Portugal", "Estonia"])
 
+        Select forestry trade flows data reported by Austria with all partner countries:
+
+        >>> ft_aut = db.select(table="forestry_trade",
+        >>>                    reporter=["Austria"])
+
         Select forestry trade flows data reported by all countries, with
         Austria as a partner country:
 
-        >>> ft_aut = db.select(table="forestry_trade",
+        >>> ft_aut_p = db.select(table="forestry_trade",
         >>>                    partner=["Austria"])
 
         Select crop trade flows reported by the Netherlands where Brazil was a
