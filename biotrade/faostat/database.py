@@ -82,14 +82,14 @@ class DatabaseFaostat(Database):
         self.forestry_trade = self.describe_trade_table(name="forestry_trade")
         self.crop_production = self.describe_production_table(name="crop_production")
         self.crop_trade = self.describe_trade_table(name="crop_trade")
-        self.table = {
+        self.tables = {
             "forestry_production": self.forestry_production,
             "forestry_trade": self.forestry_trade,
             "crop_production": self.crop_production,
             "crop_trade": self.crop_trade,
         }
         # Create tables if they don't exist
-        for table in self.table.values():
+        for table in self.tables.values():
             self.create_if_not_existing(table)
 
     def describe_production_table(self, name):
@@ -218,7 +218,7 @@ class DatabaseFaostat(Database):
         >>>                        partner="Netherlands")
 
         """
-        table = self.table[table]
+        table = self.tables[table]
         # Change character variables to a list suitable for a column.in_() clause
         if isinstance(reporter, str):
             reporter = [reporter]
