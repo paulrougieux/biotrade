@@ -6,6 +6,7 @@ Written by Paul Rougieux.
 
 JRC biomass Project.
 Unit D1 Bioeconomy.
+
 """
 import pandas
 
@@ -33,7 +34,20 @@ CONVERSION_FACTORS_LEVEL1 = pandas.DataFrame(
 def convert_to_eq_rwd_level_1(
     df, conv_factors=CONVERSION_FACTORS_LEVEL1, selected_units=None
 ):
-    """Convert level one products to their volume equivalent roundwood"""
+    """Convert level one products to their volume equivalent roundwood
+    All other products are ignored.
+
+    Usage:
+
+    >>> import pandas
+    >>> from biotrade.faostat import faostat
+    >>> from biotrade.faostat.convert import convert_to_eq_rwd_level_1
+    >>> reporter_selected = "Italy"
+    >>> fp_table = faostat.db_sqlite.forestry_production
+    >>> stmt = fp_table.select().where(fp_table.c.reporter == reporter_selected)
+    >>> fp1 = pandas.read_sql_query(stmt, faostat.db_sqlite.engine)
+    >>> fp1eqr = convert_to_eq_rwd_level_1(fp1)
+    """
     if selected_units is None:
         selected_units = ["m3", "tonnes"]
     selected_products = conv_factors["product"].to_list()
