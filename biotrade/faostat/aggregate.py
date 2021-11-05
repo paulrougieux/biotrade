@@ -54,7 +54,7 @@ def agg_trade_eu_row(df, index_side="partner"):
         Out: array(['eu', 'row'], dtype=object)
     """
     if index_side not in ["reporter", "partner"]:
-        ValueError("Can only be 'reporter' or 'partner'")
+        raise ValueError("index_side can only take the values 'reporter' or 'partner'")
     country_group = index_side + "_group"
     df[country_group] = "row"
     df[country_group] = df[country_group].where(
