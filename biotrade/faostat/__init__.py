@@ -81,6 +81,11 @@ class Faostat:
         """Store Comtrade data and make it available for further processing"""
         return DatabaseFaostatSqlite(self)
 
+    @property
+    def db(self):
+        """Generic database can be either a PostGreSQL or a SQLite database"""
+        return DatabaseFaostatSqlite(self)
+
 
 # Make a singleton #
 faostat = Faostat()
