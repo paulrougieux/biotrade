@@ -21,7 +21,7 @@ import logging
 import pandas
 
 # Internal modules
-from biotrade.url_request_header import HEADER
+from biotrade.common.url_request_header import HEADER
 
 
 class Pump:
