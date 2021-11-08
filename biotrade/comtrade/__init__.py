@@ -21,6 +21,11 @@ Download and store in the database as used when updating the database
 
     >>> comtrade.pump.append_to_db(cc = "440799")
 
+Show the list of reporter countries
+
+    >>> from biotrade.comtrade import comtrade
+    >>> comtrade.country_groups.reporters
+
 Display information on column names used for renaming
 and dropping less important columns:
 
@@ -32,7 +37,7 @@ import pandas
 
 # Internal modules
 from biotrade import module_dir, data_dir
-from biotrade.comtrade.countries import Countries
+from biotrade.comtrade.country_groups import CountryGroups
 from biotrade.comtrade.database import DatabaseComtradePostgresql
 from biotrade.comtrade.database import DatabaseComtradeSqlite
 from biotrade.comtrade.products import Products
@@ -62,9 +67,9 @@ class Comtrade:
     column_names = df[df.isna().sum(axis=1) == 0]
 
     @property
-    def countries(self):
+    def country_groups(self):
         """Identify reporter and partner countries and regions"""
-        return Countries(self)
+        return CountryGroups(self)
 
     @property
     def db_pgsql(self):

@@ -12,9 +12,9 @@ Unit D1 Bioeconomy.
 import pandas
 
 
-class Countries(object):
+class CountryGroups(object):
     """
-    Comtrade product list, with additional information.
+    Comtrade country lists.
     """
 
     def __init__(self, parent):

@@ -82,7 +82,7 @@ hs2d_bio = hs2d[hs2d.bioeconomy == 1]
 print(hs2d_bio.text)
 
 # List of reporter countries
-reporters = comtrade.countries.reporters
+reporters = comtrade.country_groups.reporters
 print(reporters)
 
 #############################################

@@ -17,7 +17,7 @@ from biotrade.comtrade import comtrade
 
 # Other sawnwood
 selected_countries = ["Ukraine", "USA", "Russian Federation"]
-comtrade.countries.reporters.query(f"text in {selected_countries}")
+comtrade.country_groups.reporters.query(f"text in {selected_countries}")
 
 # Load monthly data as an example
 swd99_ukr_202106 = comtrade.pump.download(
