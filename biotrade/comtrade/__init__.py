@@ -44,7 +44,7 @@ from biotrade.comtrade.products import Products
 from biotrade.comtrade.pump import Pump
 
 # Define a logging mechanism to keep track of errors and debug messages
-from biotrade.logger import create_logger
+from biotrade.common.logger import create_logger
 
 create_logger()
 
