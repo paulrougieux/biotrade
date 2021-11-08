@@ -16,16 +16,12 @@ from biotrade.faostat.country import FaostatCountry
 class Country:
     """
     This object gives access to the data pertaining to one country.
-    To access data for many countries, use the faostat and comtrade objects directly.
 
-    For example display FAOSTAT forestry production and trade data for one country:
+    For example display FAOSTAT forestry production data for one country:
 
         >>> from biotrade.country import Country
         >>> ukr = Country("Ukraine")
         >>> ukr.faostat.forestry_production
-        >>> ukr.faostat.forestry_trade
-        >>> ukr.faostat.forestry_trade_mirror
-        >>> ukr.faostat.forestry_prod_trade_eqrwd
     """
 
     def __repr__(self):
