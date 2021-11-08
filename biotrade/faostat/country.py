@@ -17,7 +17,6 @@ from biotrade.faostat.aggregate import agg_trade_eu_row
 from biotrade.faostat.convert import convert_to_eq_rwd_level_1
 
 
-###############################################################################
 class FaostatCountry:
     """
     This object gives access to the FAOSTAT data for one country.

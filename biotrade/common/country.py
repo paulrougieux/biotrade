@@ -13,7 +13,6 @@ Unit D1 Bioeconomy.
 from biotrade.faostat.country import FaostatCountry
 
 
-###############################################################################
 class Country:
     """
     This object gives access to the data pertaining to one country.
