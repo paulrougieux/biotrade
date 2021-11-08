@@ -63,16 +63,15 @@ class Country(object):
     def faostat_forestry_trade_mirror(self):
         """FAOSTAT forestry bilateral trade data (trade matrix) for alls
         reporter countries and one partner country"""
-        return faostat.db_sqlite.select(
-            table="forestry_trade", partner=self.country_name
-        )
+        return faostat.db.select(table="forestry_trade", partner=self.country_name)
 
     @property
     def faostat_forestry_trade_mirror_eu_row(self):
         """FAOSTAT mirror flows with reporters aggregated by EU and ROW"""
-        return agg_trade_eu_row(
-            self.faostat_forestry_trade_mirror, index_side="reporter"
-        )
+        df = agg_trade_eu_row(self.faostat_forestry_trade_mirror, index_side="reporter")
+        # Rename column with a "mirror" suffix
+        # df.rename(columns={
+        return df
 
     @property
     def faostat_forestry_prod_trade_eqrwd(self):
