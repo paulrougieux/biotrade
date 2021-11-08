@@ -9,7 +9,7 @@ Unit D1 Bioeconomy.
 
 """
 
-from biotrade.faostat.countries import EU_COUNTRY_NAMES
+from biotrade.faostat.country_groups import EU_COUNTRY_NAMES
 
 
 def agg_trade_eu_row(df, index_side="partner"):

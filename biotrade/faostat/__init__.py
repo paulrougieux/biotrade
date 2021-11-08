@@ -7,9 +7,13 @@ Written by Paul Rougieux.
 JRC biomass Project.
 Unit D1 Bioeconomy.
 
-Read forestry production and trade data from FAOSTAT files
+Read forestry production and trade data from the database
 
     >>> from biotrade.faostat import faostat
+
+Read forestry production and trade data from the bulk FAOSTAT files directly
+(loading large files takes a few seconds)
+
     >>> fp = faostat.pump.forestry_production
     >>> ft = faostat.pump.forestry_trade
 
@@ -25,7 +29,7 @@ and dropping less important columns:
 
 Display the list of EU countries names in the FAOSTAT data
 
-    >>> faostat.countries.eu_country_names
+    >>> faostat.country_groups.eu_country_names
 
 """
 # Third party modules
@@ -35,7 +39,7 @@ import pandas
 from biotrade import module_dir, data_dir
 from biotrade.faostat.products import Products
 from biotrade.faostat.pump import Pump
-from biotrade.faostat.countries import Countries
+from biotrade.faostat.country_groups import CountryGroups
 from biotrade.faostat.database import DatabaseFaostatSqlite
 
 # Define a logging mechanism to keep track of errors and debug messages
@@ -62,9 +66,9 @@ class Faostat:
     column_names = df[non_na_values > 0]
 
     @property
-    def countries(self):
+    def country_groups(self):
         """Identify reporter and partner countries and regions"""
-        return Countries(self)
+        return CountryGroups(self)
 
     @property
     def products(self):

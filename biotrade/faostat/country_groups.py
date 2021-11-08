@@ -45,7 +45,7 @@ EU_COUNTRY_NAMES = [
 ]
 
 
-class Countries(object):
+class CountryGroups(object):
     """
     Comtrade product list, with additional information.
     """
