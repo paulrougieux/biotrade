@@ -53,6 +53,20 @@ class FaostatCountry:
         """FAOSTAT forestry bilateral trade data (trade matrix) for one
         reporter country and all its partner countries"""
         return faostat.db.select(table="forestry_trade", reporter=self.country_name)
+        # TODO: convert NaN flags to an empty character variable
+        # so that it doesn't get converted to a list when sent to R
+        # Maybe this should be done in the DB already
+        # Or maybe this should be fixed when reticulate is loading the data frame
+        # str(ukr_ft)
+        # data.frame':   24382 obs. of  13 variables:
+        #  reporter_code: num  230 230 230 230 230 230 230 230 230 230 ...
+        #  reporter     : chr  "Ukraine" "Ukraine" "Ukraine" "Ukraine" ...
+        #  ...
+        #  value        : num  241 95 182 72 126 59 16 57 23 11 ...
+        #  flag         :List of 24382
+        # ..$ : NULL
+        # ..$ : chr "*"
+        # ..$ : chr "*"
 
     @property
     def forestry_trade_eu_row(self):
@@ -114,4 +128,5 @@ class FaostatCountry:
         set(fp1_eqr).symmetric_difference(ft1eurow_eqr)
         # concatenate
         df = pandas.concat([fp1_eqr, ft1eurow_eqr])
+        df = df.reset_index()
         return df

@@ -190,6 +190,8 @@ class Pump:
 
         >>> from biotrade.faostat import faostat
         >>> faostat.pump.update_sqlite_db()
+
+        TODO: Update only the forestry tables
         """
         db_sqlite = self.parent.db_sqlite
         # Drop and recreate the tables
