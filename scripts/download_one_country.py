@@ -20,15 +20,15 @@ selected_countries = ["Ukraine", "USA", "Russian Federation"]
 comtrade.country_groups.reporters.query(f"text in {selected_countries}")
 
 # Load monthly data as an example
-swd99_ukr_202106 = comtrade.pump.download(
+swd99_ukr_202106 = comtrade.pump.download_df(
     freq="M", r="all", p="804", ps="201906", cc="440799"
 )
 # Save to the database
-comtrade.database_sqlite.append(swd99_ukr_202106, "monthly")
+comtrade.db.append(swd99_ukr_202106, "monthly")
 # Save again should return an error because of the unique constraint!
 # TODO: Check why the second save doesn't return an error
 # Try by appending all codes together and leaving the constraint on a single variable
-comtrade.database_sqlite.append(swd99_ukr_202106, "monthly")
+comtrade.db.append(swd99_ukr_202106, "monthly")
 
 hs = comtrade.pump.get_parameter_list("classificationHS.json")
 wood_products = hs[hs.id.str.startswith(("44", "47", "48", "49"))]

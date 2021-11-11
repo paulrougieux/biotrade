@@ -43,7 +43,7 @@ from sqlalchemy import Table, Column, MetaData
 from sqlalchemy import create_engine, inspect
 
 # Internal modules
-from biotrade import data_dir
+from biotrade import data_dir, database_url
 from biotrade.common.database import Database
 
 
@@ -146,14 +146,15 @@ class DatabaseComtrade(Database):
 
 
 class DatabaseComtradePostgresql(DatabaseComtrade):
-    """Database using the PostgreSQL engine"""
+    """Database using the PostgreSQL engine use the same database for all data sources
+    a separate schema for each data source"""
 
-    database_url = "postgresql://rdb@localhost/biotrade"
+    database_url = database_url
     schema = "raw_comtrade"
 
 
 class DatabaseComtradeSqlite(DatabaseComtrade):
-    """Database using the SQLite engine"""
+    """Database using the SQLite engine, use a separate database for each data source"""
 
     database_url = f"sqlite:///{data_dir}/comtrade/comtrade.db"
     schema = "main"

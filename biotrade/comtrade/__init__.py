@@ -82,6 +82,16 @@ class Comtrade:
         return DatabaseComtradeSqlite(self)
 
     @property
+    def db(self):
+        """Generic database can be either a PostGreSQL or a SQLite database
+        Depending of the value of the DATABASE_URL variable. If it's None
+        then use SQLite otherwise use the PostGreSQL db defined in the
+        environmental variable BIOTRADE_DATABASE_URL.
+        """
+        # if
+        return DatabaseComtradeSqlite(self)
+
+    @property
     def products(self):
         """Identify Comtrade products (commodities) and metadata"""
         return Products(self)
