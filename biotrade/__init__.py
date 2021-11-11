@@ -32,7 +32,7 @@ if os.environ.get("BIOTRADE_DATA"):
     data_dir = Path(os.environ["BIOTRADE_DATA"])
 
 # Database connection URL, default case
-database_url = "postgresql://rdb@localhost/biotrade"
+DATABASE_URL = "postgresql://rdb@localhost/biotrade"
 # But you can override it with an environment variable
 if os.environ.get("BIOTRADE_DATABASE_URL"):
-    database_url = Path(os.environ["BIOTRADE_DATABASE_URL"])
+    DATABASE_URL = Path(os.environ["BIOTRADE_DATABASE_URL"])

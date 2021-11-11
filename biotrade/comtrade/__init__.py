@@ -36,7 +36,7 @@ and dropping less important columns:
 import pandas
 
 # Internal modules
-from biotrade import module_dir, data_dir
+from biotrade import module_dir, data_dir, DATABASE_URL
 from biotrade.comtrade.country_groups import CountryGroups
 from biotrade.comtrade.database import DatabaseComtradePostgresql
 from biotrade.comtrade.database import DatabaseComtradeSqlite
@@ -83,13 +83,15 @@ class Comtrade:
 
     @property
     def db(self):
-        """Generic database can be either a PostGreSQL or a SQLite database
+        """The generic database can be either a PostGreSQL or a SQLite database
         Depending of the value of the DATABASE_URL variable. If it's None
         then use SQLite otherwise use the PostGreSQL db defined in the
         environmental variable BIOTRADE_DATABASE_URL.
         """
-        # if
-        return DatabaseComtradeSqlite(self)
+        if DATABASE_URL is None:
+            return DatabaseComtradeSqlite(self)
+        else:
+            return DatabaseComtradePostgresql(self)
 
     @property
     def products(self):

@@ -36,11 +36,12 @@ Display the list of EU countries names in the FAOSTAT data
 import pandas
 
 # Internal modules
-from biotrade import module_dir, data_dir
+from biotrade import module_dir, data_dir, DATABASE_URL
 from biotrade.faostat.products import Products
 from biotrade.faostat.pump import Pump
 from biotrade.faostat.country_groups import CountryGroups
 from biotrade.faostat.database import DatabaseFaostatSqlite
+from biotrade.faostat.database import DatabaseFaostatPostgresql
 
 # Define a logging mechanism to keep track of errors and debug messages
 from biotrade.common.logger import create_logger
@@ -87,8 +88,15 @@ class Faostat:
 
     @property
     def db(self):
-        """Generic database can be either a PostGreSQL or a SQLite database"""
-        return DatabaseFaostatSqlite(self)
+        """The generic database can be either a PostGreSQL or a SQLite database
+        Depending of the value of the DATABASE_URL variable. If it's None
+        then use SQLite otherwise use the PostGreSQL db defined in the
+        environmental variable BIOTRADE_DATABASE_URL.
+        """
+        if DATABASE_URL is None:
+            return DatabaseFaostatSqlite(self)
+        else:
+            return DatabaseFaostatPostgresql(self)
 
 
 # Make a singleton #

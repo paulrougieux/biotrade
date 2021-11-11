@@ -19,7 +19,7 @@ from sqlalchemy import create_engine, inspect
 import pandas
 
 # Internal modules
-from biotrade import data_dir
+from biotrade import data_dir, DATABASE_URL
 from biotrade.common.database import Database
 
 
@@ -236,6 +236,14 @@ class DatabaseFaostat(Database):
             stmt = stmt.where(table.c.partner.in_(partner))
         df = pandas.read_sql_query(stmt, self.engine)
         return df
+
+
+class DatabaseFaostatPostgresql(DatabaseFaostat):
+    """Database using the PostgreSQL engine use the same database for all data sources
+    a separate schema for each data source"""
+
+    database_url = DATABASE_URL
+    schema = "raw_faostat"
 
 
 class DatabaseFaostatSqlite(DatabaseFaostat):
