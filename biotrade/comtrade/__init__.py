@@ -90,8 +90,7 @@ class Comtrade:
         """
         if DATABASE_URL is None:
             return DatabaseComtradeSqlite(self)
-        else:
-            return DatabaseComtradePostgresql(self)
+        return DatabaseComtradePostgresql(self)
 
     @property
     def products(self):

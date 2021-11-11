@@ -95,8 +95,7 @@ class Faostat:
         """
         if DATABASE_URL is None:
             return DatabaseFaostatSqlite(self)
-        else:
-            return DatabaseFaostatPostgresql(self)
+        return DatabaseFaostatPostgresql(self)
 
 
 # Make a singleton #
