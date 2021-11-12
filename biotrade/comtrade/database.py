@@ -70,11 +70,16 @@ class DatabaseComtrade(Database):
         self.inspector = inspect(self.engine)
         # Describe table metadata and create them if they don't exist
         self.monthly = self.describe_trade_table(name="monthly")
-        self.create_if_not_existing(self.monthly)
         self.yearly = self.describe_trade_table(name="yearly")
-        self.create_if_not_existing(self.yearly)
         self.yearly_hs2 = self.describe_trade_table(name="yearly_hs2")
-        self.create_if_not_existing(self.yearly_hs2)
+        self.tables = {
+            "monthly": self.monthly,
+            "yearly": self.yearly,
+            "yearly_hs2": self.yearly_hs2,
+        }
+        # Create tables if they don't exist
+        for table in self.tables.values():
+            self.create_if_not_existing(table)
 
     def describe_trade_table(self, name):
         """Define the metadata of a table containing Comtrade data.
@@ -147,7 +152,13 @@ class DatabaseComtrade(Database):
 
 class DatabaseComtradePostgresql(DatabaseComtrade):
     """Database using the PostgreSQL engine use the same database for all data sources
-    a separate schema for each data source"""
+    a separate schema for each data source
+
+    The connection URL is defined in an environment variable, for example by
+    adding the following to  your .bash_aliases or .bash_rc:
+
+        export BIOTRADE_DATABASE_URL="postgresql://rdb@localhost/biotrade"
+    """
 
     database_url = DATABASE_URL
     schema = "raw_comtrade"

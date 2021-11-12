@@ -20,11 +20,12 @@ class Database:
     """
 
     # To be overwritten by the children
+    logger = None
     database_url = None
-    schema = None
     engine = None
     inspector = None
-    logger = None
+    schema = None
+    tables = None
 
     def append(self, df, table, drop_description=True):
         """Store a data frame inside a given database table
@@ -39,6 +40,9 @@ class Database:
         # Drop the lengthy product description
         if drop_description and "product_description" in df.columns:
             df.drop(columns=["product_description"], inplace=True)
+        # Raise an error if the table is not defined in the metadata
+        if table not in self.tables:
+            raise ValueError(f"The table '{table}' is not defined in: \n{self}.")
         df.to_sql(
             name=table,
             con=self.engine,

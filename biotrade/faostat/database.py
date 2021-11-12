@@ -240,7 +240,13 @@ class DatabaseFaostat(Database):
 
 class DatabaseFaostatPostgresql(DatabaseFaostat):
     """Database using the PostgreSQL engine use the same database for all data sources
-    a separate schema for each data source"""
+    a separate schema for each data source
+
+    The connection URL is defined in an environment variable, for example by
+    adding the following to  your .bash_aliases or .bash_rc:
+
+        export BIOTRADE_DATABASE_URL="postgresql://rdb@localhost/biotrade"
+    """
 
     database_url = DATABASE_URL
     schema = "raw_faostat"
