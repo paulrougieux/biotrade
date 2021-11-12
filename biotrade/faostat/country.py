@@ -100,13 +100,14 @@ class FaostatCountry:
             >>> from biotrade.common.country import Country
             >>> ukr = Country("Ukraine")
             >>> pt_eqrwd = ukr.faostat.forestry_prod_trade_eqrwd
-            >>> pt_eqrwd.element.unique()
+            >>> print(pt_eqrwd.element.unique())
+            >>> print(pt_eqrwd)
 
         """
         index = [
             "reporter_code",
             "reporter",
-            "product_group",
+            "product_level_1",
             "element",
             "unit",
             "year",
@@ -119,7 +120,7 @@ class FaostatCountry:
             .groupby(index)
             .agg(value=("value", sum))
             .reset_index()
-            .rename(columns={"product_group": "product"})
+            .rename(columns={"product_level_1": "product"})
         )
         # Convert to roundwood equivalent volumes #
         ft1eurow_eqr = convert_to_eq_rwd_level_1(ft1_agg)
