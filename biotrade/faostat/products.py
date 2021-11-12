@@ -10,7 +10,8 @@ Unit D1 Bioeconomy.
 Get the module internal list of products groups
 
     >>> from biotrade.faostat import faostat
-    >>> product_groups = faostat.products.groups
+    >>> print(faostat.products.forestry_production_groups)
+    >>> print(faostat.products.forestry_trade_groups)
 
 """
 # Third party modules
@@ -29,9 +30,15 @@ class Products(object):
         self.config_data_dir = self.parent.config_data_dir
 
     @property
-    def groups(self):
-        """FAOSTAT product groups"""
+    def forestry_production_groups(self):
+        """FAOSTAT forestry production groups"""
         df = pandas.read_csv(
-            self.config_data_dir / "faostat_forestry_product_groups.csv"
+            self.config_data_dir / "faostat_forestry_production_groups.csv"
         )
+        return df
+
+    @property
+    def forestry_trade_groups(self):
+        """FAOSTAT forestry trade groups"""
+        df = pandas.read_csv(self.config_data_dir / "faostat_forestry_trade_groups.csv")
         return df

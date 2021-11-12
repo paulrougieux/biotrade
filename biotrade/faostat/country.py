@@ -113,7 +113,9 @@ class FaostatCountry:
         ]
         # Aggregate trade by production relevant product groups
         ft1_agg = (
-            self.forestry_trade_eu_row.merge(faostat.products.groups, on="product")
+            self.forestry_trade_eu_row.merge(
+                faostat.products.forestry_trade_groups, on="product"
+            )
             .groupby(index)
             .agg(value=("value", sum))
             .reset_index()

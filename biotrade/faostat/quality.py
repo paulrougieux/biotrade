@@ -6,6 +6,8 @@ Written by Paul Rougieux.
 
 JRC biomass Project.
 Unit D1 Bioeconomy.
+
+
 """
 
 
@@ -15,6 +17,12 @@ def compare_aggregate_to_constituents(df, prod_aggregate, prod_constituents):
     :param DataFrame df: FAOSTAT production data in long format
     :param str prod_aggregate: Name of the aggregate product
     :param list prod_constituents: Names of the product constituents
+
+    For more information, see the FAOSTAT forest products classification and
+    standards at https://www.fao.org/forestry/statistics/80572/en/ in
+    particular the data structure
+    https://www.fao.org/forestry/49962-0f43c0da7039a611aa884b3c6c642f4ac.pdf
+    explains how the different products and aggregates relate to each other.
 
     Return a reshaped data frame in wider format with aggregates and their constituents in columns.
 
