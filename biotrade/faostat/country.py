@@ -31,6 +31,9 @@ class FaostatCountry:
         >>> ukr.faostat.forestry_trade_mirror
         >>> ukr.faostat.forestry_prod_trade_eqrwd
 
+    For example display FAOSTAT crop production and trade data for
+
+
     """
 
     def __repr__(self):
@@ -52,11 +55,14 @@ class FaostatCountry:
     def forestry_trade(self):
         """FAOSTAT forestry bilateral trade data (trade matrix) for one
         reporter country and all its partner countries"""
-        return faostat.db.select(table="forestry_trade", reporter=self.country_name)
-        # TODO: convert NaN flags to an empty character variable
+        df = faostat.db.select(table="forestry_trade", reporter=self.country_name)
+        # convert NaN flags to an empty character variable
+        df.flag.fillna("", inplace=True)
+        return df
+        # convert NaN flags to an empty character variable
         # so that it doesn't get converted to a list when sent to R
         # Maybe this should be done in the DB already
-        # Or maybe this should be fixed when reticulate is loading the data frame
+        # Or maybe this should be fixed when reticulate is loading the data frame?
         # str(ukr_ft)
         # data.frame':   24382 obs. of  13 variables:
         #  reporter_code: num  230 230 230 230 230 230 230 230 230 230 ...

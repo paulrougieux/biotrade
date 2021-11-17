@@ -46,7 +46,7 @@ class Pump:
 
         >>> faostat.pump.download_zip_csv("Forestry_E_All_Data_(Normalized).zip")
         >>> fp = faostat.pump.read_df("forestry_production")
-        >>> faostat.db_sqlite.write_df(fp, "forestry_production")
+        >>> faostat.self.db.write_df(fp, "forestry_production")
 
     """
 
@@ -67,6 +67,7 @@ class Pump:
     def __init__(self, parent):
         # Default attributes #
         self.parent = parent
+        self.db = self.parent.db
         self.data_dir = self.parent.data_dir
         # Mapping table used to rename columns
         self.column_names = self.parent.column_names
@@ -140,6 +141,18 @@ class Pump:
         df["element"] = (
             df["element"].str.replace(regex_pat, "_", regex=True).str.lower()
         )
+        # Convert NaN flags to an empty character variable
+        # so that the flag column doesn't get converted to a list column when sent to R
+        # Here is how the flag was encoded before the change
+        # ft.flag.unique()
+        # array([None, '*', 'R', 'Cv', 'P', 'A'], dtype=object)
+        # Because of the absence of na.character type in pandas
+        # these appear as two different data types when sent to R and that column is then
+        # converted to a list column
+        # Here is how the flag is encoded after the change
+        # ft.flag.unique()
+        # array(['', '*', 'R', 'Cv', 'P', 'A'], dtype=object)
+        df.flag.fillna("", inplace=True)
         return df
 
     def read_df(self, short_name):
@@ -150,22 +163,22 @@ class Pump:
         )
         return df
 
-    def transfer_csv_to_db_in_chunks(self, db, short_name):
+    def transfer_csv_to_db_in_chunks(self, short_name):
         """Transfer large CSV files to the database in chunks
         so that a data frame with 40 million rows doesn't overload the memory.
         """
         # Unzip the CSV and write it to a temporary file on disk
         zip_file = ZipFile(self.data_dir / self.datasets[short_name])
         temp_dir = Path(tempfile.TemporaryDirectory().name)
-        csv_file_name = temp_dir / re.sub(".zip$", ".csv", self.datasets[short_name])
         zip_file.extractall(temp_dir)
         # Read in chunk and pass each chunk to the database
+        csv_file_name = temp_dir / re.sub(".zip$", ".csv", self.datasets[short_name])
         for df_chunk in pandas.read_csv(
             csv_file_name, chunksize=10 ** 6, encoding="latin1"
         ):
             df_chunk = self.sanitize_variable_names(df_chunk, "faostat_" + short_name)
             print(df_chunk.head(1))
-            db.append(df=df_chunk, table=short_name)
+            self.db.append(df=df_chunk, table=short_name)
 
     @property
     def forestry_production(self):
@@ -182,28 +195,29 @@ class Pump:
         for zip_file_name in self.datasets.values():
             self.download_zip_csv(zip_file_name)
 
-    def update_sqlite_db(self):
+    def update_db(self, skip_crop_trade=False):
         """Update the sqlite database replace table content with the content of
         the bulk zipped csv files.
 
         Usage:
 
         >>> from biotrade.faostat import faostat
-        >>> faostat.pump.update_sqlite_db()
+        >>> faostat.pump.update_db()
 
-        TODO: Update only the forestry tables
+        Skip the large crop trade dataset
+
+        >>> faostat.pump.update_db(skip_crop_trade=True)
         """
-        db_sqlite = self.parent.db_sqlite
         # Drop and recreate the tables
-        db_sqlite.forestry_production.drop()
-        db_sqlite.forestry_trade.drop()
-        db_sqlite.crop_production.drop()
-        db_sqlite.crop_trade.drop()
+        self.db.forestry_production.drop()
+        self.db.forestry_trade.drop()
+        self.db.crop_production.drop()
+        self.db.crop_trade.drop()
         # Create the tables
-        db_sqlite.create_if_not_existing(db_sqlite.forestry_production)
-        db_sqlite.create_if_not_existing(db_sqlite.forestry_trade)
-        db_sqlite.create_if_not_existing(db_sqlite.crop_production)
-        db_sqlite.create_if_not_existing(db_sqlite.crop_trade)
+        self.db.create_if_not_existing(self.db.forestry_production)
+        self.db.create_if_not_existing(self.db.forestry_trade)
+        self.db.create_if_not_existing(self.db.crop_production)
+        self.db.create_if_not_existing(self.db.crop_trade)
         # For smaller datasets, write entire data frames to the SQLite database
         datasets_that_fit_in_memory = [
             "forestry_production",
@@ -211,10 +225,10 @@ class Pump:
             "crop_production",
         ]
         for table_name in datasets_that_fit_in_memory:
-            db_sqlite.append(
-                df=self.read_df(table_name),
-                table=table_name,
-            )
+            df = self.read_df(table_name)
+            self.db.append(df=df, table=table_name)
+        if skip_crop_trade:
+            return
         # There is a memory error with the crop trade dataset.
         # Read the file in chunks so that the memory doesn't get too full
-        self.transfer_csv_to_db_in_chunks(db_sqlite, "crop_trade")
+        self.transfer_csv_to_db_in_chunks("crop_trade")
