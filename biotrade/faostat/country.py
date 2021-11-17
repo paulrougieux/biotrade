@@ -22,7 +22,7 @@ class FaostatCountry:
     This object gives access to the FAOSTAT data for one country.
     To access data for many countries, use the faostat object directly.
 
-    For example display FAOSTAT forestry production and trade data for one country:
+    Display FAOSTAT forestry production and trade data for one country:
 
         >>> from biotrade.common.country import Country
         >>> ukr = Country("Ukraine")
@@ -31,9 +31,18 @@ class FaostatCountry:
         >>> ukr.faostat.forestry_trade_mirror
         >>> ukr.faostat.forestry_prod_trade_eqrwd
 
-    For example display FAOSTAT crop production and trade data for
+    Display FAOSTAT crop production and trade data for one country:
 
+        >>> from biotrade.common.country import Country
+        >>> bra = Country("Brazil")
+        >>> bra.faostat.crop_production
+        >>> bra.faostat.crop_trade
+        >>> bra.faostat.crop_trade_mirror
 
+    Note: crop trade selection has the longest query time at 6 seconds.
+
+        %timeit bra.faostat.crop_trade
+        6.06 s ± 206 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
     """
 
     def __repr__(self):
@@ -56,23 +65,7 @@ class FaostatCountry:
         """FAOSTAT forestry bilateral trade data (trade matrix) for one
         reporter country and all its partner countries"""
         df = faostat.db.select(table="forestry_trade", reporter=self.country_name)
-        # convert NaN flags to an empty character variable
-        df.flag.fillna("", inplace=True)
         return df
-        # convert NaN flags to an empty character variable
-        # so that it doesn't get converted to a list when sent to R
-        # Maybe this should be done in the DB already
-        # Or maybe this should be fixed when reticulate is loading the data frame?
-        # str(ukr_ft)
-        # data.frame':   24382 obs. of  13 variables:
-        #  reporter_code: num  230 230 230 230 230 230 230 230 230 230 ...
-        #  reporter     : chr  "Ukraine" "Ukraine" "Ukraine" "Ukraine" ...
-        #  ...
-        #  value        : num  241 95 182 72 126 59 16 57 23 11 ...
-        #  flag         :List of 24382
-        # ..$ : NULL
-        # ..$ : chr "*"
-        # ..$ : chr "*"
 
     @property
     def forestry_trade_eu_row(self):
@@ -139,3 +132,26 @@ class FaostatCountry:
         df = pandas.concat([fp1_eqr, ft1eurow_eqr])
         df = df.reset_index()
         return df
+
+    @property
+    def crop_production(self):
+        """FAOSTAT crop production data for one reporter country"""
+        return faostat.db.select(table="crop_production", reporter=self.country_name)
+
+    @property
+    def crop_trade(self):
+        """FAOSTAT crop bilateral trade data (trade matrix) for one
+        reporter country and all its partner countries"""
+        df = faostat.db.select(table="crop_trade", reporter=self.country_name)
+        return df
+
+    @property
+    def crop_trade_eu_row(self):
+        """FAOSTAT crop bilateral trade with partners aggregated by EU and Rest of the World"""
+        return agg_trade_eu_row(self.crop_trade, index_side="partner")
+
+    @property
+    def crop_trade_mirror(self):
+        """FAOSTAT crop bilateral trade data (trade matrix) for alls
+        reporter countries and one partner country"""
+        return faostat.db.select(table="crop_trade", partner=self.country_name)

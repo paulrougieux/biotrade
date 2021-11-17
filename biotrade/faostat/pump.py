@@ -34,7 +34,7 @@ class Pump:
 
         >>> from biotrade.faostat import faostat
         >>> faostat.pump.download_all_datasets()
-        >>> faostat.pump.update_sqlite_db()
+        >>> faostat.pump.update_db()
 
     Read an entire table directly from a CSV file to a data frame
     (without going through the database):
