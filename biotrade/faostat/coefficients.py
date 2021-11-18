@@ -24,12 +24,12 @@ class Coefficients:
         self.config_data_dir = self.parent.config_data_dir
 
     @property
-    def cuypers(self):
+    def cuypers2013(self):
         """Coefficients from Cupyers technical report
         table "Extraction rates and value shares of major oil crops"
 
         >>> from biotrade.faostat import faostat
-        >>> faostat.coefficients.cuypers
+        >>> faostat.coefficients.cuypers2013
         """
         df = pandas.read_csv(self.config_data_dir / "cuypers2013_extraction_rates.csv")
         return df

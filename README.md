@@ -7,11 +7,16 @@ data from the UN Comtrade and from FAOSTAT.
 
 # Installation
 
-Clone the repository and add it to the PYTHONPATH. You can do this by changing the 
-environment variables or by adding the following line to your shell configuration file 
-such as `.bash_aliases` 
+Clone the repository and tell python where it is located by adding it to your 
+PYTHONPATH. You can do this by changing the environment variables or by adding the 
+following line to your shell configuration file such as `.bash_aliases`:
 
     export PYTHONPATH="$HOME/repos/biotrade/":$PYTHONPATH
+
+Specify where you want to store the data by adding the following environment variable:
+
+    export BIOTRADE_DATA="$HOME/repos/biotrade_data/"
+
 
 # Usage
 
