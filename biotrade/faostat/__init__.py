@@ -37,11 +37,12 @@ import pandas
 
 # Internal modules
 from biotrade import module_dir, data_dir, DATABASE_URL
+from biotrade.faostat.coefficients import Coefficients
+from biotrade.faostat.country_groups import CountryGroups
+from biotrade.faostat.database import DatabaseFaostatPostgresql
+from biotrade.faostat.database import DatabaseFaostatSqlite
 from biotrade.faostat.products import Products
 from biotrade.faostat.pump import Pump
-from biotrade.faostat.country_groups import CountryGroups
-from biotrade.faostat.database import DatabaseFaostatSqlite
-from biotrade.faostat.database import DatabaseFaostatPostgresql
 
 # Define a logging mechanism to keep track of errors and debug messages
 from biotrade.common.logger import create_logger
@@ -80,6 +81,11 @@ class Faostat:
     def pump(self):
         """Load data from FAOSTAT and read it into data frames"""
         return Pump(self)
+
+    @property
+    def coefficients(self):
+        """Load data from FAOSTAT and read it into data frames"""
+        return Coefficients(self)
 
     @property
     def db_sqlite(self):
