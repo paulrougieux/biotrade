@@ -89,9 +89,12 @@ class Faostat:
     @property
     def db(self):
         """The generic database can be either a PostGreSQL or a SQLite database
-        Depending of the value of the DATABASE_URL variable. If it's None
-        then use SQLite otherwise use the PostGreSQL db defined in the
-        environmental variable BIOTRADE_DATABASE_URL.
+        Depending of the value of the environmental variable
+        BIOTRADE_DATABASE_URL. If it's not defined use an SQLite database, otherwise
+        use a PostGreSQL database as defined in that URL. Note that the environment
+        variables are read at the root of this module's directory. In
+        particular BIOTRADE_DATABASE_URL is stored into the DATABASE_URL
+        variable.
         """
         if DATABASE_URL is None:
             return DatabaseFaostatSqlite(self)
