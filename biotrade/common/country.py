@@ -22,6 +22,14 @@ class Country:
         >>> from biotrade.country import Country
         >>> ukr = Country("Ukraine")
         >>> ukr.faostat.forestry_production
+
+    FAOSTAT crop trade for one country
+
+        >>> from biotrade.common.country import Country
+        >>> bra = Country("Brazil")
+        >>> bra.faostat.crop_trade
+        >>> bra.faostat.crop_trade_mirror
+
     """
 
     def __repr__(self):

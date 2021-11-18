@@ -14,7 +14,7 @@ import logging
 
 # Third party modules
 from sqlalchemy import Integer, Float, Text, UniqueConstraint
-from sqlalchemy import Table, Column, MetaData
+from sqlalchemy import Table, Column, MetaData, or_
 from sqlalchemy import create_engine, inspect
 import pandas
 
@@ -184,7 +184,11 @@ class DatabaseFaostat(Database):
         )
         return table
 
-    def select(self, table, reporter=None, partner=None):
+    def read_sql_query(self, stmt):
+        """A wrapper around pandas.read_sql_query"""
+        return pandas.read_sql_query(stmt, self.engine)
+
+    def select(self, table, reporter=None, partner=None, product=None):
         """Select production data for the given arguments
 
         :param list or str reporter: List of reporter names
@@ -194,7 +198,7 @@ class DatabaseFaostat(Database):
         For example select crop production data for 2 countries
 
         >>> from biotrade.faostat import faostat
-        >>> db = faostat.db_sqlite
+        >>> db = faostat.db
         >>> cp2 = db.select(table="crop_production",
         >>>                 reporter=["Portugal", "Estonia"])
 
@@ -222,6 +226,17 @@ class DatabaseFaostat(Database):
         >>>                        reporter="Brazil",
         >>>                        partner="Netherlands")
 
+        Select crop production where products contain the word "soy"
+
+        >>> from biotrade.faostat import faostat
+        >>> db = faostat.db
+        >>> soy_prod = db.select(table="crop_production",
+        >>>                      product = "soy")
+
+        Select crop production where products contain the word "soy" or "palm"
+
+        >>> soy_palm_prod = db.select(table="crop_production",
+        >>>                      product = ["soy", "palm"])
         """
         table = self.tables[table]
         # Change character variables to a list suitable for a column.in_() clause
@@ -229,11 +244,21 @@ class DatabaseFaostat(Database):
             reporter = [reporter]
         if isinstance(partner, str):
             partner = [partner]
+        if isinstance(product, str):
+            product = [product]
         stmt = table.select()
         if reporter is not None:
             stmt = stmt.where(table.c.reporter.in_(reporter))
         if partner is not None:
             stmt = stmt.where(table.c.partner.in_(partner))
+        if product is not None:
+            # for the first product use an and condition
+            search_pattern = "%{}%".format(product[0])
+            stmt = stmt.where(table.c.product.like(search_pattern))
+            # Use an or condition if there are more products in the list
+            for i in range(1, len(product)):
+                search_pattern = "%{}%".format(product[i])
+                stmt = stmt.filter(or_(table.c.product.like(search_pattern)))
         df = pandas.read_sql_query(stmt, self.engine)
         return df
 
