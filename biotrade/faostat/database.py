@@ -193,7 +193,11 @@ class DatabaseFaostat(Database):
 
         :param list or str reporter: List of reporter names
         :param list or str partner: List of partner names
+        :param list or str product: List of product names
         :return: A data frame of trade flows
+
+        Note that the search for reporter and partner will be based on perfect
+        matches whereas product can be partial matches.
 
         For example select crop production data for 2 countries
 
@@ -233,13 +237,19 @@ class DatabaseFaostat(Database):
         >>> soy_prod = db.select(table="crop_production",
         >>>                      product = "soy")
 
-        Select crop production where products contain the word "soy" or "palm"
+        Select crop production where products contain the words in the list
 
-        >>> soy_palm_prod = db.select(table="crop_production",
-        >>>                      product = ["soy", "palm"])
+        >>> products_of_interest = ["soy", "palm", "sun", "oil", "rapeseed"]
+        >>> veg_oil = db.select(table="crop_production",
+        >>>                      product = products_of_interest)
+        >>> for e in veg_oil["element"].unique():
+        >>>     print(e)
+        >>>     print(veg_oil[veg_oil.element == e]["product"].unique())
+
         """
         table = self.tables[table]
-        # Change character variables to a list suitable for a column.in_() clause
+        # Change character variables to lists suitable for a column.in_() clause
+        # Or for a list comprehension
         if isinstance(reporter, str):
             reporter = [reporter]
         if isinstance(partner, str):
@@ -252,13 +262,7 @@ class DatabaseFaostat(Database):
         if partner is not None:
             stmt = stmt.where(table.c.partner.in_(partner))
         if product is not None:
-            # for the first product use an and condition
-            search_pattern = "%{}%".format(product[0])
-            stmt = stmt.where(table.c.product.like(search_pattern))
-            # Use an or condition if there are more products in the list
-            for i in range(1, len(product)):
-                search_pattern = "%{}%".format(product[i])
-                stmt = stmt.filter(or_(table.c.product.like(search_pattern)))
+            stmt = stmt.where(or_(table.c.product.ilike(f"%{p}%") for p in product))
         df = pandas.read_sql_query(stmt, self.engine)
         return df
 
