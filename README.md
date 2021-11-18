@@ -1,5 +1,7 @@
-This package loads trade data on bio based commodities and products from the UN Comtrade 
-and from FAOSTAT.
+
+This package loads trade and production data on bio based commodities from the UN
+Comtrade and from FAOSTAT. Organizing relevant data to analyse biological, physical and
+economic processes is the added value of the `biotrade` package. 
 
 
 # Installation

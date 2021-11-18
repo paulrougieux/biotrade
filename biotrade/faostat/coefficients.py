@@ -32,6 +32,4 @@ class Coefficients:
         >>> faostat.coefficients.cuypers
         """
         df = pandas.read_csv(self.config_data_dir / "cuypers2013_extraction_rates.csv")
-        # TODO: asser that the sum of rate is smaller or equal to one
-        # asser that the sum of the value share is smaller than one
         return df
