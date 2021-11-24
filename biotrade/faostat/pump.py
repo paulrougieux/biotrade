@@ -244,6 +244,12 @@ class Pump:
 
         >>> faostat.pump.update_db(skip_crop_trade=True)
         """
+        msg = f"If the database {self.db.engine} exists already, "
+        msg += "this command will erase it and replace it with new data. "
+        if input(msg + "Are you sure [y/n]:") != "y":
+            print("Cancelled.")
+            return
+
         # Drop and recreate the tables
         self.db.forestry_production.drop()
         self.db.forestry_trade.drop()
@@ -259,6 +265,9 @@ class Pump:
             "forestry_production",
             "forestry_trade",
             "crop_production",
+            "forest_land",
+            "land_use",
+            "land_cover",
         ]
         for table_name in datasets_that_fit_in_memory:
             df = self.read_df(table_name)
