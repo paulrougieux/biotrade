@@ -33,7 +33,7 @@ class Country:
     """
 
     def __repr__(self):
-        # TODO: add iso 3 code here
+        # TODO: add iso 3 code, faostat code and UN Comtrade code here
         return '%s object name "%s"' % (self.__class__, self.country_name)
 
     def __init__(self, country_name):
