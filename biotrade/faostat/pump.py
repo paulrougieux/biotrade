@@ -37,9 +37,15 @@ class Pump:
         >>> faostat.pump.update_db()
 
     Read an entire table directly from a CSV file to a data frame
-    (without going through the database):
+    without going through the database:
 
+        >>> fp = faostat.pump.read_df("forestry_production")
         >>> fp = faostat.pump.forestry_production
+
+    Note that reading the entire dataset into a data frames can take a large
+    part of the memory. It is recommended to start an analysis with a smaller
+    data frame for a specific country or a specific product, using the
+    faostat.db.select method.
 
     Those lower level function are not needed for normal use.
     Update a dataset by downloading it again from FAOSTAT:
@@ -60,8 +66,21 @@ class Pump:
     datasets = {
         "forestry_production": "Forestry_E_All_Data_(Normalized).zip",
         "forestry_trade": "Forestry_Trade_Flows_E_All_Data_(Normalized).zip",
+        "forest_land": "Emissions_Land_Use_Forests_E_All_Data_(Normalized).zip",
         "crop_production": "Production_Crops_Livestock_E_All_Data_(Normalized).zip",
         "crop_trade": "Trade_DetailedTradeMatrix_E_All_Data_(Normalized).zip",
+        "land_cover": "Environment_LandCover_E_All_Data_(Normalized).zip",
+        "land_use": "Inputs_LandUse_E_All_Data_(Normalized).zip",
+    }
+    # Link to the metadata
+    metadata_link = {
+        "forestry_production": "https://www.fao.org/faostat/en/#data/FO/metadata",
+        "forestry_trade": "https://www.fao.org/faostat/en/#data/FT/metadata",
+        "forest_land": "https://www.fao.org/faostat/en/#data/GF/metadata",
+        "crop_production": "https://www.fao.org/faostat/en/#data/QCL/metadata",
+        "crop_trade": "https://www.fao.org/faostat/en/#data/TM/metadata",
+        "land_cover": "https://www.fao.org/faostat/en/#data/LC/metadata",
+        "land_use": "https://www.fao.org/faostat/en/#data/RL/metadata",
     }
 
     def __init__(self, parent):
@@ -132,15 +151,13 @@ class Pump:
         # Rename columns using the naming convention defined in self.column_names
         mapping = self.column_names.set_index(column_renaming).to_dict()["jrc"]
         df.rename(columns=mapping, inplace=True)
-        # Rename products to snake case using a compiled regex
+        # Rename column contents to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
-        df["product"] = (
-            df["product"].str.replace(regex_pat, "_", regex=True).str.lower()
-        )
-        # Rename elements to snake case
-        df["element"] = (
-            df["element"].str.replace(regex_pat, "_", regex=True).str.lower()
-        )
+        for column in ["product", "item", "element"]:
+            if column in df.columns:
+                df[column] = (
+                    df[column].str.replace(regex_pat, "_", regex=True).str.lower()
+                )
         # Convert NaN flags to an empty character variable
         # so that the flag column doesn't get converted to a list column when sent to R
         # Here is how the flag was encoded before the change
@@ -156,10 +173,29 @@ class Pump:
         return df
 
     def read_df(self, short_name):
-        """Read an entire zip csv file to a data frame"""
+        """Read an entire zip csv file to a data frame
+
+        Not recommended for large datasets which don't fit into memory.
+
+        Example use:
+
+        >>> from biotrade.faostat import faostat
+        >>> fp = faostat.pump.read_df("forestry_production")
+        >>> lu = faostat.pump.read_df("land_use")
+        >>> lc = faostat.pump.read_df("land_cover")
+        >>> fl = faostat.pump.read_df("forest_land")
+
+        """
+        # Choose which column in the config_data/column_names.csv
+        # to use for renaming.
+        column_renaming = None
+        for keyword in ["production", "trade", "land"]:
+            if keyword in short_name:
+                column_renaming = "faostat_" + keyword
+        # Read the compressed CSV into a data frame
         df = self.read_zip_csv_to_df(
             zip_file=self.data_dir / self.datasets[short_name],
-            column_renaming="faostat_" + short_name,
+            column_renaming=column_renaming,
         )
         return df
 
@@ -196,8 +232,8 @@ class Pump:
             self.download_zip_csv(zip_file_name)
 
     def update_db(self, skip_crop_trade=False):
-        """Update the sqlite database replace table content with the content of
-        the bulk zipped csv files.
+        """Update the database by replacing table content with the content of
+        the bulk zipped CSV files. Database field types are determined in faostat.db.
 
         Usage:
 
@@ -232,3 +268,12 @@ class Pump:
         # There is a memory error with the crop trade dataset.
         # Read the file in chunks so that the memory doesn't get too full
         self.transfer_csv_to_db_in_chunks("crop_trade")
+
+    def show_metadata_link(self, short_name):
+        """Display the metadata link associated with a dataset
+
+        >>> from biotrade.faostat import faostat
+        >>> faostat.pump.show_metadata_link("forestry_production")
+        >>> faostat.pump.show_metadata_link("land_use")
+        """
+        print(self.metadata_link[short_name])
