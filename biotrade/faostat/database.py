@@ -82,9 +82,9 @@ class DatabaseFaostat(Database):
         self.forestry_trade = self.describe_trade_table(name="forestry_trade")
         self.crop_production = self.describe_production_table(name="crop_production")
         self.crop_trade = self.describe_trade_table(name="crop_trade")
-        self.land_use = self.describe_trade_table(name="land_use")
-        self.land_cover = self.describe_trade_table(name="land_cover")
-        self.forest_land = self.describe_trade_table(name="forest_land")
+        self.land_use = self.describe_land_table(name="land_use")
+        self.land_cover = self.describe_land_table(name="land_cover")
+        self.forest_land = self.describe_land_table(name="forest_land")
         self.tables = {
             "forestry_production": self.forestry_production,
             "forestry_trade": self.forestry_trade,
@@ -203,9 +203,12 @@ class DatabaseFaostat(Database):
             Column("element", Text),
             Column("period", Integer),
             Column("year", Integer),
+            Column("source_code", Integer),
+            Column("source", Text),
             Column("unit", Text),
             Column("value", Float),
             Column("flag", Text),
+            Column("note", Text),
             UniqueConstraint(
                 "period",
                 "reporter_code",

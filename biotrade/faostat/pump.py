@@ -244,34 +244,23 @@ class Pump:
 
         >>> faostat.pump.update_db(skip_crop_trade=True)
         """
-        msg = f"If the database {self.db.engine} exists already, "
-        msg += "this command will erase it and replace it with new data. "
-        if input(msg + "Are you sure [y/n]:") != "y":
+        msg = f"\nIf the database {self.db.engine} exists already, "
+        msg += "this command will erase the following tables and replace them with new data:\n"
+        msg += f"{', '.join(self.datasets.keys())}\n\n"
+        if input(msg + "Please confirm [y/n]:") != "y":
             print("Cancelled.")
             return
 
-        # Drop and recreate the tables
-        self.db.forestry_production.drop()
-        self.db.forestry_trade.drop()
-        self.db.crop_production.drop()
-        self.db.crop_trade.drop()
-        # Create the tables
-        self.db.create_if_not_existing(self.db.forestry_production)
-        self.db.create_if_not_existing(self.db.forestry_trade)
-        self.db.create_if_not_existing(self.db.crop_production)
-        self.db.create_if_not_existing(self.db.crop_trade)
+        for table_name, table in self.db.tables.items():
+            table.drop()
+            self.db.create_if_not_existing(table)
         # For smaller datasets, write entire data frames to the SQLite database
-        datasets_that_fit_in_memory = [
-            "forestry_production",
-            "forestry_trade",
-            "crop_production",
-            "forest_land",
-            "land_use",
-            "land_cover",
-        ]
+        datasets_that_fit_in_memory = list(self.db.tables.keys())
+        datasets_that_fit_in_memory.remove("crop_trade")
         for table_name in datasets_that_fit_in_memory:
             df = self.read_df(table_name)
             self.db.append(df=df, table=table_name)
+        # Skip the crop trade data entirely if it's not needed on this machine
         if skip_crop_trade:
             return
         # There is a memory error with the crop trade dataset.
