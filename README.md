@@ -57,7 +57,7 @@ then storing them into a SQLite database:
 
     >>> from biotrade.faostat import faostat
     >>> faostat.pump.download_all_datasets()
-    >>> faostat.pump.update_sqlite_db()
+    >>> faostat.pump.update_db()
 
 Note that database operation are done with SQL Alchemy and that it's also possible to 
 use a PostGreSQL database engine. SQLite is convenient for data analysis on personal 
