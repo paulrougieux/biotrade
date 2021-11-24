@@ -212,7 +212,7 @@ class Pump:
         for df_chunk in pandas.read_csv(
             csv_file_name, chunksize=10 ** 6, encoding="latin1"
         ):
-            df_chunk = self.sanitize_variable_names(df_chunk, "faostat_" + short_name)
+            df_chunk = self.sanitize_variable_names(df_chunk, "faostat_trade")
             print(df_chunk.head(1))
             self.db.append(df=df_chunk, table=short_name)
 
