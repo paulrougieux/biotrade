@@ -82,11 +82,17 @@ class DatabaseFaostat(Database):
         self.forestry_trade = self.describe_trade_table(name="forestry_trade")
         self.crop_production = self.describe_production_table(name="crop_production")
         self.crop_trade = self.describe_trade_table(name="crop_trade")
+        self.land_use = self.describe_trade_table(name="land_use")
+        self.land_cover = self.describe_trade_table(name="land_cover")
+        self.forest_land = self.describe_trade_table(name="forest_land")
         self.tables = {
             "forestry_production": self.forestry_production,
             "forestry_trade": self.forestry_trade,
             "crop_production": self.crop_production,
             "crop_trade": self.crop_trade,
+            "land_cover": self.land_cover,
+            "land_use": self.land_use,
+            "forest_land": self.forest_land,
         }
         # Create tables if they don't exist
         for table in self.tables.values():
@@ -154,7 +160,7 @@ class DatabaseFaostat(Database):
         return table
 
     def describe_trade_table(self, name):
-        """Define the metadata of a table containing production data."""
+        """Define the metadata of a table containing trade data."""
         table = Table(
             name,
             self.metadata,
@@ -176,6 +182,34 @@ class DatabaseFaostat(Database):
                 "reporter_code",
                 "partner_code",
                 "product_code",
+                "element_code",
+                "unit",
+                "flag",
+            ),
+            schema=self.schema,
+        )
+        return table
+
+    def describe_land_table(self, name):
+        """Define the metadata of a table containing land use data."""
+        table = Table(
+            name,
+            self.metadata,
+            Column("reporter_code", Integer),
+            Column("reporter", Text),
+            Column("item_code", Integer),
+            Column("item", Text),
+            Column("element_code", Integer),
+            Column("element", Text),
+            Column("period", Integer),
+            Column("year", Integer),
+            Column("unit", Text),
+            Column("value", Float),
+            Column("flag", Text),
+            UniqueConstraint(
+                "period",
+                "reporter_code",
+                "item_code",
                 "element_code",
                 "unit",
                 "flag",
