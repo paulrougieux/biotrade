@@ -49,6 +49,9 @@ from biotrade.common.logger import create_logger
 
 create_logger()
 
+# Create a faostat subfolder in the data directory if it doesn't exist
+(data_dir / "faostat").mkdir(exist_ok=True)
+
 
 class Faostat:
     """

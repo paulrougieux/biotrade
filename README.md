@@ -17,6 +17,11 @@ Specify where you want to store the data by adding the following environment var
 
     export BIOTRADE_DATA="$HOME/repos/biotrade_data/"
 
+Dependencies
+
+    pip install pandas
+    pip install sqlalchemy
+
 
 # Usage
 
