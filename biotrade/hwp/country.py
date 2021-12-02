@@ -30,14 +30,27 @@ SELECTED_PRODUCTS = [
 ]
 PRODUCTS = PRODUCTS[PRODUCTS.product_short.isin(SELECTED_PRODUCTS)].copy()
 
+ELEMENTS = pandas.DataFrame(
+    {
+        "element": [
+            "production",
+            "import_quantity",
+            "import_value",
+            "export_quantity",
+            "export_value",
+        ],
+        "element_short": ["prod", "imp", "imp_usd", "exp", "exp_usd"],
+    }
+)
+
 
 class HwpCountry:
     """
     This object gives access to the Harvested Wood Products data for one country.
 
         >>> from biotrade.common.country import Country
-        >>> ukr = Country("Ukraine")
-        >>> ukr.hwp.production_wide
+        >>> aut = Country("Austria")
+        >>> aut.hwp.production_wide
 
     """
 
@@ -50,17 +63,42 @@ class HwpCountry:
         self.faostat = parent.faostat
 
     @property
-    def production_wide(self):
-        """Reshape wood production data to wide format
-
-        >>> from biotrade.common.country import Country
-        >>> ukr = Country("Ukraine")
-        >>> ukr.hwp.production_wide
-
-        """
-        df = self.faostat.forestry_production
-
+    def production(self):
+        """FAOSTAT forestry production data"""
+        df = self.faostat.forestry_production.copy()
+        # Prepare shorter column names combination of product and element
+        df = df.merge(PRODUCTS, on=["product", "product_code"], how="inner")
+        df = df.merge(ELEMENTS, on=["element"], how="inner")
+        df = df[
+            df.element.isin(["production", "import_quantity", "export_quantity"])
+        ].copy()
+        df["prod_elem"] = df["product_short"] + "_" + df["element_short"]
         return df
 
-    def trade_wide(self):
+    @property
+    def production_wide(self):
+        """Reshape FAOSTAT forestry production data to wide format
+
+        >>> from biotrade.common.country import Country
+        >>> aut = Country("Austria")
+        >>> aut.hwp.production_wide
+
+        For information only, equivalent data frame using a multi index pivot
+
+        >>> prod_wide = (aut.hwp.production
+        >>>              .pivot(index=["reporter", "year"], columns=["product", "element"], values="value")
+        >>>             )
+        """
+        df = (
+            self.production.pivot(
+                index=["reporter", "year"], columns="prod_elem", values="value"
+            )
+            .reset_index()
+            .rename_axis(columns=None)
+        )
+        return df
+
+    def trade(self):
         """Reshape wood trade data to wide format"""
+        df = self.faostat.forestry_trade.copy()
+        return df

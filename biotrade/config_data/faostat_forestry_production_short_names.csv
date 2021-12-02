@@ -68,7 +68,7 @@ sawnwood_non_coniferous_all,1633,sw_nc
 semi_chemical_wood_pulp,1655,
 total_fibre_furnish,1879,
 veneer_sheets,1634,
-wood_based_panels,1873,wp
+wood_based_panels,1873,wbp
 wood_charcoal,1630,
 wood_chips_and_particles,1619,
 wood_chips_particles_and_residues,1695,
@@ -78,7 +78,7 @@ wood_fuel_coniferous,1627,fw_c
 wood_fuel_non_coniferous,1628,fw_nc
 wood_pellets,1693,
 wood_pellets_and_other_agglomerates,1696,
-wood_pulp,1875,wp
+wood_pulp,1875,wpp
 wood_pulp_excluding_mechanical_wood_pulp,1859,
 wood_residues,1620,
 wrapping_and_packaging_paper_and_paperboard_1961_1997_,1681,
