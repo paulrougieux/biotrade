@@ -11,6 +11,7 @@ Unit D1 Bioeconomy.
 
 # Internal modules
 from biotrade.faostat.country import FaostatCountry
+from biotrade.hwp.country import HwpCountry
 
 
 class Country:
@@ -44,3 +45,8 @@ class Country:
     def faostat(self):
         """FAOSTAT data for one country"""
         return FaostatCountry(self)
+
+    @property
+    def hwp(self):
+        """Harvested Wood products mitigation potential"""
+        return HwpCountry(self)
