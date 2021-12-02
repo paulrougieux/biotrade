@@ -10,6 +10,7 @@ Unit D1 Bioeconomy.
 
 # Third party modules
 import pandas
+import numpy as np
 
 # Internal modules
 from biotrade import module_dir
@@ -73,6 +74,7 @@ class HwpCountry:
             df.element.isin(["production", "import_quantity", "export_quantity"])
         ].copy()
         df["prod_elem"] = df["product_short"] + "_" + df["element_short"]
+        df = df.drop(columns=["product_short", "element_short"])
         return df
 
     @property
@@ -86,7 +88,9 @@ class HwpCountry:
         For information only, equivalent data frame using a multi index pivot
 
         >>> prod_wide = (aut.hwp.production
-        >>>              .pivot(index=["reporter", "year"], columns=["product", "element"], values="value")
+        >>>              .pivot(index=["reporter", "year"],
+        >>>                     columns=["product", "element"],
+        >>>                     values="value")
         >>>             )
         """
         df = (
@@ -100,5 +104,21 @@ class HwpCountry:
 
     def trade(self):
         """Reshape wood trade data to wide format"""
+
         df = self.faostat.forestry_trade.copy()
+
         return df
+
+    def production_estimated_century(self):
+        """Production estimated from 1901 to FAOSTAT start year"""
+        df = self.production
+        base_year = df["year"].min()
+        df_base = df[df["year"] == base_year]
+        df_past = pandas.concat([df_base] * 60, ignore_index=True)
+        # Generate a list of number for each product group
+        df_past["n"] = 1
+        df_past["n"] = df_past.groupby(["prod_elem"])["n"].cumsum()
+        # Use the IPCC estimation approach
+        df_past = df_past.rename(columns={"value": "base_value"})
+        df_past["value"] = df_past["base_value"] * np.exp(0.0151 * -df_past["n"])
+        df_past
