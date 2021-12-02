@@ -102,13 +102,18 @@ class HwpCountry:
         )
         return df
 
+    @property
     def trade(self):
-        """Reshape wood trade data to wide format"""
+        """FAOSTAT forestry trade data
 
+        >>> from biotrade.common.country import Country
+        >>> aut = Country("Austria")
+        >>> aut.hwp.trade
+        """
         df = self.faostat.forestry_trade.copy()
-
         return df
 
+    @property
     def production_estimated_century(self):
         """Production estimated from 1901 to FAOSTAT start year"""
         df = self.production
@@ -121,4 +126,5 @@ class HwpCountry:
         # Use the IPCC estimation approach
         df_past = df_past.rename(columns={"value": "base_value"})
         df_past["value"] = df_past["base_value"] * np.exp(0.0151 * -df_past["n"])
-        df_past
+        df_past = df_past.sort_values(["product", "year"])
+        # TODO: finish the implementation of this method by correcting years
