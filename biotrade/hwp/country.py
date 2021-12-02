@@ -8,12 +8,34 @@ JRC Biomass Project.
 Unit D1 Bioeconomy.
 """
 
+# Third party modules
+import pandas
+
+# Internal modules
+from biotrade import module_dir
+
+PRODUCTS = pandas.read_csv(
+    module_dir / "config_data/faostat_forestry_production_short_names.csv"
+)
+SELECTED_PRODUCTS = [
+    "ir_c",
+    "ir_nc",
+    "pp",
+    "sw",
+    "sw_c",
+    "sw_nc",
+    "wp",
+    "fw_c",
+    "fw_nc",
+]
+PRODUCTS = PRODUCTS[PRODUCTS.product_short.isin(SELECTED_PRODUCTS)].copy()
+
 
 class HwpCountry:
     """
     This object gives access to the Harvested Wood Products data for one country.
 
-        >>> from biotrade.country import Country
+        >>> from biotrade.common.country import Country
         >>> ukr = Country("Ukraine")
         >>> ukr.hwp.production_wide
 
@@ -40,5 +62,5 @@ class HwpCountry:
 
         return df
 
-    def trade_wide(df):
+    def trade_wide(self):
         """Reshape wood trade data to wide format"""
