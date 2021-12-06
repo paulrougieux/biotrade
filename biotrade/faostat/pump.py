@@ -128,9 +128,9 @@ class Pump:
 
         >>> from biotrade.faostat import faostat
         >>> zip_file = faostat.data_dir / "Forestry_E_All_Data_(Normalized).zip"
-        >>> df = faostat.read_zip_csv_to_df(
+        >>> df = faostat.pump.read_zip_csv_to_df(
         >>>     zip_file=zip_file,
-        >>>     column_renaming="faostat_forestry_production")
+        >>>     column_renaming="faostat_production")
 
         """
         # Extract the name of the CSV file
