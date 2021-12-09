@@ -30,7 +30,7 @@ class Pump:
     Read the zipped csv files into pandas data frames.
 
     Update all FAOSTAT datasets by downloading bulk files,
-    then storing them in the SQLite database:
+    then storing them in a SQLite or PostGreSQL database:
 
         >>> from biotrade.faostat import faostat
         >>> faostat.pump.download_all_datasets()
