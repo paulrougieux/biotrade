@@ -43,7 +43,7 @@ from sqlalchemy import Table, Column, MetaData
 from sqlalchemy import create_engine, inspect
 
 # Internal modules
-from biotrade import data_dir, DATABASE_URL
+from biotrade import data_dir, database_url
 from biotrade.common.database import Database
 
 
@@ -160,7 +160,7 @@ class DatabaseComtradePostgresql(DatabaseComtrade):
         export BIOTRADE_DATABASE_URL="postgresql://rdb@localhost/biotrade"
     """
 
-    database_url = DATABASE_URL
+    database_url = database_url
     schema = "raw_comtrade"
 
 

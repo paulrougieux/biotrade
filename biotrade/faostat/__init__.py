@@ -36,7 +36,7 @@ Display the list of EU countries names in the FAOSTAT data
 import pandas
 
 # Internal modules
-from biotrade import module_dir, data_dir, DATABASE_URL
+from biotrade import module_dir, data_dir, database_url
 from biotrade.faostat.coefficients import Coefficients
 from biotrade.faostat.country_groups import CountryGroups
 from biotrade.faostat.database import DatabaseFaostatPostgresql
@@ -92,8 +92,13 @@ class Faostat:
 
     @property
     def db_sqlite(self):
-        """Store Comtrade data and make it available for further processing"""
+        """Databaze using the SQLite engine"""
         return DatabaseFaostatSqlite(self)
+
+    @property
+    def db_postgresql(self):
+        """Database using the PostGreSQL engine"""
+        return DatabaseFaostatPostgresql(self)
 
     @property
     def db(self):
@@ -105,7 +110,7 @@ class Faostat:
         particular BIOTRADE_DATABASE_URL is stored into the DATABASE_URL
         variable.
         """
-        if DATABASE_URL is None:
+        if database_url is None:
             return DatabaseFaostatSqlite(self)
         return DatabaseFaostatPostgresql(self)
 
