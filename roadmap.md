@@ -1,4 +1,13 @@
 
+
+# Aim
+
+The aim of the package is to analyse the environnemental impact of importing bio based 
+commodities.
+
+
+# Miscellaneous
+
 - Create a PostgreSQl database table for raw comtrade data at the 2 digit level
   comtrade_yearly_2d storing all bioeconomy related products
 

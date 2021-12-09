@@ -31,6 +31,14 @@ data_dir = Path.home() / "repos/biotrade_data/"
 if os.environ.get("BIOTRADE_DATA"):
     data_dir = Path(os.environ["BIOTRADE_DATA"])
 
+# Create if not existing
+if not data_dir.exists():
+    msg = f"Create {data_dir}?"
+    if input(msg + "Please confirm [y/n]:") == "y":
+        data_dir.mkdir()
+    else:
+        print("Directory creation cancelled.")
+
 # Database connection URL, default case
 database_url = None
 # But you can override it with an environment variable
