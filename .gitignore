@@ -8,6 +8,7 @@
 .Ruserdata
 *.tar.gz
 *.xlsx
+.vscode
 
 # Ignore files generated from notebooks
 *.html

@@ -207,12 +207,18 @@ class Pump:
         zip_file = ZipFile(self.data_dir / self.datasets[short_name])
         temp_dir = Path(tempfile.TemporaryDirectory().name)
         zip_file.extractall(temp_dir)
+        # Choose which column in the config_data/column_names.csv
+        # to use for renaming.
+        column_renaming = None
+        for keyword in ["production", "trade", "land"]:
+            if keyword in short_name:
+                column_renaming = "faostat_" + keyword
         # Read in chunk and pass each chunk to the database
         csv_file_name = temp_dir / re.sub(".zip$", ".csv", self.datasets[short_name])
         for df_chunk in pandas.read_csv(
-            csv_file_name, chunksize=10 ** 6, encoding="latin1"
+            csv_file_name, chunksize=10 ** 5, encoding="latin1"
         ):
-            df_chunk = self.sanitize_variable_names(df_chunk, "faostat_trade")
+            df_chunk = self.sanitize_variable_names(df_chunk, column_renaming)
             print(df_chunk.head(1))
             self.db.append(df=df_chunk, table=short_name)
 
@@ -256,16 +262,17 @@ class Pump:
             self.db.create_if_not_existing(table)
         # For smaller datasets, write entire data frames to the SQLite database
         datasets_that_fit_in_memory = list(self.db.tables.keys())
-        datasets_that_fit_in_memory.remove("crop_trade")
-        for table_name in datasets_that_fit_in_memory:
-            df = self.read_df(table_name)
-            self.db.append(df=df, table=table_name)
         # Skip the crop trade data entirely if it's not needed on this machine
         if skip_crop_trade:
-            return
-        # There is a memory error with the crop trade dataset.
-        # Read the file in chunks so that the memory doesn't get too full
-        self.transfer_csv_to_db_in_chunks("crop_trade")
+            datasets_that_fit_in_memory.remove("crop_trade")
+        for table_name in datasets_that_fit_in_memory:
+            try:
+                df = self.read_df(table_name)
+                self.db.append(df=df, table=table_name)
+            except:
+                # There is a memory error with dataset.
+                # Read the file in chunks so that the memory doesn't get too full
+                self.transfer_csv_to_db_in_chunks(table_name)
 
     def show_metadata_link(self, short_name):
         """Display the metadata link associated with a dataset
