@@ -260,19 +260,15 @@ class Pump:
         for table_name, table in self.db.tables.items():
             table.drop()
             self.db.create_if_not_existing(table)
-        # For smaller datasets, write entire data frames to the SQLite database
-        datasets_that_fit_in_memory = list(self.db.tables.keys())
+        # List of table datasets
+        datasets = list(self.db.tables.keys())
         # Skip the crop trade data entirely if it's not needed on this machine
         if skip_crop_trade:
-            datasets_that_fit_in_memory.remove("crop_trade")
-        for table_name in datasets_that_fit_in_memory:
-            try:
-                df = self.read_df(table_name)
-                self.db.append(df=df, table=table_name)
-            except:
-                # There is a memory error with dataset.
-                # Read the file in chunks so that the memory doesn't get too full
-                self.transfer_csv_to_db_in_chunks(table_name)
+            datasets.remove("crop_trade")
+        for table_name in datasets:
+            # There could be a memory error with dataset.
+            # Read the file in chunks so that the memory doesn't get too full
+            self.transfer_csv_to_db_in_chunks(table_name)
 
     def show_metadata_link(self, short_name):
         """Display the metadata link associated with a dataset
