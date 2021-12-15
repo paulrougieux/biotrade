@@ -60,3 +60,7 @@ class CountryGroups(object):
     def eu_country_names(self):
         """EU country names in the FAOSTAT data"""
         return EU_COUNTRY_NAMES
+
+    @property
+    def continents(self):
+        """Country groupings by continents"""
