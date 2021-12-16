@@ -13,6 +13,11 @@ Usage:
     >>> print(faostat.country_groups.eu_country_names)
 
 """
+
+# Third party modules
+import pandas
+
+
 # List of EU countries names in the FAOSTAT data
 EU_COUNTRY_NAMES = [
     "Austria",
@@ -48,6 +53,7 @@ EU_COUNTRY_NAMES = [
 class CountryGroups(object):
     """
     Comtrade product list, with additional information.
+    >>>
     """
 
     def __init__(self, parent):
@@ -64,3 +70,6 @@ class CountryGroups(object):
     @property
     def continents(self):
         """Country groupings by continents"""
+        path = self.config_data_dir / "faostat_country_groups.csv"
+        df = pandas.read_csv(path)
+        return df
