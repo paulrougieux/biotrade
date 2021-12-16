@@ -1,285 +1,285 @@
-faost_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_table_name,official_fao_name,abbr_fao_name_sp,un_year_start_info,un_year_end_info,unsd_macro_reg,unsd_macro_reg_code,unsd_sub_reg,unsd_sub_reg_code
-2,AF,AF,AFG,AFG,4,Afghanistan,the Islamic Republic of Afghanistan,Afganist�n,1946,,Asia,5300,Southern Asia,5303
-284,AX,AX,ALA,ALA,248,�land Islands,�land Islands,Islas �land,2003,,Europe,5400,Northern Europe,5402
-3,AL,AL,ALB,ALB,8,Albania,the Republic of Albania,Albania,1955,,Europe,5400,Southern Europe,5403
-4,DZ,DZ,DZA,DZA,12,Algeria,the People's Democratic Republic of Algeria,Argelia,1962,,Africa,5100,Northern Africa,5103
-5,AS,AS,ASM,ASM,16,American Samoa,American Samoa,Samoa Americana,,,Oceania,5500,Polynesia,5504
-6,AD,AD,AND,ADO,20,Andorra,the Principality of Andorra,Andorra,1993,,Europe,5400,Southern Europe,5403
-7,AO,AO,AGO,AGO,24,Angola,the Republic of Angola,Angola,1976,,Africa,5100,Middle Africa,5102
-258,AI,AI,AIA,AIA,660,Anguilla,Anguilla,Anguila,,,Americas,5200,Caribbean,5206
-30,AQ,AQ,ATA,ATA,,Antarctica,Antarctica,Ant�rtida,,,,,,
-8,AG,AG,ATG,ATG,28,Antigua and Barbuda,Antigua and Barbuda,Antigua y Barbuda,1981,,Americas,5200,Caribbean,5206
-9,AR,AR,ARG,ARG,32,Argentina,the Argentine Republic,Argentina,1945,,Americas,5200,South America,5207
-1,AM,AM,ARM,ARM,51,Armenia,the Republic of Armenia,Armenia,1992,,Asia,5300,Western Asia,5305
-22,AW,AW,ABW,ABW,533,Aruba,Aruba,Aruba,1986,,Americas,5200,Caribbean,5206
-,,,,,,Ashmore and Cartier Islands,Ashmore and Cartier Islands,Islas Ashmore y Cartier,,,,,,
-10,AU,AU,AUS,AUS,36,Australia,Australia,Australia,1945,,Oceania,5500,Australia and New Zealand,5501
-11,AT,AT,AUT,AUT,40,Austria,the Republic of Austria,Austria,1955,,Europe,5400,Western Europe,5404
-52,AZ,AZ,AZE,AZE,31,Azerbaijan,the Republic of Azerbaijan,Azerbaiy�n,1992,,Asia,5300,Western Asia,5305
-12,BS,BS,BHS,BHS,44,the Bahamas,the Commonwealth of the Bahamas,Bahamas,1973,,Americas,5200,Caribbean,5206
-13,BH,BH,BHR,BHR,48,Bahrain,the Kingdom of Bahrain,Bahrein,1971,,Asia,5300,Western Asia,5305
-,,,,,,Baker Island,Baker Island,Isla Baker,,,,,,
-16,BD,BD,BGD,BGD,50,Bangladesh,the People's Republic of Bangladesh,Bangladesh,1974,,Asia,5300,Southern Asia,5303
-14,BB,BB,BRB,BRB,52,Barbados,Barbados,Barbados,1966,,Americas,5200,Caribbean,5206
-57,BY,BY,BLR,BLR,112,Belarus,the Republic of Belarus,Belar�s,1992,,Europe,5400,Eastern Europe,5401
-255,BE,BE,BEL,BEL,56,Belgium,the Kingdom of Belgium,B�lgica,1945,,Europe,5400,Western Europe,5404
-15,,,,,,Belgium-Luxembourg,Belgium-Luxembourg,Belgium-Luxembourg,,1999,Europe,5400,Western Europe,5404
-23,BZ,BZ,BLZ,BLZ,84,Belize,Belize,Belice,1981,,Americas,5200,Central America,5204
-53,BJ,BJ,BEN,BEN,204,Benin,the Republic of Benin,Benin,1960,,Africa,5100,Western Africa,5105
-17,BM,BM,BMU,BMU,60,Bermuda,Bermuda,Bermudas,,,Americas,5200,Northern America,5203
-18,BT,BT,BTN,BTN,64,Bhutan,the Kingdom of Bhutan,Bhut�n,1971,,Asia,5300,Southern Asia,5303
-,,,,,,Bird Island,Bird Island,Bird Island,,,,,,
-19,BO,BO,BOL,BOL,68,Bolivia (Plurinational State of),the Plurinational State of Bolivia,Bolivia (Estado Plurinacional de),1945,,Americas,5200,South America,5207
-278,BQ,BQ,BES,BES,535,"Bonaire, Sint Eustatius and Saba","Bonaire, Sint Eustatius and Saba","Bonaire, Sint Eustatius y Saba",2010,,Americas,5200,Caribbean,5206
-80,BA,BA,BIH,BIH,70,Bosnia and Herzegovina,Bosnia and Herzegovina,Bosnia y Herzegovina,1992,,Europe,5400,Southern Europe,5403
-20,BW,BW,BWA,BWA,72,Botswana,the Republic of Botswana,Botswana,1966,,Africa,5100,Southern Africa,5104
-31,BV,BV,BVT,BVT,,Bouvet Island,Bouvet Island,Isla Bouvet,,,,,,
-21,BR,BR,BRA,BRA,76,Brazil,the Federative Republic of Brazil,Brasil,1945,,Americas,5200,South America,5207
-24,IO,IO,IOT,IOT,86,British Indian Ocean Territory,British Indian Ocean Territory,Territorio Brit�nico del Oc�ano Indico,,,,,,
-239,VG,VG,VGB,VGB,92,British Virgin Islands,the British Virgin Islands,Islas V�rgenes Brit�nicas,,,Americas,5200,Caribbean,5206
-26,BN,BN,BRN,BRN,96,Brunei Darussalam,Brunei Darussalam,Brunei Darussalam,1984,,Asia,5300,South-Eastern Asia,5304
-27,BG,BG,BGR,BGR,100,Bulgaria,the Republic of Bulgaria,Bulgaria,1955,,Europe,5400,Eastern Europe,5401
-233,BF,BF,BFA,BFA,854,Burkina Faso,Burkina Faso,Burkina Faso,1960,,Africa,5100,Western Africa,5105
-29,BI,BI,BDI,BDI,108,Burundi,the Republic of Burundi,Burundi,1962,,Africa,5100,Eastern Africa,5101
-115,KH,KH,KHM,KHM,116,Cambodia,the Kingdom of Cambodia,Camboya,1955,,Asia,5300,South-Eastern Asia,5304
-32,CM,CM,CMR,CMR,120,Cameroon,the Republic of Cameroon,Camer�n,1960,,Africa,5100,Middle Africa,5102
-33,CA,CA,CAN,CAN,124,Canada,Canada,Canad�,1945,,Americas,5200,Northern America,5203
-34,,,,,,Cantony and Enderbury Islands,Cantony and Enderbury Islands,Islas Canton y Enderbury,,,,,,
-35,CV,CV,CPV,CPV,132,Cabo Verde,the Republic of Cabo Verde,Cabo Verde,1975,,Africa,5100,Western Africa,5105
-36,KY,KY,CYM,CYM,136,Cayman Islands,Cayman Islands,Islas Caim�n,1960,,Americas,5200,Caribbean,5206
-37,CF,CF,CAF,CAF,140,Central African Republic,the Central African Republic,Rep�blica Centroafricana,1960,,Africa,5100,Middle Africa,5102
-39,TD,TD,TCD,TCD,148,Chad,the Republic of Chad,Chad,1960,,Africa,5100,Middle Africa,5102
-259,,JG,CHI,CHI,830,Channel Islands,Channel Islands,Channel Islands,,,,,,
-40,CL,CL,CHL,CHL,152,Chile,the Republic of Chile,Chile,1945,,Americas,5200,South America,5207
-351,,,,,,China,"China (China mainland, Hong Kong SAR, Macao SAR, Taiwan)",China,1945,,Asia,5300,Eastern Asia,5302
-41,CN,CN,CHN,CHN,,China,the People's Republic of China,China,,,,,,
-357,,,,,156,China,"China (China mainland, Taiwan)",China,,,,,,
-96,HK,HK,HKG,HKG,344,"China, Hong Kong SAR","China, Hong Kong Special Administrative Region","China, RAE de Hong Kong",,,,,,
-128,MO,MO,MAC,MAC,446,"China, Macao SAR","China, Macao Special Administrative Region","China, RAE de Macao",,,,,,
-42,CX,CX,CXR,CXR,162,Christmas Island,Christmas Island,Isla Christmas,,,,,,
-,,,,,,Clipperton Island,Clipperton Island,Isla de Clipperton,,,,,,
-43,CC,CC,CCK,CCK,166,Cocos (Keeling) Islands,Cocos (Keeling) Islands,Islas Cocos (Keeling),,,,,,
-44,CO,CO,COL,COL,170,Colombia,the Republic of Colombia,Colombia,1945,,Americas,5200,South America,5207
-45,KM,KM,COM,COM,174,the Comoros,the Union of the Comoros,Comoras,1975,,Africa,5100,Eastern Africa,5101
-46,CG,CG,COG,COG,178,Congo,the Republic of the Congo,Congo,1960,,Africa,5100,Middle Africa,5102
-47,CK,CK,COK,COK,184,the Cook Islands,the Cook Islands,Islas Cook,,,Oceania,5500,Polynesia,5504
-48,CR,CR,CRI,CRI,188,Costa Rica,the Republic of Costa Rica,Costa Rica,1945,,Americas,5200,Central America,5204
-107,CI,CI,CIV,CIV,384,C�te d'Ivoire,the Republic of C�te d'Ivoire,C�te d'Ivoire,1960,,Africa,5100,Western Africa,5105
-98,HR,HR,HRV,HRV,191,Croatia,the Republic of Croatia,Croacia,1992,,Europe,5400,Southern Europe,5403
-49,CU,CU,CUB,CUB,192,Cuba,the Republic of Cuba,Cuba,1945,,Americas,5200,Caribbean,5206
-279,CW,CW,CUW,CUW,531,Cura�ao,Cura�ao,Cura�ao,2010,,Americas,5200,Caribbean,5206
-50,CY,CY,CYP,CYP,196,Cyprus,the Republic of Cyprus,Chipre,1960,,Asia,5300,Western Asia,5305
-167,CZ,CZ,CZE,CZE,203,the Czech Republic,the Czech Republic,Rep�blica Checa,1993,,Europe,5400,Eastern Europe,5401
-51,CS,CS,CSK,CSK,200,Czechoslovakia,Czechoslovakia,Czechoslovakia,,1992,Europe,5400,Eastern Europe,5401
-116,KP,KP,PRK,PRK,408,Democratic People's Republic of Korea,Democratic People's Republic of Korea,Rep�blica Popular Democr�tica de Corea,1991,,Asia,5300,Eastern Asia,5302
-250,CD,CD,COD,ZAR,180,the Democratic Republic of the Congo,the Democratic Republic of the Congo,Rep�blica Decomocr�tica del Congo,1960,,Africa,5100,Middle Africa,5102
-54,DK,DK,DNK,DNK,208,Denmark,the Kingdom of Denmark,Dinamarca,1945,,Europe,5400,Northern Europe,5402
-,,,,,,Dhekelia and Akrotiri SBAs,Dhekelia and Akrotiri SBAs,Acrotiri y Dhekelia,,,,,,
-72,DJ,DJ,DJI,DJI,262,Djibouti,the Republic of Djibouti,Djibouti,1977,,Africa,5100,Eastern Africa,5101
-55,DM,DM,DMA,DMA,212,Dominica,the Commonwealth of Dominica,Dominica,1978,,Americas,5200,Caribbean,5206
-56,DO,DO,DOM,DOM,214,the Dominican Republic,the Dominican Republic,Rep�blica Dominicana,1945,,Americas,5200,Caribbean,5206
-58,EC,EC,ECU,ECU,218,Ecuador,the Republic of Ecuador,Ecuador,1945,,Americas,5200,South America,5207
-59,EG,EG,EGY,EGY,818,Egypt,the Arab Republic of Egypt,Egipto,1945,,Africa,5100,Northern Africa,5103
-60,SV,SV,SLV,SLV,222,El Salvador,the Republic of El Salvador,El Salvador,1945,,Americas,5200,Central America,5204
-,,,,,,England and Wales,England and Wales,England and Wales,,,,,,
-61,GQ,GQ,GNQ,GNQ,226,Equatorial Guinea,the Republic of Equatorial Guinea,Guinea Ecuatorial,1968,,Africa,5100,Middle Africa,5102
-178,ER,ER,ERI,ERI,232,Eritrea,the State of Eritrea,Eritrea,1993,,Africa,5100,Eastern Africa,5101
-63,EE,EE,EST,EST,233,Estonia,the Republic of Estonia,Estonia,1992,,Europe,5400,Northern Europe,5402
-238,ET,ET,ETH,ETH,231,Ethiopia,the Federal Democratic Republic of Ethiopia,Etiop�a,1993,,Africa,5100,Eastern Africa,5101
-62,,,,,230,Ethiopia PDR,Ethiopia PDR,Ethiopia PDR,,1992,Africa,5100,Eastern Africa,5101
-65,FK,FK,FLK,FLK,238,Falkland Islands (Malvinas),the Falkland Islands (Malvinas),Islas Malvinas,,,Americas,5200,South America,5207
-64,FO,FO,FRO,FRO,234,Faroe Islands,Faroe Islands,Islas Feroe,,,Europe,5400,Northern Europe,5402
-66,FJ,FJ,FJI,FJI,242,Fiji,the Republic of Fiji,Fiji,1970,,Oceania,5500,Melanesia,5502
-67,FI,FI,FIN,FIN,246,Finland,the Republic of Finland,Finlandia,1955,,Europe,5400,Northern Europe,5402
-68,FR,FR,FRA,FRA,250,France,the French Republic,Francia,1945,,Europe,5400,Western Europe,5404
-69,GF,GF,GUF,GUF,254,French Guiana,French Guiana,Guayana francesa,,,Americas,5200,South America,5207
-70,PF,PF,PYF,PYF,258,French Polynesia,French Polynesia,Polinesia Francesa,,,Oceania,5500,Polynesia,5504
-71,TF,TF,ATF,ATF,260,French Southern and Antarctic Territories,French Southern and Antarctic Territories,Tierras Australes y Ant�rticas Francesas,,,,,,
-74,GA,GA,GAB,GAB,266,Gabon,the Gabonese Republic,Gab�n ,1960,,Africa,5100,Middle Africa,5102
-75,GM,GM,GMB,GMB,270,the Gambia,the Republic of the Gambia,Gambia,1965,,Africa,5100,Western Africa,5105
-76,,,,,,Gaza Strip,Gaza Strip,Franja de Gaza,,,,,,
-73,GE,GE,GEO,GEO,268,Georgia,Georgia,Georgia,1992,,Asia,5300,Western Asia,5305
-79,DE,DE,DEU,DEU,276,Germany,the Federal Republic of Germany,Alemania,1973,,Europe,5400,Western Europe,5404
-81,GH,GH,GHA,GHA,288,Ghana,the Republic of Ghana,Ghana,1957,,Africa,5100,Western Africa,5105
-82,GI,GI,GIB,GIB,292,Gibraltar,Gibraltar,Gibraltar,,,Europe,5400,Southern Europe,5403
-84,GR,GR,GRC,GRC,300,Greece,the Hellenic Republic,Grecia,1945,,Europe,5400,Southern Europe,5403
-85,GL,GL,GRL,GRL,304,Greenland,Greenland,Groenlandia,,,Americas,5200,Northern America,5203
-86,GD,GD,GRD,GRD,308,Grenada,Grenada,Granada,1974,,Americas,5200,Caribbean,5206
-87,GP,GP,GLP,GLP,312,Guadeloupe,Guadeloupe,Guadalupe,,,Americas,5200,Caribbean,5206
-88,GU,GU,GUM,GUM,316,Guam,Guam,Guam,,,Oceania,5500,Micronesia,5503
-89,GT,GT,GTM,GTM,320,Guatemala,the Republic of Guatemala,Guatemala,1945,,Americas,5200,Central America,5204
-274,GG,GG,GCY,GCY,831,Guernsey,Bailiwick of Guernsey,Isla de Guernesey,,,Europe,5400,Northern Europe,5402
-90,GN,GN,GIN,GIN,324,Guinea,the Republic of Guinea,Guinea,1958,,Africa,5100,Western Africa,5105
-175,GW,GW,GNB,GNB,624,Guinea-Bissau,the Republic of Guinea-Bissau,Guinea-Bissau,1974,,Africa,5100,Western Africa,5105
-91,GY,GY,GUY,GUY,328,Guyana,the Republic of Guyana,Guyana,1966,,Americas,5200,South America,5207
-93,HT,HT,HTI,HTI,332,Haiti,the Republic of Haiti,Hait�,1945,,Americas,5200,Caribbean,5206
-92,HM,HM,HMD,HMD,334,Heard and McDonald Islands,Heard and McDonald Islands,Islas Heard y McDonald,,,,,,
-94,VA,VA,VAT,VAT,336,Holy See,Holy See,Santa Sede,,,Europe,5400,Southern Europe,5403
-95,HN,HN,HND,HND,340,Honduras,the Republic of Honduras,Honduras,1945,,Americas,5200,Central America,5204
-,,,,,,Howland Island,Howland Island,Isla Howland,,,,,,
-97,HU,HU,HUN,HUN,348,Hungary,Hungary,Hungr�a,1955,,Europe,5400,Eastern Europe,5401
-99,IS,IS,ISL,ISL,352,Iceland,the Republic of Iceland,Islandia,1946,,Europe,5400,Northern Europe,5402
-100,IN,IN,IND,IND,356,India,the Republic of India,India,1945,,Asia,5300,Southern Asia,5303
-101,ID,ID,IDN,IDN,360,Indonesia,the Republic of Indonesia,Indonesia,1950,,Asia,5300,South-Eastern Asia,5304
-102,IR,IR,IRN,IRN,364,Iran (Islamic Republic of),the Islamic Republic of Iran,Ir�n (Rep�blica Isl�mica del),1945,,Asia,5300,Southern Asia,5303
-103,IQ,IQ,IRQ,IRQ,368,Iraq,the Republic of Iraq,Iraq,1945,,Asia,5300,Western Asia,5305
-104,IE,IE,IRL,IRL,372,Ireland,Ireland,Irlanda,1955,,Europe,5400,Northern Europe,5402
-264,IM,IM,IMN,IMY,833,Isle of Man,Isle of Man,Isla de Man,,,Europe,5400,Northern Europe,5402
-105,IL,IL,ISR,ISR,376,Israel,the State of Israel,Israel,1949,,Asia,5300,Western Asia,5305
-106,IT,IT,ITA,ITA,380,Italy,the Republic of Italy,Italia,1955,,Europe,5400,Southern Europe,5403
-109,JM,JM,JAM,JAM,388,Jamaica,Jamaica,Jamaica,1962,,Americas,5200,Caribbean,5206
-110,JP,JP,JPN,JPN,392,Japan,Japan,Jap�n,1956,,Asia,5300,Eastern Asia,5302
-,,,,,,Jarvis Island,Jarvis Island,Isla Jarvis,,,,,,
-283,JE,JE,JEY,JEY,832,Jersey,Bailiwick of Jersey,Jersey,,,Europe,5400,Northern Europe,5402
-111,,,,,,Johnston Island,Johnston Island,Isla Johnston,,,,,,
-112,JO,JO,JOR,JOR,400,Jordan,the Hashemite Kingdom of Jordan,Jordania,1955,,Asia,5300,Western Asia,5305
-108,KZ,KZ,KAZ,KAZ,398,Kazakhstan,the Republic of Kazakhstan,Kasajst�n,1992,,Asia,5300,Central Asia,5301
-114,KE,KE,KEN,KEN,404,Kenya,the Republic of Kenya,Kenya,1963,,Africa,5100,Eastern Africa,5101
-,,,,,,Kingman Reef,Kingman Reef,Kingman Reef,,,,,,
-83,KI,KI,KIR,KIR,296,Kiribati,the Republic of Kiribati,Kiribati,1999,,Oceania,5500,Micronesia,5503
-275,,KV,,KSV,,Kosovo,Kosovo,Kosovo,2008,,,,,
-118,KW,KW,KWT,KWT,414,Kuwait,the State of Kuwait,Kuwait,1963,,Asia,5300,Western Asia,5305
-113,KG,KG,KGZ,KGZ,417,Kyrgyzstan,the Kyrgyz Republic,Kirguist�n,1992,,Asia,5300,Central Asia,5301
-120,LA,LA,LAO,LAO,418,the Lao People's Democratic Republic,the Lao People's Democratic Republic,Rep�blica Democr�tica Popular Lao,1955,,Asia,5300,South-Eastern Asia,5304
-119,LV,LV,LVA,LVA,428,Latvia,the Republic of Latvia,Letonia,1992,,Europe,5400,Northern Europe,5402
-121,LB,LB,LBN,LBN,422,Lebanon,the Lebanese Republic,L�bano,1945,,Asia,5300,Western Asia,5305
-122,LS,LS,LSO,LSO,426,Lesotho,the Kingdom of Lesotho,Lesotho,1966,,Africa,5100,Southern Africa,5104
-123,LR,LR,LBR,LBR,430,Liberia,the Republic of Liberia,Liberia,1945,,Africa,5100,Western Africa,5105
-124,LY,LY,LBY,LBY,434,Libya,Libya,Libia,1955,,Africa,5100,Northern Africa,5103
-125,LI,LI,LIE,LIE,438,Liechtenstein,the Principality of Liechtenstein,Liechtenstein,1990,,Europe,5400,Western Europe,5404
-126,LT,LT,LTU,LTU,440,Lithuania,the Republic of Lithuania,Lituania,1992,,Europe,5400,Northern Europe,5402
-256,LU,LU,LUX,LUX,442,Luxembourg,the Grand Duchy of Luxembourg,Luxemburgo,1945,,Europe,5400,Western Europe,5404
-129,MG,MG,MDG,MDG,450,Madagascar,the Republic of Madagascar,Madagascar,1960,,Africa,5100,Eastern Africa,5101
-130,MW,MW,MWI,MWI,454,Malawi,the Republic of Malawi,Malawi,1964,,Africa,5100,Eastern Africa,5101
-131,MY,MY,MYS,MYS,458,Malaysia,Malaysia,Malasia,1957,,Asia,5300,South-Eastern Asia,5304
-132,MV,MV,MDV,MDV,462,Maldives,the Republic of Maldives,Maldivas,1965,,Asia,5300,Southern Asia,5303
-133,ML,ML,MLI,MLI,466,Mali,the Republic of Mali,Mal�,1960,,Africa,5100,Western Africa,5105
-134,MT,MT,MLT,MLT,470,Malta,the Republic of Malta,Soberana Orden de Malta,1964,,Europe,5400,Southern Europe,5403
-127,MH,MH,MHL,MHL,584,the Marshall Islands,the Republic of the Marshall Islands,Islas Marshall,1991,,Oceania,5500,Micronesia,5503
-135,MQ,MQ,MTQ,MTQ,474,Martinique,Martinique,Martinica,,,Americas,5200,Caribbean,5206
-136,MR,MR,MRT,MRT,478,Mauritania,the Islamic Republic of Mauritania,Mauritania,1961,,Africa,5100,Western Africa,5105
-137,MU,MU,MUS,MUS,480,Mauritius,the Republic of Mauritius,Mauricio,1968,,Africa,5100,Eastern Africa,5101
-270,YT,YT,MYT,MYT,175,Mayotte,Mayotte,Mayotte,,,Africa,5100,Eastern Africa,5101
-138,MX,MX,MEX,MEX,484,Mexico,the United Mexican States,M�xico,1945,,Americas,5200,Central America,5204
-145,FM,FM,FSM,FSM,583,Micronesia (Federated States of),the Federated States of Micronesia,Micronesia (Estados Federados de),1991,,Oceania,5500,Micronesia,5503
-139,,,,,,Midway Island,Midway Island,Islas Midway,,,,,,
-140,MC,MC,MCO,MCO,492,Monaco,the Principality of Monaco,M�naco,1993,,Europe,5400,Western Europe,5404
-141,MN,MN,MNG,MNG,496,Mongolia,Mongolia,Mongolia,1961,,Asia,5300,Eastern Asia,5302
-273,ME,ME,MNE,MNE,499,Montenegro,Montenegro,Montenegro,2006,,Europe,5400,Southern Europe,5403
-142,MS,MS,MSR,MSR,500,Montserrat,Montserrat,Montserrat,,,Americas,5200,Caribbean,5206
-143,MA,MA,MAR,MAR,504,Morocco,the Kingdom of Morocco,Marruecos,1956,,Africa,5100,Northern Africa,5103
-144,MZ,MZ,MOZ,MOZ,508,Mozambique,the Republic of Mozambique,Mozambique,1975,,Africa,5100,Eastern Africa,5101
-28,MM,MM,MMR,MMR,104,Myanmar,the Republic of the Union of Myanmar,Myanmar,1948,,Asia,5300,South-Eastern Asia,5304
-147,NA,NA,NAM,NAM,516,Namibia,the Republic of Namibia,Namibia,1990,,Africa,5100,Southern Africa,5104
-148,NR,NR,NRU,NRU,520,Nauru,the Republic of Nauru,Nauru,1999,,Oceania,5500,Micronesia,5503
-149,NP,NP,NPL,NPL,524,Nepal,the Federal Democratic Republic of Nepal,Nepal,1955,,Asia,5300,Southern Asia,5303
-150,NL,NL,NLD,NLD,528,the Netherlands,the Kingdom of the Netherlands,Pa�ses Bajos,1945,,Europe,5400,Western Europe,5404
-151,AN,AN,ANT,ANT,530,Netherlands Antilles,Netherlands Antilles,Netherlands Antilles,1986,2009,Americas,5200,Caribbean,5206
-,,,,,532,Netherlands Antilles,Netherlands Antilles,Netherlands Antilles,1945,1985,,,,
-152,,,,,,Neutral Zone,Neutral Zone,Zona Neutral,,,,,,
-153,NC,NC,NCL,NCL,540,New Caledonia,New Caledonia,Nueva Caledonia,,,Oceania,5500,Melanesia,5502
-156,NZ,NZ,NZL,NZL,554,New Zealand,New Zealand,Nueva Zelandia,1945,,Oceania,5500,Australia and New Zealand,5501
-157,NI,NI,NIC,NIC,558,Nicaragua,the Republic of Nicaragua,Nicaragua,1945,,Americas,5200,Central America,5204
-158,NE,NE,NER,NER,562,the Niger,the Republic of the Niger,N�ger,1960,,Africa,5100,Western Africa,5105
-159,NG,NG,NGA,NGA,566,Nigeria,the Federal Republic of Nigeria,Nigeria,1960,,Africa,5100,Western Africa,5105
-160,NU,NU,NIU,NIU,570,Niue,Niue,Niue,,,Oceania,5500,Polynesia,5504
-161,NF,NF,NFK,NFK,574,Norfolk Island,Territory of Norfolk Island,Isla Norfolk,,,Oceania,5500,Australia and New Zealand,5501
-163,MP,MP,MNP,MNP,580,Northern Mariana Islands,The Commonwealth of the Northern Mariana Islands,Islas Marianas septentrionales,1991,,Oceania,5500,Micronesia,5503
-162,NO,NO,NOR,NOR,578,Norway,the Kingdom of Norway,Noruega,1945,,Europe,5400,Northern Europe,5402
-299,PS,PS,PSE,WBG,275,Occupied Palestinian Territory,Occupied Palestinian Territory,Territorio Palestino Ocupado,1999,,Asia,5300,Western Asia,5305
-221,OM,OM,OMN,OMN,512,Oman,the Sultanate of Oman,Om�n,1971,,Asia,5300,Western Asia,5305
-164,PC,PC,PCI,PCI,582,"Pacific Islands, Trust Territory of","Pacific Islands, Trust Territory of",Territorio de las Islas del Pacifico,,1990,Oceania,5500,Micronesia,5503
-165,PK,PK,PAK,PAK,586,Pakistan,the Islamic Republic of Pakistan,Pakist�n,1947,,Asia,5300,Southern Asia,5303
-180,PW,PW,PLW,PLW,585,Palau,Palau,Palau,1991,,Oceania,5500,Micronesia,5503
-166,PA,PA,PAN,PAN,591,Panama,the Republic of Panama,Panam�,1945,,Americas,5200,Central America,5204
-168,PG,PG,PNG,PNG,598,Papua New Guinea,Independent State of Papua New Guinea,Papua Nueva Guinea,1975,,Oceania,5500,Melanesia,5502
-169,PY,PY,PRY,PRY,600,Paraguay,the Republic of Paraguay,Paraguay,1945,,Americas,5200,South America,5207
-170,PE,PE,PER,PER,604,Peru,the Republic of Peru,Per�,1945,,Americas,5200,South America,5207
-171,PH,PH,PHL,PHL,608,the Philippines,the Republic of the Philippines,Filipinas,1945,,Asia,5300,South-Eastern Asia,5304
-172,PN,PN,PCN,PCN,612,Pitcairn Islands,Pitcairn Islands,Islas Pitcairn,,,Oceania,5500,Polynesia,5504
-173,PL,PL,POL,POL,616,Poland,the Republic of Poland,Polonia,1945,,Europe,5400,Eastern Europe,5401
-174,PT,PT,PRT,PRT,620,Portugal,the Portuguese Republic,Portugal,1955,,Europe,5400,Southern Europe,5403
-177,PR,PR,PRI,PRI,630,Puerto Rico,the Commonwealth of Puerto Rico,Puerto Rico,,,Americas,5200,Caribbean,5206
-179,QA,QA,QAT,QAT,634,Qatar,the State of Qatar,Qatar,1971,,Asia,5300,Western Asia,5305
-117,KR,KR,KOR,KOR,410,Republic of Korea,Republic of Korea,Rep�blica de Corea,1991,,Asia,5300,Eastern Asia,5302
-146,MD,MD,MDA,MDA,498,Republic of Moldova,the Republic of Moldova,Rep�blica de Moldova,1992,,Europe,5400,Eastern Europe,5401
-182,RE,RE,REU,REU,638,R�union,R�union,Reuni�n,,,Africa,5100,Eastern Africa,5101
-183,RO,RO,ROU,ROM,642,Romania,Romania,Rumania,1955,,Europe,5400,Eastern Europe,5401
-185,RU,RU,RUS,RUS,643,the Russian Federation,the Russian Federation,Federaci�n de Rusia,1992,,Europe,5400,Eastern Europe,5401
-184,RW,RW,RWA,RWA,646,Rwanda,the Republic of Rwanda,Rwanda,1962,,Africa,5100,Eastern Africa,5101
-282,BL,BL,BLM,BLM,652,Saint Barth�lemy,Saint Barth�lemy,San Bartalom�,,,Americas,5200,Caribbean,5206
-187,SH,SH,SHN,SHN,654,"Saint Helena, Ascension and Tristan da Cunha","Saint Helena, Ascension and Tristan da Cunha","Santa Elena, Ascension y Tristan da Cunha",,,Africa,5100,Western Africa,5105
-188,KN,KN,KNA,KNA,659,Saint Kitts and Nevis,Saint Kitts and Nevis,Saint Kitts y Nevis,1983,,Americas,5200,Caribbean,5206
-189,LC,LC,LCA,LCA,662,Saint Lucia,Saint Lucia,Santa Luc�a,1979,,Americas,5200,Caribbean,5206
-190,PM,PM,SPM,SPM,666,Saint Pierre and Miquelon,Saint Pierre and Miquelon,Saint Pierre and Miquelon,,,Americas,5200,Northern America,5203
-191,VC,VC,VCT,VCT,670,Saint Vincent and the Grenadines,Saint Vincent and the Grenadines,San Vicente y las Granadinas,1980,,Americas,5200,Caribbean,5206
-281,MF,MF,MAF,MAF,663,Saint-Martin (French Part),Saint-Martin (French Part),Saint-Martin (Parte francesa),,,Americas,5200,Caribbean,5206
-244,WS,WS,WSM,WSM,882,Samoa,the Independent State of Samoa,Samoa,1976,,Oceania,5500,Polynesia,5504
-192,SM,SM,SMR,SMR,674,San Marino,the Republic of San Marino,San Marino,1992,,Europe,5400,Southern Europe,5403
-193,ST,ST,STP,STP,678,Sao Tome and Principe,the Democratic Republic of Sao Tome and Principe,Santo Tom� y Pr�ncipe,1975,,Africa,5100,Middle Africa,5102
-285,,,,,680,Sark,Sark,Sark,,,Europe,5400,Northern Europe,5402
-194,SA,SA,SAU,SAU,682,Saudi Arabia,the Kingdom of Saudi Arabia,Arabia Saudita,1945,,Asia,5300,Western Asia,5305
-195,SN,SN,SEN,SEN,686,Senegal,the Republic of Senegal,Senegal,1960,,Africa,5100,Western Africa,5105
-272,RS,RS,SRB,SRB,688,Serbia,the Republic of Serbia,Serbia,2006,,Europe,5400,Southern Europe,5403
-186,CS,CS,SCG,SCG,891,Serbia and Montenegro,Serbia and Montenegro,Serbia y Montenegro,1992,2005,Europe,5400,Southern Europe,5403
-196,SC,SC,SYC,SYC,690,Seychelles,the Republic of Seychelles,Seychelles,1976,,Africa,5100,Eastern Africa,5101
-197,SL,SL,SLE,SLE,694,Sierra Leone,the Republic of Sierra Leone,Sierra Leona,1961,,Africa,5100,Western Africa,5105
-200,SG,SG,SGP,SGP,702,Singapore,the Republic of Singapore,Singapur,1965,,Asia,5300,South-Eastern Asia,5304
-280,SX,SX,SXM,SXM,534,Sint Maarten (Dutch Part),Sint Maarten (Dutch Part),Sint Maarten (Parte de los Pa�ses Bajos),2010,,Americas,5200,Caribbean,5206
-199,SK,SK,SVK,SVK,703,Slovakia,the Slovak Republic,Eslovaquia,1993,,Europe,5400,Eastern Europe,5401
-198,SI,SI,SVN,SVN,705,Slovenia,the Republic of Slovenia,Eslovenia,1992,,Europe,5400,Southern Europe,5403
-25,SB,SB,SLB,SLB,90,Solomon Islands,Solomon Islands,Islas Salom�n,1978,,Oceania,5500,Melanesia,5502
-201,SO,SO,SOM,SOM,706,Somalia,Federal Republic of Somalia,Somalia,1960,,Africa,5100,Eastern Africa,5101
-202,ZA,ZA,ZAF,ZAF,710,South Africa,the Republic of South Africa,Sud�frica,1945,,Africa,5100,Southern Africa,5104
-271,GS,GS,SGS,SGS,,South Georgia and Sandwich Islands,South Georgia and Sandwich Islands,Islas Georgias del Sur y Sandwich del Sur,,,,,,
-277,SS,SS,,SSD,728,South Sudan,the Republic of South Sudan,Sud�n del Sur,2011,,Africa,5100,Eastern Africa,5103
-228,SU,SU,SUN,MON,810,Union of Soviet Socialist Republic,Union of Soviet Socialist Republic,Union of Soviet Socialist Republic,,1991,Europe,5400,Eastern Europe,5401
-203,ES,ES,ESP,ESP,724,Spain,the Kingdom of Spain,Espa�a,1955,,Europe,5400,Southern Europe,5403
-38,LK,LK,LKA,LKA,144,Sri Lanka,the Democratic Socialist Republic of Sri Lanka,Sri Lanka,1955,,Asia,5300,Southern Asia,5303
-206,SD,SD,SDN,SDN,736,the Sudan,the Republic of the Sudan,Sud�n,1956,2010,Africa,5100,Northern Africa,5103
-276,SD,SD,SDN,SDN,729,the Sudan,the Republic of the Sudan,Sud�n,2011,,Africa,5100,Northern Africa,5103
-207,SR,SR,SUR,SUR,740,Suriname,the Republic of Suriname,Suriname,1975,,Americas,5200,South America,5207
-260,SJ,SJ,SJM,SJM,744,Svalbard and Jan Mayen Islands,Svalbard and Jan Mayen Islands,Islas Svalbard y Jan Mayen,,,Europe,5400,Northern Europe,5402
-209,SZ,SZ,SWZ,SWZ,748,Swaziland,the Kingdom of Swaziland,Swazilandia,1968,,Africa,5100,Southern Africa,5104
-210,SE,SE,SWE,SWE,752,Sweden,the Kingdom of Sweden,Suecia,1946,,Europe,5400,Northern Europe,5402
-211,CH,CH,CHE,CHE,756,Switzerland,the Swiss Confederation,Suiza,2002,,Europe,5400,Western Europe,5404
-212,SY,SY,SYR,SYR,760,the Syrian Arab Republic,the Syrian Arab Republic,Rep�blica �rabe Siria,1945,,Asia,5300,Western Asia,5305
-214,TW,TW,TWN,TWN,158,"Taiwan, Province of China","Taiwan, Province of China",Taiw�n,,,,,,
-208,TJ,TJ,TJK,TJK,762,Tajikistan,the Republic of Tajikistan,Tayikist�n,1992,,Asia,5300,Central Asia,5301
-216,TH,TH,THA,THA,764,Thailand,the Kingdom of Thailand,Tailandia,1946,,Asia,5300,South-Eastern Asia,5304
-154,MK,MK,MKD,MKD,807,The former Yugoslav Republic of Macedonia,The former Yugoslav Republic of Macedonia,ex Rep�blica Yugoslava de Macedonia,1992,,Europe,5400,Southern Europe,5403
-176,TL,TL,TLS,TMP,626,Timor-Leste,the Democratic Republic of Timor-Leste,Timor-Leste,2002,,Asia,5300,South-Eastern Asia,5304
-217,TG,TG,TGO,TGO,768,Togo,the Togolese Republic,Togo,1960,,Africa,5100,Western Africa,5105
-218,TK,TK,TKL,TKL,772,Tokelau,Tokelau,Tokelau,,,Oceania,5500,Polynesia,5504
-219,TO,TO,TON,TON,776,Tonga,the Kingdom of Tonga,Tonga,1999,,Oceania,5500,Polynesia,5504
-220,TT,TT,TTO,TTO,780,Trinidad and Tobago,the Republic of Trinidad and Tobago,Trinidad y Tobago,1962,,Americas,5200,Caribbean,5206
-,,,,,,Tromelin Island,Tromelin Island,Isla Tromelin,,,,,,
-222,TN,TN,TUN,TUN,788,Tunisia,the Republic of Tunisia,T�nez,1956,,Africa,5100,Northern Africa,5103
-223,TR,TR,TUR,TUR,792,Turkey,the Republic of Turkey,Turqu�a,1945,,Asia,5300,Western Asia,5305
-213,TM,TM,TKM,TKM,795,Turkmenistan,Turkmenistan,Turkmenist�n,1992,,Asia,5300,Central Asia,5301
-224,TC,TC,TCA,TCA,796,Turks and Caicos Islands,Turks and Caicos Islands,Islas Turcas y Caicos,,,Americas,5200,Caribbean,5206
-227,TV,TV,TUV,TUV,798,Tuvalu,Tuvalu,Tuvalu,2000,,Oceania,5500,Polynesia,5504
-226,UG,UG,UGA,UGA,800,Uganda,the Republic of Uganda,Uganda,1962,,Africa,5100,Eastern Africa,5101
-230,UA,UA,UKR,UKR,804,Ukraine,Ukraine,Ucraina,1992,,Europe,5400,Eastern Europe,5401
-225,AE,AE,ARE,ARE,784,the United Arab Emirates,the United Arab Emirates,Emiratos �rabes Unidos,1971,,Asia,5300,Western Asia,5305
-229,GB,GB,GBR,GBR,826,the United Kingdom of Great Britain and Northern Ireland,the United Kingdom of Great Britain and Northern Ireland,Reino Unido,1945,,Europe,5400,Northern Europe,5402
-215,TZ,TZ,TZA,TZA,834,the United Republic of Tanzania,the United Republic of Tanzania,Rep�blica Unida de Tanzan�a,1961,,Africa,5100,Eastern Africa,5101
-231,US,US,USA,USA,840,the United States of America,the United States of America,Estados Unidos de Am�rica,1945,,Americas,5200,Northern America,5203
-240,VI,VI,VIR,VIR,850,United States Virgin Islands,the United States Virgin Islands,Islas V�rgnes (US),,,Americas,5200,Caribbean,5206
-234,UY,UY,URY,URY,858,Uruguay,the Eastern Republic of Uruguay,Uruguay,1945,,Americas,5200,South America,5207
-232,PU,PU,PUS,PUS,,US Minor Is.,US Minor Is.,Islas Menores Perif�ricas de los Estados Unidos,,,,,,
-235,UZ,UZ,UZB,UZB,860,Uzbekistan,the Republic of Uzbekistan,Uzbekist�n,1992,,Asia,5300,Central Asia,5301
-155,VU,VU,VUT,VUT,548,Vanuatu,the Republic of Vanuatu,Vanuatu,1981,,Oceania,5500,Melanesia,5502
-236,VE,VE,VEN,VEN,862,Venezuela (Bolivarian Republic of),the Bolivarian Republic of Venezuela,Venezuela (Rep�blica Bolivariana de),1945,,Americas,5200,South America,5207
-237,VN,VN,VNM,VNM,704,Viet Nam,the Socialist Republic of Viet Nam,Viet Nam,1977,,Asia,5300,South-Eastern Asia,5304
-242,WK,WK,WAK,WAK,,Wake Island,Wake Island,Isla Wake,,,,,,
-243,WF,WF,WLF,WLF,876,Wallis and Futuna Islands,Wallis and Futuna Islands,Islas Wallis y Futuna,,,Oceania,5500,Polynesia,5504
-245,,,,,,the West Bank,The West Bank,the West Bank,,,,,,
-205,EH,EH,ESH,ESH,732,Western Sahara,Western Sahara,S�hara occidental,,,Africa,5100,Northern Africa,5103
-249,YE,YE,YEM,YEM,887,Yemen,the Republic of Yemen,Yemen,1990,,Asia,5300,Western Asia,5305
-247,,,,,720,Democratic Yemen,Democratic Yemen,Yemen,,1989,Asia,5300,Western Asia,5305
-246,,,,,886,Yemen (old),Yemen (old),Yemen,1947,1989,Asia,5300,Western Asia,5305
-248,YU,YU,YUG,YUG,890,Yugoslav SFR,Yugoslav SFR,Yugoslav SFR,,1991,Europe,5400,Southern Europe,5403
-251,ZM,ZM,ZMB,ZMB,894,Zambia,the Republic of Zambia,Zambia,1964,,Africa,5100,Eastern Africa,5101
-3698,,,EAZ,EAZ,835,Zanzibar,Zanzibar,Zanzibar,,,,,,
-181,ZW,ZW,ZWE,ZWE,716,Zimbabwe,the Republic of Zimbabwe,Zimbabwe,1980,,Africa,5100,Eastern Africa,5101
+faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_status_info,fao_table_name,official_fao_name,short_name,abbr_fao_name_sp,un_year_start_info,un_year_end_info,unsd_world_reg,unsd_macro_reg,unsd_macro_reg_code,unsd_sub_reg,unsd_sub_reg_code,unsd_dvddvg_reg
+2,1,AF,AF,AFG,AFG,4,member,Afghanistan,the Islamic Republic of Afghanistan,Afghanistan,Afganistán,1946,,World,Asia,5300,Southern Asia,5303,Developing
+284,,AX,AX,ALA,ALA,248,areas and territories,Åland Islands,Åland Islands,Åland Islands,Islas Åland,2003,,World,Europe,5400,Northern Europe,5402,Developed
+3,3,AL,AL,ALB,ALB,8,member,Albania,the Republic of Albania,Albania,Albania,1955,,World,Europe,5400,Southern Europe,5403,Developed
+4,4,DZ,DZ,DZA,DZA,12,member,Algeria,the People's Democratic Republic of Algeria,Algeria,Argelia,1962,,World,Africa,5100,Northern Africa,5103,Developing
+5,5,AS,AS,ASM,ASM,16,areas and territories,American Samoa,American Samoa,American Samoa,Samoa Americana,,,World,Oceania,5500,Polynesia,5504,Developing
+6,7,AD,AD,AND,ADO,20,member,Andorra,the Principality of Andorra,Andorra,Andorra,1993,,World,Europe,5400,Southern Europe,5403,Developed
+7,8,AO,AO,AGO,AGO,24,member,Angola,the Republic of Angola,Angola,Angola,1976,,World,Africa,5100,Middle Africa,5102,Developing
+258,9,AI,AI,AIA,AIA,660,areas and territories,Anguilla,Anguilla,Anguilla,Anguila,,,World,Americas,5200,Caribbean,5206,Developing
+30,10,AQ,AQ,ATA,ATA,,areas and territories,Antarctica,Antarctica,Antarctica,Antártida,,,,,,,,
+8,11,AG,AG,ATG,ATG,28,member,Antigua and Barbuda,Antigua and Barbuda,Antigua and Barbuda,Antigua y Barbuda,1981,,World,Americas,5200,Caribbean,5206,Developing
+9,12,AR,AR,ARG,ARG,32,member,Argentina,the Argentine Republic,Argentina,Argentina,1945,,World,Americas,5200,South America,5207,Developing
+1,13,AM,AM,ARM,ARM,51,member,Armenia,the Republic of Armenia,Armenia,Armenia,1992,,World,Asia,5300,Western Asia,5305,Developing
+22,14,AW,AW,ABW,ABW,533,areas and territories,Aruba,Aruba,Aruba,Aruba,1986,,World,Americas,5200,Caribbean,5206,Developing
+,16,,,,,,areas and territories,Ashmore and Cartier Islands,Ashmore and Cartier Islands,Ashmore and Cartier Islands,Islas Ashmore y Cartier,,,,,,,,
+10,17,AU,AU,AUS,AUS,36,member,Australia,Australia,Australia,Australia,1945,,World,Oceania,5500,Australia and New Zealand,5501,Developed
+11,18,AT,AT,AUT,AUT,40,member,Austria,the Republic of Austria,Austria,Austria,1955,,World,Europe,5400,Western Europe,5404,Developed
+52,19,AZ,AZ,AZE,AZE,31,member,Azerbaijan,the Republic of Azerbaijan,Azerbaijan,Azerbaiyán,1992,,World,Asia,5300,Western Asia,5305,Developing
+12,20,BS,BS,BHS,BHS,44,member,the Bahamas,the Commonwealth of the Bahamas,Bahamas,Bahamas,1973,,World,Americas,5200,Caribbean,5206,Developing
+13,21,BH,BH,BHR,BHR,48,member,Bahrain,the Kingdom of Bahrain,Bahrain,Bahrein,1971,,World,Asia,5300,Western Asia,5305,Developing
+,22,,,,,,areas and territories,Baker Island,Baker Island,Baker Island,Isla Baker,,,,,,,,
+16,23,BD,BD,BGD,BGD,50,member,Bangladesh,the People's Republic of Bangladesh,Bangladesh,Bangladesh,1974,,World,Asia,5300,Southern Asia,5303,Developing
+14,24,BB,BB,BRB,BRB,52,member,Barbados,Barbados,Barbados,Barbados,1966,,World,Americas,5200,Caribbean,5206,Developing
+57,26,BY,BY,BLR,BLR,112,member,Belarus,the Republic of Belarus,Belarus,Belarús,1992,,World,Europe,5400,Eastern Europe,5401,Developed
+255,27,BE,BE,BEL,BEL,56,member,Belgium,the Kingdom of Belgium,Belgium,Bélgica,1945,,World,Europe,5400,Western Europe,5404,Developed
+15,,,,,,,old,Belgium-Luxembourg,Belgium-Luxembourg,Belgium-Luxembourg,Belgium-Luxembourg,,1999,World,Europe,5400,Western Europe,5404,Developed
+23,28,BZ,BZ,BLZ,BLZ,84,member,Belize,Belize,Belize,Belice,1981,,World,Americas,5200,Central America,5204,Developing
+53,29,BJ,BJ,BEN,BEN,204,member,Benin,the Republic of Benin,Benin,Benin,1960,,World,Africa,5100,Western Africa,5105,Developing
+17,30,BM,BM,BMU,BMU,60,areas and territories,Bermuda,Bermuda,Bermuda,Bermudas,,,World,Americas,5200,Northern America,5203,Developed
+18,31,BT,BT,BTN,BTN,64,member,Bhutan,the Kingdom of Bhutan,Bhutan,Bhután,1971,,World,Asia,5300,Southern Asia,5303,Developing
+,32,,,,,,areas and territories,Bird Island,Bird Island,Bird Island,Bird Island,,,,,,,,
+19,33,BO,BO,BOL,BOL,68,member,Bolivia (Plurinational State of),the Plurinational State of Bolivia,Bolivia,Bolivia (Estado Plurinacional de),1945,,World,Americas,5200,South America,5207,Developing
+278,,BQ,BQ,BES,BES,535,areas and territories,"Bonaire, Sint Eustatius and Saba","Bonaire, Sint Eustatius and Saba","Bonaire, Sint Eustatius and Saba","Bonaire, Sint Eustatius y Saba",2010,,World,Americas,5200,Caribbean,5206,Developing
+80,34,BA,BA,BIH,BIH,70,member,Bosnia and Herzegovina,Bosnia and Herzegovina,Bosnia and Herzegovina,Bosnia y Herzegovina,1992,,World,Europe,5400,Southern Europe,5403,Developed
+20,35,BW,BW,BWA,BWA,72,member,Botswana,the Republic of Botswana,Botswana,Botswana,1966,,World,Africa,5100,Southern Africa,5104,Developing
+31,36,BV,BV,BVT,BVT,,areas and territories,Bouvet Island,Bouvet Island,Bouvet Island,Isla Bouvet,,,,,,,,
+21,37,BR,BR,BRA,BRA,76,member,Brazil,the Federative Republic of Brazil,Brazil,Brasil,1945,,World,Americas,5200,South America,5207,Developing
+24,38,IO,IO,IOT,IOT,86,areas and territories,British Indian Ocean Territory,British Indian Ocean Territory,British Indian Ocean Territory,Territorio Británico del Océano Indico,,,,,,,,
+239,39,VG,VG,VGB,VGB,92,areas and territories,British Virgin Islands,the British Virgin Islands,British Virgin Islands,Islas Vírgenes Británicas,,,World,Americas,5200,Caribbean,5206,Developing
+26,40,BN,BN,BRN,BRN,96,member,Brunei Darussalam,Brunei Darussalam,Brunei Darussalam,Brunei Darussalam,1984,,World,Asia,5300,South-Eastern Asia,5304,Developing
+27,41,BG,BG,BGR,BGR,100,member,Bulgaria,the Republic of Bulgaria,Bulgaria,Bulgaria,1955,,World,Europe,5400,Eastern Europe,5401,Developed
+233,42,BF,BF,BFA,BFA,854,member,Burkina Faso,Burkina Faso,Burkina Faso,Burkina Faso,1960,,World,Africa,5100,Western Africa,5105,Developing
+29,43,BI,BI,BDI,BDI,108,member,Burundi,the Republic of Burundi,Burundi,Burundi,1962,,World,Africa,5100,Eastern Africa,5101,Developing
+115,44,KH,KH,KHM,KHM,116,member,Cambodia,the Kingdom of Cambodia,Cambodia,Camboya,1955,,World,Asia,5300,South-Eastern Asia,5304,Developing
+32,45,CM,CM,CMR,CMR,120,member,Cameroon,the Republic of Cameroon,Cameroon,Camerún,1960,,World,Africa,5100,Middle Africa,5102,Developing
+33,46,CA,CA,CAN,CAN,124,member,Canada,Canada,Canada,Canadá,1945,,World,Americas,5200,Northern America,5203,Developed
+34,,,,,,,areas and territories,Cantony and Enderbury Islands,Cantony and Enderbury Islands,Cantony and Enderbury Islands,Islas Canton y Enderbury,,,,,,,,
+35,47,CV,CV,CPV,CPV,132,member,Cabo Verde,the Republic of Cabo Verde,Cabo Verde,Cabo Verde,1975,,World,Africa,5100,Western Africa,5105,Developing
+36,48,KY,KY,CYM,CYM,136,areas and territories,Cayman Islands,Cayman Islands,Cayman Islands,Islas Caimán,1960,,World,Americas,5200,Caribbean,5206,Developing
+37,49,CF,CF,CAF,CAF,140,member,Central African Republic,the Central African Republic,Central African Republic,República Centroafricana,1960,,World,Africa,5100,Middle Africa,5102,Developing
+39,50,TD,TD,TCD,TCD,148,member,Chad,the Republic of Chad,Chad,Chad,1960,,World,Africa,5100,Middle Africa,5102,Developing
+259,,,JG,CHI,CHI,830,areas and territories,Channel Islands,Channel Islands,Channel Islands,Channel Islands,,,,,,,,
+40,51,CL,CL,CHL,CHL,152,member,Chile,the Republic of Chile,Chile,Chile,1945,,World,Americas,5200,South America,5207,Developing
+351,,,,,,,member,China,"China (China mainland, Hong Kong SAR, Macao SAR, Taiwan)",China,China,1945,,World,Asia,5300,Eastern Asia,5302,Developing
+41,53,CN,CN,CHN,CHN,,areas and territories,China,the People's Republic of China,China mainland,China,,,,,,,,
+357,,,,,,156,areas and territories,China,"China (China mainland, Taiwan)",China mainland and Taiwan,China,,,,,,,,
+96,33364,HK,HK,HKG,HKG,344,areas and territories,"China, Hong Kong SAR","China, Hong Kong Special Administrative Region",Hong Kong,"China, RAE de Hong Kong",,,,,,,,
+128,149,MO,MO,MAC,MAC,446,areas and territories,"China, Macao SAR","China, Macao Special Administrative Region",Macao,"China, RAE de Macao",,,,,,,,
+42,54,CX,CX,CXR,CXR,162,areas and territories,Christmas Island,Christmas Island,Christmas Island,Isla Christmas,,,,,,,,
+,55,,,,,,areas and territories,Clipperton Island,Clipperton Island,Clipperton Island,Isla de Clipperton,,,,,,,,
+43,56,CC,CC,CCK,CCK,166,areas and territories,Cocos (Keeling) Islands,Cocos (Keeling) Islands,Cocos (Keeling) Islands,Islas Cocos (Keeling),,,,,,,,
+44,57,CO,CO,COL,COL,170,member,Colombia,the Republic of Colombia,Colombia,Colombia,1945,,World,Americas,5200,South America,5207,Developing
+45,58,KM,KM,COM,COM,174,member,the Comoros,the Union of the Comoros,Comoros,Comoras,1975,,World,Africa,5100,Eastern Africa,5101,Developing
+46,59,CG,CG,COG,COG,178,member,Congo,the Republic of the Congo,Congo,Congo,1960,,World,Africa,5100,Middle Africa,5102,Developing
+47,60,CK,CK,COK,COK,184,member,the Cook Islands,the Cook Islands,Cook Islands,Islas Cook,,,World,Oceania,5500,Polynesia,5504,Developing
+48,61,CR,CR,CRI,CRI,188,member,Costa Rica,the Republic of Costa Rica,Costa Rica,Costa Rica,1945,,World,Americas,5200,Central America,5204,Developing
+107,66,CI,CI,CIV,CIV,384,member,Côte d'Ivoire,the Republic of Côte d'Ivoire,Côte d'Ivoire,Côte d'Ivoire,1960,,World,Africa,5100,Western Africa,5105,Developing
+98,62,HR,HR,HRV,HRV,191,member,Croatia,the Republic of Croatia,Croatia,Croacia,1992,,World,Europe,5400,Southern Europe,5403,Developed
+49,63,CU,CU,CUB,CUB,192,member,Cuba,the Republic of Cuba,Cuba,Cuba,1945,,World,Americas,5200,Caribbean,5206,Developing
+279,,CW,CW,CUW,CUW,531,areas and territories,Curaçao,Curaçao,Curaçao,Curaçao,2010,,World,Americas,5200,Caribbean,5206,Developing
+50,64,CY,CY,CYP,CYP,196,member,Cyprus,the Republic of Cyprus,Cyprus,Chipre,1960,,World,Asia,5300,Western Asia,5305,Developing
+167,65,CZ,CZ,CZE,CZE,203,member,the Czech Republic,the Czech Republic,Czech Republic,República Checa,1993,,World,Europe,5400,Eastern Europe,5401,Developed
+51,,CS,CS,CSK,CSK,200,old,Czechoslovakia,Czechoslovakia,Czechoslovakia,Czechoslovakia,,1992,World,Europe,5400,Eastern Europe,5401,Developed
+116,67,KP,KP,PRK,PRK,408,member,Democratic People's Republic of Korea,Democratic People's Republic of Korea,North Korea,República Popular Democrática de Corea,1991,,World,Asia,5300,Eastern Asia,5302,Developing
+250,68,CD,CD,COD,ZAR,180,member,the Democratic Republic of the Congo,the Democratic Republic of the Congo,DR Congo,República Decomocrática del Congo,1960,,World,Africa,5100,Middle Africa,5102,Developing
+54,69,DK,DK,DNK,DNK,208,member,Denmark,the Kingdom of Denmark,Denmark,Dinamarca,1945,,World,Europe,5400,Northern Europe,5402,Developed
+,40763,,,,,,areas and territories,Dhekelia and Akrotiri SBAs,Dhekelia and Akrotiri SBAs,Dhekelia and Akrotiri SBAs,Acrotiri y Dhekelia,,,,,,,,
+72,70,DJ,DJ,DJI,DJI,262,member,Djibouti,the Republic of Djibouti,Djibouti,Djibouti,1977,,World,Africa,5100,Eastern Africa,5101,Developing
+55,71,DM,DM,DMA,DMA,212,member,Dominica,the Commonwealth of Dominica,Dominica,Dominica,1978,,World,Americas,5200,Caribbean,5206,Developing
+56,72,DO,DO,DOM,DOM,214,member,the Dominican Republic,the Dominican Republic,Dominican Republic,República Dominicana,1945,,World,Americas,5200,Caribbean,5206,Developing
+58,73,EC,EC,ECU,ECU,218,member,Ecuador,the Republic of Ecuador,Ecuador,Ecuador,1945,,World,Americas,5200,South America,5207,Developing
+59,40765,EG,EG,EGY,EGY,818,member,Egypt,the Arab Republic of Egypt,Egypt,Egipto,1945,,World,Africa,5100,Northern Africa,5103,Developing
+60,75,SV,SV,SLV,SLV,222,member,El Salvador,the Republic of El Salvador,El Salvador,El Salvador,1945,,World,Americas,5200,Central America,5204,Developing
+,,,,,,,areas and territories,England and Wales,England and Wales,England and Wales,England and Wales,,,,,,,,
+61,76,GQ,GQ,GNQ,GNQ,226,member,Equatorial Guinea,the Republic of Equatorial Guinea,Equatorial Guinea,Guinea Ecuatorial,1968,,World,Africa,5100,Middle Africa,5102,Developing
+178,77,ER,ER,ERI,ERI,232,member,Eritrea,the State of Eritrea,Eritrea,Eritrea,1993,,World,Africa,5100,Eastern Africa,5101,Developing
+63,78,EE,EE,EST,EST,233,member,Estonia,the Republic of Estonia,Estonia,Estonia,1992,,World,Europe,5400,Northern Europe,5402,Developed
+238,79,ET,ET,ETH,ETH,231,member,Ethiopia,the Federal Democratic Republic of Ethiopia,Ethiopia,Etiopía,1993,,World,Africa,5100,Eastern Africa,5101,Developing
+62,,,,,,230,old,Ethiopia PDR,Ethiopia PDR,Ethiopia PDR,Ethiopia PDR,,1992,World,Africa,5100,Eastern Africa,5101,Developing
+65,81,FK,FK,FLK,FLK,238,areas and territories,Falkland Islands (Malvinas),the Falkland Islands (Malvinas),Falkland Islands (Malvinas),Islas Malvinas,,,World,Americas,5200,South America,5207,Developing
+64,82,FO,FO,FRO,FRO,234,associate member,Faroe Islands,Faroe Islands,Faroe Islands,Islas Feroe,,,World,Europe,5400,Northern Europe,5402,Developed
+66,83,FJ,FJ,FJI,FJI,242,member,Fiji,the Republic of Fiji,Fiji,Fiji,1970,,World,Oceania,5500,Melanesia,5502,Developing
+67,84,FI,FI,FIN,FIN,246,member,Finland,the Republic of Finland,Finland,Finlandia,1955,,World,Europe,5400,Northern Europe,5402,Developed
+68,85,FR,FR,FRA,FRA,250,member,France,the French Republic,France,Francia,1945,,World,Europe,5400,Western Europe,5404,Developed
+69,86,GF,GF,GUF,GUF,254,areas and territories,French Guiana,French Guiana,French Guiana,Guayana francesa,,,World,Americas,5200,South America,5207,Developing
+70,87,PF,PF,PYF,PYF,258,areas and territories,French Polynesia,French Polynesia,French Polynesia,Polinesia Francesa,,,World,Oceania,5500,Polynesia,5504,Developing
+71,88,TF,TF,ATF,ATF,260,areas and territories,French Southern and Antarctic Territories,French Southern and Antarctic Territories,French Southern and Antarctic Territories,Tierras Australes y Antárticas Francesas,,,,,,,,
+74,89,GA,GA,GAB,GAB,266,member,Gabon,the Gabonese Republic,Gabon,Gabón ,1960,,World,Africa,5100,Middle Africa,5102,Developing
+75,90,GM,GM,GMB,GMB,270,member,the Gambia,the Republic of the Gambia,Gambia,Gambia,1965,,World,Africa,5100,Western Africa,5105,Developing
+76,91,,,,,,areas and territories,Gaza Strip,Gaza Strip,Gaza Strip,Franja de Gaza,,,,,,,,
+73,92,GE,GE,GEO,GEO,268,member,Georgia,Georgia,Georgia,Georgia,1992,,World,Asia,5300,Western Asia,5305,Developing
+79,93,DE,DE,DEU,DEU,276,member,Germany,the Federal Republic of Germany,Germany,Alemania,1973,,World,Europe,5400,Western Europe,5404,Developed
+81,94,GH,GH,GHA,GHA,288,member,Ghana,the Republic of Ghana,Ghana,Ghana,1957,,World,Africa,5100,Western Africa,5105,Developing
+82,95,GI,GI,GIB,GIB,292,areas and territories,Gibraltar,Gibraltar,Gibraltar,Gibraltar,,,World,Europe,5400,Southern Europe,5403,Developed
+84,97,GR,GR,GRC,GRC,300,member,Greece,the Hellenic Republic,Greece,Grecia,1945,,World,Europe,5400,Southern Europe,5403,Developed
+85,98,GL,GL,GRL,GRL,304,areas and territories,Greenland,Greenland,Greenland,Groenlandia,,,World,Americas,5200,Northern America,5203,Developed
+86,99,GD,GD,GRD,GRD,308,member,Grenada,Grenada,Grenada,Granada,1974,,World,Americas,5200,Caribbean,5206,Developing
+87,100,GP,GP,GLP,GLP,312,areas and territories,Guadeloupe,Guadeloupe,Guadeloupe,Guadalupe,,,World,Americas,5200,Caribbean,5206,Developing
+88,101,GU,GU,GUM,GUM,316,areas and territories,Guam,Guam,Guam,Guam,,,World,Oceania,5500,Micronesia,5503,Developing
+89,103,GT,GT,GTM,GTM,320,member,Guatemala,the Republic of Guatemala,Guatemala,Guatemala,1945,,World,Americas,5200,Central America,5204,Developing
+274,104,GG,GG,GCY,GCY,831,areas and territories,Guernsey,Bailiwick of Guernsey,Guernsey,Isla de Guernesey,,,World,Europe,5400,Northern Europe,5402,Developed
+90,106,GN,GN,GIN,GIN,324,member,Guinea,the Republic of Guinea,Guinea,Guinea,1958,,World,Africa,5100,Western Africa,5105,Developing
+175,105,GW,GW,GNB,GNB,624,member,Guinea-Bissau,the Republic of Guinea-Bissau,Guinea-Bissau,Guinea-Bissau,1974,,World,Africa,5100,Western Africa,5105,Developing
+91,107,GY,GY,GUY,GUY,328,member,Guyana,the Republic of Guyana,Guyana,Guyana,1966,,World,Americas,5200,South America,5207,Developing
+93,108,HT,HT,HTI,HTI,332,member,Haiti,the Republic of Haiti,Haiti,Haití,1945,,World,Americas,5200,Caribbean,5206,Developing
+92,109,HM,HM,HMD,HMD,334,areas and territories,Heard and McDonald Islands,Heard and McDonald Islands,Heard and McDonald Islands,Islas Heard y McDonald,,,,,,,,
+94,110,VA,VA,VAT,VAT,336,non member,Holy See,Holy See,Holy See,Santa Sede,,,World,Europe,5400,Southern Europe,5403,Developed
+95,111,HN,HN,HND,HND,340,member,Honduras,the Republic of Honduras,Honduras,Honduras,1945,,World,Americas,5200,Central America,5204,Developing
+,112,,,,,,areas and territories,Howland Island,Howland Island,Howland Island,Isla Howland,,,,,,,,
+97,113,HU,HU,HUN,HUN,348,member,Hungary,Hungary,Hungary,Hungría,1955,,World,Europe,5400,Eastern Europe,5401,Developed
+99,114,IS,IS,ISL,ISL,352,member,Iceland,the Republic of Iceland,Iceland,Islandia,1946,,World,Europe,5400,Northern Europe,5402,Developed
+100,115,IN,IN,IND,IND,356,member,India,the Republic of India,India,India,1945,,World,Asia,5300,Southern Asia,5303,Developing
+101,116,ID,ID,IDN,IDN,360,member,Indonesia,the Republic of Indonesia,Indonesia,Indonesia,1950,,World,Asia,5300,South-Eastern Asia,5304,Developing
+102,117,IR,IR,IRN,IRN,364,member,Iran (Islamic Republic of),the Islamic Republic of Iran,Iran (Islamic Republic of),Irán (República Islámica del),1945,,World,Asia,5300,Southern Asia,5303,Developing
+103,118,IQ,IQ,IRQ,IRQ,368,member,Iraq,the Republic of Iraq,Iraq,Iraq,1945,,World,Asia,5300,Western Asia,5305,Developing
+104,119,IE,IE,IRL,IRL,372,member,Ireland,Ireland,Ireland,Irlanda,1955,,World,Europe,5400,Northern Europe,5402,Developed
+264,120,IM,IM,IMN,IMY,833,areas and territories,Isle of Man,Isle of Man,Isle of Man,Isla de Man,,,World,Europe,5400,Northern Europe,5402,Developed
+105,121,IL,IL,ISR,ISR,376,member,Israel,the State of Israel,Israel,Israel,1949,,World,Asia,5300,Western Asia,5305,Developing
+106,122,IT,IT,ITA,ITA,380,member,Italy,the Republic of Italy,Italy,Italia,1955,,World,Europe,5400,Southern Europe,5403,Developed
+109,123,JM,JM,JAM,JAM,388,member,Jamaica,Jamaica,Jamaica,Jamaica,1962,,World,Americas,5200,Caribbean,5206,Developing
+110,126,JP,JP,JPN,JPN,392,member,Japan,Japan,Japan,Japón,1956,,World,Asia,5300,Eastern Asia,5302,Developed
+,127,,,,,,areas and territories,Jarvis Island,Jarvis Island,Jarvis Island,Isla Jarvis,,,,,,,,
+283,128,JE,JE,JEY,JEY,832,areas and territories,Jersey,Bailiwick of Jersey,Jersey,Jersey,,,World,Europe,5400,Northern Europe,5402,Developed
+111,129,,,,,,areas and territories,Johnston Island,Johnston Island,Johnston Island,Isla Johnston,,,,,,,,
+112,130,JO,JO,JOR,JOR,400,member,Jordan,the Hashemite Kingdom of Jordan,Jordan,Jordania,1955,,World,Asia,5300,Western Asia,5305,Developing
+108,132,KZ,KZ,KAZ,KAZ,398,member,Kazakhstan,the Republic of Kazakhstan,Kazakhstan,Kasajstán,1992,,World,Asia,5300,Central Asia,5301,Developing
+114,133,KE,KE,KEN,KEN,404,member,Kenya,the Republic of Kenya,Kenya,Kenya,1963,,World,Africa,5100,Eastern Africa,5101,Developing
+,134,,,,,,areas and territories,Kingman Reef,Kingman Reef,Kingman Reef,Kingman Reef,,,,,,,,
+83,135,KI,KI,KIR,KIR,296,member,Kiribati,the Republic of Kiribati,Kiribati,Kiribati,1999,,World,Oceania,5500,Micronesia,5503,Developing
+275,,,KV,,KSV,,areas and territories,Kosovo,Kosovo,Kosovo,Kosovo,2008,,,,,,,
+118,137,KW,KW,KWT,KWT,414,member,Kuwait,the State of Kuwait,Kuwait,Kuwait,1963,,World,Asia,5300,Western Asia,5305,Developing
+113,138,KG,KG,KGZ,KGZ,417,member,Kyrgyzstan,the Kyrgyz Republic,Kyrgyzstan,Kirguistán,1992,,World,Asia,5300,Central Asia,5301,Developing
+120,139,LA,LA,LAO,LAO,418,member,the Lao People's Democratic Republic,the Lao People's Democratic Republic,Laos,República Democrática Popular Lao,1955,,World,Asia,5300,South-Eastern Asia,5304,Developing
+119,140,LV,LV,LVA,LVA,428,member,Latvia,the Republic of Latvia,Latvia,Letonia,1992,,World,Europe,5400,Northern Europe,5402,Developed
+121,141,LB,LB,LBN,LBN,422,member,Lebanon,the Lebanese Republic,Lebanon,Líbano,1945,,World,Asia,5300,Western Asia,5305,Developing
+122,142,LS,LS,LSO,LSO,426,member,Lesotho,the Kingdom of Lesotho,Lesotho,Lesotho,1966,,World,Africa,5100,Southern Africa,5104,Developing
+123,144,LR,LR,LBR,LBR,430,member,Liberia,the Republic of Liberia,Liberia,Liberia,1945,,World,Africa,5100,Western Africa,5105,Developing
+124,145,LY,LY,LBY,LBY,434,member,Libya,Libya,Libya,Libia,1955,,World,Africa,5100,Northern Africa,5103,Developing
+125,146,LI,LI,LIE,LIE,438,non member,Liechtenstein,the Principality of Liechtenstein,Liechtenstein,Liechtenstein,1990,,World,Europe,5400,Western Europe,5404,Developed
+126,147,LT,LT,LTU,LTU,440,member,Lithuania,the Republic of Lithuania,Lithuania,Lituania,1992,,World,Europe,5400,Northern Europe,5402,Developed
+256,148,LU,LU,LUX,LUX,442,member,Luxembourg,the Grand Duchy of Luxembourg,Luxembourg,Luxemburgo,1945,,World,Europe,5400,Western Europe,5404,Developed
+129,150,MG,MG,MDG,MDG,450,member,Madagascar,the Republic of Madagascar,Madagascar,Madagascar,1960,,World,Africa,5100,Eastern Africa,5101,Developing
+130,152,MW,MW,MWI,MWI,454,member,Malawi,the Republic of Malawi,Malawi,Malawi,1964,,World,Africa,5100,Eastern Africa,5101,Developing
+131,153,MY,MY,MYS,MYS,458,member,Malaysia,Malaysia,Malaysia,Malasia,1957,,World,Asia,5300,South-Eastern Asia,5304,Developing
+132,154,MV,MV,MDV,MDV,462,member,Maldives,the Republic of Maldives,Maldives,Maldivas,1965,,World,Asia,5300,Southern Asia,5303,Developing
+133,155,ML,ML,MLI,MLI,466,member,Mali,the Republic of Mali,Mali,Malí,1960,,World,Africa,5100,Western Africa,5105,Developing
+134,156,MT,MT,MLT,MLT,470,member,Malta,the Republic of Malta,Malta,Soberana Orden de Malta,1964,,World,Europe,5400,Southern Europe,5403,Developed
+127,157,MH,MH,MHL,MHL,584,member,the Marshall Islands,the Republic of the Marshall Islands,Marshall Islands,Islas Marshall,1991,,World,Oceania,5500,Micronesia,5503,Developing
+135,158,MQ,MQ,MTQ,MTQ,474,areas and territories,Martinique,Martinique,Martinique,Martinica,,,World,Americas,5200,Caribbean,5206,Developing
+136,159,MR,MR,MRT,MRT,478,member,Mauritania,the Islamic Republic of Mauritania,Mauritania,Mauritania,1961,,World,Africa,5100,Western Africa,5105,Developing
+137,160,MU,MU,MUS,MUS,480,member,Mauritius,the Republic of Mauritius,Mauritius,Mauricio,1968,,World,Africa,5100,Eastern Africa,5101,Developing
+270,161,YT,YT,MYT,MYT,175,areas and territories,Mayotte,Mayotte,Mayotte,Mayotte,,,World,Africa,5100,Eastern Africa,5101,Developing
+138,162,MX,MX,MEX,MEX,484,member,Mexico,the United Mexican States,Mexico,México,1945,,World,Americas,5200,Central America,5204,Developing
+145,163,FM,FM,FSM,FSM,583,member,Micronesia (Federated States of),the Federated States of Micronesia,Micronesia (Federated States of),Micronesia (Estados Federados de),1991,,World,Oceania,5500,Micronesia,5503,Developing
+139,164,,,,,,areas and territories,Midway Island,Midway Island,Midway Island,Islas Midway,,,,,,,,
+140,166,MC,MC,MCO,MCO,492,member,Monaco,the Principality of Monaco,Monaco,Mónaco,1993,,World,Europe,5400,Western Europe,5404,Developed
+141,167,MN,MN,MNG,MNG,496,member,Mongolia,Mongolia,Mongolia,Mongolia,1961,,World,Asia,5300,Eastern Asia,5302,Developing
+273,2647,ME,ME,MNE,MNE,499,member,Montenegro,Montenegro,Montenegro,Montenegro,2006,,World,Europe,5400,Southern Europe,5403,Developed
+142,168,MS,MS,MSR,MSR,500,areas and territories,Montserrat,Montserrat,Montserrat,Montserrat,,,World,Americas,5200,Caribbean,5206,Developing
+143,169,MA,MA,MAR,MAR,504,member,Morocco,the Kingdom of Morocco,Morocco,Marruecos,1956,,World,Africa,5100,Northern Africa,5103,Developing
+144,170,MZ,MZ,MOZ,MOZ,508,member,Mozambique,the Republic of Mozambique,Mozambique,Mozambique,1975,,World,Africa,5100,Eastern Africa,5101,Developing
+28,171,MM,MM,MMR,MMR,104,member,Myanmar,the Republic of the Union of Myanmar,Myanmar,Myanmar,1948,,World,Asia,5300,South-Eastern Asia,5304,Developing
+147,172,NA,NA,NAM,NAM,516,member,Namibia,the Republic of Namibia,Namibia,Namibia,1990,,World,Africa,5100,Southern Africa,5104,Developing
+148,173,NR,NR,NRU,NRU,520,member,Nauru,the Republic of Nauru,Nauru,Nauru,1999,,World,Oceania,5500,Micronesia,5503,Developing
+149,175,NP,NP,NPL,NPL,524,member,Nepal,the Federal Democratic Republic of Nepal,Nepal,Nepal,1955,,World,Asia,5300,Southern Asia,5303,Developing
+150,177,NL,NL,NLD,NLD,528,member,the Netherlands,the Kingdom of the Netherlands,Netherlands,Países Bajos,1945,,World,Europe,5400,Western Europe,5404,Developed
+151,176,AN,AN,ANT,ANT,530,old,Netherlands Antilles,Netherlands Antilles,Netherlands Antilles,Netherlands Antilles,1986,2009,World,Americas,5200,Caribbean,5206,Developing
+,,,,,,532,old,Netherlands Antilles,Netherlands Antilles,Netherlands Antilles,Netherlands Antilles,1945,1985,,,,,,
+152,,,,,,,areas and territories,Neutral Zone,Neutral Zone,Neutral Zone,Zona Neutral,,,,,,,,
+153,178,NC,NC,NCL,NCL,540,areas and territories,New Caledonia,New Caledonia,New Caledonia,Nueva Caledonia,,,World,Oceania,5500,Melanesia,5502,Developing
+156,179,NZ,NZ,NZL,NZL,554,member,New Zealand,New Zealand,New Zealand,Nueva Zelandia,1945,,World,Oceania,5500,Australia and New Zealand,5501,Developed
+157,180,NI,NI,NIC,NIC,558,member,Nicaragua,the Republic of Nicaragua,Nicaragua,Nicaragua,1945,,World,Americas,5200,Central America,5204,Developing
+158,181,NE,NE,NER,NER,562,member,the Niger,the Republic of the Niger,Niger,Níger,1960,,World,Africa,5100,Western Africa,5105,Developing
+159,182,NG,NG,NGA,NGA,566,member,Nigeria,the Federal Republic of Nigeria,Nigeria,Nigeria,1960,,World,Africa,5100,Western Africa,5105,Developing
+160,183,NU,NU,NIU,NIU,570,member,Niue,Niue,Niue,Niue,,,World,Oceania,5500,Polynesia,5504,Developing
+161,184,NF,NF,NFK,NFK,574,areas and territories,Norfolk Island,Territory of Norfolk Island,Norfolk Island,Isla Norfolk,,,World,Oceania,5500,Australia and New Zealand,5501,Developed
+163,185,MP,MP,MNP,MNP,580,areas and territories,Northern Mariana Islands,The Commonwealth of the Northern Mariana Islands,Northern Mariana Islands,Islas Marianas septentrionales,1991,,World,Oceania,5500,Micronesia,5503,Developing
+162,186,NO,NO,NOR,NOR,578,member,Norway,the Kingdom of Norway,Norway,Noruega,1945,,World,Europe,5400,Northern Europe,5402,Developed
+299,,PS,PS,PSE,WBG,275,areas and territories,Occupied Palestinian Territory,Occupied Palestinian Territory,Occupied Palestinian Territory,Territorio Palestino Ocupado,1999,,World,Asia,5300,Western Asia,5305,Developing
+221,187,OM,OM,OMN,OMN,512,member,Oman,the Sultanate of Oman,Oman,Omán,1971,,World,Asia,5300,Western Asia,5305,Developing
+164,,PC,PC,PCI,PCI,582,old,"Pacific Islands, Trust Territory of","Pacific Islands, Trust Territory of",Pacific Islands,Territorio de las Islas del Pacifico,,1990,World,Oceania,5500,Micronesia,5503,Developing
+165,188,PK,PK,PAK,PAK,586,member,Pakistan,the Islamic Republic of Pakistan,Pakistan,Pakistán,1947,,World,Asia,5300,Southern Asia,5303,Developing
+180,189,PW,PW,PLW,PLW,585,member,Palau,Palau,Palau,Palau,1991,,World,Oceania,5500,Micronesia,5503,Developing
+166,191,PA,PA,PAN,PAN,591,member,Panama,the Republic of Panama,Panama,Panamá,1945,,World,Americas,5200,Central America,5204,Developing
+168,192,PG,PG,PNG,PNG,598,member,Papua New Guinea,Independent State of Papua New Guinea,Papua New Guinea,Papua Nueva Guinea,1975,,World,Oceania,5500,Melanesia,5502,Developing
+169,194,PY,PY,PRY,PRY,600,member,Paraguay,the Republic of Paraguay,Paraguay,Paraguay,1945,,World,Americas,5200,South America,5207,Developing
+170,195,PE,PE,PER,PER,604,member,Peru,the Republic of Peru,Peru,Perú,1945,,World,Americas,5200,South America,5207,Developing
+171,196,PH,PH,PHL,PHL,608,member,the Philippines,the Republic of the Philippines,Philippines,Filipinas,1945,,World,Asia,5300,South-Eastern Asia,5304,Developing
+172,197,PN,PN,PCN,PCN,612,areas and territories,Pitcairn Islands,Pitcairn Islands,Pitcairn Islands,Islas Pitcairn,,,World,Oceania,5500,Polynesia,5504,Developing
+173,198,PL,PL,POL,POL,616,member,Poland,the Republic of Poland,Poland,Polonia,1945,,World,Europe,5400,Eastern Europe,5401,Developed
+174,199,PT,PT,PRT,PRT,620,member,Portugal,the Portuguese Republic,Portugal,Portugal,1955,,World,Europe,5400,Southern Europe,5403,Developed
+177,200,PR,PR,PRI,PRI,630,areas and territories,Puerto Rico,the Commonwealth of Puerto Rico,Puerto Rico,Puerto Rico,,,World,Americas,5200,Caribbean,5206,Developing
+179,201,QA,QA,QAT,QAT,634,member,Qatar,the State of Qatar,Qatar,Qatar,1971,,World,Asia,5300,Western Asia,5305,Developing
+117,202,KR,KR,KOR,KOR,410,member,Republic of Korea,Republic of Korea,Republic of Korea,República de Corea,1991,,World,Asia,5300,Eastern Asia,5302,Developing
+146,165,MD,MD,MDA,MDA,498,member,Republic of Moldova,the Republic of Moldova,Republic of Moldova,República de Moldova,1992,,World,Europe,5400,Eastern Europe,5401,Developed
+182,206,RE,RE,REU,REU,638,areas and territories,Réunion,Réunion,Réunion,Reunión,,,World,Africa,5100,Eastern Africa,5101,Developing
+183,203,RO,RO,ROU,ROM,642,member,Romania,Romania,Romania,Rumania,1955,,World,Europe,5400,Eastern Europe,5401,Developed
+185,204,RU,RU,RUS,RUS,643,member,the Russian Federation,the Russian Federation,Russian Federation,Federación de Rusia,1992,,World,Europe,5400,Eastern Europe,5401,Developed
+184,205,RW,RW,RWA,RWA,646,member,Rwanda,the Republic of Rwanda,Rwanda,Rwanda,1962,,World,Africa,5100,Eastern Africa,5101,Developing
+282,,BL,BL,BLM,BLM,652,areas and territories,Saint Barthélemy,Saint Barthélemy,Saint Barthélemy,San Bartalomé,,,World,Americas,5200,Caribbean,5206,Developing
+187,207,SH,SH,SHN,SHN,654,areas and territories,"Saint Helena, Ascension and Tristan da Cunha","Saint Helena, Ascension and Tristan da Cunha","Saint Helena, Ascension and Tristan da Cunha","Santa Elena, Ascension y Tristan da Cunha",,,World,Africa,5100,Western Africa,5105,Developing
+188,208,KN,KN,KNA,KNA,659,member,Saint Kitts and Nevis,Saint Kitts and Nevis,Saint Kitts and Nevis,Saint Kitts y Nevis,1983,,World,Americas,5200,Caribbean,5206,Developing
+189,209,LC,LC,LCA,LCA,662,member,Saint Lucia,Saint Lucia,Saint Lucia,Santa Lucía,1979,,World,Americas,5200,Caribbean,5206,Developing
+190,210,PM,PM,SPM,SPM,666,areas and territories,Saint Pierre and Miquelon,Saint Pierre and Miquelon,Saint Pierre and Miquelon,Saint Pierre and Miquelon,,,World,Americas,5200,Northern America,5203,Developed
+191,211,VC,VC,VCT,VCT,670,member,Saint Vincent and the Grenadines,Saint Vincent and the Grenadines,Saint Vincent and the Grenadines,San Vicente y las Granadinas,1980,,World,Americas,5200,Caribbean,5206,Developing
+281,,MF,MF,MAF,MAF,663,areas and territories,Saint-Martin (French Part),Saint-Martin (French Part),Saint-Martin (French Part),Saint-Martin (Parte francesa),,,World,Americas,5200,Caribbean,5206,Developing
+244,212,WS,WS,WSM,WSM,882,member,Samoa,the Independent State of Samoa,Samoa,Samoa,1976,,World,Oceania,5500,Polynesia,5504,Developing
+192,213,SM,SM,SMR,SMR,674,member,San Marino,the Republic of San Marino,San Marino,San Marino,1992,,World,Europe,5400,Southern Europe,5403,Developed
+193,214,ST,ST,STP,STP,678,member,Sao Tome and Principe,the Democratic Republic of Sao Tome and Principe,Sao Tome and Principe,Santo Tomé y Príncipe,1975,,World,Africa,5100,Middle Africa,5102,Developing
+285,,,,,,680,areas and territories,Sark,Sark,Sark,Sark,,,World,Europe,5400,Northern Europe,5402,Developed
+194,215,SA,SA,SAU,SAU,682,member,Saudi Arabia,the Kingdom of Saudi Arabia,Saudi Arabia,Arabia Saudita,1945,,World,Asia,5300,Western Asia,5305,Developing
+195,217,SN,SN,SEN,SEN,686,member,Senegal,the Republic of Senegal,Senegal,Senegal,1960,,World,Africa,5100,Western Africa,5105,Developing
+272,2648,RS,RS,SRB,SRB,688,member,Serbia,the Republic of Serbia,Serbia,Serbia,2006,,World,Europe,5400,Southern Europe,5403,Developed
+186,,CS,CS,SCG,SCG,891,old,Serbia and Montenegro,Serbia and Montenegro,Serbia and Montenegro,Serbia y Montenegro,1992,2005,World,Europe,5400,Southern Europe,5403,Developed
+196,220,SC,SC,SYC,SYC,690,member,Seychelles,the Republic of Seychelles,Seychelles,Seychelles,1976,,World,Africa,5100,Eastern Africa,5101,Developing
+197,221,SL,SL,SLE,SLE,694,member,Sierra Leone,the Republic of Sierra Leone,Sierra Leone,Sierra Leona,1961,,World,Africa,5100,Western Africa,5105,Developing
+200,222,SG,SG,SGP,SGP,702,member,Singapore,the Republic of Singapore,Singapore,Singapur,1965,,World,Asia,5300,South-Eastern Asia,5304,Developing
+280,,SX,SX,SXM,SXM,534,areas and territories,Sint Maarten (Dutch Part),Sint Maarten (Dutch Part),Sint Maarten (Dutch Part),Sint Maarten (Parte de los Países Bajos),2010,,World,Americas,5200,Caribbean,5206,Developing
+199,223,SK,SK,SVK,SVK,703,member,Slovakia,the Slovak Republic,Slovakia,Eslovaquia,1993,,World,Europe,5400,Eastern Europe,5401,Developed
+198,224,SI,SI,SVN,SVN,705,member,Slovenia,the Republic of Slovenia,Slovenia,Eslovenia,1992,,World,Europe,5400,Southern Europe,5403,Developed
+25,225,SB,SB,SLB,SLB,90,member,Solomon Islands,Solomon Islands,Solomon Islands,Islas Salomón,1978,,World,Oceania,5500,Melanesia,5502,Developing
+201,226,SO,SO,SOM,SOM,706,member,Somalia,Federal Republic of Somalia,Somalia,Somalia,1960,,World,Africa,5100,Eastern Africa,5101,Developing
+202,227,ZA,ZA,ZAF,ZAF,710,member,South Africa,the Republic of South Africa,South Africa,Sudáfrica,1945,,World,Africa,5100,Southern Africa,5104,Developing
+271,228,GS,GS,SGS,SGS,,areas and territories,South Georgia and Sandwich Islands,South Georgia and Sandwich Islands,South Georgia and Sandwich Islands,Islas Georgias del Sur y Sandwich del Sur,,,,,,,,
+277,,SS,SS,,SSD,728,member,South Sudan,the Republic of South Sudan,South Sudan,Sudán del Sur,2011,,World,Africa,5100,Eastern Africa,5103,Developing
+228,,SU,SU,SUN,MON,810,old,Union of Soviet Socialist Republic,Union of Soviet Socialist Republic,Union of Soviet Socialist Republic,Union of Soviet Socialist Republic,,1991,World,Europe,5400,Eastern Europe,5401,
+203,229,ES,ES,ESP,ESP,724,member,Spain,the Kingdom of Spain,Spain,España,1955,,World,Europe,5400,Southern Europe,5403,Developed
+38,231,LK,LK,LKA,LKA,144,member,Sri Lanka,the Democratic Socialist Republic of Sri Lanka,Sri Lanka,Sri Lanka,1955,,World,Asia,5300,Southern Asia,5303,Developing
+206,40764,SD,SD,SDN,SDN,736,old,the Sudan,the Republic of the Sudan,Sudan,Sudán,1956,2010,World,Africa,5100,Northern Africa,5103,Developing
+276,,SD,SD,SDN,SDN,729,member,the Sudan,the Republic of the Sudan,Sudan,Sudán,2011,,World,Africa,5100,Northern Africa,5103,Developing
+207,233,SR,SR,SUR,SUR,740,member,Suriname,the Republic of Suriname,Suriname,Suriname,1975,,World,Americas,5200,South America,5207,Developing
+260,234,SJ,SJ,SJM,SJM,744,areas and territories,Svalbard and Jan Mayen Islands,Svalbard and Jan Mayen Islands,Svalbard and Jan Mayen Islands,Islas Svalbard y Jan Mayen,,,World,Europe,5400,Northern Europe,5402,Developed
+209,235,SZ,SZ,SWZ,SWZ,748,member,Swaziland,the Kingdom of Swaziland,Swaziland,Swazilandia,1968,,World,Africa,5100,Southern Africa,5104,Developing
+210,236,SE,SE,SWE,SWE,752,member,Sweden,the Kingdom of Sweden,Sweden,Suecia,1946,,World,Europe,5400,Northern Europe,5402,Developed
+211,237,CH,CH,CHE,CHE,756,member,Switzerland,the Swiss Confederation,Switzerland,Suiza,2002,,World,Europe,5400,Western Europe,5404,Developed
+212,238,SY,SY,SYR,SYR,760,member,the Syrian Arab Republic,the Syrian Arab Republic,Syria,República Árabe Siria,1945,,World,Asia,5300,Western Asia,5305,Developing
+214,,TW,TW,TWN,TWN,158,areas and territories,"Taiwan, Province of China","Taiwan, Province of China",Taiwan,Taiwán,,,,,,,,
+208,239,TJ,TJ,TJK,TJK,762,member,Tajikistan,the Republic of Tajikistan,Tajikistan,Tayikistán,1992,,World,Asia,5300,Central Asia,5301,Developing
+216,240,TH,TH,THA,THA,764,member,Thailand,the Kingdom of Thailand,Thailand,Tailandia,1946,,World,Asia,5300,South-Eastern Asia,5304,Developing
+154,241,MK,MK,MKD,MKD,807,member,The former Yugoslav Republic of Macedonia,The former Yugoslav Republic of Macedonia,Macedonia,ex República Yugoslava de Macedonia,1992,,World,Europe,5400,Southern Europe,5403,Developed
+176,242,TL,TL,TLS,TMP,626,member,Timor-Leste,the Democratic Republic of Timor-Leste,Timor-Leste,Timor-Leste,2002,,World,Asia,5300,South-Eastern Asia,5304,Developing
+217,243,TG,TG,TGO,TGO,768,member,Togo,the Togolese Republic,Togo,Togo,1960,,World,Africa,5100,Western Africa,5105,Developing
+218,244,TK,TK,TKL,TKL,772,associate member,Tokelau,Tokelau,Tokelau,Tokelau,,,World,Oceania,5500,Polynesia,5504,Developing
+219,245,TO,TO,TON,TON,776,member,Tonga,the Kingdom of Tonga,Tonga,Tonga,1999,,World,Oceania,5500,Polynesia,5504,Developing
+220,246,TT,TT,TTO,TTO,780,member,Trinidad and Tobago,the Republic of Trinidad and Tobago,Trinidad and Tobago,Trinidad y Tobago,1962,,World,Americas,5200,Caribbean,5206,Developing
+,247,,,,,,areas and territories,Tromelin Island,Tromelin Island,Tromelin Island,Isla Tromelin,,,,,,,,
+222,248,TN,TN,TUN,TUN,788,member,Tunisia,the Republic of Tunisia,Tunisia,Túnez,1956,,World,Africa,5100,Northern Africa,5103,Developing
+223,249,TR,TR,TUR,TUR,792,member,Turkey,the Republic of Turkey,Turkey,Turquía,1945,,World,Asia,5300,Western Asia,5305,Developing
+213,250,TM,TM,TKM,TKM,795,member,Turkmenistan,Turkmenistan,Turkmenistan,Turkmenistán,1992,,World,Asia,5300,Central Asia,5301,Developing
+224,251,TC,TC,TCA,TCA,796,areas and territories,Turks and Caicos Islands,Turks and Caicos Islands,Turks and Caicos Islands,Islas Turcas y Caicos,,,World,Americas,5200,Caribbean,5206,Developing
+227,252,TV,TV,TUV,TUV,798,member,Tuvalu,Tuvalu,Tuvalu,Tuvalu,2000,,World,Oceania,5500,Polynesia,5504,Developing
+226,253,UG,UG,UGA,UGA,800,member,Uganda,the Republic of Uganda,Uganda,Uganda,1962,,World,Africa,5100,Eastern Africa,5101,Developing
+230,254,UA,UA,UKR,UKR,804,member,Ukraine,Ukraine,Ukraine,Ucraina,1992,,World,Europe,5400,Eastern Europe,5401,Developed
+225,255,AE,AE,ARE,ARE,784,member,the United Arab Emirates,the United Arab Emirates,United Arab Emirates,Emiratos Árabes Unidos,1971,,World,Asia,5300,Western Asia,5305,Developing
+229,256,GB,GB,GBR,GBR,826,member,the United Kingdom of Great Britain and Northern Ireland,the United Kingdom of Great Britain and Northern Ireland,United Kingdom,Reino Unido,1945,,World,Europe,5400,Northern Europe,5402,Developed
+215,257,TZ,TZ,TZA,TZA,834,member,the United Republic of Tanzania,the United Republic of Tanzania,Tanzania,República Unida de Tanzanía,1961,,World,Africa,5100,Eastern Africa,5101,Developing
+231,259,US,US,USA,USA,840,member,the United States of America,the United States of America,United States of America,Estados Unidos de América,1945,,World,Americas,5200,Northern America,5203,Developed
+240,258,VI,VI,VIR,VIR,850,areas and territories,United States Virgin Islands,the United States Virgin Islands,United States Virgin Islands,Islas Vírgnes (US),,,World,Americas,5200,Caribbean,5206,Developing
+234,260,UY,UY,URY,URY,858,member,Uruguay,the Eastern Republic of Uruguay,Uruguay,Uruguay,1945,,World,Americas,5200,South America,5207,Developing
+232,-1,PU,PU,PUS,PUS,,areas and territories,US Minor Is.,US Minor Is.,US Minor Is.,Islas Menores Periféricas de los Estados Unidos,,,,,,,,
+235,261,UZ,UZ,UZB,UZB,860,member,Uzbekistan,the Republic of Uzbekistan,Uzbekistan,Uzbekistán,1992,,World,Asia,5300,Central Asia,5301,Developing
+155,262,VU,VU,VUT,VUT,548,member,Vanuatu,the Republic of Vanuatu,Vanuatu,Vanuatu,1981,,World,Oceania,5500,Melanesia,5502,Developing
+236,263,VE,VE,VEN,VEN,862,member,Venezuela (Bolivarian Republic of),the Bolivarian Republic of Venezuela,Venezuela,Venezuela (República Bolivariana de),1945,,World,Americas,5200,South America,5207,Developing
+237,264,VN,VN,VNM,VNM,704,member,Viet Nam,the Socialist Republic of Viet Nam,Viet Nam,Viet Nam,1977,,World,Asia,5300,South-Eastern Asia,5304,Developing
+242,265,WK,WK,WAK,WAK,,areas and territories,Wake Island,Wake Island,Wake Island,Isla Wake,,,,,,,,
+243,266,WF,WF,WLF,WLF,876,areas and territories,Wallis and Futuna Islands,Wallis and Futuna Islands,Wallis and Futuna Islands,Islas Wallis y Futuna,,,World,Oceania,5500,Polynesia,5504,Developing
+245,267,,,,,,areas and territories,the West Bank,The West Bank,West Bank,the West Bank,,,,,,,,
+205,268,EH,EH,ESH,ESH,732,areas and territories,Western Sahara,Western Sahara,Western Sahara,Sáhara occidental,,,World,Africa,5100,Northern Africa,5103,Developing
+249,269,YE,YE,YEM,YEM,887,member,Yemen,the Republic of Yemen,Yemen,Yemen,1990,,World,Asia,5300,Western Asia,5305,Developing
+247,,,,,,720,old,Democratic Yemen,Democratic Yemen,Democratic Yemen,Yemen,,1989,World,Asia,5300,Western Asia,5305,Developing
+246,,,,,,886,old,Yemen (old),Yemen (old),Yemen (old),Yemen,1947,1989,World,Asia,5300,Western Asia,5305,Developing
+248,,YU,YU,YUG,YUG,890,old,Yugoslav SFR,Yugoslav SFR,Yugoslav SFR,Yugoslav SFR,,1991,World,Europe,5400,Southern Europe,5403,Developed
+251,270,ZM,ZM,ZMB,ZMB,894,member,Zambia,the Republic of Zambia,Zambia,Zambia,1964,,World,Africa,5100,Eastern Africa,5101,Developing
+3698,,,,EAZ,EAZ,835,areas and territories,Zanzibar,Zanzibar,Zanzibar,Zanzibar,,,,,,,,
+181,271,ZW,ZW,ZWE,ZWE,716,member,Zimbabwe,the Republic of Zimbabwe,Zimbabwe,Zimbabwe,1980,,World,Africa,5100,Eastern Africa,5101,Developing
