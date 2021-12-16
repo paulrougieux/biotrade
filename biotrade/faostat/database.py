@@ -276,8 +276,7 @@ class DatabaseFaostat(Database):
 
         Select crop trade where products contain the word "soy"
 
-        >>> soy_prod = db.select(table="crop_trade",
-        >>>                      product = "soy")
+        >>> soy_trade = db.select(table="crop_trade", product = "soy")
 
         Select crop production where products contain the words in the list
 
