@@ -130,7 +130,7 @@ def agg_by_country_groups(df, agg_level):
     )
 
     # Merge partners with the corresponding continent/subcontinent data
-    if "partern_code" in df.columns:
+    if "partner_code" in df.columns:
         df = df.merge(
             df_continents,
             how="left",
