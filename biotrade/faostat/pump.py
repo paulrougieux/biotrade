@@ -199,7 +199,7 @@ class Pump:
         )
         return df
 
-    def transfer_csv_to_db_in_chunks(self, short_name):
+    def transfer_csv_to_db_in_chunks(self, short_name, chunk_size):
         """Transfer large CSV files to the database in chunks
         so that a data frame with 40 million rows doesn't overload the memory.
         """
@@ -216,7 +216,7 @@ class Pump:
         # Read in chunk and pass each chunk to the database
         csv_file_name = temp_dir / re.sub(".zip$", ".csv", self.datasets[short_name])
         for df_chunk in pandas.read_csv(
-            csv_file_name, chunksize=10 ** 5, encoding="latin1"
+            csv_file_name, chunksize=chunk_size, encoding="latin1"
         ):
             df_chunk = self.sanitize_variable_names(df_chunk, column_renaming)
             print(df_chunk.head(1))
@@ -237,14 +237,23 @@ class Pump:
         for zip_file_name in self.datasets.values():
             self.download_zip_csv(zip_file_name)
 
-    def update_db(self, skip_crop_trade=False):
+    def update_db(self, chunk_size=10 ** 5, skip_crop_trade=False):
         """Update the database by replacing table content with the content of
         the bulk zipped CSV files. Database field types are determined in faostat.db.
+
+        :param int chunk_size: size of the data frame chunks
+                               to transfer to the database
+        :param bool skip_crop_trade: skip the large crop trade table
+        :return: Nothing
 
         Usage:
 
         >>> from biotrade.faostat import faostat
         >>> faostat.pump.update_db()
+
+        Use a larger chunk size
+
+        >>> faostat.pump.update_db(chunk_size = 10 **6)
 
         Skip the large crop trade dataset
 
@@ -268,7 +277,7 @@ class Pump:
         for table_name in datasets:
             # There could be a memory error with dataset.
             # Read the file in chunks so that the memory doesn't get too full
-            self.transfer_csv_to_db_in_chunks(table_name)
+            self.transfer_csv_to_db_in_chunks(table_name, chunk_size)
 
     def show_metadata_link(self, short_name):
         """Display the metadata link associated with a dataset
