@@ -115,11 +115,13 @@ def agg_by_country_groups(df, agg_level):
         >>> db = faostat.db
         >>> df_soy = db.select(table="crop_trade", product = "soy")
 
-        Aggregate data by continents
+    Aggregate data by continents
+
         >>> df_soy_agg_continent = agg_by_country_groups(df_soy_merge,
                 'continent')
 
-        Aggregate data by subcontinents
+    Aggregate data by subcontinents
+
         >>> df_soy_agg_subcontinent = agg_by_country_groups(df_soy_merge,
             'sub_continent')
     """
