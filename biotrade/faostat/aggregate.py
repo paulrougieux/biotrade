@@ -10,6 +10,12 @@ Unit D1 Bioeconomy.
 """
 
 from biotrade.faostat.country_groups import EU_COUNTRY_NAMES
+from biotrade.faostat import faostat
+
+# Import country table selecting continents and sub continents columns
+df_continents = faostat.country_groups.continents[
+    ["faost_code", "continent", "sub_continent"]
+]
 
 
 def agg_trade_eu_row(df, index_side="partner"):
@@ -99,29 +105,15 @@ def agg_by_country_groups(df, agg_level):
     For example select all bilateral flows for soy trade and select the matrix
     by continents/subcontinents
 
-        Select bilater trade of soy
+    Import function agg_by_country_groups
+
         >>> from biotrade.faostat import faostat
+        >>> from biotrade.faostat.aggregate import agg_by_country_groups
+
+    Select bilateral trade of soy
+
         >>> db = faostat.db
         >>> df_soy = db.select(table="crop_trade", product = "soy")
-
-        Import country table selecting continents and sub continents columns
-        >>> df_continents = faostat.country_groups.continents[
-                ['faost_code','continent', 'sub_continent']]
-
-        Merge soy data of reporters whith the corresponding
-        continent/subcontinent data
-        >>> df_soy_merge = df_soy.merge(
-                df_continents, how='left', left_on = 'reporter_code',
-                right_on = 'faost_code')
-
-        Merge soy data also for parteners whith the corresponding
-        continent/subcontinent data
-        >>> df_soy_merge = df_soy_merge.merge(df_continents, how='left',
-                left_on = 'partner_code', right_on = 'faost_code',
-                suffixes=('_reporter','_partner'))
-
-        Import function agg_by_country_groups
-        >>> from biotrade.faostat.aggregate import agg_by_country_groups
 
         Aggregate data by continents
         >>> df_soy_agg_continent = agg_by_country_groups(df_soy_merge,
@@ -131,7 +123,23 @@ def agg_by_country_groups(df, agg_level):
         >>> df_soy_agg_subcontinent = agg_by_country_groups(df_soy_merge,
             'sub_continent')
     """
-    # fixed aggreggate column names
+
+    # Merge reporters with the corresponding continent/subcontinent data
+    df = df.merge(
+        df_continents, how="left", left_on="reporter_code", right_on="faost_code"
+    )
+
+    # Merge partners with the corresponding continent/subcontinent data
+    if "partern_code" in df.columns:
+        df = df.merge(
+            df_continents,
+            how="left",
+            left_on="partner_code",
+            right_on="faost_code",
+            suffixes=("_reporter", "_partner"),
+        )
+
+    # fixed aggregation column names
     index = ["period", "product", "product_code", "element", "element_code", "unit"]
     for column in df.columns:
         if agg_level == "continent":
