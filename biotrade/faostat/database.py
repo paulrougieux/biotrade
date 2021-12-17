@@ -16,6 +16,7 @@ import logging
 from sqlalchemy import Integer, Float, Text, UniqueConstraint
 from sqlalchemy import Table, Column, MetaData, or_
 from sqlalchemy import create_engine, inspect
+from sqlalchemy.schema import CreateSchema
 import pandas
 
 # Internal modules
@@ -75,6 +76,16 @@ class DatabaseFaostat(Database):
         self.metadata = MetaData(schema=self.schema)
         self.metadata.bind = self.engine
         self.inspector = inspect(self.engine)
+
+        # Create the schema if it doesn't exist.
+        # Exclude the SQLite engine because there is only a default schemas for that engine.
+        # And the SQLite dialect doesn't have a has_schema() method.
+        if hasattr(self.engine.dialect, "has_schema") and callable(
+            getattr(self.engine.dialect, "has_schema")
+        ):
+            if not self.engine.dialect.has_schema(self.engine, self.schema):
+                self.engine.execute(CreateSchema(self.schema))
+
         # Describe table metadata
         self.forestry_production = self.describe_production_table(
             name="forestry_production"
