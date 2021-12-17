@@ -53,7 +53,6 @@ EU_COUNTRY_NAMES = [
 class CountryGroups(object):
     """
     Comtrade product list, with additional information.
-    >>>
     """
 
     def __init__(self, parent):
@@ -69,7 +68,25 @@ class CountryGroups(object):
 
     @property
     def continents(self):
-        """Country groupings by continents"""
+        """Country groupings by continents and subcontinents
+
+        :return: A data frame of table faostat_country_groups.csv
+
+        For example select from the crop trade table soy products and merge
+        with the continents and subcontinents data, regarding both reporter
+        and partner countries.
+
+        >>> from biotrade.faostat import faostat
+        >>> db = faostat.db
+        >>> df_soy = db.select(table="crop_trade", product = "soy")
+        >>> df_continents = faostat.country_groups.continents[
+                ['faost_code','continent', 'sub_continent']]
+        >>> df_soy_merge = df_soy.merge(df_continents, how='left',
+                left_on = 'reporter_code', right_on = 'faost_code')
+        >>> df_soy_merge = df_soy_merge.merge(df_continents, how='left',
+                left_on = 'partner_code', right_on = 'faost_code',
+                suffixes=('_reporter','_partner'))
+        """
         path = self.config_data_dir / "faostat_country_groups.csv"
         df = pandas.read_csv(path)
         return df
