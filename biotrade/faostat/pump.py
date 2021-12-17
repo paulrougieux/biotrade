@@ -253,7 +253,7 @@ class Pump:
 
         Use a larger chunk size
 
-        >>> faostat.pump.update_db(chunk_size = 10 **6)
+        >>> faostat.pump.update_db(chunk_size = 10 ** 6)
 
         Skip the large crop trade dataset
 
