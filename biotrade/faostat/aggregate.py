@@ -55,8 +55,7 @@ def agg_trade_eu_row(df, index_side="partner"):
         Out: array(['eu', 'row'], dtype=object)
     """
     if index_side not in ["reporter", "partner"]:
-        raise ValueError(
-            "index_side can only take the values 'reporter' or 'partner'")
+        raise ValueError("index_side can only take the values 'reporter' or 'partner'")
     country_group = index_side + "_group"
     df[country_group] = "row"
     df[country_group] = df[country_group].where(
@@ -81,9 +80,8 @@ def agg_trade_eu_row(df, index_side="partner"):
     # Check that the total value hasn't changed
     if not sum(df_agg["value"]) == sum(df["value"]):
         raise ValueError(
-        f"The total value sum of the aggregated data {sum(df_agg['value'])}"
-        + \
-        f"doesn't match with the sum of the input data frame{sum(df['value'])}"
+            f"The total value sum of the aggregated data {sum(df_agg['value'])}"
+            + f"doesn't match with the sum of the input data frame{sum(df['value'])}"
         )
     return df_agg
 
@@ -134,14 +132,12 @@ def agg_by_country_groups(df, agg_level):
             'sub_continent')
     """
     # fixed aggreggate column names
-    index = ["period", "product", "product_code", "element", "element_code",
-        "unit"]
+    index = ["period", "product", "product_code", "element", "element_code", "unit"]
     for column in df.columns:
         if agg_level == "continent":
             # check if the are reporter /partner continent columns into
             # dataframe to aggregate
-            if column in ["continent_reporter", "continent_partner",
-                "continent"]:
+            if column in ["continent_reporter", "continent_partner", "continent"]:
                 index.append(column)
         elif agg_level == "sub_continent":
             # check if the are reporter /partner subcontinent columns into
