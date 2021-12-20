@@ -73,8 +73,10 @@ class DatabaseComtrade(Database):
         self.yearly = self.describe_trade_table(name="yearly")
         self.yearly_hs2 = self.describe_trade_table(name="yearly_hs2")
         self.tables = {
+            # Data at the HS 6 digit level
             "monthly": self.monthly,
             "yearly": self.yearly,
+            # Data at the HS 2 digit level
             "yearly_hs2": self.yearly_hs2,
         }
         # Create tables if they don't exist
