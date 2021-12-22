@@ -29,7 +29,7 @@ class CountryGroups(object):
         Usage:
 
         >>> from biotrade.comtrade import comtrade
-        >>> comtrade.countries.reporters
+        >>> comtrade.country_groups.reporters
 
         For information the internal list is a filtered version of
         the list of reporters
