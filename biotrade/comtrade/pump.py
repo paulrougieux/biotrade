@@ -209,7 +209,7 @@ class Pump:
         >>> comtrade.pump.loop_on_reporters("44", "yearly_hs2")
         """
         records_downloaded = 0
-        reporters = self.parent.countries.reporters
+        reporters = self.parent.country_groups.reporters
         # Download the last 5 years for one product, one reporter and all its partners
         year = datetime.datetime.today().year
         # Convert each element of the list to a string
