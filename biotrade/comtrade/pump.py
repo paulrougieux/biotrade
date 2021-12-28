@@ -64,6 +64,7 @@ class Pump:
     def __init__(self, parent):
         # Default attributes #
         self.parent = parent
+        self.db = self.parent.db
         # Mapping table used to rename columns
         self.column_names = self.parent.column_names
         # Get API authentication token from an environmental variable
@@ -188,6 +189,117 @@ class Pump:
             df = pandas.json_normalize(json_content["results"])
         return df
 
+    def download_to_db_reporter_loop(
+        self, table_name, start_year, end_year, product_code, frequency
+    ):
+        """Download data from the Comtrade API for all reporters for the given list of product codes
+        and years specified.
+
+        Download data for all product codes, all reporters and all partners choosing frequency
+        (annual or monthly) and table to store data
+        Upon download failure, give a message, wait 10 seconds then try to download again.
+        In case of new failure, double the wait time until the download works again
+        Store the data in the specified database.
+
+        For example download data for palm oil data of HS code 151190, between 2016 and 2021
+        storing them into the monthly table of database
+
+        >>> from biotrade.comtrade import comtrade
+        >>> comtrade.pump.download_to_db_reporter_loop(
+                table_name = 'monthly',
+                start_year = 2016,
+                end_year = 2021,
+                product_code = '151190',
+                frequency = 'M',
+            )
+        """
+        records_downloaded = 0
+        reporters = self.parent.country_groups.reporters
+        # list of years
+        years = [str(i) for i in range(start_year, end_year + 1)]
+        for reporter_code in reporters.id:
+
+            reporter_name = reporters.text[reporters.id == reporter_code].to_string(
+                index=False
+            )
+            # https://comtrade.un.org/data/doc/api
+            # "1 request every second (per IP address or authenticated user)."
+            time.sleep(2)
+
+            # reset counter for loop of products
+            product_counter = 0
+            # rest counter for loop of periods
+            period_counter = 0
+            # Select the first 5 products code at a time to avoid row limits to download
+            product_block = product_code[
+                product_counter * 5 : (product_counter + 1) * 5
+            ]
+            # no more products to query
+            while product_block != []:
+                # differentiate selection of the period based on the frequency
+                if frequency == "A":
+                    # selection of 5 years
+                    period = years[period_counter * 5 : (period_counter + 1) * 5]
+                elif frequency == "M":
+                    # selection of 1 year(12 months)
+                    period = years[period_counter : period_counter + 1]
+                # no more periods to query
+                if period == []:
+                    # continue with the next slot of products code
+                    product_counter += 1
+                    period_counter = 0
+                    product_block = product_code[
+                        product_counter * 5 : (product_counter + 1) * 5
+                    ]
+                    continue
+                else:
+                    # conversion to a string
+                    period = ",".join(period)
+
+                download_successful = False
+                # Reset additional sleep time used in case of error
+                sleep_time = 10
+                # Try to download doubling sleep time until it succeeds.
+                # Abort when sleep time increases to more than an hour.
+                while not download_successful and sleep_time < 3600:
+                    try:
+                        df = self.download_df(
+                            max=100000,
+                            freq=frequency,
+                            ps=period,
+                            r=reporter_code,
+                            cc=",".join(product_block),
+                        )
+                        download_successful = True
+                    except Exception as error:
+                        sleep_time *= 2
+                        self.logger.info(
+                            "Failed to download %s \n %s. \nWaiting %s seconds...",
+                            reporter_name,
+                            error,
+                            sleep_time,
+                        )
+                        time.sleep(sleep_time)
+                # Store in the database store the message if it fails
+                try:
+                    self.db.append(df, table_name)
+
+                    period_counter += 1
+                except Exception as error:
+                    self.logger.info(
+                        "Failed to store %s in the database\n %s", reporter_name, error
+                    )
+                # Keep track of the country name and length of the data in the log file
+                records_downloaded += len(df)
+                self.logger.info(
+                    "Downloaded %s records for %s (code %s).\n"
+                    + "%s records downloaded in total.",
+                    len(df),
+                    reporter_name,
+                    reporter_code,
+                    records_downloaded,
+                )
+
     def download_to_db(self, table, *args, **kwargs):
         """Download Comtrade data and store it into the given database table"""
         # You might need to set the chunk size argument if there is an error.
@@ -256,7 +368,9 @@ class Pump:
             df.drop(columns=["commodity"], inplace=True, errors="ignore")
             # Store in the database store the message if it fails
             try:
-                self.parent.database.append(df, table_name)
+                self.parent.db.append(df, table_name)
+            # TODO check the error details,
+            # check if data are the sames otherwise raise an error
             except Exception as error:
                 self.logger.info(
                     "Failed to store %s in the database\n %s", reporter_name, error
