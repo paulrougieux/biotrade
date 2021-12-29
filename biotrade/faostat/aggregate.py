@@ -92,18 +92,20 @@ def agg_trade_eu_row(df, index_side="partner"):
     return df_agg
 
 
-def agg_by_country_groups(df, agg_level):
+def agg_by_country_groups(df, agg_reporter=None, agg_partner=None):
     """Aggregate country data to continent or subcontinent groups
 
     :param data frame df: data from faostat merged with continent/subcontinent
     table
-    :param str agg_level: "continent" or "sub_continent" defines which level
-    of data aggregation to perform
+    :param str agg_reporter: "continent" or "sub_continent" defines which level
+    of data aggregation to perform on the reporter side
+    :param str agg_partner: "continent" or "sub_continent" defines which level
+    of data aggregation to perform on the partner side
     :return dataframe aggregated by continent/subcontinent instead of
     countries
 
-    For example select all bilateral flows for soy trade and select the matrix
-    by continents/subcontinents
+    For example selecting soy trade data for all world countries, aggregate
+    data by continents or subcontinents for both reporter and partner
 
     Import function agg_by_country_groups
 
@@ -117,16 +119,27 @@ def agg_by_country_groups(df, agg_level):
 
     Aggregate data by continents
 
-        >>> soy_agg_continent = agg_by_country_groups(soy, 'continent')
+        >>> soy_agg_continent = agg_by_country_groups(soy,
+            agg_reporter = 'continent', agg_partner = 'continent')
 
     Aggregate data by subcontinents
 
-        >>> soy_agg_subcontinent = agg_by_country_groups(soy, 'sub_continent')
+        >>> soy_agg_subcontinent = agg_by_country_groups(soy,
+            agg_reporter = 'sub_continent', agg_partner = 'sub_continent')
+
+    For example selecting Brazil and Indonesia as reporter countries.
+    Aggregate data by reporter countries and continents for partners only
+
+        >>> soy = db.select(table="crop_trade",
+                reporter = ["Brazil", "Indonesia"], product = "soy")
+        >>> soy_agg_continent_r_p = agg_by_country_groups(soy,
+                agg_partner = "continent")
     """
 
     # Merge reporters with the corresponding continent/subcontinent data
     df = df.merge(
-        df_continents, how="left", left_on="reporter_code", right_on="faost_code"
+        df_continents, how="left", left_on="reporter_code",
+        right_on="faost_code",
     )
 
     # Merge partners with the corresponding continent/subcontinent data
@@ -140,22 +153,41 @@ def agg_by_country_groups(df, agg_level):
         )
 
     # fixed aggregation column names
-    index = ["period", "product", "product_code", "element", "element_code", "unit"]
-    for column in df.columns:
-        if agg_level == "continent":
-            # check if the are reporter /partner continent columns into
-            # dataframe to aggregate
-            if column in ["continent_reporter", "continent_partner", "continent"]:
-                index.append(column)
-        elif agg_level == "sub_continent":
-            # check if the are reporter /partner subcontinent columns into
-            # dataframe to aggregate
-            if column in [
-                "sub_continent_reporter",
-                "sub_continent_partner",
-                "sub_continent",
-            ]:
-                index.append(column)
+    index = ["period", "product", "product_code", "element", "element_code",
+        "unit"]
+
+    if agg_reporter is None:
+        # aggregate by reporter and reporter code (if columns exist) since no
+        # continent/subcontinent reporter aggregation selected
+        [
+            index.append(column)
+            for column in df.columns
+            if column in ["reporter", "reporter_code"]
+        ]
+    else:
+        # check if the are reporter continent/subcontinent columns into
+        # dataframe to aggregate
+        [
+            index.append(column)
+            for column in df.columns
+            if column in [f"{agg_reporter}_reporter", f"{agg_reporter}"]
+        ]
+    if agg_partner is None:
+        # aggregate by partner and partner code (if columns exist) since no
+        # continent/subcontinet partner aggregation selected
+        [
+            index.append(column)
+            for column in df.columns
+            if column in ["partner", "partner_code"]
+        ]
+    else:
+        # check if the are partner continent/subcontinent columns into
+        # dataframe to aggregate
+        [
+            index.append(column)
+            for column in df.columns
+            if column == f"{agg_partner}_partner"
+        ]
     # Aggregate
     df_agg = df.groupby(index).agg(value=("value", sum)).reset_index()
     return df_agg
