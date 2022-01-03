@@ -30,9 +30,12 @@ def value_quantity_share(df, variable, df_relationship, index_list):
     "oil_soybean" and "cake_soybeans" resulting from "soybeans" primary
     commodity.
 
-    Select bilateral trade of soy
+    Import dependencies and select bilateral trade of soy
 
         >>> from biotrade.faostat import faostat
+        >>> from biotrade.faostat.share_coefficients import
+                value_quantity_share
+        >>> import pandas
         >>> db = faostat.db
         >>> soy = db.select(table="crop_trade", product = "soy")
 
@@ -46,7 +49,6 @@ def value_quantity_share(df, variable, df_relationship, index_list):
 
     Define relationship dataframe
 
-        >>> import pandas
         >>> relationship = pandas.DataFrame({
             'parent': ['soybeans','soybeans'],
             'child': ['oil_soybean', 'cake_soybeans']})
