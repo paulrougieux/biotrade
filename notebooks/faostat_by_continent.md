@@ -5,9 +5,9 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.13.4
+      jupytext_version: 1.13.5
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
@@ -37,8 +37,8 @@ Select crop production and crop bilateral trade where products contain the word 
 ```python
 soy_prod = db.select(table="crop_production", product = "soy")
 soy_trade = db.select(table="crop_trade", product = "soy")
-soy_prod_c = agg_by_country_groups(soy_prod, 'continent')
-soy_trade_c = agg_by_country_groups(soy_trade, 'continent')
+soy_prod_c = agg_by_country_groups(soy_prod, agg_reporter = 'continent')
+soy_trade_c = agg_by_country_groups(soy_trade, agg_reporter = 'continent', agg_partner = 'continent')
 soy_trade_c["value_million"] = soy_trade_c["value"] / 1e6
 ```
 
