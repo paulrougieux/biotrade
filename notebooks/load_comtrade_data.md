@@ -14,6 +14,7 @@ jupyter:
 
 ```python
 from biotrade.comtrade import comtrade
+import pandas
 ```
 
 # Load monthly trade data from UN Comtrade into the database
@@ -37,10 +38,33 @@ Download monthly data from 2016 to 2021 and pump data to database. The function 
 
 ```python
 comtrade.pump.download_to_db_reporter_loop(
-        table_name = 'monthly',
-        start_year = 2016,
-        end_year = 2021,
-        product_code = veg_6dig_codes,
-        frequency = "M",
-    )
+    table_name = 'monthly',
+    start_year = 2016,
+    end_year = 2021,
+    product_code = veg_6dig_codes,
+    frequency = "M",
+)
+```
+
+# Load yearly trade data for HS2 from UN Comtrade into the database
+The goal is to load yearly bilateral trade data. Here we report the example of data api download and pump to database from year 2000 to 2021 for products with 2 digit codes (from config_data/comtrade_hs_2d.csv) into the Comtrade schema raw_comtrade table raw_comtrade.yearly_hs2.
+
+Select product codes from config_data/comtrade_hs_2d.csv and transform them into a list of strings
+
+```python
+path = comtrade.config_data_dir/ "comtrade_hs_2d.csv"
+p_2dig_int = pandas.read_csv(path)['id'].tolist()
+p_2dig = [str(int) for int in p_2dig_int]
+```
+
+Download yearly data from 2000 to 2021 and pump data to database. The function dowload_to_db_reporter_loop loops on reporter codes
+
+```python
+comtrade.pump.download_to_db_reporter_loop(
+    table_name = 'yearly_hs2',
+    start_year = 2000,
+    end_year = 2021,
+    product_code = p_2dig,
+    frequency = "A",
+)
 ```
