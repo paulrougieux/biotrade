@@ -33,6 +33,7 @@ greater than 9999.
 from pathlib import Path
 from warnings import warn
 import datetime
+import pytz
 import os
 import re
 import time
@@ -189,15 +190,97 @@ class Pump:
             df = pandas.json_normalize(json_content["results"])
         return df
 
+    def write_pump_log(
+        self,
+        timedate="",
+        table="",
+        max="",
+        type="",
+        freq="",
+        px="",
+        ps="",
+        r="",
+        p="",
+        rg="",
+        cc="",
+        fmt="",
+        head="",
+        token="",
+        status="",
+        rows="",
+    ):
+        """
+        Pump method to write API parameter values used to query comtrade repository
+        and status of stored data into table "pump_comtrade_table.csv".
+        If table does not exist, it is created
+        """
+        # path of the table
+        log_path = Path(__file__).resolve().parent / "pump_comtrade_table.csv"
+        # create headers of data frame
+        df = pandas.DataFrame(
+            {
+                "date": [],
+                "table": [],
+                "max": [],
+                "type": [],
+                "freq": [],
+                "px": [],
+                "ps": [],
+                "r": [],
+                "p": [],
+                "rg": [],
+                "cc": [],
+                "fmt": [],
+                "head": [],
+                "token": [],
+                "status": [],
+                "rows": [],
+            }
+        )
+        # check if table exists
+        if log_path.exists() == False:
+            # create table if not exist
+            df.to_csv(log_path, mode="a", index=False)
+        # create new row of df containing API parameter values
+        df.loc[len(df)] = [
+            timedate.strftime("%Y-%m-%d %H:%M %z"),
+            str(table),
+            str(max),
+            str(type),
+            str(freq),
+            str(px),
+            str(ps),
+            str(r),
+            str(p),
+            str(rg),
+            str(cc),
+            str(fmt),
+            str(head),
+            str(token),
+            str(status),
+            str(rows),
+        ]
+        # write row to table
+        df.to_csv(log_path, mode="a", index=False, header=False)
+
     def download_to_db_reporter_loop(
         self, table_name, start_year, end_year, product_code, frequency
     ):
-        """Download data from the Comtrade API for all reporters for the given list of product codes
-        and years specified.
+        """Download data from the Comtrade API for all reporters for the given
+        list of product codes and years specified.
 
-        Download data for all product codes, all reporters and all partners choosing frequency
-        (annual or monthly) and table to store data
-        Upon download failure, give a message, wait 10 seconds then try to download again.
+        :param table_name, str defining the comtrade table to upload data
+        ("monthly", "yearly", "yearly_hs2")
+        :param start_year, int, the initial year to download data
+        :param end_year, int, the final year to download data
+        :param product_code, list, product codes
+        :param frequency, str, defines the frequency of data ("M" monthly,
+        "A" annual)
+
+        Download data for all product codes, all reporters and all partners
+        choosing frequency (annual or monthly) and table to store data
+        Upon download failure, give a message, wait 10 seconds then try to
+        download again.
         In case of new failure, double the wait time until the download works again
         Store the data in the specified database.
 
@@ -230,9 +313,14 @@ class Pump:
             product_counter = 0
             # rest counter for loop of periods
             period_counter = 0
+            # define the number of product codes for API depending on the frequency
+            if frequency == "A":
+                nr_product = 15
+            elif frequency == "M":
+                nr_product = 5
             # Select the first 5 products code at a time to avoid row limits to download
             product_block = product_code[
-                product_counter * 5 : (product_counter + 1) * 5
+                product_counter * nr_product : (product_counter + 1) * nr_product
             ]
             # no more products to query
             while product_block != []:
@@ -249,7 +337,9 @@ class Pump:
                     product_counter += 1
                     period_counter = 0
                     product_block = product_code[
-                        product_counter * 5 : (product_counter + 1) * 5
+                        product_counter
+                        * nr_product : (product_counter + 1)
+                        * nr_product
                     ]
                     continue
                 else:
@@ -259,6 +349,8 @@ class Pump:
                 download_successful = False
                 # Reset additional sleep time used in case of error
                 sleep_time = 10
+                # Instantiate data frame
+                df = pandas.DataFrame()
                 # Try to download doubling sleep time until it succeeds.
                 # Abort when sleep time increases to more than an hour.
                 while not download_successful and sleep_time < 3600:
@@ -271,24 +363,51 @@ class Pump:
                             cc=",".join(product_block),
                         )
                         download_successful = True
-                    except Exception as error:
+                    except Exception as error_http:
                         sleep_time *= 2
                         self.logger.info(
                             "Failed to download %s \n %s. \nWaiting %s seconds...",
                             reporter_name,
-                            error,
+                            error_http,
                             sleep_time,
+                        )
+                        # Trace API parameters and error HTTP into table
+                        self.write_pump_log(
+                            timedate=datetime.datetime.now(
+                                pytz.timezone("Europe/Rome")
+                            ),
+                            table=table_name,
+                            max=100000,
+                            type="C",
+                            freq=frequency,
+                            px="HS",
+                            ps=period,
+                            r=reporter_code,
+                            p="all",
+                            rg="all",
+                            cc=",".join(product_block),
+                            fmt="json",
+                            head="M",
+                            token=self.token,
+                            status=error_http,
+                            rows="",
                         )
                         time.sleep(sleep_time)
                 # Store in the database store the message if it fails
                 try:
                     self.db.append(df, table_name)
-
-                    period_counter += 1
-                except Exception as error:
+                    # Define the status of stored data
+                    if len(df) > 0:
+                        status = "stored"
+                    elif len(df) == 0:
+                        status = "empty"
+                except Exception as error_db:
                     self.logger.info(
-                        "Failed to store %s in the database\n %s", reporter_name, error
+                        "Failed to store %s in the database\n %s",
+                        reporter_name,
+                        error_db,
                     )
+                    status = error_db
                 # Keep track of the country name and length of the data in the log file
                 records_downloaded += len(df)
                 self.logger.info(
@@ -299,6 +418,27 @@ class Pump:
                     reporter_code,
                     records_downloaded,
                 )
+                # Trace API parameters and db status into table
+                self.write_pump_log(
+                    timedate=datetime.datetime.now(pytz.timezone("Europe/Rome")),
+                    table=table_name,
+                    max=100000,
+                    type="C",
+                    freq=frequency,
+                    px="HS",
+                    ps=period,
+                    r=reporter_code,
+                    p="all",
+                    rg="all",
+                    cc=",".join(product_block),
+                    fmt="json",
+                    head="M",
+                    token=self.token,
+                    status=status,
+                    rows=len(df),
+                )
+                # new period
+                period_counter += 1
 
     def download_to_db(self, table, *args, **kwargs):
         """Download Comtrade data and store it into the given database table"""
