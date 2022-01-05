@@ -92,6 +92,16 @@ Select the mirror flows reported by Brazil, where the Netherlands was a partner
     >>>                        partner="Netherlands")
 
 
+
+# Metadata
+
+
+## Release dates
+
+FAOSTAT release dates are available at :
+https://fenixservices.fao.org/faostat/static/releasecalendar/Default.aspx
+
+
 # Licence
 
 This software is dual-licenced under both MIT and EUPL 1.2.
