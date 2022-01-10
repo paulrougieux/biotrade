@@ -211,11 +211,12 @@ class Pump:
     ):
         """
         Pump method to write API parameter values used to query comtrade repository
-        and status of stored data into table "pump_comtrade_table.csv".
+        and status of stored data into table "biotrade_data/comtrade/pump_comtrade_table.csv".
         If table does not exist, it is created
         """
         # path of the table
-        log_path = Path(__file__).resolve().parent / "pump_comtrade_table.csv"
+
+        log_path = self.parent.data_dir / "pump_comtrade_api_args.csv"
         # create headers of data frame
         df = pandas.DataFrame(
             {
@@ -238,7 +239,7 @@ class Pump:
             }
         )
         # check if table exists
-        if log_path.exists() == False:
+        if log_path.exists() is False:
             # create table if not exist
             df.to_csv(log_path, mode="a", index=False)
         # create new row of df containing API parameter values
