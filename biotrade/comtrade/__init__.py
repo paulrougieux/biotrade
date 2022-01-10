@@ -54,9 +54,6 @@ class Comtrade:
     Parent to various objects dealing with data from the UN Comtrade API.
     """
 
-    # Location of the data
-    data_dir = data_dir / "comtrade"
-
     # Location of module configuration data
     config_data_dir = module_dir / "config_data"
 
@@ -65,6 +62,12 @@ class Comtrade:
     # Select only relevant columns and remove incomplete mappings
     df = df[["jrc", "comtrade_machine"]]
     column_names = df[df.isna().sum(axis=1) == 0]
+
+    def __init__(self):
+        # Location of the data
+        self.data_dir = data_dir / "comtrade"
+        if not self.data_dir.exists():
+            self.data_dir.mkdir()
 
     @property
     def country_groups(self):

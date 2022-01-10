@@ -60,6 +60,8 @@ class Faostat:
 
     # Location of the data
     data_dir = data_dir / "faostat"
+    if not data_dir.exists():
+        data_dir.create()
 
     # Location of module configuration data
     config_data_dir = module_dir / "config_data"
@@ -69,6 +71,12 @@ class Faostat:
     df = df.filter(regex="jrc|faostat")
     non_na_values = (~df.filter(like="faostat").isna()).sum(axis=1)
     column_names = df[non_na_values > 0]
+
+    def __init__(self):
+        # Location of the data
+        self.data_dir = data_dir / "faostat"
+        if not self.data_dir.exists():
+            self.data_dir.mkdir()
 
     @property
     def country_groups(self):
