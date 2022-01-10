@@ -72,6 +72,8 @@ class Pump:
         self.token = None
         if os.environ.get("COMTRADE_TOKEN"):
             self.token = Path(os.environ["COMTRADE_TOKEN"])
+        # Path of CSV log file storing API parameters and download status
+        self.csv_log_path = self.parent.data_dir / "pump_comtrade_api_args.csv"
 
     def download(self, *args, **kwargs):
         """Deprecated download function, see download_df instead"""
@@ -190,7 +192,7 @@ class Pump:
             df = pandas.json_normalize(json_content["results"])
         return df
 
-    def write_pump_log(
+    def write_log(
         self,
         timedate="",
         table="",
@@ -214,9 +216,6 @@ class Pump:
         and status of stored data into table "biotrade_data/comtrade/pump_comtrade_table.csv".
         If table does not exist, it is created
         """
-        # path of the table
-
-        log_path = self.parent.data_dir / "pump_comtrade_api_args.csv"
         # create headers of data frame
         df = pandas.DataFrame(
             {
@@ -239,9 +238,9 @@ class Pump:
             }
         )
         # check if table exists
-        if log_path.exists() is False:
+        if self.csv_log_path.exists() is False:
             # create table if not exist
-            df.to_csv(log_path, mode="a", index=False)
+            df.to_csv(self.csv_log_path, mode="a", index=False)
         # create new row of df containing API parameter values
         df.loc[len(df)] = [
             timedate.strftime("%Y-%m-%d %H:%M %z"),
@@ -262,7 +261,7 @@ class Pump:
             str(rows),
         ]
         # write row to table
-        df.to_csv(log_path, mode="a", index=False, header=False)
+        df.to_csv(self.csv_log_path, mode="a", index=False, header=False)
 
     def download_to_db_reporter_loop(
         self, table_name, start_year, end_year, product_code, frequency
@@ -373,7 +372,7 @@ class Pump:
                             sleep_time,
                         )
                         # Trace API parameters and error HTTP into table
-                        self.write_pump_log(
+                        self.write_log(
                             timedate=datetime.datetime.now(
                                 pytz.timezone("Europe/Rome")
                             ),
@@ -420,7 +419,7 @@ class Pump:
                     records_downloaded,
                 )
                 # Trace API parameters and db status into table
-                self.write_pump_log(
+                self.write_log(
                     timedate=datetime.datetime.now(pytz.timezone("Europe/Rome")),
                     table=table_name,
                     max=100000,
