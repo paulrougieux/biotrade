@@ -41,6 +41,7 @@ import logging
 from sqlalchemy import Integer, Float, Text, UniqueConstraint
 from sqlalchemy import Table, Column, MetaData
 from sqlalchemy import create_engine, inspect
+from sqlalchemy.schema import CreateSchema
 
 # Internal modules
 from biotrade import data_dir, database_url
@@ -68,6 +69,16 @@ class DatabaseComtrade(Database):
         self.metadata = MetaData(schema=self.schema)
         self.metadata.bind = self.engine
         self.inspector = inspect(self.engine)
+
+        # Create the schema if it doesn't exist.
+        # Exclude the SQLite engine because there is only a default schemas for that engine.
+        # And the SQLite dialect doesn't have a has_schema() method.
+        if hasattr(self.engine.dialect, "has_schema") and callable(
+            getattr(self.engine.dialect, "has_schema")
+        ):
+            if not self.engine.dialect.has_schema(self.engine, self.schema):
+                self.engine.execute(CreateSchema(self.schema))
+
         # Describe table metadata and create them if they don't exist
         self.monthly = self.describe_trade_table(name="monthly")
         self.yearly = self.describe_trade_table(name="yearly")
