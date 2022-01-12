@@ -31,7 +31,6 @@ greater than 9999.
 """
 # Built-in modules
 from pathlib import Path
-from warnings import warn
 import datetime
 import pytz
 import os
@@ -75,11 +74,6 @@ class Pump:
         # Path of CSV log file storing API parameters and download status
         self.csv_log_path = self.parent.data_dir / "pump_comtrade_api_args.csv"
 
-    def download(self, *args, **kwargs):
-        """Deprecated download function, see download_df instead"""
-        warn("Deprecated, please use the download_df method instead.")
-        return self.download_df(*args, **kwargs)
-
     def download_df(
         self,
         max="500",
@@ -94,7 +88,9 @@ class Pump:
         fmt="json",
         head="M",
     ):
-        """Download a CSV file from the UN Comtrade API and return a pandas data frame.
+        """Download a CSV file from the UN Comtrade data API and return a pandas data frame.
+
+        The data API is documented at https://comtrade.un.org/data/doc/api/
 
         Argument names are the same as the Comtrade API argument names.
 
