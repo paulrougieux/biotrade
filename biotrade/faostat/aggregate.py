@@ -59,6 +59,18 @@ def agg_trade_eu_row(df, index_side="partner"):
 
         In : ft_can_mirror_agg["reporter"].unique()
         Out: array(['eu', 'row'], dtype=object)
+
+    Aggregate Brazil Soy Exports
+
+    Select crop trade where products contain the word "soy"
+
+        >>> from biotrade.faostat import faostat
+        >>> from biotrade.faostat.aggregate import agg_trade_eu_row
+        >>> db = faostat.db
+        >>> soy_trade = db.select(table="crop_trade", product = "soy", reporter="Brazil")
+        >>> soy_trade_agg = agg_trade_eu_row(soy_trade)
+
+
     """
     if index_side not in ["reporter", "partner"]:
         raise ValueError("index_side can only take the values 'reporter' or 'partner'")
@@ -138,7 +150,9 @@ def agg_by_country_groups(df, agg_reporter=None, agg_partner=None):
 
     # Merge reporters with the corresponding continent/subcontinent data
     df = df.merge(
-        df_continents, how="left", left_on="reporter_code",
+        df_continents,
+        how="left",
+        left_on="reporter_code",
         right_on="faost_code",
     )
 
@@ -153,8 +167,7 @@ def agg_by_country_groups(df, agg_reporter=None, agg_partner=None):
         )
 
     # fixed aggregation column names
-    index = ["period", "product", "product_code", "element", "element_code",
-        "unit"]
+    index = ["period", "product", "product_code", "element", "element_code", "unit"]
 
     if agg_reporter is None:
         # aggregate by reporter and reporter code (if columns exist) since no
