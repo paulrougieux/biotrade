@@ -31,6 +31,9 @@ greater than 9999.
 """
 # Built-in modules
 from pathlib import Path
+import tempfile
+import shutil
+from zipfile import ZipFile
 import datetime
 import pytz
 import os
@@ -57,7 +60,7 @@ class Pump:
     # Define URL request headers
     header = HEADER
     # Base URL to load trade trade data from the API
-    url_api_base = "http://comtrade.un.org/api/get?"
+    url_api_base = "https://comtrade.un.org/api/get"
     # Base URL to load metadata
     url_metadata_base = "https://comtrade.un.org/Data/cache/"
 
@@ -70,9 +73,65 @@ class Pump:
         # Get API authentication token from an environmental variable
         self.token = None
         if os.environ.get("COMTRADE_TOKEN"):
-            self.token = Path(os.environ["COMTRADE_TOKEN"])
+            self.token = os.environ["COMTRADE_TOKEN"]
         # Path of CSV log file storing API parameters and download status
         self.csv_log_path = self.parent.data_dir / "pump_comtrade_api_args.csv"
+
+    def download_bulk_csv(self, period, frequency):
+        """
+        Method of Pump class to download bulk data from API
+        https://comtrade.un.org/data/doc/api/bulk/ wich returns a zip file
+
+        :param (int) period, as year or year+month
+        :param (str) frequency, as "A" yearly or "M" monthly
+        :output pandas df, return the data contained into the zip file
+
+        For example monthly bilateral trade data for all products in November
+        2021 can downloaded as:
+        >>> from biotrade.comtrade import comtrade
+        >>> df = comtrade.pump.download_bulk_csv(202111, "M")
+        """
+
+        # Costrunction of API bulk url
+        url_api_call = (
+            f"{self.url_api_base}/bulk/C/{frequency}/{period}/ALL/HS?"
+            + f"token={self.token}"
+        )
+        # Temporary folder creation
+        temp_dir = Path(tempfile.mkdtemp())
+        # Temporary zip file path
+        temp_file = temp_dir / "temp.zip"
+        self.logger.info("Downloading data from:\n %s", url_api_call)
+        # Create a request
+        req = urllib.request.Request(url=url_api_call, headers=self.header)
+        # Varible for checking successfull zip dowload
+        download_successful = False
+        # Number of attempts to download zip file
+        nr_try = 1
+        # Instantiate data frame
+        df = pandas.DataFrame()
+        # Send the request: if successfull put the zip file into the temporary
+        # folder else if more than 3600 attempts loop brokes
+        while not download_successful and nr_try < 3600:
+            with urllib.request.urlopen(req) as response, open(
+                temp_file, "wb"
+            ) as out_file:
+                print(f"HTTP response code: {response.code}")
+                if response.code == 200:
+                    shutil.copyfileobj(response, out_file)
+                    download_successful = True
+                else:
+                    nr_try += 1
+                    time.sleep(1)
+        # Copy the csv inside the zip file into a pandas data frame
+        if response.code == 200:
+            with ZipFile(temp_file) as zipfile:
+                with zipfile.open(zipfile.namelist()[0]) as csvfile:
+                    df = pandas.read_csv(csvfile, encoding="utf-8")
+        # Remove the temporary directory
+        shutil.rmtree(temp_dir)
+
+        return df
 
     def download_df(
         self,
@@ -114,7 +173,7 @@ class Pump:
 
         # Build the API call
         url_api_call = (
-            f"{self.url_api_base}max={max}&type={type}&freq={freq}&px={px}"
+            f"{self.url_api_base}?max={max}&type={type}&freq={freq}&px={px}"
             + f"&ps={ps}&r={r}&p={p}&rg={rg}&cc={cc}&fmt={fmt}&head={head}"
         )
         if self.token is not None:
