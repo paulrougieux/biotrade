@@ -33,6 +33,7 @@ class Coefficients:
         Harrij Van Velthuizen. "The impact of EU consumption on deforestation:
         Comprehensive analysis of the impact of EU consumption on
         deforestation." (2013).
+        https://ec.europa.eu/environment/forests/pdf/1.%20Report%20analysis%20of%20impact.pdf
 
         Load the dataset:
 
