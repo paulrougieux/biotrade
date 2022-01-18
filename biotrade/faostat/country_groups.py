@@ -18,38 +18,6 @@ Usage:
 import pandas
 
 
-# List of EU countries names in the FAOSTAT data
-EU_COUNTRY_NAMES = [
-    "Austria",
-    "Belgium",
-    "Bulgaria",
-    "Croatia",
-    "Cyprus",
-    "Czechia",
-    "Denmark",
-    "Estonia",
-    "Finland",
-    "Germany",
-    "France",
-    "Greece",
-    "Hungary",
-    "Ireland",
-    "Italy",
-    "Latvia",
-    "Lithuania",
-    "Luxembourg",
-    "Malta",
-    "Netherlands",
-    "Poland",
-    "Portugal",
-    "Romania",
-    "Slovakia",
-    "Slovenia",
-    "Spain",
-    "Sweden",
-]
-
-
 class CountryGroups(object):
     """
     Comtrade product list, with additional information.

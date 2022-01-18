@@ -9,13 +9,13 @@ Unit D1 Bioeconomy.
 
 """
 
-from biotrade.faostat.country_groups import EU_COUNTRY_NAMES
 from biotrade.faostat import faostat
 
 # Import country table selecting continents and sub continents columns
 df_continents = faostat.country_groups.continents[
     ["faost_code", "continent", "sub_continent"]
 ]
+EU_COUNTRY_NAMES = faostat.country_groups.eu_country_names
 
 
 def agg_trade_eu_row(df, index_side="partner"):
