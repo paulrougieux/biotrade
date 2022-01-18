@@ -68,7 +68,7 @@ class CountryGroups(object):
         :return: A data frame of table faostat_country_groups.csv
 
             >>> from biotrade.faostat import faostat
-            >>> faostat.country_groups.df
+            >>> df = faostat.country_groups.df
 
         """
         path = self.config_data_dir / "faostat_country_groups.csv"
@@ -77,8 +77,15 @@ class CountryGroups(object):
 
     @property
     def eu_country_names(self):
-        """EU country names in the FAOSTAT data"""
-        return EU_COUNTRY_NAMES
+        """
+        EU country name list in the FAOSTAT data
+        :return list of eu country names
+
+            >>> from biotrade.faostat import faostat
+            >>> eu_country_name_list = faostat.country_groups.eu_country_names
+        """
+        df = self.df
+        return df[df["EU-27"] == 1]["short_name"].tolist()
 
     @property
     def continents(self):
@@ -91,7 +98,7 @@ class CountryGroups(object):
         >>> from biotrade.faostat import faostat
         >>> db = faostat.db
         >>> df_soy = db.select(table="crop_trade", product = "soy")
-        >>> df_continents = faostat.country_groups.df
+        >>> df_continents = faostat.country_groups.continents
         >>> df_soy_merge = df_soy.merge(df_continents, how='left',
                 left_on = 'reporter_code', right_on = 'faost_code')
         >>> df_soy_merge = df_soy_merge.merge(df_continents, how='left',
