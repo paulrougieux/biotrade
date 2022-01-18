@@ -96,7 +96,7 @@ def agg_trade_eu_row(df, index_side="partner"):
     if index_side == "reporter":
         df_agg = df_agg.rename(columns={country_group: "reporter"})
     # Check that the total value hasn't changed
-    if not sum(df_agg["value"]) == sum(df["value"]):
+    if not df_agg["value"].sum() == df["value"].sum():
         raise ValueError(
             f"The total value sum of the aggregated data {sum(df_agg['value'])}"
             + f"doesn't match with the sum of the input data frame{sum(df['value'])}"
