@@ -12,10 +12,10 @@ Unit D1 Bioeconomy.
 from biotrade.faostat import faostat
 
 # Import country table selecting continents and sub continents columns
-df_continents = faostat.country_groups.continents[
+CONTINENTS = faostat.country_groups.continents[
     ["faost_code", "continent", "sub_continent"]
 ]
-EU_COUNTRY_NAMES = faostat.country_groups.eu_country_names
+EU_COUNTRY_NAMES_LIST = faostat.country_groups.eu_country_names
 
 
 def agg_trade_eu_row(df, index_side="partner"):
@@ -77,7 +77,7 @@ def agg_trade_eu_row(df, index_side="partner"):
     country_group = index_side + "_group"
     df[country_group] = "row"
     df[country_group] = df[country_group].where(
-        ~df[index_side].isin(EU_COUNTRY_NAMES), "eu"
+        ~df[index_side].isin(EU_COUNTRY_NAMES_LIST), "eu"
     )
     # The aggregation index depends on the flow reporting side
     index = ["product_code", "product", "element", "unit", "year"]
@@ -150,7 +150,7 @@ def agg_by_country_groups(df, agg_reporter=None, agg_partner=None):
 
     # Merge reporters with the corresponding continent/subcontinent data
     df = df.merge(
-        df_continents,
+        CONTINENTS,
         how="left",
         left_on="reporter_code",
         right_on="faost_code",
@@ -159,7 +159,7 @@ def agg_by_country_groups(df, agg_reporter=None, agg_partner=None):
     # Merge partners with the corresponding continent/subcontinent data
     if "partner_code" in df.columns:
         df = df.merge(
-            df_continents,
+            CONTINENTS,
             how="left",
             left_on="partner_code",
             right_on="faost_code",
