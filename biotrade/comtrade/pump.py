@@ -152,7 +152,7 @@ class Pump:
             except urllib.error.URLError as error:
                 nr_try += 1
                 time.sleep(1)
-                response_code = error.code
+                response_code = None
             self.logger.info(f"HTTP response code: {response_code}")
         return temp_dir, response_code
 
@@ -356,8 +356,7 @@ class Pump:
                 else:
                     self.logger.info(
                         "Failed to dowload from API request for"
-                        + f" period {api_period}\n"
-                        + f"error code: {response_code}"
+                        + f" period {api_period} due to URL error"
                     )
                     period_list_failed.append(api_period)
                 # Remove temporary directory
