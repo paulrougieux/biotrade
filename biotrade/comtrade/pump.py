@@ -7,26 +7,6 @@ Written by Paul Rougieux.
 JRC biomass Project.
 Unit D1 Bioeconomy.
 
-You can use this object at the ipython console with the following examples.
-
-Download trade flows and return a data frame
-
-    >>> from biotrade.comtrade import comtrade
-    >>> # Other sawnwood
-    >>> swd99 = comtrade.pump.download(cc = "440799")
-    >>> # Soy
-    >>> soy = comtrade.pump.download(cc = "120190")
-
-Get the list of products from the Comtrade API
-
-    >>> hs = comtrade.pump.get_parameter_list("classificationHS.json")
-
-Potential server Error messages
-
-- HTTP Error 409 seems to be the error when the download limit has been reached
-and we don't use the authentication token.
-- We also get HTTP Error 500: "Internal Server Error" when the max argument is
-greater than 9999.
 
 """
 # Built-in modules
@@ -53,6 +33,37 @@ from biotrade.common.url_request_header import HEADER
 class Pump:
     """
     Download trade data from the Comtrade API and store it inside a database.
+
+    There are two different ways to download data from the Comtrade API:
+        - the public API
+        - a restricted bulk API accessible with a token
+
+    The public API is accessible to every one and is suitable to download small amount
+    of data for a few products in a few countries. For example, the following calls
+    download trade data from the Comtrade API and data frames:
+
+        >>> from biotrade.comtrade import comtrade
+        >>> # Other sawnwood
+        >>> swd99 = comtrade.pump.download_df(cc = "440799")
+        >>> # Soy
+        >>> soy = comtrade.pump.download_df(cc = "120190")
+
+    The public API can also be used to get the list of products from the Comtrade API:
+
+        >>> hs = comtrade.pump.get_parameter_list("classificationHS.json")
+
+    In case you have access to the API token. It's also possible to download
+    data from the Comtrade bulk API and store it in the database with:
+
+        >>> from biotrade.comtrade import comtrade
+        >>> comtrade.pump.update_db(table_name = "monthly", frequency = "M")
+
+    Potential server Error messages
+
+        - HTTP Error 409 seems to be the error when the download limit has been reached
+        and we don't use the authentication token.
+        - We also get HTTP Error 500: "Internal Server Error" when the max argument is
+        greater than 9999.
     """
 
     # Log debug and error messages
