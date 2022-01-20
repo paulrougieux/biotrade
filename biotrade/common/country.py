@@ -20,7 +20,7 @@ class Country:
 
     For example display FAOSTAT forestry production data for one country:
 
-        >>> from biotrade.country import Country
+        >>> from biotrade.common.country import Country
         >>> ukr = Country("Ukraine")
         >>> ukr.faostat.forestry_production
 
