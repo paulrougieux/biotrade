@@ -38,19 +38,27 @@ class Pump:
         - the public API
         - a restricted bulk API accessible with a token
 
-    The public API is accessible to every one and is suitable to download small amount
-    of data for a few products in a few countries. For example, the following calls
-    download trade data from the Comtrade API and data frames:
+    The public API is accessible to every one and is suitable to download small
+    amounts of data for a few products in a few countries. For example, the
+    following calls download trade data for the selected product code `cc`,
+    reporter `r` and time period `ps` from the Comtrade API and return data
+    frames:
 
         >>> from biotrade.comtrade import comtrade
         >>> # Other sawnwood
-        >>> swd99 = comtrade.pump.download_df(cc = "440799")
+        >>> swd99 = comtrade.pump.download_df(cc = "440799", r="381", ps="2020")
         >>> # Soy
-        >>> soy = comtrade.pump.download_df(cc = "120190")
+        >>> soy = comtrade.pump.download_df(cc = "120190", r="381", ps="2020")
 
-    The public API can also be used to get the list of products from the Comtrade API:
+    The public API can also be used to get the list of products and product
+    codes:
 
         >>> hs = comtrade.pump.get_parameter_list("classificationHS.json")
+
+    Lists of countries and country codes are also available:
+
+        >>> comtrade.pump.get_parameter_list("reporterAreas.json")
+        >>> comtrade.pump.get_parameter_list("partnerAreas.json")
 
     In case you have access to the API token. It's also possible to download
     data from the Comtrade bulk API and store it in the database with:
