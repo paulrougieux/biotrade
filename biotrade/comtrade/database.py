@@ -36,10 +36,11 @@ Download and store in the database as used when updating the database
 """
 # First party modules
 import logging
+import pandas
 
 # Third party modules
 from sqlalchemy import Integer, Float, Text, UniqueConstraint
-from sqlalchemy import Table, Column, MetaData
+from sqlalchemy import Table, Column, MetaData, and_
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.schema import CreateSchema
 
@@ -161,6 +162,106 @@ class DatabaseComtrade(Database):
             schema=self.schema,
         )
         return table
+
+    def read_sql_query(self, stmt):
+        """A wrapper around pandas.read_sql_query"""
+        return pandas.read_sql_query(stmt, self.engine)
+
+    def check_data_presence(
+        self,
+        table,
+        start_year,
+        end_year,
+        frequency,
+    ):
+        """
+        Query db table to check if data are present or not for a certain
+        time period.
+
+        :param (string) table, name of table to check data
+        :param (int) start_year, initial period of the query
+        :param (int) end_year, final year of the query
+        :param (frequency) frequency, frequency of data
+        :return (bool) check_presence, True if data are already inside
+            db otherwise False
+
+        For example check if monthly data from 2016 to 2022 are present:
+            >>> from biotrade.comtrade import comtrade
+            >>> data_check = comtrade.db.check_data_presence(
+                    table = "monthly"
+                    start_year = 2016,
+                    end_year = 2022,
+                    frequency = "M",
+                )
+        """
+        check_presence = False
+        # Select table
+        table = self.tables[table]
+        # Initial statement
+        stmt = table.select()
+        # Reformulate period as monthly or yearly frequency
+        if frequency == "M":
+            # Start from January of the start year
+            start_period = int(str(start_year) + "01")
+            # End in December of the end year
+            end_period = int(str(end_year) + "12")
+        elif frequency == "A":
+            start_period = start_year
+            end_period = end_year
+        # Select data inside time from start period to end period
+        if start_period is not None:
+            stmt = stmt.where(table.c.period >= start_period)
+        if end_period is not None:
+            stmt = stmt.where(table.c.period <= end_period)
+        # Read data fromd db to data frame and select the first one
+        df = self.read_sql_query(stmt.limit(1))
+        # If length of df is not zero, it means that data are inside db
+        if len(df):
+            check_presence = True
+        return check_presence
+
+    def delete_data(
+        self,
+        table,
+        start_period,
+        end_period,
+    ):
+        """
+        Database method to delete rows from Comtrade db.
+
+        :param (str) table, name of db table
+        :param(int) start_period, from which time to delete rows
+        :param(int) end_period, ultil which time to delete rows
+
+        For example delete data from table "monthly" for January 2016:
+
+            >>> from biotrade.comtrade import comtrade
+            >>> comtrade.db.delete_data(
+                    table = "monthly"
+                    start_period = 201601,
+                    end_period = 201601,
+                )
+
+        """
+        # Table of db
+        table = self.tables[table]
+        if start_period is not None:
+            if end_period is not None:
+                # Construct delete statement
+                stmt = table.delete().where(
+                    and_(
+                        table.c.period >= start_period,
+                        table.c.period <= end_period,
+                    )
+                )
+                # Exectute delete statement
+                stmt.execute()
+        self.logger.info(
+            "Delete data from database table %s, from %s to %s",
+            table,
+            start_period,
+            end_period,
+        )
 
 
 class DatabaseComtradePostgresql(DatabaseComtrade):

@@ -81,15 +81,18 @@ class Pump:
         """
         Method of Pump class to download bulk data from API
         https://comtrade.un.org/data/doc/api/bulk/ wich returns a zip file
+        stored into a temporary directory
 
         :param (int) period, as year or year+month
         :param (str) frequency, as "A" yearly or "M" monthly
-        :output pandas df, return the data contained into the zip file
+        :output (path) temp_dir, directory path which contains the zip file
+        :output (int) response_code, response status of the API request
 
         For example monthly bilateral trade data for all products in November
-        2021 can downloaded as:
-        >>> from biotrade.comtrade import comtrade
-        >>> df = comtrade.pump.download_bulk_csv(202111, "M")
+        2021 can be downloaded into a temporary directory as:
+
+            >>> from biotrade.comtrade import comtrade
+            >>> temp_dir, resp_code = comtrade.pump.download_bulk_csv(202111, "M")
         """
 
         # Costrunction of API bulk url
@@ -104,34 +107,298 @@ class Pump:
         self.logger.info("Downloading data from:\n %s", url_api_call)
         # Create a request
         req = urllib.request.Request(url=url_api_call, headers=self.header)
-        # Varible for checking successfull zip dowload
+        # Variable for checking successfull zip dowload
         download_successful = False
         # Number of attempts to download zip file
         nr_try = 1
-        # Instantiate data frame
-        df = pandas.DataFrame()
         # Send the request: if successfull put the zip file into the temporary
-        # folder else if more than 3600 attempts loop brokes
+        # folder else if more than 3600 attempts loop stop
         while not download_successful and nr_try < 3600:
-            with urllib.request.urlopen(req) as response, open(
-                temp_file, "wb"
-            ) as out_file:
-                print(f"HTTP response code: {response.code}")
-                if response.code == 200:
+            try:
+                with urllib.request.urlopen(req) as response, open(
+                    temp_file, "wb"
+                ) as out_file:
+                    # Copy the zip file into the output_file
                     shutil.copyfileobj(response, out_file)
+                    download_successful = True
+                    response_code = response.code
+            except urllib.error.HTTPError as error:
+                # Error 404 means that no data are present, stop the while loop
+                if error.code == 404:
                     download_successful = True
                 else:
                     nr_try += 1
                     time.sleep(1)
-        # Copy the csv inside the zip file into a pandas data frame
-        if response.code == 200:
-            with ZipFile(temp_file) as zipfile:
-                with zipfile.open(zipfile.namelist()[0]) as csvfile:
-                    df = pandas.read_csv(csvfile, encoding="utf-8")
-        # Remove the temporary directory
-        shutil.rmtree(temp_dir)
+                response_code = error.code
+            except urllib.error.URLError as error:
+                nr_try += 1
+                time.sleep(1)
+                response_code = error.code
+            self.logger.info(f"HTTP response code: {response_code}")
+        return temp_dir, response_code
 
-        return df
+    def transfer_csv_chunk(
+        self,
+        temp_file,
+        table_name,
+        bioeconomy_tuple,
+        check_data_presence,
+        api_period,
+        chunk_size=10 ** 6,
+    ):
+        """
+        Pump method to transfer large csv file to db.
+
+        :param (path) temp_file, path of the zip file containing the csv file
+            to copy into db
+        :param (str) table_name, table name of the db
+        :param (tuple) bioeconomy_tuple, commodity codes to store data
+        :param (bool) check_data_presence, to delete data in case of existing
+            rows into db
+        :param (int) api_period, period to delete existing data
+        :param (int) chunk_size, splitting csv to transfer to df default is 10**6
+        """
+        # Number of records transferred from csv file
+        records_downloaded_csv = 0
+        # Open the zip file
+        with ZipFile(temp_file) as zipfile:
+            with zipfile.open(zipfile.namelist()[0]) as csvfile:
+                # List of chunk rows
+                chunk_list = []
+                # Loop on csv chuncks and upload them
+                for df_chunk in pandas.read_csv(
+                    csvfile,
+                    encoding="utf-8",
+                    # Force the id column to remain a character column,
+                    # otherwise str "01" becomes int 1.
+                    dtype={"Commodity Code": str, "cmdcode": str},
+                    chunksize=chunk_size,
+                ):
+                    # If length is > 0 select rows
+                    if not df_chunk.empty:
+                        if table_name == "monthly":
+                            # Store codes with bioeconomy label and 6 digits
+                            df_chunk = df_chunk[
+                                (
+                                    df_chunk["Commodity Code"].str.startswith(
+                                        bioeconomy_tuple
+                                    )
+                                )
+                                & (df_chunk["Commodity Code"].str.len() == 6)
+                            ]
+                        # Append rows
+                        chunk_list.append(df_chunk)
+        # Construct the final df to upload to db
+        df = pandas.concat(chunk_list)
+        if not df.empty:
+            # Rename columns to snake case
+            df.rename(columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True)
+            # Remove parenthesis and dots, used only for human readable dataset
+            df.rename(columns=lambda x: re.sub(r"[()\.]", "", x), inplace=True)
+            # Replace $ sign by d, used only for human readable dataset
+            df.rename(columns=lambda x: re.sub(r"\$", "d", x), inplace=True)
+            # Rename columns based on the jrc naming convention
+            mapping = self.column_names.set_index("comtrade_human").to_dict()["jrc"]
+            df.rename(columns=mapping, inplace=True)
+            # Delete already existing data
+            if check_data_presence:
+                self.db.delete_data(
+                    table_name,
+                    api_period,
+                    api_period,
+                )
+            # Append data to db
+            self.db.append(df, table_name)
+        # Keep track of the the length of the data in the log file
+        records_downloaded_csv += len(df)
+        return records_downloaded_csv
+
+    def transfer_bulk_csv(
+        self,
+        table_name,
+        start_year,
+        end_year,
+        frequency,
+        check_data_presence,
+    ):
+        """
+        Pump method to transfer bulk csv file of Comtrade API requests to
+        Comtrade db.
+
+        :param (str) table_name, name of the db table to store data
+        :param (int) start_year, year from the download should start
+        :param (int) start_year, year from the download should end
+        :param (str) frequency, as "A" yearly or "M" monthly
+        :param (bool) check_data_presence, if data already exists into db
+        :return (list) period_list_failed, if not empty some periods failed to
+            be uploaded to db, otherwise status is okay
+
+        Example for uploading data from 2016 to 2017 with monthly data into
+        "monthly" comtrade table:
+
+        First check if data already exists into db.
+            >>> from biotrade.comtrade import comtrade
+            >>> data_check = comtrade.db.check_data_presence(
+                    table = "monthly"
+                    start_year = 2016,
+                    end_year = 2017,
+                    frequency = "M",
+                )
+        Upoload data to db
+            >>> period_list_failed = comtrade.pump.transfer_bulk_csv(
+                    table_name = "monthly",
+                    start_year = 2016,
+                    end_year = 2017,
+                    frequency = "M",
+                    check_data_presence = data_check,
+                )
+        """
+        # Period list of downloads failed
+        period_list_failed = []
+        # Total records transferred from zip files of API requests
+        total_records = 0
+        # Download of bioeconomy codes from table "comtrade_hs_2d.csv"
+        path = self.parent.config_data_dir / "comtrade_hs_2d.csv"
+        # Store table codes into a data frame
+        prod = pandas.read_csv(path)
+        # Selection of codes which have bioeconomy column = 1
+        bioeconomy_tuple = tuple(prod[prod.bioeconomy == 1]["text"].str[:2])
+        # Range of period to download data
+        period_block = range(start_year, end_year + 1)
+        # Add months for monthly frequency
+        if frequency == "A":
+            month_list = [""]
+        elif frequency == "M":
+            month_list = [
+                "01",
+                "02",
+                "03",
+                "04",
+                "05",
+                "06",
+                "07",
+                "08",
+                "09",
+                "10",
+                "11",
+                "12",
+            ]
+        # Date object of today
+        current_date = datetime.datetime.now(pytz.timezone("Europe/Rome")).date()
+        # Loop on year and eventually month, depeding on the frequency
+        # parameter
+        for period in period_block:
+            # Data not available in the future
+            if period > current_date.year:
+                break
+            for month in month_list:
+                if frequency == "M":
+                    # Data not available in the future
+                    if datetime.datetime(period, int(month), 1).date() > current_date:
+                        break
+                # Construct the period to pass to transfer_csv_chunk method
+                api_period = int(str(period) + month)
+                # Store zip data into the temporary directory
+                temp_dir, response_code = self.download_bulk_csv(
+                    api_period,
+                    frequency,
+                )
+                # If data are downloaded (response = 200) copy the csv of
+                # the zip file into a pandas data frame
+                if response_code == 200:
+                    # Temporary zip file path
+                    temp_file = temp_dir / os.listdir(temp_dir)[0]
+                    # Store into the database
+                    try:
+                        # Transfer large csv files into chunks
+                        records_downloaded = self.transfer_csv_chunk(
+                            temp_file,
+                            table_name,
+                            bioeconomy_tuple,
+                            check_data_presence,
+                            api_period,
+                        )
+                        # Total number of records
+                        total_records += records_downloaded
+                        self.logger.info(
+                            f"Update database table {table_name} for period"
+                            + f" {api_period}\n"
+                            + f"{total_records} records uploaded in total."
+                        )
+                    # Failed to store data into db
+                    except Exception as error_db:
+                        self.logger.info(
+                            "Failed to store data into the database for table"
+                            + f" {table_name} and period {api_period}\n"
+                            + f"{error_db}"
+                        )
+                        period_list_failed.append(api_period)
+                # Data not downloaded from API requests
+                else:
+                    self.logger.info(
+                        "Failed to dowload from API request for"
+                        + f" period {api_period}\n"
+                        + f"error code: {response_code}"
+                    )
+                    period_list_failed.append(api_period)
+                # Remove temporary directory
+                shutil.rmtree(temp_dir)
+        # Log info if some periods failed to be uploaded into db
+        if len(period_list_failed):
+            self.logger.info(
+                "List of failed download periods for table"
+                + f" {table_name}: {period_list_failed}"
+            )
+        return period_list_failed
+
+    def update_db(
+        self,
+        table_name,
+        frequency,
+    ):
+        """
+        Pump method to update db. If data from 2016 are already present,
+        it updates data of the last and current year, otherwise it uploads
+        data from 2016.
+
+        :param (string) table_name, name of Comtrade db table
+        :param (string) frequency, "M" for monthly data or "A" for annual
+
+        return an error if some periods are not uploaded do db
+
+        Example of updating db table "monthtly" with monthly frequency data:
+
+        >>> from biotrade.comtrade import comtrade
+        >>> comtrade.pump.update_db(table_name = "monthly", frequency = "M")
+        """
+        current_year = datetime.datetime.now(pytz.timezone("Europe/Rome")).date().year
+        # Check if data from 2016 are present into db
+        data_check = self.db.check_data_presence(
+            table_name,
+            2016,
+            current_year,
+            frequency,
+        )
+        # If data are already inside db, update from the last year
+        if data_check:
+            start_year = current_year - 1
+        # Update from 2016
+        else:
+            start_year = 2016
+        # Transfer from api bulk requests to db
+        period_list_failed = self.transfer_bulk_csv(
+            table_name,
+            start_year,
+            current_year,
+            frequency,
+            data_check,
+        )
+        # If some periods failed to be updloaded, raise an error
+        if len(period_list_failed):
+            raise ValueError(
+                "List of failed download periods for table"
+                + f" {table_name}:\n{period_list_failed}"
+            )
 
     def download_df(
         self,
