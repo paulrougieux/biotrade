@@ -49,7 +49,8 @@ class Coefficients:
         Extraction rates and waste of supply are taken from the FAO,
         technical conversion factors for agricultural commodities available at:
         https://www.fao.org/economic/the-statistics-division-ess/methodology/methodology-systems/technical-conversion-factors-for-agricultural-commodities/ar/
-
+        Missing extraction rates of countries are processed with world average
+        values when available
         Load the coefficients:
 
         >>> from biotrade.faostat import faostat
