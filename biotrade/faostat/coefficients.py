@@ -42,3 +42,20 @@ class Coefficients:
         """
         df = pandas.read_csv(self.config_data_dir / "cuypers2013_extraction_rates.csv")
         return df
+
+    @property
+    def agricultural_conversion_factors(self):
+        """
+        Extraction rates and waste of supply are taken from the FAO,
+        technical conversion factors for agricultural commodities available at:
+        https://www.fao.org/economic/the-statistics-division-ess/methodology/methodology-systems/technical-conversion-factors-for-agricultural-commodities/ar/
+
+        Load the coefficients:
+
+        >>> from biotrade.faostat import faostat
+        >>> coefficients = faostat.coefficients.agricultural_conversion_factors
+        """
+        df = pandas.read_csv(
+            self.config_data_dir / "faostat_agricultural_conversion_factors.csv"
+        )
+        return df
