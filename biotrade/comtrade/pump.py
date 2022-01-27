@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Written by Paul Rougieux.
+Written by Paul Rougieux and Selene Patani.
 
 JRC biomass Project.
 Unit D1 Bioeconomy.
@@ -96,10 +96,26 @@ class Pump:
         # Path of CSV log file storing API parameters and download status
         self.csv_log_path = self.parent.data_dir / "pump_comtrade_api_args.csv"
 
+    def sanitize_variable_names(self, df, renaming_from, renaming_to):
+        """
+        Sanitize column names using the mapping table column_names.csv
+        Use snake case in column names and replace some symbols
+        """
+        # Rename columns to snake case
+        df.rename(columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True)
+        # Remove parenthesis and dots, used only for human readable dataset
+        df.rename(columns=lambda x: re.sub(r"[()\.]", "", x), inplace=True)
+        # Replace $ sign by d, used only for human readable dataset
+        df.rename(columns=lambda x: re.sub(r"\$", "d", x), inplace=True)
+        # Rename columns using the naming convention defined in self.column_names
+        mapping = self.column_names.set_index(renaming_from).to_dict()[renaming_to]
+        df.rename(columns=mapping, inplace=True)
+        return df
+
     def download_bulk_csv(self, period, frequency):
         """
         Method of Pump class to download bulk data from API
-        https://comtrade.un.org/data/doc/api/bulk/ wich returns a zip file
+        https://comtrade.un.org/data/doc/api/bulk/ which returns a zip file
         stored into a temporary directory
 
         :param (int) period, as year or year+month
@@ -114,7 +130,7 @@ class Pump:
             >>> temp_dir, resp_code = comtrade.pump.download_bulk_csv(202111, "M")
         """
 
-        # Costrunction of API bulk url
+        # Construnction of API bulk url
         url_api_call = (
             f"{self.url_api_base}/bulk/C/{frequency}/{period}/ALL/HS?"
             + f"token={self.token}"
@@ -184,7 +200,7 @@ class Pump:
             with zipfile.open(zipfile.namelist()[0]) as csvfile:
                 # List of chunk rows
                 chunk_list = []
-                # Loop on csv chuncks and upload them
+                # Loop on csv chunks and upload them
                 for df_chunk in pandas.read_csv(
                     csvfile,
                     encoding="utf-8",
@@ -205,20 +221,20 @@ class Pump:
                                 )
                                 & (df_chunk["Commodity Code"].str.len() == 6)
                             ]
+                        elif table_name == "yearly_hs2":
+                            # Store codes with bioeconomy label and 2 digits
+                            df_chunk = df_chunk[
+                                df_chunk["Commodity Code"].isin(bioeconomy_tuple)
+                            ]
                         # Append rows
                         chunk_list.append(df_chunk)
         # Construct the final df to upload to db
         df = pandas.concat(chunk_list)
         if not df.empty:
-            # Rename columns to snake case
-            df.rename(columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True)
-            # Remove parenthesis and dots, used only for human readable dataset
-            df.rename(columns=lambda x: re.sub(r"[()\.]", "", x), inplace=True)
-            # Replace $ sign by d, used only for human readable dataset
-            df.rename(columns=lambda x: re.sub(r"\$", "d", x), inplace=True)
-            # Rename columns based on the jrc naming convention
-            mapping = self.column_names.set_index("comtrade_human").to_dict()["jrc"]
-            df.rename(columns=mapping, inplace=True)
+            # Call method to rename column names
+            df = self.sanitize_variable_names(
+                df, renaming_from="comtrade_human", renaming_to="jrc"
+            )
             # Delete already existing data
             if check_data_presence:
                 self.db.delete_data(
@@ -263,7 +279,7 @@ class Pump:
                     end_year = 2017,
                     frequency = "M",
                 )
-        Upoload data to db
+        Upload data to db
             >>> period_list_failed = comtrade.pump.transfer_bulk_csv(
                     table_name = "monthly",
                     start_year = 2016,
@@ -304,7 +320,7 @@ class Pump:
             ]
         # Date object of today
         current_date = datetime.datetime.now(pytz.timezone("Europe/Rome")).date()
-        # Loop on year and eventually month, depeding on the frequency
+        # Loop on year and eventually month, depending on the frequency
         # parameter
         for period in period_block:
             # Data not available in the future
@@ -356,7 +372,7 @@ class Pump:
                 else:
                     self.logger.info(
                         "Failed to dowload from API request for"
-                        + f" period {api_period} due to URL error"
+                        + f" period {api_period} due to HTTP/URL error"
                     )
                     period_list_failed.append(api_period)
                 # Remove temporary directory
@@ -384,7 +400,7 @@ class Pump:
 
         return an error if some periods are not uploaded do db
 
-        Example of updating db table "monthtly" with monthly frequency data:
+        Example of updating db table "monthly" with monthly frequency data:
 
         >>> from biotrade.comtrade import comtrade
         >>> comtrade.pump.update_db(table_name = "monthly", frequency = "M")
@@ -411,7 +427,7 @@ class Pump:
             frequency,
             data_check,
         )
-        # If some periods failed to be updloaded, raise an error
+        # If some periods failed to be uploaded, raise an error
         if len(period_list_failed):
             raise ValueError(
                 "List of failed download periods for table"
@@ -495,15 +511,9 @@ class Pump:
                 + f"Increase the max argument for product {cc} and reporter {r} "
                 + "in order to get all requested data from Comtrade."
             )
-        # Rename columns to snake case
-        df.rename(columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True)
-        # Remove parenthesis and dots, used only for human readable dataset
-        df.rename(columns=lambda x: re.sub(r"[()\.]", "", x), inplace=True)
-        # Replace $ sign by d, used only for human readable dataset
-        df.rename(columns=lambda x: re.sub(r"\$", "d", x), inplace=True)
-        # Rename columns based on the jrc naming convention
-        mapping = self.column_names.set_index("comtrade_machine").to_dict()["jrc"]
-        df.rename(columns=mapping, inplace=True)
+        df = self.sanitize_variable_names(
+            df, renaming_from="comtrade_machine", renaming_to="jrc"
+        )
         return df
 
     def get_parameter_list(self, file_name):

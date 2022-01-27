@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Written by Paul Rougieux.
+Written by Paul Rougieux and Selene Patani.
 
 JRC biomass Project.
 Unit D1 Bioeconomy.
@@ -213,7 +213,7 @@ class DatabaseComtrade(Database):
             stmt = stmt.where(table.c.period >= start_period)
         if end_period is not None:
             stmt = stmt.where(table.c.period <= end_period)
-        # Read data fromd db to data frame and select the first one
+        # Read data from db to data frame and select the first one
         df = self.read_sql_query(stmt.limit(1))
         # If length of df is not zero, it means that data are inside db
         if len(df):
@@ -231,7 +231,7 @@ class DatabaseComtrade(Database):
 
         :param (str) table, name of db table
         :param(int) start_period, from which time to delete rows
-        :param(int) end_period, ultil which time to delete rows
+        :param(int) end_period, until which time to delete rows
 
         For example delete data from table "monthly" for January 2016:
 
@@ -254,7 +254,7 @@ class DatabaseComtrade(Database):
                         table.c.period <= end_period,
                     )
                 )
-                # Exectute delete statement
+                # Execute delete statement
                 stmt.execute()
         self.logger.info(
             "Delete data from database table %s, from %s to %s",
