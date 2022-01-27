@@ -87,11 +87,9 @@ def agg_trade_eu_row(df, index_side="partner"):
         index = [country_group, "partner_code", "partner"] + index
     # Aggregate
     df_agg = df.groupby(index).agg(value=("value", sum)).reset_index()
-    # When aggregating over partner groups, prefix elements by the group name
+    # When aggregating over partner groups, rename country_group to partner
     if index_side == "partner":
-        df_agg = df_agg.assign(
-            element=lambda x: x["partner_group"] + "_" + x["element"]
-        ).drop(columns=country_group)
+        df_agg = df_agg.rename(columns={country_group: "partner"})
     # When aggregating over reporter groups, rename reporter_group to reporter
     if index_side == "reporter":
         df_agg = df_agg.rename(columns={country_group: "reporter"})

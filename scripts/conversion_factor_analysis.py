@@ -92,7 +92,7 @@ myList2.extend(spa_eng_fra_code_name["Producto"].tolist())
 myList2.extend(spa_eng_fra_code_name["Produit"].tolist())
 # Iterator over product
 n_list = 0
-# Iteratore over mapping
+# Iterator over mapping
 score_nr = 0
 # Threshold to accept match
 threshold = 70
@@ -135,7 +135,7 @@ while n_list < len(myList1):
                 match_inside = match1[match1["match"] == match]
                 # Continue with next found match because score is higher
                 if match_inside["score"].values[0] >= score:
-                    # Alredy matched, continues with i item
+                    # Already matched, continues with i item
                     if match_inside.index[0] == n_list:
                         n_list += 1
                         score_nr = 0
@@ -219,3 +219,4 @@ df = df[
 # Store data into conversion_factors.csv
 df.to_csv("conversion_factors.csv", encoding="utf-8", index=False)
 # When extraction rates are missed by country, data are manipulated manually with world average values (if existing)
+# Final file "faostat_agricultural_conversion_factors.csv" is stored into biotrade/config_data
