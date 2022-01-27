@@ -182,7 +182,9 @@ class Pump:
         chunk_size=10 ** 6,
     ):
         """
-        Pump method to transfer large csv file to db.
+        Pump method to transfer large csv file to db using dataframe.
+        500k data frame rows ~ 500 MB of memory usage
+        2 millions data frame rows ~ 2 GB of memory usage
 
         :param (path) temp_file, path of the zip file containing the csv file
             to copy into db
@@ -230,6 +232,10 @@ class Pump:
                         chunk_list.append(df_chunk)
         # Construct the final df to upload to db
         df = pandas.concat(chunk_list)
+        self.logger.info(
+            "Memory usage:\n%s GB",
+            round(df.memory_usage(deep=True).sum() / (1024 ** 3), 2),
+        )
         if not df.empty:
             # Call method to rename column names
             df = self.sanitize_variable_names(
@@ -259,6 +265,9 @@ class Pump:
         """
         Pump method to transfer bulk csv file of Comtrade API requests to
         Comtrade db.
+        Performance with Intel(R) Core(TM) i7-1065G7 CPU @ 1.30GHz:
+        ~ 1.5 hours to upload db monthly data for 1 year
+        ~ 9 hours to upload db monthly data for 6 years
 
         :param (str) table_name, name of the db table to store data
         :param (int) start_year, year from the download should start
