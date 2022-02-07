@@ -11,10 +11,11 @@ import re
 import numpy as np
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
+from pathlib import Path
 
 # Renaming compiler
 regex_pat = re.compile(r"\W+")
-file_name_fao = "TCF_Conversion_Factors_fao.xlsx"
+file_name_fao = Path.cwd() / "scripts" / "TCF_Conversion_Factors_fao.xlsx"
 # FAO extraction rates
 df = pd.read_excel(file_name_fao)
 df = df[
@@ -32,8 +33,12 @@ df["Item_description"] = (
     df["Item_description"].str.replace(regex_pat, "_", regex=True).str.lower()
 )
 # FAO Spanish trade
-# https://fenixservices.fao.org/faostat/static/bulkdownloads/Comercio_MatrizDetalladaComercio_S_Todos_los_Datos.zip
-file_name_spa = "Comercio_MatrizDetalladaComercio_S_Todos_los_Datos_(Normalizado).csv"
+# https://fenixservices.fao.org/faostat/static/bulkdownloads/Producci%C3%B3n_Cultivos_ProductosGanaderia_S_Todos_los_Datos_(Normalizado).zip
+file_name_spa = (
+    Path.cwd()
+    / "scripts"
+    / "Comercio_MatrizDetalladaComercio_S_Todos_los_Datos_(Normalizado).csv"
+)
 df_spa = pd.read_csv(file_name_spa, encoding="latin-1")
 # Extract code nr and product description in spanish
 code_name_spa = df_spa.drop_duplicates(subset=["Código Producto", "Producto"])[
@@ -45,7 +50,11 @@ code_name_spa["Producto"] = (
 )
 # FAO French trade
 # https://fenixservices.fao.org/faostat/static/bulkdownloads/Commerce_MatricesCommerceDetaillees_F_Toutes_les_Données_(Normalisé).zip
-file_name_fra = "Commerce_MatricesCommerceDetaillees_F_Toutes_les_Données.csv"
+file_name_fra = (
+    Path.cwd()
+    / "scripts"
+    / "Commerce_MatricesCommerceDetaillees_F_Toutes_les_Données.csv"
+)
 df_fra = pd.read_csv(file_name_fra, encoding="latin-1")
 # Extract code nr and product description in french
 code_name_fra = df_fra.drop_duplicates(subset=["Code Produit", "Produit"])[
@@ -56,8 +65,10 @@ code_name_fra["Produit"] = (
     code_name_fra["Produit"].str.replace(regex_pat, "_", regex=True).str.lower()
 )
 # FAO English trade
-# https://fenixservices.fao.org/faostat/static/bulkdownloads/Trade_DetailedTradeMatrix_E_All_Data.zip
-file_name_eng = "Trade_DetailedTradeMatrix_E_All_Data_(Normalized).csv"
+# https://fenixservices.fao.org/faostat/static/bulkdownloads/Production_Crops_Livestock_E_All_Data_(Normalized).zip
+file_name_eng = (
+    Path.cwd() / "scripts" / "Trade_DetailedTradeMatrix_E_All_Data_(Normalized).csv"
+)
 df_eng = pd.read_csv(file_name_eng, encoding="latin-1")
 # Extract code nr and product description in english
 code_name_eng = df_eng.drop_duplicates(subset=["Item Code", "Item"])[
@@ -176,7 +187,7 @@ while n_list < len(myList1):
 # Drop nan values
 match1 = match1.dropna().reset_index(drop=True)
 # Store the matches as a csv file
-match1.to_csv("fuzzy_match.csv", encoding="utf-8", index=False)
+match1.to_csv(Path.cwd() / "scripts" / "fuzzy_match.csv", encoding="utf-8", index=False)
 # Merge the dataframe with matches
 df = df.merge(match1, how="left", left_on="Item_description", right_on="original")
 del df["original"]
@@ -190,7 +201,9 @@ df_main_products = (
 )
 df_main_products = df_main_products.rename(columns={"Item_description": "original"})
 # Store the main products matches as a csv file
-df_main_products.to_csv("main_products_match.csv", encoding="utf-8", index=False)
+df_main_products.to_csv(
+    Path.cwd() / "scripts" / "main_products_match.csv", encoding="utf-8", index=False
+)
 # Manipulate column names and percentages
 df["Extraction_rates_%"] = df["Extraction_rates_%"] / 100
 df["Waste_of_supply_%"] = df["Waste_of_supply_%"] / 100
@@ -216,7 +229,69 @@ df = df[
         "extr_rate_country_specific",
     ]
 ]
-# Store data into conversion_factors.csv
-df.to_csv("conversion_factors.csv", encoding="utf-8", index=False)
+# Store data into faostat_agricultural_conversion_factors.csv
 # When extraction rates are missed by country, data are manipulated manually with world average values (if existing)
-# Final file "faostat_agricultural_conversion_factors.csv" is stored into biotrade/config_data
+# Gap filling file "faostat_agricultural_conversion_factors_gf.csv" is stored into biotrade/config_data
+df["fao_product_code"] = df.fao_product_code.astype("Int64")
+df.to_csv(
+    Path.cwd()
+    / "biotrade"
+    / "config_data"
+    / "faostat_agricultural_conversion_factors.csv",
+    encoding="utf-8",
+    index=False,
+    na_rep="NA",
+)
+# Extract statistics (minimum, maximum, mean and standard deviation) of a commodity extraction rate
+statistics = df.groupby(["fao_product_code", "fao_product"], as_index=False).agg(
+    {"extraction_rate": ["mean", "min", "max", "std"]}
+)
+# Rename column names of statistics dataframe
+column_list = []
+for column_name in statistics.columns.values:
+    if column_name[1] == "":
+        final_column_name = column_name[0]
+    else:
+        final_column_name = "_".join(column_name)
+    column_list.append(final_column_name)
+statistics.columns = column_list
+# Add a column to define which product statistics are obtained by calculations,
+# in order to separate data from the one obtained by the commodity tree
+statistics["statistic_calculation"] = (
+    statistics["extraction_rate_mean"].notnull().astype(int)
+)
+statistics["fao_product_code"] = statistics.fao_product_code.astype("Int64")
+# Save into csv as global_extraction_rate_statics.csv into config_data folder
+statistics.to_csv(
+    Path.cwd() / "biotrade" / "config_data" / "global_extraction_rate_statistics.csv",
+    encoding="utf-8",
+    index=False,
+    na_rep="NA",
+)
+# Global average values from technical report
+commodity_tree_list = [
+    [1242, "margarine_short", 1.13, np.nan, np.nan, np.nan, 0],
+    [1241, "margarine_liquid", 1.3, np.nan, np.nan, np.nan, 0],
+    [1243, "fat_nes_prepared", 1.0, np.nan, np.nan, np.nan, 0],
+    [1274, "oil_boiled_etc", np.nan, np.nan, np.nan, np.nan, 0],
+    [1276, "fatty_acids", 0.98, np.nan, np.nan, np.nan, 0],
+    [254, "oil_palm_fruit", np.nan, np.nan, np.nan, np.nan, 0],
+    [256, "palm_kernels", 0.06, np.nan, np.nan, np.nan, 0],
+    [660, "coffee_husks_and_skins", np.nan, np.nan, np.nan, np.nan, 0],
+]
+# Append new values
+statistics_commodity_tree = statistics.append(
+    pd.DataFrame(commodity_tree_list, columns=statistics.columns), ignore_index=True
+)
+# Sort by product codes
+statistics_commodity_tree = statistics_commodity_tree.sort_values(by="fao_product_code")
+# Save into "global_extraction_rate_statistics_gf.csv"
+statistics_commodity_tree.to_csv(
+    Path.cwd()
+    / "biotrade"
+    / "config_data"
+    / "global_extraction_rate_statistics_gf.csv",
+    encoding="utf-8",
+    index=False,
+    na_rep="NA",
+)
