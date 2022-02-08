@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 r"""
-Written by Selene Patani and Paul Rougieux.
-
+Written by Eylül Kilsedar, Selene Patani and Paul Rougieux.
 
 Start the API server point:
 
