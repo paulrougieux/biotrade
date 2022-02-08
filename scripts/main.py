@@ -1,8 +1,22 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+r"""
+Written by Selene Patani and Paul Rougieux.
+
+
+Start the API server point:
+
+   ipython ~/repos/forobs/biotrade/scripts/main.py
+
+Query the API at:
+
+    http://127.0.0.1:8000/api/v1/reporter_query?year=2004&year=2005&year=2006&year=2007&year=2008&reporter=Indonesia
+"""
+
 from pathlib import Path
 from fastapi import FastAPI, Query
 from typing import List
 import uvicorn
-import json
 from biotrade.faostat import faostat
 
 # Define webframework
@@ -55,7 +69,7 @@ def select_products_with_largest_area(year_list, reporter, threshold=90):
 
 
 def create_csv_json(years, reporter, threshold=90):
-    """Create the csv and JSON files for treemap visualization with D3.js.
+    """Create JSON data for treemap visualization with D3.js.
 
     :param (list) years, the years to be selected
     :param (str) reporter, the reporter to be selected
@@ -65,12 +79,6 @@ def create_csv_json(years, reporter, threshold=90):
     """
     # Select data
     df = select_products_with_largest_area(years, reporter, threshold)
-    # Name of file
-    file_name = reporter.lower().replace(" ", "_") + "_" + str(years[0])
-    if len(years) > 1:
-        file_name += "_" + str(years[-1])
-    # Csv file creation
-    df.to_csv(output_dir / (file_name + ".csv"), index=False)
     # Dictionary creation
     data = {}
     data["name"] = reporter
@@ -82,9 +90,6 @@ def create_csv_json(years, reporter, threshold=90):
         data_part["value"] = row["value"]
         data_part["value_percentage"] = row["value_percentage"]
         data["children"].append(data_part)
-    # Create json file
-    with open(output_dir / (file_name + ".json"), "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
     return data
 
 
