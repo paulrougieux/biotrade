@@ -43,49 +43,41 @@ class Coefficients:
         df = pandas.read_csv(self.config_data_dir / "cuypers2013_extraction_rates.csv")
         return df
 
-    def agricultural_conversion_factors(self, filled=True):
+    @property
+    def agricultural_conversion_factors(self):
         """
         Extraction rates and waste of supply are taken from the FAO,
         technical conversion factors for agricultural commodities available at:
         https://www.fao.org/economic/the-statistics-division-ess/methodology/methodology-systems/technical-conversion-factors-for-agricultural-commodities/ar/
-        Missing extraction rates of countries are processed with world average
-        values when available (filled = True), column country_specific is 1 only when extraction rate is available
+        Column extraction_rate_country_specific_flag is 1 only when extraction rate is available
         for the country.
         Load the coefficients:
 
         >>> from biotrade.faostat import faostat
-        With gap filling
-        >>> coefficients = faostat.coefficients.agricultural_conversion_factors(filled = True)
-        Without gap filling
-        >>> coefficients = faostat.coefficients.agricultural_conversion_factors(filled = False)
+        >>> coefficients = faostat.coefficients.agricultural_conversion_factors
         """
-        if filled:
-            df = pandas.read_csv(
-                self.config_data_dir / "faostat_agricultural_conversion_factors_gf.csv"
-            )
-        else:
-            df = pandas.read_csv(
-                self.config_data_dir / "faostat_agricultural_conversion_factors.csv"
-            )
+        df = pandas.read_csv(
+            self.config_data_dir / "faostat_agricultural_conversion_factors.csv"
+        )
         return df
 
-    def extraction_rate_statistics(self, filled=True):
+    def coefficient_statistics(self, filled=True):
         """
-        Global extraction rate statistics (mean, min, max, std) of products are computed from "faostat_agricultural_conversion_factors.csv"
-        Missing extraction rate average values are filled with commodity tree world average
-        values when available (filled = True), column statistic_calculation is 1 only when values are computed
+        Global extraction rate and waste of supply statistics (mean, min, max, std, sample size) of products are computed from "faostat_agricultural_conversion_factors.csv"
+        Missing extraction rate average values are filled with commodity tree values when available (filled = True), flag columns are 1 only when values are computed
         from "faostat_agricultural_conversion_factors.csv".
         Load statistics:
 
         >>> from biotrade.faostat import faostat
         With gap filling
-        >>> coefficients = faostat.coefficients.extraction_rate_statistics(filled = True)
+        >>> coefficient_stats = faostat.coefficients.coefficient_statistics(filled = True)
         Without gap filling
-        >>> coefficients = faostat.coefficients.extraction_rate_statistics(filled = False)
+        >>> coefficient_stats = faostat.coefficients.coefficient_statistics(filled = False)
         """
         if filled:
             df = pandas.read_csv(
-                self.config_data_dir / "global_extraction_rate_statistics_gf.csv"
+                self.config_data_dir
+                / "global_extraction_rate_statistics_manually_gf.csv"
             )
         else:
             df = pandas.read_csv(
