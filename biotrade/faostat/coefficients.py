@@ -76,8 +76,7 @@ class Coefficients:
         """
         if filled:
             df = pandas.read_csv(
-                self.config_data_dir
-                / "global_extraction_rate_statistics_manually_gf.csv"
+                self.config_data_dir / "global_extraction_rate_statistics_manual_gf.csv"
             )
         else:
             df = pandas.read_csv(

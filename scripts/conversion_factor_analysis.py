@@ -241,7 +241,7 @@ for commodity in commodity_tree_list:
     statistics["extraction_rate_mean"][index] = commodity[1]
 # Sort by product codes
 statistics = statistics.sort_values(by="fao_product_code")
-# Save new df into "global_extraction_rate_statistics_manually_gf.csv"
+# Save new df into "global_extraction_rate_statistics_manual_gf.csv"
 statistics.to_csv(
     Path.cwd()
     / "biotrade"
