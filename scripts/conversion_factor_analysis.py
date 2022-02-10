@@ -1,7 +1,8 @@
 """
 Written by Selene Patani
 
-Script used to get statistics of extraction rates and waste of supplies
+Script used to get extraction rates, waste of supplies and related statistics from file "TCF_Conversion Factors_fao.xlsx" (coming from
+https://www.fao.org/food-agriculture-statistics/en/)
 """
 
 import pandas as pd
