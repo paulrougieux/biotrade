@@ -44,8 +44,6 @@ class CountryGroups(object):
         """
         path = self.config_data_dir / "faostat_country_groups.csv"
         df = pandas.read_csv(path)
-        # Convert NA values to empty strings so that there is no issue reading it from R
-        df.fillna("", inplace=True)
         return df
 
     @property
