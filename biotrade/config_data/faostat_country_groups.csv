@@ -1,4 +1,4 @@
-faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_status_info,fao_table_name,official_fao_name,short_name,abbr_fao_name_sp,un_year_start_info,un_year_end_info,unsd_world_reg,continent,continent_code,sub_continent,sub_continent_code,unsd_dvddvg_reg,EU-27
+faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_status_info,fao_table_name,official_fao_name,short_name,abbr_fao_name_sp,un_year_start_info,un_year_end_info,unsd_world_reg,continent,continent_code,sub_continent,sub_continent_code,unsd_dvddvg_reg,eu27
 2,1,AF,AF,AFG,AFG,4,member,Afghanistan,the Islamic Republic of Afghanistan,Afghanistan,Afganistán,1946,,World,Asia,5300,Southern Asia,5303,Developing,0
 284,,AX,AX,ALA,ALA,248,areas and territories,Åland Islands,Åland Islands,Åland Islands,Islas Åland,2003,,World,Europe,5400,Northern Europe,5402,Developed,0
 3,3,AL,AL,ALB,ALB,8,member,Albania,the Republic of Albania,Albania,Albania,1955,,World,Europe,5400,Southern Europe,5403,Developed,0

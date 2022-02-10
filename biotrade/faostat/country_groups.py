@@ -44,6 +44,8 @@ class CountryGroups(object):
         """
         path = self.config_data_dir / "faostat_country_groups.csv"
         df = pandas.read_csv(path)
+        # Convert NA values to empty strings so that there is no issue reading it from R
+        df.fillna("", inplace=True)
         return df
 
     @property
@@ -56,7 +58,7 @@ class CountryGroups(object):
             >>> eu_country_name_list = faostat.country_groups.eu_country_names
         """
         df = self.df
-        return df[df["EU-27"] == 1]["short_name"].tolist()
+        return df[df["eu27"] == 1]["short_name"].tolist()
 
     @property
     def continents(self):
