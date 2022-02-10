@@ -10,7 +10,10 @@ Unit D1 Bioeconomy.
 Usage:
 
     >>> from biotrade.faostat import faostat
+    >>> print("List of EU countries:")
     >>> print(faostat.country_groups.eu_country_names)
+    >>> print("\n\nData frame of country groups:")
+    >>> print(faostat.country_groups.df)
 
 """
 
