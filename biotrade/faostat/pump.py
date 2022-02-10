@@ -35,6 +35,8 @@ class Pump:
         >>> from biotrade.faostat import faostat
         >>> faostat.pump.download_all_datasets()
         >>> faostat.pump.update_db()
+        >>> # Optionally, you can skip the very large crop trade data
+        >>> faostat.pump.update_db(skip_crop_trade=True)
 
     Read an entire table directly from a CSV file to a data frame
     without going through the database:

@@ -4,7 +4,8 @@ economic flows. It focuses on the agriculture and forestry sectors, from primary
 production to secondary products transformation. It loads bilateral trade and production 
 data from the UN Comtrade and from FAOSTAT.
 
-Extraction rates and waste of supply are taken from the FAO, technical conversion factors for agricultural commodities available at:
+Extraction rates and waste of supply are taken from the FAO, technical conversion 
+factors for agricultural commodities available at: 
 https://www.fao.org/economic/the-statistics-division-ess/methodology/methodology-systems/technical-conversion-factors-for-agricultural-commodities/ar/
 
 
@@ -28,30 +29,14 @@ Dependencies
 
 # Usage
 
-## Comtrade
+The biotrade package is able to download data from FAOSTAT and UN Comtrade and to store
+it inside a database. By default it will be an SQLite database stored locally on a
+laptop for example. Alternatively, a PostGRESQL database can be used if a connection
+string is defined in an environment variable, for example by adding the following to
+your .bash_aliases or .bash_rc:
 
-See the documentation of the various methods. As an example  here is how to download 
-trade data from the API and return a data frame, for debugging purposes:
+    export BIOTRADE_DATABASE_URL="postgresql://user@localhost/biotrade"
 
-    >>> from biotrade.comtrade import comtrade
-    >>> # Other sawnwood
-    >>> swd99 = comtrade.pump.download(cc = "440799")
-    >>> # Soy
-    >>> soy = comtrade.pump.download(cc = "120190")
-
-Display information on column names used for renaming
-and dropping less important columns:
-
-    >>> comtrade.column_names
-
-Get the list of products from the Comtrade API
-
-    >>> hs = comtrade.pump.get_parameter_list("classificationHS.json")
-
-Get the list of reporter and partner countries
-
-    >>> comtrade.pump.get_parameter_list("reporterAreas.json")
-    >>> comtrade.pump.get_parameter_list("partnerAreas.json")
 
 ## FAOSTAT
 
@@ -96,6 +81,32 @@ Select the mirror flows reported by Brazil, where the Netherlands was a partner
 
 
 
+## Comtrade
+
+See the documentation of the various methods. As an example  here is how to download 
+trade data from the API and return a data frame, for debugging purposes:
+
+    >>> from biotrade.comtrade import comtrade
+    >>> # Other sawnwood
+    >>> swd99 = comtrade.pump.download(cc = "440799")
+    >>> # Soy
+    >>> soy = comtrade.pump.download(cc = "120190")
+
+Display information on column names used for renaming
+and dropping less important columns:
+
+    >>> comtrade.column_names
+
+Get the list of products from the Comtrade API
+
+    >>> hs = comtrade.pump.get_parameter_list("classificationHS.json")
+
+Get the list of reporter and partner countries
+
+    >>> comtrade.pump.get_parameter_list("reporterAreas.json")
+    >>> comtrade.pump.get_parameter_list("partnerAreas.json")
+
+
 # Metadata
 
 
@@ -103,6 +114,22 @@ Select the mirror flows reported by Brazil, where the Netherlands was a partner
 
 FAOSTAT release dates are available at :
 https://fenixservices.fao.org/faostat/static/releasecalendar/Default.aspx
+
+
+# Code style
+
+
+- `snake_case` is the preferred way of naming files and variables in the code. This 
+  follows the R [tidyverse style guide for object 
+  names](https://style.tidyverse.org/syntax.html) and the python [PEP 
+  8](https://www.python.org/dev/peps/pep-0008/#function-and-variable-names) style guide 
+  for function and variable names.
+
+- Variable names are harmonized between the different sources in
+  [biotrade/config_data/column_names.csv](https://gitlab.com/bioeconomy/biotrade/-/blob/main/biotrade/config_data/column_names.csv)
+  See for example how the `product_code` column is called  `PRODUCT_NC` in Eurostat Comext,
+  `commodity_code` or `cmdcode` in UN Comtrade and `item_code` in FAOSTAT.
+
 
 
 # Licence
