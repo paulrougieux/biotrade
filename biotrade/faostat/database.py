@@ -237,7 +237,14 @@ class DatabaseFaostat(Database):
         return pandas.read_sql_query(stmt, self.engine)
 
     def select(
-        self, table, reporter=None, partner=None, product=None, product_code=None
+        self,
+        table,
+        reporter=None,
+        partner=None,
+        product=None,
+        reporter_code=None,
+        partner_code=None,
+        product_code=None,
     ):
         """Select production data for the given arguments
 
@@ -254,8 +261,20 @@ class DatabaseFaostat(Database):
 
             >>> from biotrade.faostat import faostat
             >>> db = faostat.db
-            >>> cp2 = db.select(table="crop_production",
+            >>> cp1 = db.select(table="crop_production",
             >>>                 reporter=["Portugal", "Estonia"])
+
+        Select the same data using the country codes instead of the country names
+
+            >>> cp2 = db.select(table="crop_production",
+            >>>                 reporter_code=[63, 174])
+
+        Compare values
+
+            >>> index = ["reporter", "product", "element", "year"]
+            >>> cp1.sort_values(index, inplace=True, ignore_index=True)
+            >>> cp2.sort_values(index, inplace=True, ignore_index=True)
+            >>> cp1.equals(cp2)
 
         Select forestry trade flows data reported by Austria with all partner countries:
 
@@ -316,14 +335,21 @@ class DatabaseFaostat(Database):
 
         """
         table = self.tables[table]
-        # Change character variables to lists suitable for a column.in_() clause
-        # Or for a list comprehension
+        # Change character or integer arguments to lists suitable for a
+        # column.in_() clause or for a list comprehension.
         if isinstance(reporter, str):
             reporter = [reporter]
         if isinstance(partner, str):
             partner = [partner]
         if isinstance(product, str):
             product = [product]
+        if isinstance(reporter_code, (int, str)):
+            reporter_code = [reporter_code]
+        if isinstance(partner_code, (int, str)):
+            partner_code = [partner_code]
+        if isinstance(product_code, (int, str)):
+            product_code = [product_code]
+        # Build the select statement
         stmt = table.select()
         if reporter is not None:
             stmt = stmt.where(table.c.reporter.in_(reporter))
@@ -331,8 +357,13 @@ class DatabaseFaostat(Database):
             stmt = stmt.where(table.c.partner.in_(partner))
         if product is not None:
             stmt = stmt.where(or_(table.c.product.ilike(f"%{p}%") for p in product))
+        if reporter_code is not None:
+            stmt = stmt.where(table.c.reporter_code.in_(reporter_code))
+        if partner_code is not None:
+            stmt = stmt.where(table.c.partner_code.in_(partner_code))
         if product_code is not None:
             stmt = stmt.where(table.c.product_code.in_(product_code))
+        # Query the database and return a data frame
         df = pandas.read_sql_query(stmt, self.engine)
         return df
 
