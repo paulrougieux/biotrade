@@ -236,12 +236,15 @@ class DatabaseFaostat(Database):
         """A wrapper around pandas.read_sql_query"""
         return pandas.read_sql_query(stmt, self.engine)
 
-    def select(self, table, reporter=None, partner=None, product=None):
+    def select(
+        self, table, reporter=None, partner=None, product=None, product_code=None
+    ):
         """Select production data for the given arguments
 
         :param list or str reporter: List of reporter names
         :param list or str partner: List of partner names
         :param list or str product: List of product names
+        :param list or str product_code: List of product codes
         :return: A data frame of trade flows
 
         Note that the search for reporter and partner will be based on perfect
@@ -249,54 +252,67 @@ class DatabaseFaostat(Database):
 
         For example select crop production data for 2 countries
 
-        >>> from biotrade.faostat import faostat
-        >>> db = faostat.db
-        >>> cp2 = db.select(table="crop_production",
-        >>>                 reporter=["Portugal", "Estonia"])
+            >>> from biotrade.faostat import faostat
+            >>> db = faostat.db
+            >>> cp2 = db.select(table="crop_production",
+            >>>                 reporter=["Portugal", "Estonia"])
 
         Select forestry trade flows data reported by Austria with all partner countries:
 
-        >>> ft_aut = db.select(table="forestry_trade",
-        >>>                    reporter=["Austria"])
+            >>> ft_aut = db.select(table="forestry_trade",
+            >>>                    reporter=["Austria"])
 
         Select forestry trade flows data reported by all countries, with
         Austria as a partner country:
 
-        >>> ft_aut_p = db.select(table="forestry_trade",
-        >>>                    partner=["Austria"])
+            >>> ft_aut_p = db.select(table="forestry_trade",
+            >>>                    partner=["Austria"])
 
         Select crop trade flows reported by the Netherlands where Brazil was a
         partner
 
-        >>> ct_nel_bra = db.select(table="crop_trade",
-        >>>                        reporter="Netherlands",
-        >>>                        partner="Brazil")
+            >>> ct_nel_bra = db.select(table="crop_trade",
+            >>>                        reporter="Netherlands",
+            >>>                        partner="Brazil")
 
         Select the mirror flows reported by Brazil, where the Netherlands was a partner
 
-        >>> ct_bra_bel = db.select(table="crop_trade",
-        >>>                        reporter="Brazil",
-        >>>                        partner="Netherlands")
+            >>> ct_bra_bel = db.select(table="crop_trade",
+            >>>                        reporter="Brazil",
+            >>>                        partner="Netherlands")
 
         Select crop production where products contain the word "soy"
 
-        >>> from biotrade.faostat import faostat
-        >>> db = faostat.db
-        >>> soy_prod = db.select(table="crop_production",
-        >>>                      product = "soy")
+            >>> from biotrade.faostat import faostat
+            >>> db = faostat.db
+            >>> soy_prod = db.select(table="crop_production",
+            >>>                      product = "soy")
+
+        Select soybeans and oil soybean production using their product codes
+
+            >>> soy_prod_2 = db.select(table="crop_production",
+            >>>                        product_code = [236, 237])
+
+        Compare the two data frame. Sort them first because rows are in a
+        different order.
+
+            >>> index = ["reporter", "product", "element", "year"]
+            >>> soy_prod_2.sort_values(index, inplace=True, ignore_index=True)
+            >>> soy_prod.sort_values(index, inplace=True, ignore_index=True)
+            >>> soy_prod.equals(soy_prod_2)
 
         Select crop trade where products contain the word "soy"
 
-        >>> soy_trade = db.select(table="crop_trade", product = "soy")
+            >>> soy_trade = db.select(table="crop_trade", product = "soy")
 
         Select crop production where products contain the words in the list
 
-        >>> products_of_interest = ["soy", "palm", "sun", "oil", "rapeseed"]
-        >>> veg_oil = db.select(table="crop_production",
-        >>>                      product = products_of_interest)
-        >>> for e in veg_oil["element"].unique():
-        >>>     print(e)
-        >>>     print(veg_oil[veg_oil.element == e]["product"].unique())
+            >>> products_of_interest = ["soy", "palm", "sun", "oil", "rapeseed"]
+            >>> veg_oil = db.select(table="crop_production",
+            >>>                      product = products_of_interest)
+            >>> for e in veg_oil["element"].unique():
+            >>>     print(e)
+            >>>     print(veg_oil[veg_oil.element == e]["product"].unique())
 
         """
         table = self.tables[table]
@@ -315,6 +331,8 @@ class DatabaseFaostat(Database):
             stmt = stmt.where(table.c.partner.in_(partner))
         if product is not None:
             stmt = stmt.where(or_(table.c.product.ilike(f"%{p}%") for p in product))
+        if product_code is not None:
+            stmt = stmt.where(table.c.product_code.in_(product_code))
         df = pandas.read_sql_query(stmt, self.engine)
         return df
 
