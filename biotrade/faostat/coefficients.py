@@ -46,12 +46,12 @@ class Coefficients:
     @property
     def agricultural_conversion_factors(self):
         """
-        Extraction rates and waste of supply are taken from the FAO,
-        technical conversion factors for agricultural commodities available at:
-        https://www.fao.org/economic/the-statistics-division-ess/methodology/methodology-systems/technical-conversion-factors-for-agricultural-commodities/ar/
-        Column extraction_rate_country_specific_flag is 1 only when extraction rate is available
-        for the country.
-        Load the coefficients:
+        Extraction rates and waste of supply are taken from the FAO, technical
+        conversion factors for agricultural commodities available at:
+            https://www.fao.org/economic/the-statistics-division-ess/methodology/methodology-systems/technical-conversion-factors-for-agricultural-commodities/ar/
+            Column extraction_rate_country_specific_flag is 1 only when
+            extraction rate is available for the country. Load the
+            coefficients:
 
         >>> from biotrade.faostat import faostat
         >>> coefficients = faostat.coefficients.agricultural_conversion_factors
@@ -61,18 +61,26 @@ class Coefficients:
         )
         return df
 
-    def coefficient_statistics(self, filled=True):
+    def extraction_rates(self, filled=True):
         """
-        Global extraction rate and waste of supply statistics (mean, min, max, std, sample size) of products are computed from "faostat_agricultural_conversion_factors.csv"
-        Missing extraction rate average values are filled with commodity tree values when available (filled = True), flag columns are 1 only when values are computed
-        from "faostat_agricultural_conversion_factors.csv".
+        Global extraction rate and waste of supply statistics (mean, min, max,
+        std, sample size) of products are computed from
+        "faostat_agricultural_conversion_factors.csv" Missing extraction rate
+        average values are filled with commodity tree values when available
+        (filled = True), flag columns are 1 only when values are computed from
+        "faostat_agricultural_conversion_factors.csv".
+
         Load statistics:
 
-        >>> from biotrade.faostat import faostat
+            >>> from biotrade.faostat import faostat
+
         With gap filling
-        >>> coefficient_stats = faostat.coefficients.coefficient_statistics(filled = True)
+
+            >>> faostat.coefficients.extraction_rates(filled = True)
+
         Without gap filling
-        >>> coefficient_stats = faostat.coefficients.coefficient_statistics(filled = False)
+
+            >>> faostat.coefficients.extraction_rates(filled = False)
         """
         if filled:
             df = pandas.read_csv(
