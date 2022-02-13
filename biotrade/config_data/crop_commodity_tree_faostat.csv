@@ -39,7 +39,7 @@ cattle,fat_cattle,869,oils_fats_of_animal_nes,1168,0
 cattle,fat_cattle,869,tallow,1225,0
 cattle,hides_cattle_fresh,919,hides_cattle_wet_salted,920,0
 cattle,hides_cattle_fresh,919,skins_calve_wet_salted,928,0
-coffee_beans,coffee_green,656,coffee_roasted,657,0
-coffee_beans,coffee_green,656,coffee_husks_and_skins,660,0
-coffee_beans,coffee_roasted,657,coffee_substitutes_containing_coffee,658,0
-coffee_beans,coffee_roasted,657,coffee_extracts,659,0
+coffee_green,coffee_green,656,coffee_roasted,657,0
+coffee_green,coffee_green,656,coffee_husks_and_skins,660,0
+coffee_green,coffee_roasted,657,coffee_substitutes_containing_coffee,658,0
+coffee_green,coffee_roasted,657,coffee_extracts,659,0
