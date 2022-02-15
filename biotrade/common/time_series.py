@@ -44,8 +44,8 @@ def relative_change(df, years=5):
     # Add columns with respect to the number of years to calculate the relative change
     for year in range(1, years + 1):
         column_list.append(f"value_{year}_year_before")
-    # Colum to perform the sum of previous years
-    column_list.append("sum_previous_years")
+    # Colum to perform the mean value of previous years
+    column_list.append("mean_previous_years")
     # Loop on each group
     for key in df_groups.groups.keys():
         # Select the data related to the selected group
@@ -60,16 +60,16 @@ def relative_change(df, years=5):
         df_key = df_key.sort_values(by="year", ascending=False)
         # Add column to dataframe
         for idx, column in enumerate(column_list):
-            # The last column is the sum of the previous year values
-            if column == "sum_previous_years":
-                df_key[column] = df_key[column_list[:-1]].sum(axis=1, skipna=False)
+            # The last column is the mean of the previous year values
+            if column == "mean_previous_years":
+                df_key[column] = df_key[column_list[:-1]].mean(axis=1, skipna=False)
                 break
             # Shift value column up with respect to the number of years considered
             df_key[column] = df_key["value"].shift(-(idx) - 1)
         # Finally calculate the relative change
         df_key["relative_change"] = (
-            (df_key["value"] - df_key["sum_previous_years"])
-            / df_key["sum_previous_years"]
+            (df_key["value"] - df_key["mean_previous_years"])
+            / df_key["mean_previous_years"]
             * 100
         )
         # Drop columns added for the calculation
