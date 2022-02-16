@@ -41,7 +41,7 @@ soybeans_export_agg = agg_trade_eu_row(soybeans_export)
 Calculate the relative change of values in time (5 years as default)
 
 ```python
-soybeans_exp_relative_change = relative_change(soybeans_export_agg)
+soybeans_exp_relative_change = relative_change(soybeans_export_agg, last_value=False)
 ```
 
 Plot bars
