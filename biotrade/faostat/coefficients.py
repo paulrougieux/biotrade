@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Written by Paul Rougieux.
+Written by Paul Rougieux and Selene Patani.
 
 JRC biomass Project.
 Unit D1 Bioeconomy.
