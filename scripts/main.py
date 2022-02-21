@@ -12,7 +12,6 @@ Query the API at:
     http://127.0.0.1:8000/api/v1/reporter_query?year=2004&year=2005&year=2006&year=2007&year=2008&reporter=Indonesia
 """
 
-from pathlib import Path
 from fastapi import FastAPI, Query
 from typing import List
 import uvicorn
@@ -20,8 +19,6 @@ from biotrade.faostat import faostat
 
 # Define webframework
 app = FastAPI()
-# Output data directory
-output_dir = Path.cwd() / "scripts"
 
 
 def select_products_with_largest_area(year_list, reporter, threshold=90):
