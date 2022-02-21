@@ -17,6 +17,7 @@ from sqlalchemy import Integer, Float, Text, UniqueConstraint
 from sqlalchemy import Table, Column, MetaData, or_
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.schema import CreateSchema
+from sqlalchemy_utils import database_exists, create_database
 import pandas
 
 # Internal modules
@@ -72,6 +73,10 @@ class DatabaseFaostat(Database):
         self.parent = parent
         # Database configuration
         self.engine = create_engine(self.database_url)
+        # Create the database if it doesn't exist
+        if not database_exists(self.engine.url):
+            create_database(self.engine.url)
+
         # SQL Alchemy metadata
         self.metadata = MetaData(schema=self.schema)
         self.metadata.bind = self.engine
