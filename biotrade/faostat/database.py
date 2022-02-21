@@ -13,7 +13,7 @@ You can use this object at the ipython console with the following examples.
 import logging
 
 # Third party modules
-from sqlalchemy import Integer, Float, Text, UniqueConstraint
+from sqlalchemy import Integer, Float, SmallInteger, Text, UniqueConstraint
 from sqlalchemy import Table, Column, MetaData, or_
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.schema import CreateSchema
@@ -101,6 +101,7 @@ class DatabaseFaostat(Database):
         self.land_use = self.describe_land_table(name="land_use")
         self.land_cover = self.describe_land_table(name="land_cover")
         self.forest_land = self.describe_land_table(name="forest_land")
+        self.country = self.describe_country_table(name="countries")
         self.tables = {
             "forestry_production": self.forestry_production,
             "forestry_trade": self.forestry_trade,
@@ -109,6 +110,7 @@ class DatabaseFaostat(Database):
             "land_cover": self.land_cover,
             "land_use": self.land_use,
             "forest_land": self.forest_land,
+            "country": self.country,
         }
         # Create tables if they don't exist
         for table in self.tables.values():
@@ -232,6 +234,25 @@ class DatabaseFaostat(Database):
                 "element_code",
                 "unit",
                 "flag",
+            ),
+            schema=self.schema,
+        )
+        return table
+
+    def describe_country_table(self, name):
+        """Define the metadata of a table containing country data."""
+        table = Table(
+            name,
+            self.metadata,
+            Column("continent_code", Integer),
+            Column("continent", Text),
+            Column("sub_continent_code", Integer),
+            Column("sub_continent", Text),
+            Column("eu27", SmallInteger),
+            Column("country_code", Integer),
+            Column("country_name", Text),
+            UniqueConstraint(
+                "country_code",
             ),
             schema=self.schema,
         )
