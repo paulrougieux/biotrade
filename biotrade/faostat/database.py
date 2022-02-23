@@ -101,7 +101,7 @@ class DatabaseFaostat(Database):
         self.land_use = self.describe_land_table(name="land_use")
         self.land_cover = self.describe_land_table(name="land_cover")
         self.forest_land = self.describe_land_table(name="forest_land")
-        self.country = self.describe_country_table(name="countries")
+        self.country = self.describe_country_table(name="country")
         self.tables = {
             "forestry_production": self.forestry_production,
             "forestry_trade": self.forestry_trade,

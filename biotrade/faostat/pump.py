@@ -19,6 +19,7 @@ import tempfile
 # Third party modules
 import logging
 import pandas
+import numpy as np
 
 # Internal modules
 from biotrade.common.url_request_header import HEADER
@@ -150,8 +151,15 @@ class Pump:
         Use snake case in product and element names"""
         # Rename columns to snake case
         df.rename(columns=lambda x: re.sub(r"\W+", "_", str(x)).lower(), inplace=True)
-        # Rename columns using the naming convention defined in self.column_names
+        # Map columns using the naming convention defined in self.column_names
         mapping = self.column_names.set_index(column_renaming).to_dict()["jrc"]
+        # Discard nan keys of mapping dictionary
+        mapping.pop(np.nan, None)
+        # Obtain columns for db upload
+        columns = list(df.columns.intersection(list(mapping.keys())))
+        # Filter df selecting only columns for db
+        df = df[columns]
+        # Rename columns using the naming convention defined in self.column_names
         df.rename(columns=mapping, inplace=True)
         # Rename column contents to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
@@ -171,7 +179,8 @@ class Pump:
         # Here is how the flag is encoded after the change
         # ft.flag.unique()
         # array(['', '*', 'R', 'Cv', 'P', 'A'], dtype=object)
-        df.flag.fillna("", inplace=True)
+        if "flag" in df.columns:
+            df.flag.fillna("", inplace=True)
         return df
 
     def read_df(self, short_name):
@@ -205,20 +214,29 @@ class Pump:
         """Transfer large CSV files to the database in chunks
         so that a data frame with 40 million rows doesn't overload the memory.
         """
-        # Unzip the CSV and write it to a temporary file on disk
-        zip_file = ZipFile(self.data_dir / self.datasets[short_name])
-        temp_dir = Path(tempfile.TemporaryDirectory().name)
-        zip_file.extractall(temp_dir)
+        # Csv file inside biotrade package config data directory
+        if short_name == "country":
+            csv_file_name = self.parent.config_data_dir / "faostat_country_groups.csv"
+            encoding_var = "utf-8"
+        # Zip files for table data
+        else:
+            # Unzip the CSV and write it to a temporary file on disk
+            zip_file = ZipFile(self.data_dir / self.datasets[short_name])
+            temp_dir = Path(tempfile.TemporaryDirectory().name)
+            zip_file.extractall(temp_dir)
+            # Read in chunk and pass each chunk to the database
+            csv_file_name = temp_dir / re.sub(
+                ".zip$", ".csv", self.datasets[short_name]
+            )
+            encoding_var = "latin1"
         # Choose which column in the config_data/column_names.csv
         # to use for renaming.
         column_renaming = None
-        for keyword in ["production", "trade", "land"]:
+        for keyword in ["production", "trade", "land", "country"]:
             if keyword in short_name:
                 column_renaming = "faostat_" + keyword
-        # Read in chunk and pass each chunk to the database
-        csv_file_name = temp_dir / re.sub(".zip$", ".csv", self.datasets[short_name])
         for df_chunk in pandas.read_csv(
-            csv_file_name, chunksize=chunk_size, encoding="latin1"
+            csv_file_name, chunksize=chunk_size, encoding=encoding_var
         ):
             df_chunk = self.sanitize_variable_names(df_chunk, column_renaming)
             print(df_chunk.head(1))
