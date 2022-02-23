@@ -16,6 +16,7 @@ import logging
 from sqlalchemy import Integer, Float, SmallInteger, Text, UniqueConstraint
 from sqlalchemy import Table, Column, MetaData, or_
 from sqlalchemy import create_engine, inspect
+from sqlalchemy.sql import text
 from sqlalchemy.schema import CreateSchema
 from sqlalchemy_utils import database_exists, create_database
 import pandas
@@ -391,6 +392,80 @@ class DatabaseFaostat(Database):
             stmt = stmt.where(table.c.product_code.in_(product_code))
         # Query the database and return a data frame
         df = pandas.read_sql_query(stmt, self.engine)
+        return df
+
+    def agg_reporter_partner_eu_row(
+        self,
+        product_code=[None],
+    ):
+        """
+        Aggregate EU27 and ROW both on the reporter and partner side as regard faostat crop_trade table and using a SQL statement for specific product codes
+
+        :param (list) product_code, list of integer product codes
+        :return (DataFrame) df, containing the aggregations for the crop trade product codes
+
+        As example, use this query to aggregate EU27 and ROW for product code equal to 236, corresponding to
+        soybeans product
+            >>> from biotrade.faostat import faostat
+            >>> db = faostat.db
+            >>> df = db.agg_reporter_partner_eu_row(product_code=[236])
+
+        """
+        # Query statement with param :product_code
+        query = """
+            SELECT
+                product_code,
+                product,
+                element,
+                unit,
+                year,
+                reporter_eu27,
+                partner_eu27,
+                SUM(value) AS value
+            FROM (
+                SELECT *
+                FROM (
+                    SELECT *
+                    FROM (
+                        SELECT *
+                        FROM raw_faostat.crop_trade
+                        WHERE product_code IN :product_code
+                    ) AS LHS
+                    LEFT JOIN (
+                        SELECT
+                            country_code AS reporter_code,
+                            eu27 AS reporter_eu27
+                        FROM raw_faostat.country
+                    ) AS RHS
+                    ON (LHS.reporter_code = RHS.reporter_code)
+                ) AS LHS
+                LEFT JOIN (
+                    SELECT
+                        country_code AS partner_code,
+                        eu27 AS partner_eu27
+                    FROM raw_faostat.country
+                ) AS RHS
+                ON (LHS.partner_code = RHS.partner_code)
+            ) AS JOIN_TABLES
+            GROUP BY product_code,
+                product,
+                element,
+                unit,
+                year,
+                reporter_eu27,
+                partner_eu27
+        """
+        # Transform into sqlalchemy text statement object
+        stmt = text(query)
+        # Add None value if list is empty, otherwise query crashes
+        if not product_code:
+            product_code = [None]
+        # Needed tuple to query with parameters sqlalchemy text object
+        product_code = tuple(product_code)
+        # Query the database and return aggregation data frame
+        df = pandas.read_sql_query(
+            stmt, self.engine, params={"product_code": product_code}
+        )
         return df
 
 
