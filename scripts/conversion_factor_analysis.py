@@ -9,6 +9,7 @@ import pandas as pd
 import re
 import numpy as np
 from pathlib import Path
+from biotrade.faostat import faostat
 
 # Renaming compiler
 regex_pat = re.compile(r"\W+")
@@ -26,10 +27,16 @@ meat_coefficients.to_csv(
     index=False,
     na_rep="NA",
 )
+# Substitute unicode with faostat country code
+df_faostat_country_code = faostat.country_groups.df
+# Merge the dataframe with unicode matches
+df = df.merge(
+    df_faostat_country_code, how="left", left_on="M49_code", right_on="un_code"
+)
 # Select columns of interest for extraction rate and waste of supply
 df = df[
     [
-        "M49_code",
+        "faost_code",
         "Region",
         "Country_name",
         "Item_description",
@@ -146,7 +153,7 @@ df["extraction_rate_country_specific_flag"] = (
 # Rename columns
 df = df.rename(
     columns={
-        "M49_code": "fao_country_code",
+        "faost_code": "fao_country_code",
         "Country_name": "fao_country_name",
         "Extraction_rates_%": "extraction_rate",
         "Waste_of_supply_%": "waste_of_supply",

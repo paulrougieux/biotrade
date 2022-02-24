@@ -52,7 +52,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 259,,,JG,CHI,CHI,830,areas and territories,Channel Islands,Channel Islands,Channel Islands,Channel Islands,,,,,,,,,0
 40,51,CL,CL,CHL,CHL,152,member,Chile,the Republic of Chile,Chile,Chile,1945,,World,Americas,5200,South America,5207,Developing,0
 351,,,,,,,member,China,"China (China mainland, Hong Kong SAR, Macao SAR, Taiwan)",China,China,1945,,World,Asia,5300,Eastern Asia,5302,Developing,0
-41,53,CN,CN,CHN,CHN,,areas and territories,China,the People's Republic of China,China mainland,China,,,,,,,,,0
+41,53,CN,CN,CHN,CHN,1248,areas and territories,China,the People's Republic of China,China mainland,China,,,,,,,,,0
 357,,,,,,156,areas and territories,China,"China (China mainland, Taiwan)",China mainland and Taiwan,China,,,,,,,,,0
 96,33364,HK,HK,HKG,HKG,344,areas and territories,"China, Hong Kong SAR","China, Hong Kong Special Administrative Region",Hong Kong,"China, RAE de Hong Kong",,,,,,,,,0
 128,149,MO,MO,MAC,MAC,446,areas and territories,"China, Macao SAR","China, Macao Special Administrative Region",Macao,"China, RAE de Macao",,,,,,,,,0
