@@ -18,11 +18,11 @@ with open(readme_path, encoding="utf-8") as handle:
 
 # Call setup #
 setup(
-    name="plumbing",
-    version="2.10.7",
-    description="Helps with plumbing-type programing in python.",
+    name="biotrade",
+    version="0.0.1",
+    description="Agriculture and forestry statistics.",
     license="MIT",
-    url="http://github.com/xapple/plumbing/",
+    url="https://gitlab.com/bioeconomy/forobs/biotrade/",
     author="Paul Rougieux",
     author_email="paul.rougieux@gmail.com",
     packages=find_namespace_packages(exclude=["notebooks", "scripts"]),
