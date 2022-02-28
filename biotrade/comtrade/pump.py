@@ -66,12 +66,15 @@ class Pump:
         >>> from biotrade.comtrade import comtrade
         >>> comtrade.pump.update_db(table_name = "monthly", frequency = "M")
 
-    Potential server Error messages
+    Potential server Error messages:
 
-        - HTTP Error 409 seems to be the error when the download limit has been reached
-        and we don't use the authentication token.
-        - We also get HTTP Error 500: "Internal Server Error" when the max argument is
-        greater than 9999.
+    - HTTP Error 401 "Unauthorized" means that the token authentication is
+      required and missing.
+    - HTTP Error 409 "Conflict" seems to be the error when the download limit has been reached
+      and we don't use the authentication token.
+    - HTTP Error 500 "Internal Server Error" appears when the max argument is
+      greater than 9999.
+
     """
 
     # Log debug and error messages
