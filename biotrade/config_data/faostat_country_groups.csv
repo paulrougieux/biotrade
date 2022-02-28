@@ -52,10 +52,10 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 259,,,JG,CHI,CHI,830,areas and territories,Channel Islands,Channel Islands,Channel Islands,Channel Islands,,,,,,,,,0
 40,51,CL,CL,CHL,CHL,152,member,Chile,the Republic of Chile,Chile,Chile,1945,,World,Americas,5200,South America,5207,Developing,0
 351,,,,,,,member,China,"China (China mainland, Hong Kong SAR, Macao SAR, Taiwan)",China,China,1945,,World,Asia,5300,Eastern Asia,5302,Developing,0
-41,53,CN,CN,CHN,CHN,1248,areas and territories,China,the People's Republic of China,China mainland,China,,,,,,,,,0
-357,,,,,,156,areas and territories,China,"China (China mainland, Taiwan)",China mainland and Taiwan,China,,,,,,,,,0
-96,33364,HK,HK,HKG,HKG,344,areas and territories,"China, Hong Kong SAR","China, Hong Kong Special Administrative Region",Hong Kong,"China, RAE de Hong Kong",,,,,,,,,0
-128,149,MO,MO,MAC,MAC,446,areas and territories,"China, Macao SAR","China, Macao Special Administrative Region",Macao,"China, RAE de Macao",,,,,,,,,0
+41,53,CN,CN,CHN,CHN,1248,areas and territories,China,the People's Republic of China,China mainland,China,,,World,Asia,5300,Eastern Asia,5302,Developing,0
+357,,,,,,156,areas and territories,China,"China (China mainland, Taiwan)",China mainland and Taiwan,China,,,World,Asia,5300,Eastern Asia,5302,Developing,0
+96,33364,HK,HK,HKG,HKG,344,areas and territories,"China, Hong Kong SAR","China, Hong Kong Special Administrative Region",Hong Kong,"China, RAE de Hong Kong",,,World,Asia,5300,Eastern Asia,5302,Developing,0
+128,149,MO,MO,MAC,MAC,446,areas and territories,"China, Macao SAR","China, Macao Special Administrative Region",Macao,"China, RAE de Macao",,,World,Asia,5300,Eastern Asia,5302,Developing,0
 42,54,CX,CX,CXR,CXR,162,areas and territories,Christmas Island,Christmas Island,Christmas Island,Isla Christmas,,,,,,,,,0
 ,55,,,,,,areas and territories,Clipperton Island,Clipperton Island,Clipperton Island,Isla de Clipperton,,,,,,,,,0
 43,56,CC,CC,CCK,CCK,166,areas and territories,Cocos (Keeling) Islands,Cocos (Keeling) Islands,Cocos (Keeling) Islands,Islas Cocos (Keeling),,,,,,,,,0
@@ -244,7 +244,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 210,236,SE,SE,SWE,SWE,752,member,Sweden,the Kingdom of Sweden,Sweden,Suecia,1946,,World,Europe,5400,Northern Europe,5402,Developed,1
 211,237,CH,CH,CHE,CHE,756,member,Switzerland,the Swiss Confederation,Switzerland,Suiza,2002,,World,Europe,5400,Western Europe,5404,Developed,0
 212,238,SY,SY,SYR,SYR,760,member,the Syrian Arab Republic,the Syrian Arab Republic,Syria,República Árabe Siria,1945,,World,Asia,5300,Western Asia,5305,Developing,0
-214,,TW,TW,TWN,TWN,158,areas and territories,"Taiwan, Province of China","Taiwan, Province of China",Taiwan,Taiwán,,,,,,,,,0
+214,,TW,TW,TWN,TWN,158,areas and territories,"Taiwan, Province of China","Taiwan, Province of China",Taiwan,Taiwán,,,World,Asia,5300,Eastern Asia,5302,Developing,0
 208,239,TJ,TJ,TJK,TJK,762,member,Tajikistan,the Republic of Tajikistan,Tajikistan,Tayikistán,1992,,World,Asia,5300,Central Asia,5301,Developing,0
 216,240,TH,TH,THA,THA,764,member,Thailand,the Kingdom of Thailand,Thailand,Tailandia,1946,,World,Asia,5300,South-Eastern Asia,5304,Developing,0
 154,241,MK,MK,MKD,MKD,807,member,The former Yugoslav Republic of Macedonia,The former Yugoslav Republic of Macedonia,Macedonia,ex República Yugoslava de Macedonia,1992,,World,Europe,5400,Southern Europe,5403,Developed,0
