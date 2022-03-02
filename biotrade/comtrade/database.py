@@ -40,7 +40,7 @@ import pandas
 
 # Third party modules
 from sqlalchemy import Integer, Float, Text, UniqueConstraint
-from sqlalchemy import Table, Column, MetaData, and_
+from sqlalchemy import Table, Column, MetaData, and_, or_
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.schema import CreateSchema
 
@@ -262,6 +262,52 @@ class DatabaseComtrade(Database):
             start_period,
             end_period,
         )
+
+    def select(
+        self,
+        table,
+        reporter=None,
+        partner=None,
+        product=None,
+        reporter_code=None,
+        partner_code=None,
+        product_code=None,
+    ):
+        """
+        Select trade data for the given arguments
+        """
+        table = self.tables[table]
+        # Change character or integer arguments to lists suitable for a
+        # column.in_() clause or for a list comprehension.
+        if isinstance(reporter, str):
+            reporter = [reporter]
+        if isinstance(partner, str):
+            partner = [partner]
+        if isinstance(product, str):
+            product = [product]
+        if isinstance(reporter_code, (int, str)):
+            reporter_code = [reporter_code]
+        if isinstance(partner_code, (int, str)):
+            partner_code = [partner_code]
+        if isinstance(product_code, (int, str)):
+            product_code = [product_code]
+        # Build the select statement
+        stmt = table.select()
+        if reporter is not None:
+            stmt = stmt.where(table.c.reporter.in_(reporter))
+        if partner is not None:
+            stmt = stmt.where(table.c.partner.in_(partner))
+        if product is not None:
+            stmt = stmt.where(or_(table.c.product.ilike(f"%{p}%") for p in product))
+        if reporter_code is not None:
+            stmt = stmt.where(table.c.reporter_code.in_(reporter_code))
+        if partner_code is not None:
+            stmt = stmt.where(table.c.partner_code.in_(partner_code))
+        if product_code is not None:
+            stmt = stmt.where(table.c.product_code.in_(product_code))
+        # Query the database and return a data frame
+        df = pandas.read_sql_query(stmt, self.engine)
+        return df
 
 
 class DatabaseComtradePostgresql(DatabaseComtrade):
