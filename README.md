@@ -13,15 +13,16 @@ https://www.fao.org/economic/the-statistics-division-ess/methodology/methodology
 
 ## Base installation 
 
-Install from the dev branch of a private repo on gitlab using ssh
-
-    pip install git+ssh://git@gitlab.com/bioeconomy/forobs/biotrade.git@dev
-
-Install from the dev branch of a private repo on gitlab using an
+Install from the main branch of a private repo on gitlab using an
 [authentication
 token](https://docs.gitlab.com/ee/user/project/deploy_tokens/index.html)
 
-    pip install git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@dev
+    pip install git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@main
+
+If you are a member of this project, you can also install from the main branch of a 
+private repo on gitlab using your ssh key:
+
+    pip install git+ssh://git@gitlab.com/bioeconomy/forobs/biotrade.git@main
 
 
 ## Installation for contributors
