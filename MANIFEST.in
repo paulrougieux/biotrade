@@ -1,3 +1,4 @@
 include README.md
 include LICENCE.md
 include biotrade/config_data/*.csv
+include config_data/*.csv
