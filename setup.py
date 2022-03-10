@@ -32,5 +32,6 @@ setup(
     long_description=readme,
     long_description_content_type="text/markdown",
     include_package_data=True,
-    package_data={"": ["config_data/*.csv"]},
+    packages=["biotrade"],
+    package_data={"biotrade": ["config_data/*.csv"]},
 )
