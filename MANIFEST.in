@@ -1,1 +1,1 @@
-recursive-include src *.csv
+recursive-include config_data *.csv
