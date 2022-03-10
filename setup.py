@@ -26,10 +26,11 @@ setup(
     author="Paul Rougieux",
     author_email="paul.rougieux@gmail.com",
     packages=find_namespace_packages(exclude=["notebooks", "scripts"]),
-    install_requires=["pandas", "sqlalchemy", "sqlalchemy_utils"],
-    extras_require={"api": ["fastapi"]},
+    install_requires=["pandas", "sqlalchemy", "sqlalchemy_utils", "psycopg2"],
+    extras_require={"api": ["fastapi", "uvicorn"]},
     python_requires=">=3.7",
     long_description=readme,
     long_description_content_type="text/markdown",
     include_package_data=True,
+    package_data={"": ["config_data/*.csv"]},
 )

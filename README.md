@@ -11,9 +11,26 @@ https://www.fao.org/economic/the-statistics-division-ess/methodology/methodology
 
 # Installation
 
-Clone the repository and tell python where it is located by adding it to your 
-PYTHONPATH. You can do this by changing the environment variables or by adding the 
-following line to your shell configuration file such as `.bash_aliases`:
+## Base installation 
+
+Install from the main branch of a private repo on gitlab using an
+[authentication
+token](https://docs.gitlab.com/ee/user/project/deploy_tokens/index.html)
+
+    pip install git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@main
+
+If you are a member of this project, you can also install from the main branch of a 
+private repo on gitlab using your ssh key:
+
+    pip install git+ssh://git@gitlab.com/bioeconomy/forobs/biotrade.git@main
+
+
+## Installation for contributors
+
+If you plan to contribute to the development of the biotrade package, clone the 
+repository and tell python where it is located by adding it to your PYTHONPATH. You can 
+do this by changing the environment variables or by adding the following line to your 
+shell configuration file such as `.bash_aliases`:
 
     export PYTHONPATH="$HOME/repos/biotrade/":$PYTHONPATH
 

@@ -17,7 +17,12 @@ Load the complete table into a pandas data frame.
     >>> db = comtrade.db_pgsql
     >>> df = pandas.read_sql_table("yearly_hs2", db.engine, schema="raw_comtrade")
 
-Select data for the year 2017 using an SQL Alchemy select statement. Return results
+Select monthly oak trade data using the select method defined here.
+
+    >>> from biotrade.comtrade import comtrade
+    >>> comtrade.db.select("monthly", product_code="440791")
+
+Select data for the year 2017 using an SQL Alchemy select statement (lower level). Return results
 using an SQL Alchemy cursor or with a pandas data frame:
 
     >>> year = db.yearly_hs2.columns.get("year")
