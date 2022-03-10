@@ -14,6 +14,7 @@ import numpy as np
 
 # Internal modules
 from biotrade import module_dir
+from biotrade.faostat.aggregate import agg_trade_eu_row
 
 PRODUCTS = pandas.read_csv(
     module_dir / "config_data/faostat_forestry_production_short_names.csv"
@@ -61,12 +62,12 @@ class HwpCountry:
     def __init__(self, parent):
         """Get the country name from this object's parent class."""
         self.country_name = parent.country_name
-        self.faostat = parent.faostat
+        self.faostat_country = parent.faostat
 
     @property
     def production(self):
         """FAOSTAT forestry production data"""
-        df = self.faostat.forestry_production.copy()
+        df = self.faostat_country.forestry_production.copy()
         # Prepare shorter column names combination of product and element
         df = df.merge(PRODUCTS, on=["product", "product_code"], how="inner")
         df = df.merge(ELEMENTS, on=["element"], how="inner")
@@ -104,13 +105,26 @@ class HwpCountry:
 
     @property
     def trade(self):
-        """FAOSTAT forestry trade data
+        """Bilateral forestry trade data from FAOSTAT
 
         >>> from biotrade.common.country import Country
         >>> aut = Country("Austria")
         >>> aut.hwp.trade
+
         """
-        df = self.faostat.forestry_trade.copy()
+        df = self.faostat_country.forestry_trade.copy()
+        return df
+
+    @property
+    def trade_agg(self):
+        """FAOSTAT forestry trade data aggregated for EU and Non EU partners
+
+        >>> from biotrade.common.country import Country
+        >>> bel = Country("Belgium")
+        >>> bel.hwp.trade_agg
+
+        """
+        df = agg_trade_eu_row(self.trade)
         return df
 
     @property
