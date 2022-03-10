@@ -7,7 +7,7 @@ MIT Licensed.
 """
 
 # Imports #
-from setuptools import setup, find_namespace_packages
+from setuptools import setup  # , find_namespace_packages
 from os import path
 
 # Load the contents of the README file #
@@ -25,13 +25,13 @@ setup(
     url="https://gitlab.com/bioeconomy/forobs/biotrade/",
     author="Paul Rougieux",
     author_email="paul.rougieux@gmail.com",
-    packages=find_namespace_packages(exclude=["notebooks", "scripts"]),
+    # packages=find_namespace_packages(exclude=["notebooks", "scripts"]),
+    packages=["biotrade"],
     install_requires=["pandas", "sqlalchemy", "sqlalchemy_utils", "psycopg2"],
     extras_require={"api": ["fastapi", "uvicorn"]},
     python_requires=">=3.7",
     long_description=readme,
     long_description_content_type="text/markdown",
     include_package_data=True,
-    packages=["biotrade"],
     package_data={"biotrade": ["config_data/*.csv"]},
 )
