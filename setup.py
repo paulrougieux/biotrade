@@ -23,7 +23,7 @@ setup(
     description="Agriculture and forestry statistics.",
     license="MIT",
     url="https://gitlab.com/bioeconomy/forobs/biotrade/",
-    author="Paul Rougieux",
+    author="Paul Rougieux, Selene Patani",
     author_email="paul.rougieux@gmail.com",
     # packages=find_namespace_packages(exclude=["notebooks", "scripts"]),
     packages=["biotrade"],
