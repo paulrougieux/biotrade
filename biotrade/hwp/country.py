@@ -66,7 +66,21 @@ class HwpCountry:
 
     @property
     def production(self):
-        """FAOSTAT forestry production data"""
+        """FAOSTAT forestry production data for the selected products
+
+        >>> from biotrade.common.country import Country
+        >>> aut = Country("Austria")
+        >>> aut.hwp.production
+
+        Reshape to wide format using short column names
+
+        >>> prod_wide = (aut.hwp.production
+        >>>              .pivot(index=["reporter", "year"],
+        >>>                     columns=["prod_elem"],
+        >>>                     values="value")
+        >>>             )
+
+        """
         df = self.faostat_country.forestry_production.copy()
         # Prepare shorter column names combination of product and element
         df = df.merge(PRODUCTS, on=["product", "product_code"], how="inner")
@@ -76,31 +90,6 @@ class HwpCountry:
         ].copy()
         df["prod_elem"] = df["product_short"] + "_" + df["element_short"]
         df = df.drop(columns=["product_short", "element_short"])
-        return df
-
-    @property
-    def production_wide(self):
-        """Reshape FAOSTAT forestry production data to wide format
-
-        >>> from biotrade.common.country import Country
-        >>> aut = Country("Austria")
-        >>> aut.hwp.production_wide
-
-        For information only, equivalent data frame using a multi index pivot
-
-        >>> prod_wide = (aut.hwp.production
-        >>>              .pivot(index=["reporter", "year"],
-        >>>                     columns=["product", "element"],
-        >>>                     values="value")
-        >>>             )
-        """
-        df = (
-            self.production.pivot(
-                index=["reporter", "year"], columns="prod_elem", values="value"
-            )
-            .reset_index()
-            .rename_axis(columns=None)
-        )
         return df
 
     @property
@@ -116,7 +105,7 @@ class HwpCountry:
         return df
 
     @property
-    def trade_agg(self):
+    def trade_eu_row(self, index_side="partner"):
         """FAOSTAT forestry trade data aggregated for EU and Non EU partners
 
         >>> from biotrade.common.country import Country
@@ -124,7 +113,7 @@ class HwpCountry:
         >>> bel.hwp.trade_agg
 
         """
-        df = agg_trade_eu_row(self.trade)
+        df = agg_trade_eu_row(self.trade, index_side=index_side)
         return df
 
     @property
