@@ -74,6 +74,9 @@ def agg_trade_eu_row(df, index_side="partner"):
     """
     if index_side not in ["reporter", "partner"]:
         raise ValueError("index_side can only take the values 'reporter' or 'partner'")
+    # Remove "Total FAO" data
+    df = df[df["partner_code"] < 1000].copy()
+    # Add EU and ROW groups
     country_group = index_side + "_group"
     df[country_group] = "row"
     df[country_group] = df[country_group].where(
