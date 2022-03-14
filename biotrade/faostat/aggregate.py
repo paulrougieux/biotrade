@@ -9,6 +9,7 @@ Unit D1 Bioeconomy.
 
 """
 
+import warnings
 from biotrade.faostat import faostat
 
 # Import country table selecting continents and sub continents columns
@@ -74,8 +75,12 @@ def agg_trade_eu_row(df, index_side="partner"):
     """
     if index_side not in ["reporter", "partner"]:
         raise ValueError("index_side can only take the values 'reporter' or 'partner'")
-    # Remove "Total FAO" data
-    df = df[df["partner_code"] < 1000].copy()
+    # Remove "Total FAO" rows if present
+    selector = df["partner_code"] < 1000
+    if any(~selector):
+        partner_removed = df.loc[~selector, "partner"].unique()
+        warnings.warn(f"Removing {partner_removed} from df")
+        df = df[selector].copy()
     # Add EU and ROW groups
     country_group = index_side + "_group"
     df[country_group] = "row"
