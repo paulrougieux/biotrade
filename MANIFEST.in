@@ -1,6 +1,4 @@
 include README.md
 include LICENCE.md
-include biotrade
 include biotrade/config_data/*.csv
-include config_data/*.csv
 recursive-include *.csv
