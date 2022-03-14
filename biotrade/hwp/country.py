@@ -29,6 +29,7 @@ SELECTED_PRODUCTS = [
     "wp",
     "fw_c",
     "fw_nc",
+    "wpp",
 ]
 PRODUCTS = PRODUCTS[PRODUCTS.product_short.isin(SELECTED_PRODUCTS)].copy()
 
@@ -52,7 +53,7 @@ class HwpCountry:
 
         >>> from biotrade.common.country import Country
         >>> aut = Country("Austria")
-        >>> aut.hwp.production_wide
+        >>> aut.hwp.production
 
     """
 
@@ -63,6 +64,9 @@ class HwpCountry:
         """Get the country name from this object's parent class."""
         self.country_name = parent.country_name
         self.faostat_country = parent.faostat
+        self.products = PRODUCTS
+        self.selected_products = SELECTED_PRODUCTS
+        self.elements = ELEMENTS
 
     @property
     def production(self):
@@ -89,7 +93,7 @@ class HwpCountry:
             df.element.isin(["production", "import_quantity", "export_quantity"])
         ].copy()
         df["prod_elem"] = df["product_short"] + "_" + df["element_short"]
-        df = df.drop(columns=["product_short", "element_short"])
+        df = df.drop(columns=["element_short"])
         return df
 
     @property
@@ -109,11 +113,16 @@ class HwpCountry:
         """FAOSTAT forestry trade data aggregated for EU and Non EU partners
 
         >>> from biotrade.common.country import Country
+        >>> aut = Country("Austria")
+        >>> aut.hwp.trade_eu_row
+
+        >>> from biotrade.common.country import Country
         >>> bel = Country("Belgium")
-        >>> bel.hwp.trade_agg
+        >>> bel.hwp.trade_eu_row
 
         """
         df = agg_trade_eu_row(self.trade, index_side=index_side)
+        df = df.merge(PRODUCTS, on=["product", "product_code"], how="inner")
         return df
 
     @property
