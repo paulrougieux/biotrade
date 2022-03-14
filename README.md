@@ -148,9 +148,16 @@ https://fenixservices.fao.org/faostat/static/releasecalendar/Default.aspx
   `commodity_code` or `cmdcode` in UN Comtrade and `item_code` in FAOSTAT.
 
 
-
 # Licence
 
 This software is dual-licenced under both MIT and EUPL 1.2.
 See the [LICENCE.md](LICENCE.md) file.
+
+
+# Acknowledgements
+
+The authors would like to acknowledge ideas and feedback received from the following 
+persons: Lucas Sinclair, Roberto Pilli, Mirco Migliavacca, Giovanni Bausano.
+
+
 
