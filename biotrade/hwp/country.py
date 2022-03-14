@@ -29,6 +29,7 @@ SELECTED_PRODUCTS = [
     "wp",
     "fw_c",
     "fw_nc",
+    "wbp",
     "wpp",
 ]
 PRODUCTS = PRODUCTS[PRODUCTS.product_short.isin(SELECTED_PRODUCTS)].copy()
