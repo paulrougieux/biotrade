@@ -33,7 +33,7 @@ class DatabaseFaostat(Database):
     Select forestry production data for Italy
 
         >>> from biotrade.faostat import faostat
-        >>> db = faostat.db_sqlite
+        >>> db = faostat.db
         >>> fp_ita = db.select(table="forestry_production",
         >>>                    reporter=["Italy"])
 
@@ -43,7 +43,7 @@ class DatabaseFaostat(Database):
     using a pandas data frame:
 
         >>> import pandas
-        >>> db = faostat.db_sqlite
+        >>> db = faostat.db
         >>> reporter = db.forestry_production.columns.get("reporter")
         >>> statement = db.forestry_production.select().where(reporter == "Italy")
         >>> fp_it = pandas.read_sql_query(statement, db.engine)

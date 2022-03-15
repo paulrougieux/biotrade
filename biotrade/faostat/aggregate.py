@@ -32,13 +32,13 @@ def agg_trade_eu_row(df, index_side="partner"):
 
         >>> from biotrade.faostat import faostat
         >>> from biotrade.faostat.aggregate import agg_trade_eu_row
-        >>> ft_can = faostat.db_sqlite.select(table="forestry_trade",
+        >>> ft_can = faostat.db.select(table="forestry_trade",
         >>>                                   reporter=["Canada"])
         >>> ft_can_agg = agg_trade_eu_row(ft_can)
 
     Aggregate the mirror flows
 
-        >>> ft_can_mirror = faostat.db_sqlite.select(table="forestry_trade",
+        >>> ft_can_mirror = faostat.db.select(table="forestry_trade",
         >>>                                          partner=["Canada"])
         >>> ft_can_mirror_agg = agg_trade_eu_row(ft_can_mirror,
                 index_side="reporter")

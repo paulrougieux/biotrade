@@ -41,7 +41,7 @@ def convert_to_eq_rwd_level_1(
 
     >>> from biotrade.faostat.convert import convert_to_eq_rwd_level_1
     >>> from biotrade.faostat import faostat
-    >>> fp_ita = faostat.db_sqlite.select(table="forestry_production",
+    >>> fp_ita = faostat.db.select(table="forestry_production",
     >>>                                   reporter=["Italy"])
     >>> fp_ita_eqr = convert_to_eq_rwd_level_1(fp_ita)
 
