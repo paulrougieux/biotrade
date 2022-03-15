@@ -1,0 +1,5 @@
+include README.md
+include LICENCE.md
+include biotrade/config_data/column_names.csv
+include biotrade/config_data/*.csv
+recursive-include *.csv

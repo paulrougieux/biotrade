@@ -14,6 +14,7 @@ import numpy as np
 
 # Internal modules
 from biotrade import module_dir
+from biotrade.faostat.aggregate import agg_trade_eu_row
 
 PRODUCTS = pandas.read_csv(
     module_dir / "config_data/faostat_forestry_production_short_names.csv"
@@ -28,6 +29,8 @@ SELECTED_PRODUCTS = [
     "wp",
     "fw_c",
     "fw_nc",
+    "wbp",
+    "wpp",
 ]
 PRODUCTS = PRODUCTS[PRODUCTS.product_short.isin(SELECTED_PRODUCTS)].copy()
 
@@ -51,7 +54,7 @@ class HwpCountry:
 
         >>> from biotrade.common.country import Country
         >>> aut = Country("Austria")
-        >>> aut.hwp.production_wide
+        >>> aut.hwp.production
 
     """
 
@@ -61,12 +64,29 @@ class HwpCountry:
     def __init__(self, parent):
         """Get the country name from this object's parent class."""
         self.country_name = parent.country_name
-        self.faostat = parent.faostat
+        self.faostat_country = parent.faostat
+        self.products = PRODUCTS
+        self.selected_products = SELECTED_PRODUCTS
+        self.elements = ELEMENTS
 
     @property
     def production(self):
-        """FAOSTAT forestry production data"""
-        df = self.faostat.forestry_production.copy()
+        """FAOSTAT forestry production data for the selected products
+
+        >>> from biotrade.common.country import Country
+        >>> aut = Country("Austria")
+        >>> aut.hwp.production
+
+        Reshape to wide format using short column names
+
+        >>> prod_wide = (aut.hwp.production
+        >>>              .pivot(index=["reporter", "year"],
+        >>>                     columns=["prod_elem"],
+        >>>                     values="value")
+        >>>             )
+
+        """
+        df = self.faostat_country.forestry_production.copy()
         # Prepare shorter column names combination of product and element
         df = df.merge(PRODUCTS, on=["product", "product_code"], how="inner")
         df = df.merge(ELEMENTS, on=["element"], how="inner")
@@ -74,43 +94,36 @@ class HwpCountry:
             df.element.isin(["production", "import_quantity", "export_quantity"])
         ].copy()
         df["prod_elem"] = df["product_short"] + "_" + df["element_short"]
-        df = df.drop(columns=["product_short", "element_short"])
-        return df
-
-    @property
-    def production_wide(self):
-        """Reshape FAOSTAT forestry production data to wide format
-
-        >>> from biotrade.common.country import Country
-        >>> aut = Country("Austria")
-        >>> aut.hwp.production_wide
-
-        For information only, equivalent data frame using a multi index pivot
-
-        >>> prod_wide = (aut.hwp.production
-        >>>              .pivot(index=["reporter", "year"],
-        >>>                     columns=["product", "element"],
-        >>>                     values="value")
-        >>>             )
-        """
-        df = (
-            self.production.pivot(
-                index=["reporter", "year"], columns="prod_elem", values="value"
-            )
-            .reset_index()
-            .rename_axis(columns=None)
-        )
+        df = df.drop(columns=["element_short"])
         return df
 
     @property
     def trade(self):
-        """FAOSTAT forestry trade data
+        """Bilateral forestry trade data from FAOSTAT
 
         >>> from biotrade.common.country import Country
         >>> aut = Country("Austria")
         >>> aut.hwp.trade
+
         """
-        df = self.faostat.forestry_trade.copy()
+        df = self.faostat_country.forestry_trade.copy()
+        return df
+
+    @property
+    def trade_eu_row(self, index_side="partner"):
+        """FAOSTAT forestry trade data aggregated for EU and Non EU partners
+
+        >>> from biotrade.common.country import Country
+        >>> aut = Country("Austria")
+        >>> aut.hwp.trade_eu_row
+
+        >>> from biotrade.common.country import Country
+        >>> bel = Country("Belgium")
+        >>> bel.hwp.trade_eu_row
+
+        """
+        df = agg_trade_eu_row(self.trade, index_side=index_side)
+        df = df.merge(PRODUCTS, on=["product", "product_code"], how="inner")
         return df
 
     @property

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Written by Paul Rougieux.
+Written by Paul Rougieux and Selene Patani.
 
 JRC biomass Project.
 Unit D1 Bioeconomy.
@@ -15,8 +15,8 @@ import logging
 # Third party modules
 from sqlalchemy import Integer, Float, SmallInteger, Text, UniqueConstraint
 from sqlalchemy import Table, Column, MetaData, or_
-from sqlalchemy import create_engine, inspect
-from sqlalchemy.sql import text
+from sqlalchemy import create_engine, inspect, select
+from sqlalchemy.sql import func
 from sqlalchemy.schema import CreateSchema
 from sqlalchemy_utils import database_exists, create_database
 import pandas
@@ -396,76 +396,94 @@ class DatabaseFaostat(Database):
 
     def agg_reporter_partner_eu_row(
         self,
-        product_code=[None],
+        table,
+        product_code,
     ):
         """
-        Aggregate EU27 and ROW both on the reporter and partner side as regard faostat crop_trade table and using a SQL statement for specific product codes
+        Aggregate EU27 and ROW both on the reporter and eventually partner side
+        as regard faostat tables, using sqlalchemy statements for specific
+        product code list
 
         :param (list) product_code, list of integer product codes
-        :return (DataFrame) df, containing the aggregations for the crop trade product codes
+        :return (DataFrame) df, containing the aggregations for the product codes
 
-        As example, use this query to aggregate EU27 and ROW for product code equal to 236, corresponding to
-        soybeans product
+        As example, query the crop trade table and aggregate EU27 and ROW data
+        both reporter and partner side for product code equal to 236,
+        corresponding to soybean commodity
+
             >>> from biotrade.faostat import faostat
             >>> db = faostat.db
-            >>> df = db.agg_reporter_partner_eu_row(product_code=[236])
+            >>> df = db.agg_reporter_partner_eu_row("crop_trade", product_code=[236])
 
         """
-        # Query statement with param :product_code
-        query = """
-            SELECT
-                product_code,
-                product,
-                element,
-                unit,
-                year,
-                reporter_eu27,
-                partner_eu27,
-                SUM(value) AS value
-            FROM (
-                SELECT *
-                FROM (
-                    SELECT *
-                    FROM (
-                        SELECT *
-                        FROM raw_faostat.crop_trade
-                        WHERE product_code IN :product_code
-                    ) AS LHS
-                    LEFT JOIN (
-                        SELECT
-                            country_code AS reporter_code,
-                            eu27 AS reporter_eu27
-                        FROM raw_faostat.country
-                    ) AS RHS
-                    ON (LHS.reporter_code = RHS.reporter_code)
-                ) AS LHS
-                LEFT JOIN (
-                    SELECT
-                        country_code AS partner_code,
-                        eu27 AS partner_eu27
-                    FROM raw_faostat.country
-                ) AS RHS
-                ON (LHS.partner_code = RHS.partner_code)
-            ) AS JOIN_TABLES
-            GROUP BY product_code,
-                product,
-                element,
-                unit,
-                year,
-                reporter_eu27,
-                partner_eu27
-        """
-        # Transform into sqlalchemy text statement object
-        stmt = text(query)
-        # Add None value if list is empty, otherwise query crashes
-        if not product_code:
-            product_code = [None]
-        # Needed tuple to query with parameters sqlalchemy text object
-        product_code = tuple(product_code)
-        # Query the database and return aggregation data frame
-        df = pandas.read_sql_query(
-            stmt, self.engine, params={"product_code": product_code}
+        # Table to select of raw_faostat schema
+        table = self.tables[table]
+        # Select all columns where product code is specified by function argument product_code
+        # If product code list is None return an error
+        table_stmt = table.select()
+        if product_code is None:
+            raise ValueError("Specify product code list")
+        else:
+            table_stmt = table_stmt.where(table.c.product_code.in_(product_code))
+        # Render the selection queryable again and rename it "table_selection"
+        table_selection = table_stmt.subquery().alias("table_selection")
+        # Select country table of raw_faostat_schema
+        country_table = self.tables["country"]
+        # Select two columns of country table and rename them for reporter selection
+        reporter_stmt = select(
+            [
+                country_table.c.country_code.label("reporter_code"),
+                country_table.c.eu27.label("reporter_eu27"),
+            ]
         )
+        # Render the selection queryable again and rename it "reporter_selection"
+        reporter_selection = reporter_stmt.subquery().alias("reporter_selection")
+        # Outer left join on reporter side
+        join_stmt = table_selection.join(
+            reporter_selection,
+            table_selection.c.reporter_code == reporter_selection.c.reporter_code,
+            isouter=True,
+        )
+        # If the selected table contains the partner column, the aggregation EU/ROW is performed also from this side
+        if "partner" in table.c.keys():
+            # Select two columns of country table and rename them for partner selection
+            partner_stmt = select(
+                [
+                    country_table.c.country_code.label("partner_code"),
+                    country_table.c.eu27.label("partner_eu27"),
+                ]
+            )
+            # Render the selection queryable again and rename it "partner_selection"
+            partner_selection = partner_stmt.subquery().alias("partner_selection")
+            # Second outer left join on partner side
+            join_stmt = join_stmt.join(
+                partner_selection,
+                table_selection.c.partner_code == partner_selection.c.partner_code,
+                isouter=True,
+            )
+        # Select the join statement and rename it "join_selection"
+        join_selection = select(join_stmt).alias("join_selection")
+        # Columns to retain from the join selection
+        join_columns = [
+            join_selection.c.product_code,
+            join_selection.c.product,
+            join_selection.c.element,
+            join_selection.c.unit,
+            join_selection.c.year,
+            join_selection.c.reporter_eu27,
+            func.sum(join_selection.c.value).label("value"),
+        ]
+        # Column to retain from the join selection for partner side
+        if "partner" in table.c.keys():
+            join_columns.insert(-1, join_selection.c.partner_eu27)
+        # Select column subset of join selection to return for dataframe
+        stmt = select(join_columns)
+        # Delete from column list the column not used for the groupby
+        del join_columns[-1]
+        # Aggregate by columns the join selection
+        stmt = stmt.group_by(*join_columns)
+        # Return the dataframe from the query to db
+        df = pandas.read_sql_query(stmt, self.engine)
         return df
 
 
