@@ -19,10 +19,9 @@ token](https://docs.gitlab.com/ee/user/project/deploy_tokens/index.html)
 
     pip install git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@main
 
-If you are a member of this project, you can also install from the main branch of a 
-private repo on gitlab using your ssh key:
+To install a previous version specify the git tag, for example v0.0.1
 
-    pip install git+ssh://git@gitlab.com/bioeconomy/forobs/biotrade.git@main
+    pip install git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@v0.0.1
 
 
 ## Installation for contributors
