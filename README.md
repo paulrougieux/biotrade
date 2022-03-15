@@ -136,7 +136,7 @@ https://fenixservices.fao.org/faostat/static/releasecalendar/Default.aspx
 # Variable definitions and harmonization
 
 - Variables are defined and compared between the data sources in a notebook called 
-  [definitions_and_harmonization](definitions_and_harmonization.md)
+  [definitions_and_harmonization](notebooks/definitions_and_harmonization.md)
 
 - Variable names are harmonized between the different sources using a mapping table 
   defined in
