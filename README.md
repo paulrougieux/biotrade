@@ -37,10 +37,7 @@ Specify where you want to store the data by adding the following environment var
 
     export BIOTRADE_DATA="$HOME/repos/biotrade_data/"
 
-Dependencies
-
-    pip install pandas
-    pip install sqlalchemy
+Dependencies are listed in the `install_requires` argument of [setup.py](setup.py).
 
 
 # Usage
@@ -56,20 +53,24 @@ your .bash_aliases or .bash_rc:
 
 ## FAOSTAT
 
-Update all FAOSTAT datasets by downloading bulk files,
-then storing them into a SQLite database:
+Faostat provides agriculture and forestry data on their website https://www.fao.org/faostat/en/#data/
+
+The biotrade package has a `faostat.pump` object that loads a selection of datasets. The 
+list of downloaded datasets is visible in `faostat.pump.datasets`. Column names and 
+product descriptions are reformatted to snake case in a way that is convenient for 
+analysis. The data is then stored into an SQLite database (or PostgreSQL):
 
     >>> from biotrade.faostat import faostat
     >>> faostat.pump.download_all_datasets()
     >>> faostat.pump.update_db()
 
-Note that database operation are done with SQL Alchemy and that it's also possible to 
-use a PostGreSQL database engine. SQLite is convenient for data analysis on personal 
-laptops. PostGreSQL can be use for servers.
+Note that database queries are abstracted with [SQL 
+Alchemy](https://www.sqlalchemy.org/) and that it's also possible to use a PostGreSQL 
+database engine. SQLite is convenient for data analysis on personal laptops. PostGreSQL 
+can be use for servers.
 
-
-
-For example select crop production data for 2 countries
+Once the data has been loaded into the database, you can query it. For example select 
+crop production data for 2 countries
 
     >>> from biotrade.faostat import faostat
     >>> db = faostat.db_sqlite
@@ -96,11 +97,10 @@ Select the mirror flows reported by Brazil, where the Netherlands was a partner
     >>>                        partner="Netherlands")
 
 
-
 ## Comtrade
 
 See the documentation of the various methods. As an example  here is how to download 
-trade data from the API and return a data frame, for debugging purposes:
+trade data from the Comtrade API and return a data frame, for debugging purposes:
 
     >>> from biotrade.comtrade import comtrade
     >>> # Other sawnwood
@@ -121,6 +121,7 @@ Get the list of reporter and partner countries
 
     >>> comtrade.pump.get_parameter_list("reporterAreas.json")
     >>> comtrade.pump.get_parameter_list("partnerAreas.json")
+
 
 
 # Metadata
