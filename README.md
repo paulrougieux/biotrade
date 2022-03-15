@@ -133,19 +133,22 @@ FAOSTAT release dates are available at :
 https://fenixservices.fao.org/faostat/static/releasecalendar/Default.aspx
 
 
-# Code style
+# Variable definitions and harmonization
 
+- Variables are defined and compared between the data sources in a notebook called 
+  [definitions_and_harmonization](definitions_and_harmonization.md)
+
+- Variable names are harmonized between the different sources using a mapping table 
+  defined in
+  [biotrade/config_data/column_names.csv](https://gitlab.com/bioeconomy/biotrade/-/blob/main/biotrade/config_data/column_names.csv)
+  See for example how the `product_code` column is called  `PRODUCT_NC` in Eurostat Comext,
+  `commodity_code` or `cmdcode` in UN Comtrade and `item_code` in FAOSTAT.
 
 - `snake_case` is the preferred way of naming files and variables in the code. This 
   follows the R [tidyverse style guide for object 
   names](https://style.tidyverse.org/syntax.html) and the python [PEP 
   8](https://www.python.org/dev/peps/pep-0008/#function-and-variable-names) style guide 
   for function and variable names.
-
-- Variable names are harmonized between the different sources in
-  [biotrade/config_data/column_names.csv](https://gitlab.com/bioeconomy/biotrade/-/blob/main/biotrade/config_data/column_names.csv)
-  See for example how the `product_code` column is called  `PRODUCT_NC` in Eurostat Comext,
-  `commodity_code` or `cmdcode` in UN Comtrade and `item_code` in FAOSTAT.
 
 
 # Licence
