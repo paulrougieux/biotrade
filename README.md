@@ -42,13 +42,18 @@ Dependencies are listed in the `install_requires` argument of [setup.py](setup.p
 
 # Usage
 
-The biotrade package is able to download data from FAOSTAT and UN Comtrade and to store
-it inside a database. By default it will be an SQLite database stored locally on a
-laptop for example. Alternatively, a PostGRESQL database can be used if a connection
-string is defined in an environment variable, for example by adding the following to
-your .bash_aliases or .bash_rc:
+The biotrade package is able to download data from FAOSTAT and UN Comtrade and to store 
+it inside a database. By default it will use an SQLite database stored locally on a 
+laptop for example. Alternatively, a PostGRESQL database can be used if a connection 
+string is defined in the environment variable `BIOTRADE_DATABASE_URL`, for example by 
+adding the following to your .bash_aliases or .bash_rc:
 
     export BIOTRADE_DATABASE_URL="postgresql://user@localhost/biotrade"
+
+Note that database queries are abstracted with [SQL 
+Alchemy](https://www.sqlalchemy.org/) which is what makes it possible to use different 
+database engines. SQLite is convenient for data analysis on laptops. PostGreSQL can be 
+used on servers.
 
 
 ## FAOSTAT
@@ -63,11 +68,6 @@ analysis. The data is then stored into an SQLite database (or PostgreSQL):
     >>> from biotrade.faostat import faostat
     >>> faostat.pump.download_all_datasets()
     >>> faostat.pump.update_db()
-
-Note that database queries are abstracted with [SQL 
-Alchemy](https://www.sqlalchemy.org/) and that it's also possible to use a PostGreSQL 
-database engine. SQLite is convenient for data analysis on personal laptops. PostGreSQL 
-can be use for servers.
 
 Once the data has been loaded into the database, you can query it. For example select 
 crop production data for 2 countries
