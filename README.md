@@ -43,10 +43,11 @@ Dependencies are listed in the `install_requires` argument of [setup.py](setup.p
 # Usage
 
 The biotrade package is able to download data from FAOSTAT and UN Comtrade and to store 
-it inside a database. By default it will use an SQLite database stored locally on a 
-laptop for example. Alternatively, a PostGRESQL database can be used if a connection 
-string is defined in the environment variable `BIOTRADE_DATABASE_URL`, for example by 
-adding the following to your .bash_aliases or .bash_rc:
+it inside a database. By default it will use an SQLite database stored locally in the 
+folder defined by the environment variable `BIOTRADE_DATA`. Alternatively, a PostGRESQL 
+database can be used if a connection string is defined in the environment variable 
+`BIOTRADE_DATABASE_URL`, for example by adding the following to your .bash_aliases or 
+.bash_rc:
 
     export BIOTRADE_DATABASE_URL="postgresql://user@localhost/biotrade"
 
