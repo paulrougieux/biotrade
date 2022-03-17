@@ -269,6 +269,7 @@ class DatabaseFaostat(Database):
         reporter=None,
         partner=None,
         product=None,
+        element=None,
         reporter_code=None,
         partner_code=None,
         product_code=None,
@@ -370,6 +371,8 @@ class DatabaseFaostat(Database):
             partner = [partner]
         if isinstance(product, str):
             product = [product]
+        if isinstance(element, str):
+            element = [element]
         if isinstance(reporter_code, (int, str)):
             reporter_code = [reporter_code]
         if isinstance(partner_code, (int, str)):
@@ -384,6 +387,8 @@ class DatabaseFaostat(Database):
             stmt = stmt.where(table.c.partner.in_(partner))
         if product is not None:
             stmt = stmt.where(or_(table.c.product.ilike(f"%{p}%") for p in product))
+        if element is not None:
+            stmt = stmt.where(table.c.element.in_(element))
         if reporter_code is not None:
             stmt = stmt.where(table.c.reporter_code.in_(reporter_code))
         if partner_code is not None:
