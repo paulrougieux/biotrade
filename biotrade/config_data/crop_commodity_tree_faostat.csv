@@ -30,7 +30,7 @@ cattle,cattle,866,meat_cattle,867,0
 cattle,cattle,866,offals_edible_cattle,868,0
 cattle,cattle,866,fat_cattle,869,0
 cattle,cattle,866,hides_cattle_fresh,919,0
-cattle,meat_cattle,867,meat_cattle_boneless_beef_veal_,870,1
+cattle,meat_cattle,867,meat_cattle_boneless_beef_veal,870,1
 cattle,meat_cattle,867,meat_beef_and_veal_sausages,874,0
 cattle,meat_cattle,867,meat_beef_preparations,875,0
 cattle,offals_edible_cattle,868,meat_dried_nes,1164,0
