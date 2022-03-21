@@ -29,7 +29,7 @@ df = pd.read_csv(
     Path.cwd().parents[0]
     / "biotrade"
     / "config_data"
-    / "faostat_agricultural_conversion_factors.csv",
+    / "faostat_agri_conversion_factors.csv",
     encoding="utf-8",
 )
 ```

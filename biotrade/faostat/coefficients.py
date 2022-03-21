@@ -65,7 +65,7 @@ class Coefficients:
             >>> coefficients = faostat.coefficients.agricultural_conversion_factors
         """
         df = pandas.read_csv(
-            self.config_data_dir / "faostat_agricultural_conversion_factors.csv"
+            self.config_data_dir / "faostat_agri_conversion_factors.csv"
         )
         return df
 
@@ -73,27 +73,27 @@ class Coefficients:
         """
         Global extraction rate and waste of supply statistics (mean, min, max,
         std, sample size) of products are computed from
-        "faostat_agricultural_conversion_factors.csv" Missing extraction rate
+        "faostat_agri_conversion_factors.csv" Missing extraction rate
         average values are filled with commodity tree values when available
         (filled = True).
 
         Column df descriptions
         fao_product_code: product code related to faostat db
         fao_product: product name related to faostat db
-        extraction_rate_mean: average of coefficient grouped by product computed from "faostat_agricultural_conversion_factors.csv",
+        extraction_rate_mean: average of coefficient grouped by product computed from "faostat_agri_conversion_factors.csv",
             otherwise (if included) taken from commodity trees of technical report available at
             https://www.fao.org/economic/the-statistics-division-ess/methodology/methodology-systems/technical-conversion-factors-for-agricultural-commodities/ar/
-        extraction_rate_min: minimum of coefficient grouped by product computed from "faostat_agricultural_conversion_factors.csv"
-        extraction_rate_max: maximum of coefficient grouped by product computed from "faostat_agricultural_conversion_factors.csv"
-        extraction_rate_std: standard deviation of coefficient grouped by product computed from "faostat_agricultural_conversion_factors.csv"
-        extraction_rate_count: sample size of coefficient grouped by product computed from "faostat_agricultural_conversion_factors.csv"
-        waste_of_supply_mean: average of coefficient grouped by product computed from "faostat_agricultural_conversion_factors.csv",
-        waste_of_supply_min: minimum of coefficient grouped by product computed from "faostat_agricultural_conversion_factors.csv"
-        waste_of_supply_max: maximum of coefficient grouped by product computed from "faostat_agricultural_conversion_factors.csv"
-        waste_of_supply_std: standard deviation of coefficient grouped by product computed from "faostat_agricultural_conversion_factors.csv"
-        waste_of_supply_count: sample size of coefficient grouped by product computed from "faostat_agricultural_conversion_factors.csv"
-        extraction_rate_flag: boolean flag. 1 when extraction_rate statistics are computed from "faostat_agricultural_conversion_factors.csv", otherwise 0
-        waste_of_supply_flag: boolean flag. 1 when waste_of_supply statistics are computed from "faostat_agricultural_conversion_factors.csv", otherwise 0
+        extraction_rate_min: minimum of coefficient grouped by product computed from "faostat_agri_conversion_factors.csv"
+        extraction_rate_max: maximum of coefficient grouped by product computed from "faostat_agri_conversion_factors.csv"
+        extraction_rate_std: standard deviation of coefficient grouped by product computed from "faostat_agri_conversion_factors.csv"
+        extraction_rate_count: sample size of coefficient grouped by product computed from "faostat_agri_conversion_factors.csv"
+        waste_of_supply_mean: average of coefficient grouped by product computed from "faostat_agri_conversion_factors.csv"
+        waste_of_supply_min: minimum of coefficient grouped by product computed from "faostat_agri_conversion_factors.csv"
+        waste_of_supply_max: maximum of coefficient grouped by product computed from "faostat_agri_conversion_factors.csv"
+        waste_of_supply_std: standard deviation of coefficient grouped by product computed from "faostat_agri_conversion_factors.csv"
+        waste_of_supply_count: sample size of coefficient grouped by product computed from "faostat_agri_conversion_factors.csv"
+        extraction_rate_flag: boolean flag. 1 when extraction_rate statistics are computed from "faostat_agri_conversion_factors.csv", otherwise 0
+        waste_of_supply_flag: boolean flag. 1 when waste_of_supply statistics are computed from "faostat_agri_conversion_factors.csv", otherwise 0
 
         Load statistics:
             >>> from biotrade.faostat import faostat
@@ -104,10 +104,12 @@ class Coefficients:
         """
         if filled:
             df = pandas.read_csv(
-                self.config_data_dir / "global_extraction_rate_statistics_manual_gf.csv"
+                self.config_data_dir
+                / "faostat_agri_conversion_factors_summary_stats_manual_gf.csv"
             )
         else:
             df = pandas.read_csv(
-                self.config_data_dir / "global_extraction_rate_statistics.csv"
+                self.config_data_dir
+                / "faostat_agri_conversion_factors_summary_stats.csv"
             )
         return df
