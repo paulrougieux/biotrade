@@ -279,7 +279,24 @@ class DatabaseComtrade(Database):
         product_code=None,
     ):
         """
-        Select trade data for the given arguments
+        Select comtrade trade data for the given arguments
+
+        :param str table: name of the database table to select from
+        :param list or str reporter: list of reporter names
+        :param list or str partner: list of partner names
+        :param list or str product: list of product names
+        :param list or str flow: list of flow directions
+            ['Imports', 'Exports', 'Re-imports', 'Re-exports']
+        :param list or int reporter_code: list of reporter codes
+        :param list or int partner_code: list of partner codes
+        :param list or int product_code: list of product codes
+        :return: A data frame of trade flows
+
+        For example select monthly time series of Oak sawnwood trade
+
+            >>> from biotrade.comtrade import comtrade
+            >>> comtrade.db.select("monthly", product_code="440791")
+
         """
         table = self.tables[table]
         # Change character or integer arguments to lists suitable for a
