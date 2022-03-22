@@ -274,12 +274,16 @@ class DatabaseFaostat(Database):
         partner_code=None,
         product_code=None,
     ):
-        """Select production data for the given arguments
+        """Select faostat data for the given arguments
 
-        :param list or str reporter: List of reporter names
-        :param list or str partner: List of partner names
-        :param list or str product: List of product names
-        :param list or str product_code: List of product codes
+        :param str table: name of the database table to select from
+        :param list or str reporter: list of reporter names
+        :param list or str partner: list of partner names
+        :param list or str product: list of product names
+        :param list or str element: list of element names
+        :param list or int or str reporter_code: list of reporter codes
+        :param list or int or str partner_code: list of partner codes
+        :param list or int or str product_code: list of product codes
         :return: A data frame of trade flows
 
         Note that the search for reporter and partner will be based on perfect
