@@ -274,6 +274,7 @@ class DatabaseComtrade(Database):
         reporter=None,
         partner=None,
         product=None,
+        # TODO: use Comtrade.products.hs to enable a query on a product partial mapping
         reporter_code=None,
         partner_code=None,
         product_code=None,

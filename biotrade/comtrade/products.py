@@ -29,24 +29,54 @@ class Products(object):
     """
 
     def __init__(self, parent):
-        # Default attributes #
         self.parent = parent
-        # Directories #
         self.config_data_dir = self.parent.config_data_dir
+        self.hs_csv_file = self.parent.data_dir / "classificationHS.csv"
+
+    @property
+    def hs(self, update=False):
+        """List of products as returned by the Comtrade API
+
+        Usage:
+
+            >>> from biotrade.comtrade import comtrade
+            >>> comtrade.products.hs
+
+        Refresh the HS product list by downloading it again from the Comtrade API
+
+            >>> comtrade.products.hs_csv_file.unlink()
+            >>> comtrade.products.hs
+
+        The list is downloaded only once from the Comtrade API and cached for
+        the duration of the session.
+        """
+        if not self.hs_csv_file.exists():
+            df = self.parent.pump.get_parameter_list("classificationHS.json")
+            df.to_csv(self.hs_csv_file, index=False)
+        else:
+            df = pandas.read_csv(
+                self.hs_csv_file,
+                # Force the id column to remain a character column,
+                # otherwise str "01" becomes int 1.
+                dtype={"id": str},
+            )
+        return df
 
     @property
     def hs2d(self):
         """The module internal list of products at the 2 digits level.
+
         Usage:
 
-        >>> from biotrade.comtrade import comtrade
-        >>> comtrade.products.hs2d
+            >>> from biotrade.comtrade import comtrade
+            >>> comtrade.products.hs2d
 
         For information the internal list is a filtered version of
         the list of Harmonized System (HS) commodities
         originally downloaded from Comtrade with the method:
 
-        >>> comtrade.pump.get_parameter_list("classificationHS.json")
+            >>> comtrade.pump.get_parameter_list("classificationHS.json")
+
         """
         df = pandas.read_csv(
             self.config_data_dir / "comtrade_hs_2d.csv",
@@ -55,3 +85,6 @@ class Products(object):
             dtype={"id": str},
         )
         return df
+
+    def under(self, product_code):
+        """Give all products under the given product code"""
