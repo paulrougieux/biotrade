@@ -38,6 +38,7 @@ class Products(object):
 
     def __init__(self, parent):
         self.parent = parent
+        self.db = self.parent.db
         self.config_data_dir = self.parent.config_data_dir
         self.hs_csv_file = self.parent.data_dir / "classificationHS.csv"
 
@@ -52,24 +53,11 @@ class Products(object):
 
         Refresh the HS product list by downloading it again from the Comtrade API
 
-            >>> comtrade.products.hs_csv_file.unlink()
-            >>> comtrade.products.hs
+            >>> comtrade.pump.update_db_parameter()
 
-        The list is downloaded only once from the Comtrade API and cached for
-        the duration of the session.
+        The list is downloaded from the Comtrade API and stored into the database.
         """
-        # TODO: load the data frame from the database instead with
-        # df = self.db.select("product")
-        if not self.hs_csv_file.exists():
-            df = self.parent.pump.get_parameter_list("classificationHS.json")
-            df.to_csv(self.hs_csv_file, index=False)
-        else:
-            df = pandas.read_csv(
-                self.hs_csv_file,
-                # Force the id column to remain a character column,
-                # otherwise str "01" becomes int 1.
-                dtype={"id": str},
-            )
+        df = self.db.select("product")
         return df
 
     @property
