@@ -66,7 +66,7 @@ class Pump:
         >>> from biotrade.comtrade import comtrade
         >>> comtrade.pump.update_db(table_name = "monthly", frequency = "M")
 
-    Potential server Error messages:
+    Potential Error messages returned by the Comtrade API:
 
     - HTTP Error 401 "Unauthorized" means that the token authentication is
       required and missing.
@@ -554,6 +554,31 @@ class Pump:
             df = pandas.json_normalize(json_content["results"])
         return df
 
+    def update_db_parameter(self):
+        """Update all parameter lists in the database table such as the product
+        tables and country tables.
+
+        Usage:
+
+            >>> from biotrade.comtrade import comtrade
+            >>> comtrade.pump.update_db_parameter()
+
+        """
+        # Reload the data from Comtrade
+        hs = self.get_parameter_list("classificationHS.json")
+        hs = hs.rename(columns={"id": "product_code", "text": "product_description"})
+        duplicated = hs.duplicated("product_code")
+        if any(duplicated):
+            self.logger.info(
+                "Dropping the following duplicated rows:\n %s", hs[duplicated]
+            )
+            hs = hs[~duplicated]
+        # Delete existing data in the database
+        self.db.tables["product"].delete().execute()
+        # Store the data in the database
+        self.db.append(hs, "product", drop_description=False)
+        self.logger.info("The product table has been updated.")
+
     def write_log(
         self,
         timedate="",
@@ -574,9 +599,10 @@ class Pump:
         rows="",
     ):
         """
-        Pump method to write API parameter values used to query comtrade repository
-        and status of stored data into table "biotrade_data/comtrade/pump_comtrade_table.csv".
-        If table does not exist, it is created
+        Write API parameter values used to query the comtrade
+        repository and status of stored data into the table
+        "biotrade_data/comtrade/pump_comtrade_table.csv". If the table does not
+        exist, it is created
         """
         # create headers of data frame
         df = pandas.DataFrame(

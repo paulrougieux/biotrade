@@ -26,6 +26,14 @@ import pandas
 class Products(object):
     """
     Comtrade product list, with additional information.
+
+    Update the list of product codes from Comtrade
+
+        >>> from biotrade.comtrade import comtrade
+        >>> comtrade.pump.update_product_hs()
+
+
+
     """
 
     def __init__(self, parent):
@@ -35,7 +43,7 @@ class Products(object):
 
     @property
     def hs(self, update=False):
-        """List of products as returned by the Comtrade API
+        """List of products as stored in the database
 
         Usage:
 
@@ -50,6 +58,8 @@ class Products(object):
         The list is downloaded only once from the Comtrade API and cached for
         the duration of the session.
         """
+        # TODO: load the data frame from the database instead with
+        # df = self.db.select("product")
         if not self.hs_csv_file.exists():
             df = self.parent.pump.get_parameter_list("classificationHS.json")
             df.to_csv(self.hs_csv_file, index=False)
