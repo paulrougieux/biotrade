@@ -84,27 +84,49 @@ def segmented_regression(df, plot=False, last_value=True):
     As example, compute the segmented regression for soybean exports from Brazil as reporter to Europe and
     rest of the world as partners.
     Import dependencies
+
         >>> from biotrade.faostat import faostat
         >>> from biotrade.faostat.aggregate import agg_trade_eu_row
         >>> from biotrade.common.time_series import segmented_regression
         >>> import matplotlib.pyplot as plt
 
     Select soybean trade products with Brazil as reporter
+
         >>> soybean_trade = faostat.db.select(table="crop_trade",
-                reporter="Brazil", product_code=236)
+        >>>     reporter="Brazil", product_code=236)
+
     Aggregate partners as Europe (eu) and rest of the World (row)
+
         >>> soybean_trade_agg = agg_trade_eu_row(soybean_trade)
+
     Select export quantity
+
         >>> soybean_exp_agg = soybean_trade_agg[soybean_trade_agg["element"] == "export_quantity"]
+
     Calculate the segmented regression of values returning the most recent year
+
         >>> soybean_exp_regression = segmented_regression(soybean_exp_agg, plot = True, last_value = True)
         >>> plt.show()
+
     """
+    # Define value column name
+    if "value" in df.columns:
+        # Value column of faostat db
+        value_column = "value"
+    elif "trade_value" in df.columns:
+        # Value column is called "trade_value" in comtrade db
+        value_column = "trade_value"
     # Define group columns
-    groupby_column_list = ["reporter_code", "product_code", "element", "unit"]
-    # Trade data contain information also regarding partners
-    if "partner" in df.columns:
-        groupby_column_list.append("partner")
+    groupby_column_list = ["reporter_code", "product_code", "unit"]
+    # Depending on the db tables, different columns can be used to group the dataframe
+    add_columns = ["partner", "element", "flow", "unit_code"]
+    # Check if columns are present in the original dataframe
+    for column in add_columns:
+        if column in df.columns:
+            # For comtrade db, do not consider unit column which is always nan
+            if column == "unit_code":
+                groupby_column_list.remove("unit")
+            groupby_column_list.append(column)
     # Define groups with respect to calculate the segmented regressions
     df_groups = df.groupby(groupby_column_list)
     # Allocate df reshaped to return
@@ -115,7 +137,7 @@ def segmented_regression(df, plot=False, last_value=True):
         df_key = df_groups.get_group(key)
         # Create arrays of independent (column "year") and dependent (colum "values") variables
         x = np.array(df_key["year"].values.tolist(), dtype=float)
-        y = np.array(df_key["value"].values.tolist())
+        y = np.array(df_key[value_column].values.tolist())
         # Pre allocation
         best_breakpoints = ()
         # Loop over the number of breakpoints (max number of breakpoints is len(x)/7 -1)
@@ -162,6 +184,8 @@ def segmented_regression(df, plot=False, last_value=True):
                     "pvalue",
                     "stderr_slope",
                     "stderr_intercept",
+                    "year_range_lower",
+                    "year_range_upper",
                 ],
             ] = [
                 f.slope,
@@ -170,6 +194,8 @@ def segmented_regression(df, plot=False, last_value=True):
                 f.pvalue,
                 f.stderr,
                 f.intercept_stderr,
+                xi.min(),
+                xi.max(),
             ]
             # If plot is True plot the x-y estimated values of the segmented regression
             if plot:
@@ -180,9 +206,13 @@ def segmented_regression(df, plot=False, last_value=True):
         if last_value:
             df_key = df_key.sort_values(by="year", ascending=False)[0:1]
         # Add the group to the final dataframe to return
-        df_segmented_regression = df_segmented_regression.append(
-            df_key, ignore_index=True
+        df_segmented_regression = pd.concat(
+            [df_segmented_regression, df_key], ignore_index=True
         )
+    # Transform year lower and upper columns into int type
+    df_segmented_regression[
+        ["year_range_lower", "year_range_upper"]
+    ] = df_segmented_regression[["year_range_lower", "year_range_upper"]].astype("int")
     # Final dataframe with the new column statistic columns
     return df_segmented_regression
 
