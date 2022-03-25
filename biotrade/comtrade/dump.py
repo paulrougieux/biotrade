@@ -84,11 +84,16 @@ class Dump:
             # Store the data frame to a dump file
             file_name = f"{table}_{this_code}.csv".replace(".", "_", 1)
             file_path = self.data_dir / (file_name + ".gz")
-            # Remove the file if it exists
+            # Remove the destination file if it exists
             if file_path.exists():
                 file_path.unlink()
+            self.logger.info("Dumping data in chunks")
+            # Take a chunk of data from the database and write it to CSV, iterate
             for df in df_iter:
-                print(df.head(1))
+                self.logger.info(
+                    "product %s, period %s ",
+                    *df.loc[0, ["product_code", "period"]].to_list(),
+                )
                 df.to_csv(
                     file_path,
                     mode="a",
