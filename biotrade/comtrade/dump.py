@@ -53,19 +53,21 @@ class Dump:
         self,
         table,
         product_code=None,
+        chunk_size=10 ** 6,
     ):
         """Dump all rows where the product code starts with the given product code at the 2 digit level
 
         :param table_name, str defining the comtrade table
             ("monthly", "yearly", "yearly_hs2")
         :param int product_code 2 digit product code
+        :param int chunk_size number of rows to read from the database at a time, to avoid memory errors
 
         If a list of product codes is given, store one file for each 2 digit code.
 
         For example save monthly "Animal Or Vegetable Fats And Oil" data which starts with 15:
 
             >>> from biotrade.comtrade import comtrade
-            >>> comtrade.dump.store_2d_csv("monthly", 15)
+            >>> comtrade.dump.store_2d_csv("monthly", 15, chunk_size=10**4)
 
         """
         # If product_code is a single item, make it a list
@@ -78,12 +80,23 @@ class Dump:
             # Find all products that start with the given code
             stmt = table.select()
             stmt = stmt.where(table.c.product_code.ilike(f"{this_code}%"))
-            df = pandas.read_sql_query(stmt, self.db.engine)
+            df_iter = pandas.read_sql_query(stmt, self.db.engine, chunksize=chunk_size)
             # Store the data frame to a dump file
             file_name = f"{table}_{this_code}.csv".replace(".", "_", 1)
             file_path = self.data_dir / (file_name + ".gz")
-            self.logger.info("Storing data to:\n %s", file_path)
-            df.to_csv(file_path, index=False, compression="gzip")
+            # Remove the file if it exists
+            if file_path.exists():
+                file_path.unlink()
+            for df in df_iter:
+                print(df.head(1))
+                df.to_csv(
+                    file_path,
+                    mode="a",
+                    header=not file_path.exists(),
+                    index=False,
+                    compression="gzip",
+                )
+            self.logger.info("Stored data to:\n %s", file_path)
 
     def load_2d_csv(self, table, file_path):
         """Load a dump into the given database table
