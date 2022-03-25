@@ -78,9 +78,9 @@ class Products(object):
         """
         df = pandas.read_csv(
             self.config_data_dir / "comtrade_hs_2d.csv",
-            # Force the id column to remain a character column,
+            # Force the product_code column to remain a character column,
             # otherwise str "01" becomes int 1.
-            dtype={"id": str},
+            dtype={"product_code": str},
         )
         return df
 
