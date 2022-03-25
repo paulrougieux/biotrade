@@ -33,7 +33,8 @@ class Dump:
 
     Load the dump into a database (on a laptop)
 
-        >>> comtrade.dump.load(file_name="")
+        >>> file_path = comtrade.dump.data_dir / "raw_comtrade_monthly_15.csv.gz"
+        >>> comtrade.dump.load_2d_csv("monthly", file_path)
 
     """
 
@@ -68,6 +69,12 @@ class Dump:
 
             >>> from biotrade.comtrade import comtrade
             >>> comtrade.dump.store_2d_csv("monthly", 15, chunk_size=10**4)
+
+        Dump all bioeconomy related products
+
+            >>> hs2d = comtrade.products.hs2d.query("bioeconomy == 1")
+            >>> for this_code in hs2d["product_code"]:
+            >>>     comtrade.dump.store_2d_csv("monthly", this_code)
 
         """
         # If product_code is a single item, make it a list
