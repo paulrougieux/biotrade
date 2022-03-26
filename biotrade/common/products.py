@@ -40,5 +40,7 @@ config_data_dir = module_dir / "config_data"
 # Note the variable name is lower case as suggested in PEP 8
 # https://peps.python.org/pep-0008/#function-and-variable-names
 comtrade_faostat_mapping = pandas.read_csv(
-    config_data_dir / "comtrade_faostat_product_mapping.csv"
+    config_data_dir / "comtrade_faostat_product_mapping.csv",
+    # Force Comtrade to be a string
+    dtype={"comtrade_code": "str"},
 )
