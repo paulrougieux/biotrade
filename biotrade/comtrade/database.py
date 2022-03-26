@@ -359,10 +359,7 @@ class DatabaseComtrade(Database):
             stmt = stmt.where(table.c.product_code.in_(product_code))
         if product_code_start is not None:
             stmt = stmt.where(
-                or_(
-                    table.c.product_code_start_code.ilike(f"{c}%")
-                    for c in product_code_start
-                )
+                or_(table.c.product_code.ilike(f"{c}%") for c in product_code_start)
             )
         # Query the database and return a data frame
         df = pandas.read_sql_query(stmt, self.engine)
