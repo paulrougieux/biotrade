@@ -7,16 +7,20 @@ Written by Paul Rougieux.
 JRC biomass Project.
 Unit D1 Bioeconomy.
 
-Get the list of products from the Comtrade API
+Get the list of products as stored in the database
 
     >>> from biotrade.comtrade import comtrade
-    >>> hs = comtrade.pump.get_parameter_list("classificationHS.json")
+    >>> hs = comtrade.products.hs
+    >>> # Paper related products
+    >>> print(hs[hs.product_description.str.contains("paper")])
 
-Get the module internal list of products at the HS 2 digit level
+Get the module internal list of products at the HS 2 digit level, with an
+indicator of what products are saved when updating data. Where the column
+bioeconomy == 1 the product is saved, bioeconomy == 0 the product is discarded.
 
     >>> products2d = comtrade.products.hs2d
     >>> # Paper related products
-    >>> print(products2d[products2d.text.str.contains("paper")])
+    >>> print(products2d[products2d.product_description.str.contains("paper")])
 
 """
 # Third party modules
@@ -31,8 +35,6 @@ class Products(object):
 
         >>> from biotrade.comtrade import comtrade
         >>> comtrade.pump.update_product_hs()
-
-
 
     """
 
