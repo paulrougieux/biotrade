@@ -101,6 +101,11 @@ Select the mirror flows reported by Brazil, where the Netherlands was a partner
     >>>                        reporter="Brazil",
     >>>                        partner="Netherlands")
 
+Select land use and land cover data
+
+    >>> lu = faostat.db.select("land_use")
+    >>> lc = faostat.db.select("land_cover")
+
 
 ## Comtrade
 
