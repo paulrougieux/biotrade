@@ -10,15 +10,16 @@ from scipy import optimize, stats
 import matplotlib.pyplot as plt
 
 
-def obj_function(breakpoints, x, y, num_breakpoints, fcache):
+def obj_function(breakpoints, x, y, num_breakpoints, function, fcache):
     """
     Function which computes errors of the segmented regressions
-    based on the mean of R2 with respect to the number of break points.
-    Then objective function is calculated recentered the total error around 1.
+    based on the mean of coefficient of determination (R2) with respect to the number of break points or based on the Residual Sum of Squares (RSS),
+    depending on user choice.
     :param (np.array) breakpoints, the location of breakpoints
     :param (float) x, values of independent variable
     :param (float) y, values of dependent variable
-    :param (integer) num_breakpoints, number of breaks equal to segments - 1
+    :param (string) function, the objective to calculate could be "R2" or "RSS"
+    :param (integer) num_breakpoints, number of breaks, in other terms nr. segments - 1
     :param (dictionary) fcache, values of the objective function for each evaluated
         location
     :return (dictionary) fcache updated
@@ -27,14 +28,27 @@ def obj_function(breakpoints, x, y, num_breakpoints, fcache):
     breakpoints = tuple(map(int, sorted(breakpoints)))
     # Calculate obj function if not already done for the specific breakpoint location
     if breakpoints not in fcache:
-        # Initialization
-        total_error = 0
-        # Find the linear regression coefficients for the segments cut by breakpoint locations
-        for f, xi, yi in find_best_piecewise_polynomial(breakpoints, x, y):
-            # Calculate the total error based on R2 and number of breakpoints
-            total_error += (f.rvalue) ** 2 / (num_breakpoints + 1)
-        # Recenter the obj function with respect to 1
-        fcache[breakpoints] = abs(total_error - 1)
+        # Find the linear regression coefficients for the segment cuts by breakpoint locations
+        result = find_best_piecewise_polynomial(breakpoints, x, y)
+        # Segments with more than 6 point
+        if result:
+            # Initialization
+            total_error = 0
+            # Loop on each segment to obtain the total error
+            for f, xi, yi in result:
+                # Calculate the total error as Residual Sum of Squares (RSS)
+                if function == "RSS":
+                    total_error += np.sum((yi - (f.slope * xi + f.intercept)) ** 2)
+                # Calculate the total error based on coefficient of determination (R2) averaged over the number of breakpoints
+                elif function == "R2":
+                    total_error += (f.rvalue) ** 2 / (num_breakpoints + 1)
+            if function == "R2":
+                # Recenter the obj function with respect to 1 and take the absolute value, to take the minimum value that minimize obj
+                total_error = abs(total_error - 1)
+        # Penalize segments with less then 7 points
+        else:
+            total_error = np.inf
+        fcache[breakpoints] = total_error
     return fcache[breakpoints]
 
 
@@ -60,16 +74,22 @@ def find_best_piecewise_polynomial(breakpoints, x, y):
     result = []
     # Calculate the linear regression coefficients and store them into the result list
     for xi, yi in zip(xs, ys):
-        # Do not consider linear regressions with less than 7 points
-        if len(xi) < 7:
+        # Do not consider empty arrays
+        if not xi.size:
             continue
+        # Do not consider linear regressions with less than 7 points
+        elif 0 < len(xi) < 7:
+            # Break the loop and penalize the result putting an empty list
+            result = []
+            break
         # Compute the regression and store the results for each segment
+        # https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.linregress.html
         f = stats.linregress(xi, yi)
         result.append([f, xi, yi])
     return result
 
 
-def segmented_regression(df, plot=False, last_value=True):
+def segmented_regression(df, plot=False, last_value=True, function="RSS"):
     """
     Calculate the linear regression statistics of the segmented regression
     based on the optimization of the objective function built on R2 results
@@ -77,6 +97,8 @@ def segmented_regression(df, plot=False, last_value=True):
     :param (DataFrame) df, dataframe containing the time series with respect to calculate the segmented regressions
     :param (boolean) plot, if True return plot of the regressions (default = False)
     :param (boolean) last_value, if True returns only values related to the most recent year (default = True)
+    :param (string) function, the objective to calculate could be "R2" or "RSS", i.e. coefficient of determination based or
+        residual sum of squares based (default = "RSS")
 
     :return (DataFrame) df_segmented_regression, dataframe which contains new columns related to
     linear regression calculations
@@ -103,9 +125,13 @@ def segmented_regression(df, plot=False, last_value=True):
 
         >>> soybean_exp_agg = soybean_trade_agg[soybean_trade_agg["element"] == "export_quantity"]
 
-    Calculate the segmented regression of values returning the most recent year
+    Calculate the segmented regression of values returning the most recent year, first using RSS and then R2 objective function
 
-        >>> soybean_exp_regression = segmented_regression(soybean_exp_agg, plot = True, last_value = True)
+        >>> soybean_exp_rss = segmented_regression(soybean_exp_agg, plot = True, last_value = True, function = "RSS")
+        >>> soybean_exp_r2 = segmented_regression(soybean_exp_agg, plot = True, last_value = True, function = "R2")
+    
+    Plot results
+    
         >>> plt.show()
 
     """
@@ -140,7 +166,7 @@ def segmented_regression(df, plot=False, last_value=True):
         y = np.array(df_key[value_column].values.tolist())
         # Pre allocation
         best_breakpoints = ()
-        # Loop over the number of breakpoints (max number of breakpoints is len(x)/7 -1)
+        # Loop over the number of breakpoints (max number of breakpoints is round(len(x))/7 -1)
         # to check the best objective function result
         for num_breakpoints in range(0, round(len(x) / 7)):
             # If no breakpoints, no need to optimize the breakpoint location
@@ -148,7 +174,9 @@ def segmented_regression(df, plot=False, last_value=True):
                 # Fake position
                 breakpoints_pos = (0,)
                 # Calculate the objective function for the entire array
-                breakpoints_result = obj_function((0,), x, y, num_breakpoints, {})
+                breakpoints_result = obj_function(
+                    (0,), x, y, num_breakpoints, function, {}
+                )
                 # Store results
                 breakpoints = (breakpoints_pos, breakpoints_result)
             # Call the optimization function optimize.brute which look at
@@ -160,7 +188,7 @@ def segmented_regression(df, plot=False, last_value=True):
                 breakpoints = optimize.brute(
                     obj_function,
                     grid,
-                    args=(x, y, num_breakpoints, {}),
+                    args=(x, y, num_breakpoints, function, {}),
                     full_output=True,
                     finish=None,
                 )
@@ -171,8 +199,27 @@ def segmented_regression(df, plot=False, last_value=True):
                 best_breakpoints = breakpoints
         # If plot is True plot the x-y scattered values
         if plot:
-            plt.figure()
+            plt.figure(figsize=(20, 10))
+            plt.rc("font", size=16)
             plt.scatter(x, y, c="blue", s=50)
+            plt.xlabel("Time [y]", fontsize=20)
+            if "partner" in df_key:
+                title = f"Reporter {df_key['reporter'].unique()[0]} - Partner {df_key['partner'].unique()[0]}"
+            # No partner, only production
+            else:
+                title = f"Reporter {df_key['reporter'].unique()[0]}"
+            plt.title(
+                title, fontsize=20,
+            )
+            # Faostat tables
+            if "element" in df_key:
+                ylabel = f"Product {df_key['product'].unique()[0]} ({df_key['element'].unique()[0]}) [{df_key['unit'].unique()[0]}]"
+            # Comtrade tables
+            else:
+                ylabel = f"Product {df_key['product'].unique()[0]} ({df_key['flow'].unique()[0]})"
+            plt.ylabel(
+                ylabel, fontsize=20,
+            )
         # Add new columns to df reporting the linear regression statistics
         for f, xi, yi in find_best_piecewise_polynomial(best_breakpoints[0], x, y):
             df_key.loc[
@@ -202,6 +249,17 @@ def segmented_regression(df, plot=False, last_value=True):
                 x_interval = np.array([xi.min(), xi.max()])
                 y_interval = f.slope * x_interval + f.intercept
                 plt.plot(x_interval, y_interval, "ro-")
+                # Do not plot vertical line if it is last value of the time series
+                if xi.max() != x.max():
+                    plt.axvline(
+                        x=df_key[
+                            (df_key["year"] >= xi.min()) & (df_key["year"] <= xi.max())
+                        ]["year_range_upper"].unique()[0]
+                        + 0.5,
+                        linestyle="--",
+                        color="k",
+                    )
+                plt.legend(["Time series", "Segmented regression"])
         # Return values related to most recent year at disposal
         if last_value:
             df_key = df_key.sort_values(by="year", ascending=False)[0:1]
