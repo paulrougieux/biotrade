@@ -9,6 +9,7 @@
 *.tar.gz
 *.xlsx
 .vscode
+/debug.py
 
 # Ignore files generated from notebooks
 *.html

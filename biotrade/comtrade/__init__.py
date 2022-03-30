@@ -40,6 +40,7 @@ from biotrade import module_dir, data_dir, database_url
 from biotrade.comtrade.country_groups import CountryGroups
 from biotrade.comtrade.database import DatabaseComtradePostgresql
 from biotrade.comtrade.database import DatabaseComtradeSqlite
+from biotrade.comtrade.dump import Dump
 from biotrade.comtrade.products import Products
 from biotrade.comtrade.pump import Pump
 
@@ -94,6 +95,11 @@ class Comtrade:
         if database_url is None:
             return DatabaseComtradeSqlite(self)
         return DatabaseComtradePostgresql(self)
+
+    @property
+    def dump(self):
+        """Dump data from the database into files"""
+        return Dump(self)
 
     @property
     def products(self):

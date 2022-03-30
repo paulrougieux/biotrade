@@ -173,15 +173,12 @@ df = df[
         "extraction_rate_country_specific_flag",
     ]
 ]
-# Store data into faostat_agricultural_conversion_factors.csv
+# Store data into faostat_agri_conversion_factors.csv
 df["fao_product_code"] = df.fao_product_code.astype("Int64")
 df["fao_country_code"] = df.fao_country_code.astype("Int64")
 df = df.sort_values(by=["fao_country_code", "fao_product_code"])
 df.to_csv(
-    Path.cwd()
-    / "biotrade"
-    / "config_data"
-    / "faostat_agricultural_conversion_factors.csv",
+    Path.cwd() / "biotrade" / "config_data" / "faostat_agri_conversion_factors.csv",
     encoding="utf-8",
     index=False,
     na_rep="NA",
@@ -202,7 +199,7 @@ for column_name in statistics.columns.values:
         final_column_name = "_".join(column_name)
     column_list.append(final_column_name)
 statistics.columns = column_list
-# Add a column to define which product statistics are obtained by calculations from faostat_agricultural_conversion_factors.csv,
+# Add a column to define which product statistics are obtained by calculations from faostat_agri_conversion_factors.csv,
 # in order to separate data obtained considering also the commodity tree
 statistics["extraction_rate_flag"] = (
     statistics["extraction_rate_mean"].notnull().astype(int)
@@ -210,9 +207,12 @@ statistics["extraction_rate_flag"] = (
 statistics["waste_of_supply_flag"] = (
     statistics["waste_of_supply_mean"].notnull().astype(int)
 )
-# Save into csv as global_extraction_rate_statics.csv into config_data folder
+# Save into csv as faostat_agri_conversion_factors_summary_stats.csv into config_data folder
 statistics.to_csv(
-    Path.cwd() / "biotrade" / "config_data" / "global_extraction_rate_statistics.csv",
+    Path.cwd()
+    / "biotrade"
+    / "config_data"
+    / "faostat_agri_conversion_factors_summary_stats.csv",
     encoding="utf-8",
     index=False,
     na_rep="NA",
@@ -248,12 +248,12 @@ for commodity in commodity_tree_list:
     statistics["extraction_rate_mean"][index] = commodity[1]
 # Sort by product codes
 statistics = statistics.sort_values(by="fao_product_code")
-# Save new df into "global_extraction_rate_statistics_manual_gf.csv"
+# Save new df into "faostat_agri_conversion_factors_summary_stats_manual_gf.csv"
 statistics.to_csv(
     Path.cwd()
     / "biotrade"
     / "config_data"
-    / "global_extraction_rate_statistics_manual_gf.csv",
+    / "faostat_agri_conversion_factors_summary_stats_manual_gf.csv",
     encoding="utf-8",
     index=False,
     na_rep="NA",

@@ -23,6 +23,10 @@ To install a previous version specify the git tag, for example v0.0.1
 
     pip install git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@v0.0.1
 
+To install the latest development version, use also the `--upgrade` flag:
+
+    pip install --upgrade git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@dev
+
 
 ## Installation for contributors
 
@@ -96,6 +100,11 @@ Select the mirror flows reported by Brazil, where the Netherlands was a partner
     >>> ct_bra_bel = db.select(table="crop_trade",
     >>>                        reporter="Brazil",
     >>>                        partner="Netherlands")
+
+Select land use and land cover data
+
+    >>> lu = faostat.db.select("land_use")
+    >>> lc = faostat.db.select("land_cover")
 
 
 ## Comtrade

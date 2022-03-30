@@ -168,6 +168,8 @@ class Pump:
                 df[column] = (
                     df[column].str.replace(regex_pat, "_", regex=True).str.lower()
                 )
+                # Remove the last underscore if it's at the end of the name
+                df[column] = df[column].str.replace("_$", "", regex=True)
         # Convert NaN flags to an empty character variable
         # so that the flag column doesn't get converted to a list column when sent to R
         # Here is how the flag was encoded before the change

@@ -44,6 +44,12 @@ class CountryGroups(object):
         """
         path = self.config_data_dir / "faostat_country_groups.csv"
         df = pandas.read_csv(path)
+        # Force country codes to be integers instead of floats.
+        # Note, we are not using the nullable integer data type Int64 with capital I.
+        # https://pandas.pydata.org/pandas-docs/stable/user_guide/integer_na.html
+        # Preferring to keep the standard integer type and -1 for missing codes.
+        df["faost_code"] = df["faost_code"].fillna(-1).astype("int")
+        df["un_code"] = df["un_code"].fillna(-1).astype("int")
         return df
 
     @property

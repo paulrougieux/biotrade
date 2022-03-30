@@ -37,7 +37,12 @@ using an SQL Alchemy cursor or with a pandas data frame:
     >>> # Results as a data frame
     >>> df_2017 = pandas.read_sql_query(statement, db.engine)
 
-Download and store in the database as used when updating the database
+Note the main variables of interest are "net_weight" and "trade_value". A query
+of the monthly data shows that "quantity" is always empty:
+
+    select * from raw_comtrade.monthly where quantity is not null limit 4;
+    # Returns 0 rows
+
 """
 # First party modules
 import logging
@@ -86,22 +91,45 @@ class DatabaseComtrade(Database):
                 self.engine.execute(CreateSchema(self.schema))
 
         # Describe table metadata and create them if they don't exist
+        # Product table
+        self.product = self.describe_product_table(name="product")
+        # Trade tables with data at the HS 6 digit level
         self.monthly = self.describe_trade_table(name="monthly")
         self.yearly = self.describe_trade_table(name="yearly")
+        # Trade table with data at the HS 2 digit level
         self.yearly_hs2 = self.describe_trade_table(name="yearly_hs2")
         self.tables = {
-            # Data at the HS 6 digit level
+            "product": self.product,
             "monthly": self.monthly,
             "yearly": self.yearly,
-            # Data at the HS 2 digit level
             "yearly_hs2": self.yearly_hs2,
         }
         # Create tables if they don't exist
         for table in self.tables.values():
             self.create_if_not_existing(table)
 
+    def describe_product_table(self, name):
+        """Define the metadata of a table containing product codes
+
+        :param str table: name of the table to create
+        """
+        table = Table(
+            name,
+            self.metadata,
+            Column("product_code", Text),
+            Column("product_description", Text),
+            Column("parent", Text),
+            UniqueConstraint(
+                "product_code",
+            ),
+            schema=self.schema,
+        )
+        return table
+
     def describe_trade_table(self, name):
         """Define the metadata of a table containing Comtrade data.
+
+        :param str table: name of the table to create
 
         The unique constraint is a very important part of the table structure.
         It makes sure that there will be no duplicated flows.
@@ -116,7 +144,7 @@ class DatabaseComtrade(Database):
 
         Note the "product" column is left empty, removed from the data frame
         before it is stored in the database because it would be too large. The
-        text description of a product (commodity) is available in the products table.
+        text description of a product (commodity) is available in the product table.
         """
         table = Table(
             name,
@@ -274,12 +302,34 @@ class DatabaseComtrade(Database):
         reporter=None,
         partner=None,
         product=None,
+        # TODO: use Comtrade.products.hs to enable a query on a product partial mapping
         reporter_code=None,
         partner_code=None,
         product_code=None,
+        product_code_start=None,
     ):
         """
-        Select trade data for the given arguments
+        Select comtrade trade data for the given arguments
+
+        :param str table: name of the database table to select from
+        :param list or str reporter: list of reporter names
+        :param list or str partner: list of partner names
+        :param list or str product: list of product names
+        :param list or str flow: list of flow directions
+            ['Imports', 'Exports', 'Re-imports', 'Re-exports']
+        :param list or int reporter_code: list of reporter codes
+        :param list or int partner_code: list of partner codes
+        :param list or int product_code: list of product codes
+            Exact matches of product codes
+        :param list or int product_code_start: list of product codes
+            Partial matches of all products that start with this code
+        :return: A data frame of trade flows
+
+        For example select monthly time series of Oak sawnwood trade
+
+            >>> from biotrade.comtrade import comtrade
+            >>> comtrade.db.select("monthly", product_code="440791")
+
         """
         table = self.tables[table]
         # Change character or integer arguments to lists suitable for a
@@ -296,6 +346,8 @@ class DatabaseComtrade(Database):
             partner_code = [partner_code]
         if isinstance(product_code, (int, str)):
             product_code = [product_code]
+        if isinstance(product_code_start, (int, str)):
+            product_code_start = [product_code_start]
         # Build the select statement
         stmt = table.select()
         if reporter is not None:
@@ -310,6 +362,10 @@ class DatabaseComtrade(Database):
             stmt = stmt.where(table.c.partner_code.in_(partner_code))
         if product_code is not None:
             stmt = stmt.where(table.c.product_code.in_(product_code))
+        if product_code_start is not None:
+            stmt = stmt.where(
+                or_(table.c.product_code.ilike(f"{c}%") for c in product_code_start)
+            )
         # Query the database and return a data frame
         df = pandas.read_sql_query(stmt, self.engine)
         return df

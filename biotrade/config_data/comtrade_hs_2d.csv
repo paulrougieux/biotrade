@@ -1,4 +1,4 @@
-"id","text","food","partly_food","bioeconomy"
+"product_code","product_description","food","partly_food","bioeconomy"
 "01","01 - Animals; live",1,0,1
 "02","02 - Meat and edible meat offal",1,0,1
 "03","03 - Fish and crustaceans, molluscs and other aquatic invertebrates",1,0,1

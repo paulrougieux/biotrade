@@ -6,14 +6,14 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.13.5
+      jupytext_version: 1.13.7
   kernelspec:
     display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
 
-# Detect time series change
+# Detect relative time series change
 
 
 Import dependencies
@@ -57,4 +57,25 @@ ax.set_xlabel("Time [y]", fontsize=20);
 ax.set_ylabel("Relative change [%]", fontsize =20);
 ax.legend(['EU-27','ROW'],fontsize=16);
 ax.set_title('Export quantity change of soybeans from Brazil', fontsize = 20);
+```
+
+Calculate the relative change of values with respect to fix year range 2000-2010
+
+```python
+soybeans_exp_relative_change_range_2000_2010 = relative_change(soybeans_export_agg, last_value=False, year_range = [2000, 2010])
+```
+
+Plot bars
+
+```python
+# Reshape dataframe for plot
+df_reshape = soybeans_exp_relative_change_range_2000_2010.pivot_table(index='year', 
+                        columns='partner', 
+                        values='relative_change')
+# Plot
+ax = df_reshape.plot.bar(figsize=(20,10), fontsize= 16, color = ['tab:green','tab:orange'])
+ax.set_xlabel("Time [y]", fontsize=20);
+ax.set_ylabel("Relative change [%]", fontsize =20);
+ax.legend(['EU-27','ROW'],fontsize=16);
+ax.set_title('Export quantity change of soybeans from Brazil with respect to average 2000-2010', fontsize = 20);
 ```
