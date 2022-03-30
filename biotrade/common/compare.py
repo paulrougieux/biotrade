@@ -64,12 +64,10 @@ def transform_comtrade_using_faostat_codes(comtrade_table, faostat_code):
     It does the following:
 
         1. Find the corresponding Comtrade codes using the mapping table
-        2. Load comtrade data
-        3. Load Comtrade monthly data for the corresponding codes
-        4. Replace product codes and country codes by the FAOSTAT codes.
-        5. Reshape the Comtrade data to a longer format similar
-            to FAOSTAT.
-        6. Aggregate Comtrade flows to the FAOSTAT product codes
+        2. Load Comtrade monthly data for the corresponding codes
+        3. Replace product codes and country codes by the FAOSTAT codes
+        4. Reshape the Comtrade data to a longer format similar to FAOSTAT
+        5. Aggregate Comtrade flows to the FAOSTAT product codes
 
     Example use:
 
