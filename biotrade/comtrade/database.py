@@ -37,7 +37,12 @@ using an SQL Alchemy cursor or with a pandas data frame:
     >>> # Results as a data frame
     >>> df_2017 = pandas.read_sql_query(statement, db.engine)
 
-Download and store in the database as used when updating the database
+Note the main variables of interest are "net_weight" and "trade_value". A query
+of the monthly data shows that "quantity" is always empty:
+
+    select * from raw_comtrade.monthly where quantity is not null limit 4;
+    # Returns 0 rows
+
 """
 # First party modules
 import logging
