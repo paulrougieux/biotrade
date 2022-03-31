@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 def obj_function(breakpoints, x, y, num_breakpoints, function, fcache):
     """
-    Function which computes errors of the segmented regressions
+    Function which computes the obj of the segmented regressions
     based on the mean of coefficient of determination (R2) with respect to the number of break points or based on the Residual Sum of Squares (RSS),
     depending on user choice.
     :param (np.array) breakpoints, the location of breakpoints
@@ -28,27 +28,29 @@ def obj_function(breakpoints, x, y, num_breakpoints, function, fcache):
     breakpoints = tuple(map(int, sorted(breakpoints)))
     # Calculate obj function if not already done for the specific breakpoint location
     if breakpoints not in fcache:
-        # Find the linear regression coefficients for the segment cuts by breakpoint locations
+        # Calculate the linear regression coefficients for the segments cut by breakpoint locations
         result = find_best_piecewise_polynomial(breakpoints, x, y)
         # Segments with more than 6 point
         if result:
             # Initialization
-            total_error = 0
-            # Loop on each segment to obtain the total error
+            obj = 0
+            # Loop on each segment to obtain the total obj value
             for f, xi, yi in result:
-                # Calculate the total error as Residual Sum of Squares (RSS)
+                # Calculate the obj function as Residual Sum of Squares (RSS)
                 if function == "RSS":
-                    total_error += np.sum((yi - (f.slope * xi + f.intercept)) ** 2)
-                # Calculate the total error based on coefficient of determination (R2) averaged over the number of breakpoints
+                    obj += np.sum((yi - (f.slope * xi + f.intercept)) ** 2)
+                # Calculate the obj function based on coefficient of determination (R2) averaged over the number of breakpoints
+                # Take the opposite value because obj needs to be minimize
                 elif function == "R2":
-                    total_error += (f.rvalue) ** 2 / (num_breakpoints + 1)
-            if function == "R2":
-                # Recenter the obj function with respect to 1 and take the absolute value, to take the minimum value that minimize obj
-                total_error = abs(total_error - 1)
+                    obj += -(
+                        1
+                        - (np.sum((yi - (f.slope * xi + f.intercept)) ** 2))
+                        / (np.sum((yi - yi.mean()) ** 2))
+                    ) / (num_breakpoints + 1)
         # Penalize segments with less then 7 points
         else:
-            total_error = np.inf
-        fcache[breakpoints] = total_error
+            obj = np.inf
+        fcache[breakpoints] = obj
     return fcache[breakpoints]
 
 
@@ -160,7 +162,7 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
     # Loop on each group
     for key in df_groups.groups.keys():
         # Select data related to the specific group
-        df_key = df_groups.get_group(key)
+        df_key = df_groups.get_group(key).sort_values(by="year")
         # Create arrays of independent (column "year") and dependent (colum "values") variables
         x = np.array(df_key["year"].values.tolist(), dtype=float)
         y = np.array(df_key[value_column].values.tolist())
@@ -185,6 +187,7 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
                 # Define the grid
                 grid = [slice(1, len(x), 1)] * num_breakpoints
                 # Return the optimize breakpoint location function
+                # https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.brute.html
                 breakpoints = optimize.brute(
                     obj_function,
                     grid,
@@ -204,10 +207,10 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
             plt.scatter(x, y, c="blue", s=50)
             plt.xlabel("Time [y]", fontsize=20)
             if "partner" in df_key:
-                title = f"Reporter {df_key['reporter'].unique()[0]} - Partner {df_key['partner'].unique()[0]}"
+                title = f"Reporter {df_key['reporter'].unique()[0]} - Partner {df_key['partner'].unique()[0]} ({function})"
             # No partner, only production
             else:
-                title = f"Reporter {df_key['reporter'].unique()[0]}"
+                title = f"Reporter {df_key['reporter'].unique()[0]} ({function})"
             plt.title(
                 title, fontsize=20,
             )
