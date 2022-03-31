@@ -75,8 +75,8 @@ def agg_trade_eu_row(df, index_side="partner"):
     """
     if index_side not in ["reporter", "partner"]:
         raise ValueError("index_side can only take the values 'reporter' or 'partner'")
-    # Remove "Total FAO" rows if present
-    selector = df["partner_code"] < 1000
+    # Remove "Total FAO" and "World" rows if present
+    selector = (df["partner_code"] < 1000) & (df["partner"] != "World")
     if any(~selector):
         partner_removed = df.loc[~selector, "partner"].unique()
         warnings.warn(f"Removing {partner_removed} from df")
@@ -89,6 +89,9 @@ def agg_trade_eu_row(df, index_side="partner"):
     )
     # The aggregation index depends on the flow reporting side
     index = ["product_code", "product", "element", "unit", "year"]
+    # The "source" column is present in comparison tables
+    if "source" in df.columns:
+        index = ["source"] + index
     if index_side == "partner":
         index = ["reporter_code", "reporter", country_group] + index
     if index_side == "reporter":

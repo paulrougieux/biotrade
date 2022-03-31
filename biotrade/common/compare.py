@@ -7,11 +7,13 @@ Written by Paul Rougieux and Selene Patani.
 JRC biomass Project.
 Unit D1 Bioeconomy.
 
-Get the product mapping
+Get a data frame with both FAOSTAT and Comtrade data, where Comtrade product
+and country codes have been converted to their equivalent FAOSTAT codes.
 
-Usage:
-
-    >>> from biotrade.common.compare import merge_comtrade_faostat
+    >>> from biotrade.common.compare import merge_faostat_comtrade
+    >>> merge_faostat_comtrade(faostat_table="forestry_trade",
+    >>>                        comtrade_table="monthly",
+    >>>                        faostat_code = [1632, 1633])
 
 """
 
@@ -75,7 +77,8 @@ def transform_comtrade_using_faostat_codes(comtrade_table, faostat_code):
 
     """
     # 1. Find the corresponding Comtrade codes using the mapping table
-    product_mapping = comtrade_faostat_mapping.query("faostat_code in @faostat_code")
+    selector = comtrade_faostat_mapping["faostat_code"].isin(faostat_code)
+    product_mapping = comtrade_faostat_mapping[selector]
     # 2. Load Comtrade monthly data for the corresponding codes
     df_wide = comtrade.db.select(
         comtrade_table, product_code=product_mapping["comtrade_code"]
@@ -242,4 +245,9 @@ def merge_faostat_comtrade(faostat_table, comtrade_table, faostat_code):
     df_faostat["source"] = "faostat"
     df["source"] = "comtrade"
     df_concat = pandas.concat([df_faostat, df])
+    df_concat = df_concat.reset_index(drop=True)
+    # Place the "source" column first for readability
+    cols = df_concat.columns.to_list()
+    cols = [cols[-1]] + cols[:-1]
+    df_concat = df_concat[cols]
     return df_concat
