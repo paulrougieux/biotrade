@@ -19,11 +19,11 @@ CONTINENTS = faostat.country_groups.continents[
 EU_COUNTRY_NAMES_LIST = faostat.country_groups.eu_country_names
 
 
-def agg_trade_eu_row(df, index_side="partner"):
+def agg_trade_eu_row(df, grouping_side="partner", index_side=None):
     """Aggregate bilateral trade data to eu and row as partners
 
     :param data frame df: Bilateral trade flows from faostat
-    :param str index_side: "reporter" or "partner" defines on which side of the
+    :param str grouping_side: "reporter" or "partner" defines on which side of the
     aggregation index country will be grouped together between EU and rest of
     the world, defaults to partner.
     :return bilateral trade flows aggregated by eu and row
@@ -41,7 +41,7 @@ def agg_trade_eu_row(df, index_side="partner"):
         >>> ft_can_mirror = faostat.db.select(table="forestry_trade",
         >>>                                          partner=["Canada"])
         >>> ft_can_mirror_agg = agg_trade_eu_row(ft_can_mirror,
-                index_side="reporter")
+                grouping_side="reporter")
 
     Notice how when aggregating over partner groups, the function creates new
     elements such as "eu_export_quantity", "row_export_quantity" etc. This
@@ -73,8 +73,17 @@ def agg_trade_eu_row(df, index_side="partner"):
 
 
     """
-    if index_side not in ["reporter", "partner"]:
-        raise ValueError("index_side can only take the values 'reporter' or 'partner'")
+    # Deprecate the old name for the argument
+    if index_side is not None:
+        warnings.warn(
+            "index_side is deprecated; use grouping_side", DeprecationWarning, 2
+        )
+        grouping_side = index_side
+    # Restrict values taken by the grouping argument
+    if grouping_side not in ["reporter", "partner"]:
+        raise ValueError(
+            "grouping_side can only take the values 'reporter' or 'partner'"
+        )
     # Remove "Total FAO" and "World" rows if present
     selector = (df["partner_code"] < 1000) & (df["partner"] != "World")
     if any(~selector):
@@ -82,27 +91,27 @@ def agg_trade_eu_row(df, index_side="partner"):
         warnings.warn(f"Removing {partner_removed} from df")
         df = df[selector].copy()
     # Add EU and ROW groups
-    country_group = index_side + "_group"
+    country_group = grouping_side + "_group"
     df[country_group] = "row"
     df[country_group] = df[country_group].where(
-        ~df[index_side].isin(EU_COUNTRY_NAMES_LIST), "eu"
+        ~df[grouping_side].isin(EU_COUNTRY_NAMES_LIST), "eu"
     )
     # The aggregation index depends on the flow reporting side
     index = ["product_code", "product", "element", "unit", "year"]
     # The "source" column is present in comparison tables
     if "source" in df.columns:
         index = ["source"] + index
-    if index_side == "partner":
+    if grouping_side == "partner":
         index = ["reporter_code", "reporter", country_group] + index
-    if index_side == "reporter":
+    if grouping_side == "reporter":
         index = [country_group, "partner_code", "partner"] + index
     # Aggregate
     df_agg = df.groupby(index).agg(value=("value", sum)).reset_index()
     # When aggregating over partner groups, rename country_group to partner
-    if index_side == "partner":
+    if grouping_side == "partner":
         df_agg = df_agg.rename(columns={country_group: "partner"})
     # When aggregating over reporter groups, rename reporter_group to reporter
-    if index_side == "reporter":
+    if grouping_side == "reporter":
         df_agg = df_agg.rename(columns={country_group: "reporter"})
     # Check that the total value hasn't changed
     if not df_agg["value"].sum() == df["value"].sum():

@@ -69,7 +69,7 @@ class FaostatCountry:
     @property
     def forestry_trade_eu_row(self):
         """FAOSTAT forestry bilateral trade with partners aggregated by EU and Rest of the World"""
-        return agg_trade_eu_row(self.forestry_trade, index_side="partner")
+        return agg_trade_eu_row(self.forestry_trade, grouping_side="partner")
 
     @property
     def forestry_trade_mirror(self):
@@ -80,7 +80,7 @@ class FaostatCountry:
     @property
     def forestry_trade_mirror_eu_row(self):
         """FAOSTAT mirror flows with reporters aggregated by EU and ROW"""
-        df = agg_trade_eu_row(self.forestry_trade_mirror, index_side="reporter")
+        df = agg_trade_eu_row(self.forestry_trade_mirror, grouping_side="reporter")
         # TODO: Rename column with a "mirror" suffix
         # df.rename(columns={
         # In the element column, exports become import and vice versa.
@@ -147,7 +147,7 @@ class FaostatCountry:
     @property
     def crop_trade_eu_row(self):
         """FAOSTAT crop bilateral trade with partners aggregated by EU and Rest of the World"""
-        return agg_trade_eu_row(self.crop_trade, index_side="partner")
+        return agg_trade_eu_row(self.crop_trade, grouping_side="partner")
 
     @property
     def crop_trade_mirror(self):

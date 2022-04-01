@@ -122,7 +122,7 @@ class HwpCountry:
         >>> bel.hwp.trade_eu_row
 
         """
-        df = agg_trade_eu_row(self.trade, index_side=index_side)
+        df = agg_trade_eu_row(self.trade, grouping_side=index_side)
         df = df.merge(PRODUCTS, on=["product", "product_code"], how="inner")
         return df
 
