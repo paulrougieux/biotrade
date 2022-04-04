@@ -33,7 +33,7 @@ soybeans_export = soy_trade[(soy_trade["product"] == "soybeans") & (soy_trade["e
 
 Aggregate partners as Europe (eu) and rest of the World (row)
 
-```python
+```python tags=[]
 soybeans_export_agg = agg_trade_eu_row(soybeans_export)
 ```
 
@@ -41,6 +41,12 @@ Calculate the relative change of values in time (5 years as default)
 
 ```python
 soybeans_exp_relative_change = relative_change(soybeans_export_agg, last_value=False)
+```
+
+Print the dataframe
+
+```python
+soybeans_exp_relative_change
 ```
 
 Plot bars
@@ -77,4 +83,8 @@ ax.set_xlabel("Time [y]", fontsize=20);
 ax.set_ylabel("Relative change [%]", fontsize =20);
 ax.legend(['EU-27','ROW'],fontsize=16);
 ax.set_title('Export quantity change of soybeans from Brazil with respect to average 2000-2010', fontsize = 20);
+```
+
+```python
+
 ```

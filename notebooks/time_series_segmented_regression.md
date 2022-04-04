@@ -45,6 +45,16 @@ soybean_exp_eu_regression2 = segmented_regression(
 )
 ```
 
+```python
+# print dataframe
+soybean_exp_eu_regression1
+```
+
+```python
+# print dataframe
+soybean_exp_eu_regression2
+```
+
 <!-- #region tags=[] -->
 ### Db: Faostat, Reporter: Brazil, Partner: ROW, Product: soybeans (236), Flow: export quantity
 <!-- #endregion -->
