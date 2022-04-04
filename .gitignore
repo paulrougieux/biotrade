@@ -10,6 +10,7 @@
 *.xlsx
 .vscode
 /debug.py
+scripts/faostat_commodity_relative_change_export.csv
 
 # Ignore files generated from notebooks
 *.html

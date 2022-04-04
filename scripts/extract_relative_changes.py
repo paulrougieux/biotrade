@@ -2,7 +2,7 @@
 Written by Selene Patani
 
 Script used to compute for each exporting country the relative change value on deforestation products traded to EU and ROW.
-Data are stored into "scripts" / "faostat_commodity_relative_change.csv" file 
+Csv files are stored into obs3df_methods / scripts folder
 """
 import pandas as pd
 import numpy as np
@@ -28,9 +28,9 @@ trade_data = faostat.db.select(
 trade_data_agg = agg_trade_eu_row(trade_data)
 # Compute the relative change in time and return the last value related to the average of 5 previous years
 trade_relative_change = relative_change(trade_data_agg, years=5, last_value=True)
-# Save the file
+# Save the file in the biotrade script folder (ignored by git)
 faostat_commodity_relative_change_file = (
-    Path.cwd() / "scripts" / "faostat_commodity_relative_change.csv"
+    Path.cwd() / "scripts" / "faostat_commodity_relative_change_export.csv"
 )
 trade_relative_change.to_csv(
     faostat_commodity_relative_change_file, index=False, encoding="latin1", na_rep="NA",
