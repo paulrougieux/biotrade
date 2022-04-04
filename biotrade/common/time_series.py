@@ -8,6 +8,8 @@ import pandas as pd
 import numpy as np
 from scipy import optimize, stats
 import matplotlib.pyplot as plt
+import pymannkendall as mk
+from collections import OrderedDict
 
 
 def obj_function(breakpoints, x, y, num_breakpoints, function, fcache):
@@ -204,7 +206,7 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
         if plot:
             plt.figure(figsize=(20, 10))
             plt.rc("font", size=16)
-            plt.scatter(x, y, c="blue", s=50)
+            plt.scatter(x, y, c="blue", s=50, label="Time series")
             plt.xlabel("Time [y]", fontsize=20)
             if "partner" in df_key:
                 title = f"Reporter {df_key['reporter'].unique()[0]} - Partner {df_key['partner'].unique()[0]} ({function})"
@@ -247,13 +249,50 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
                 xi.min(),
                 xi.max(),
             ]
+            if xi.max() == x.max():
+                # Significance level (0.05 is the default)
+                mk_results = mk.original_test(yi)
+                # The estimate of the intercept is calculated by use of the Conover (1980) equation
+                mk_results = mk_results._replace(
+                    intercept=np.median(yi) - np.median(xi) * mk_results.slope
+                )
+                # Add the Mann-Kendall test results to the dataframe
+                df_key.loc[
+                    (df_key["year"] >= xi.min()) & (df_key["year"] <= xi.max()),
+                    [
+                        "mk_trend",
+                        "mk_ha_test",
+                        "mk_pvalue",
+                        "mk_slope",
+                        "mk_intercept",
+                    ],
+                ] = [
+                    mk_results.trend,
+                    mk_results.h,
+                    mk_results.p,
+                    mk_results.slope,
+                    mk_results.intercept,
+                ]
             # If plot is True plot the x-y estimated values of the segmented regression
             if plot:
                 x_interval = np.array([xi.min(), xi.max()])
                 y_interval = f.slope * x_interval + f.intercept
-                plt.plot(x_interval, y_interval, "ro-")
+                plt.plot(x_interval, y_interval, "ro-", label="Segmented regression")
+                if xi.max() == x.max():
+                    if mk_results.h:
+                        x_mk_interval = np.array([xi.min(), xi.max()])
+                        y_mk_interval = (
+                            mk_results.slope * x_mk_interval + mk_results.intercept
+                        )
+                        plt.plot(
+                            x_mk_interval,
+                            y_mk_interval,
+                            "o-",
+                            color="orange",
+                            label="Theil–Sen estimator",
+                        )
                 # Do not plot vertical line if it is last value of the time series
-                if xi.max() != x.max():
+                else:
                     plt.axvline(
                         x=df_key[
                             (df_key["year"] >= xi.min()) & (df_key["year"] <= xi.max())
@@ -261,8 +300,11 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
                         + 0.5,
                         linestyle="--",
                         color="k",
+                        label="Breakpoint",
                     )
-                plt.legend(["Time series", "Segmented regression"])
+                handles, labels = plt.gca().get_legend_handles_labels()
+                by_label = OrderedDict(zip(labels, handles))
+                plt.legend(by_label.values(), by_label.keys())
         # Return values related to most recent year at disposal
         if last_value:
             df_key = df_key.sort_values(by="year", ascending=False)[0:1]
