@@ -143,9 +143,9 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
     if "value" in df.columns:
         # Value column of faostat db
         value_column = "value"
-    elif "trade_value" in df.columns:
-        # Value column is called "trade_value" in comtrade db
-        value_column = "trade_value"
+    elif "net_weight" in df.columns:
+        # Value column is called "net_weight" in comtrade db
+        value_column = "net_weight"
     # Define group columns
     groupby_column_list = ["reporter_code", "product_code", "unit"]
     # Depending on the db tables, different columns can be used to group the dataframe
@@ -369,9 +369,9 @@ def relative_change(df, years=5, last_value=True, year_range=[]):
     if "value" in df.columns:
         # Value column of faostat db
         value_column = "value"
-    elif "trade_value" in df.columns:
-        # Value column is called "trade_value" in comtrade db
-        value_column = "trade_value"
+    elif "net_weight" in df.columns:
+        # Value column is called "net_weight" in comtrade db
+        value_column = "net_weight"
     # Define group columns
     groupby_column_list = ["reporter_code", "product_code", "unit"]
     # Depending on the db tables, different columns can be used to group the dataframe
