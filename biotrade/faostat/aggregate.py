@@ -98,13 +98,13 @@ def agg_trade_eu_row(df, grouping_side="partner", index_side=None):
     )
     # The aggregation index depends on the flow reporting side
     index = ["product_code", "product", "element", "unit", "year"]
-    # The "source" column is present in comparison tables
-    if "source" in df.columns:
-        index = ["source"] + index
     if grouping_side == "partner":
         index = ["reporter_code", "reporter", country_group] + index
     if grouping_side == "reporter":
         index = [country_group, "partner_code", "partner"] + index
+    # Add the "source" column to the index if it is present in comparison tables
+    if "source" in df.columns:
+        index = ["source"] + index
     # Aggregate
     df_agg = df.groupby(index).agg(value=("value", sum)).reset_index()
     # When aggregating over partner groups, rename country_group to partner
