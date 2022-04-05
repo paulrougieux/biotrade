@@ -97,7 +97,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 2,Afghanistan,NA,0.05,pears,521,0
 2,Afghanistan,NA,0.03,apricots,526,0
 2,Afghanistan,NA,0.05,peaches_and_nectarines,534,0
-2,Afghanistan,0.25,NA,plums_dried_prunes_,537,1
+2,Afghanistan,0.25,NA,plums_dried_prunes,537,1
 2,Afghanistan,NA,0.05,grapes,560,0
 2,Afghanistan,0.25,NA,raisins,561,1
 2,Afghanistan,NA,0.15,watermelons,567,0
@@ -272,7 +272,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 4,Algeria,NA,0.05,artichokes,366,0
 4,Algeria,NA,0.08,tomatoes_paste,391,0
 4,Algeria,NA,0.1,cucumbers_and_gherkins,397,0
-4,Algeria,NA,0.1,eggplants_aubergines_,399,0
+4,Algeria,NA,0.1,eggplants_aubergines,399,0
 4,Algeria,NA,0.05,onions_dry,403,0
 4,Algeria,NA,0.1,garlic,406,0
 4,Algeria,NA,0.1,vegetables_fresh_nes,463,0
@@ -283,7 +283,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 4,Algeria,0.65,NA,juice_orange_single_strength,491,1
 4,Algeria,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 4,Algeria,NA,0.1,lemons_and_limes,497,0
-4,Algeria,NA,0.05,grapefruit_inc_pomelos_,507,0
+4,Algeria,NA,0.05,grapefruit_inc_pomelos,507,0
 4,Algeria,0.65,NA,juice_grapefruit,509,1
 4,Algeria,NA,0.05,apples,515,0
 4,Algeria,NA,0.05,pears,521,0
@@ -589,7 +589,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 9,Argentina,0.08,NA,juice_orange_concentrated,492,1
 9,Argentina,NA,0.07,tangerines_mandarins_clementines_satsumas,495,0
 9,Argentina,NA,0.07,lemons_and_limes,497,0
-9,Argentina,NA,0.07,grapefruit_inc_pomelos_,507,0
+9,Argentina,NA,0.07,grapefruit_inc_pomelos,507,0
 9,Argentina,0.08,NA,juice_grapefruit_concentrated,510,1
 9,Argentina,NA,0.07,apples,515,0
 9,Argentina,0.7,NA,juice_apple_concentrated,519,1
@@ -599,7 +599,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 9,Argentina,0.3,NA,apricots_dry,527,1
 9,Argentina,NA,0.07,cherries,531,0
 9,Argentina,NA,0.07,peaches_and_nectarines,534,0
-9,Argentina,0.33,NA,plums_dried_prunes_,537,1
+9,Argentina,0.33,NA,plums_dried_prunes,537,1
 9,Argentina,0.08,NA,juice_plum_concentrated,539,1
 9,Argentina,NA,0.07,strawberries,544,0
 9,Argentina,0.75,NA,juice_grape,562,1
@@ -719,7 +719,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 10,Australia,NA,0.026000000000000002,chick_peas,191,0
 10,Australia,NA,0.02,vetches,205,0
 10,Australia,0.8,NA,flour_pulses,212,1
-10,Australia,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+10,Australia,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 10,Australia,NA,0.04,soybeans,236,0
 10,Australia,0.17,NA,oil_soybean,237,1
 10,Australia,0.8,NA,cake_soybeans,238,1
@@ -761,7 +761,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 10,Australia,NA,0.01,lemons_and_limes,497,0
 10,Australia,0.65,NA,juice_lemon_single_strength,498,1
 10,Australia,0.25,NA,juice_lemon_concentrated,499,1
-10,Australia,NA,0.01,grapefruit_inc_pomelos_,507,0
+10,Australia,NA,0.01,grapefruit_inc_pomelos,507,0
 10,Australia,0.25,NA,juice_grapefruit_concentrated,510,1
 10,Australia,NA,0.02,apples,515,0
 10,Australia,0.45,NA,juice_apple_single_strength,518,1
@@ -769,7 +769,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 10,Australia,NA,0.03,quinces,523,0
 10,Australia,NA,0.05,cherries,531,0
 10,Australia,NA,0.02,peaches_and_nectarines,534,0
-10,Australia,0.35,NA,plums_dried_prunes_,537,1
+10,Australia,0.35,NA,plums_dried_prunes,537,1
 10,Australia,0.25,NA,juice_plum_concentrated,539,1
 10,Australia,NA,0.05,strawberries,544,0
 10,Australia,NA,0.05,currants,550,0
@@ -936,7 +936,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 11,Austria,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 11,Austria,NA,0.05,lemons_and_limes,497,0
 11,Austria,0.14,NA,juice_lemon_concentrated,499,1
-11,Austria,NA,0.05,grapefruit_inc_pomelos_,507,0
+11,Austria,NA,0.05,grapefruit_inc_pomelos,507,0
 11,Austria,0.13,NA,juice_grapefruit_concentrated,510,1
 11,Austria,0.3,NA,juice_citrus_concentrated,514,1
 11,Austria,NA,0.13,apples,515,0
@@ -946,7 +946,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 11,Austria,NA,0.1,apricots,526,0
 11,Austria,NA,0.11,cherries,531,0
 11,Austria,NA,0.075,peaches_and_nectarines,534,0
-11,Austria,NA,0.05,plums_dried_prunes_,537,0
+11,Austria,NA,0.05,plums_dried_prunes,537,0
 11,Austria,NA,0.12,strawberries,544,0
 11,Austria,NA,0.1,gooseberries,549,0
 11,Austria,NA,0.05,currants,550,0
@@ -1058,7 +1058,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 12,Bahamas,NA,0.05,oranges,490,0
 12,Bahamas,NA,0.031,tangerines_mandarins_clementines_satsumas,495,0
 12,Bahamas,NA,0.03,lemons_and_limes,497,0
-12,Bahamas,NA,0.03,grapefruit_inc_pomelos_,507,0
+12,Bahamas,NA,0.03,grapefruit_inc_pomelos,507,0
 12,Bahamas,NA,0.03,apples,515,0
 12,Bahamas,NA,0.05,grapes,560,0
 12,Bahamas,NA,0.1,pineapples,574,0
@@ -1155,7 +1155,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 14,Barbados,NA,0.05,vegetables_fresh_nes,463,0
 14,Barbados,NA,0.05,bananas,486,0
 14,Barbados,NA,0.03,lemons_and_limes,497,0
-14,Barbados,NA,0.03,grapefruit_inc_pomelos_,507,0
+14,Barbados,NA,0.03,grapefruit_inc_pomelos,507,0
 14,Barbados,NA,0.1,avocados,572,0
 14,Barbados,0.5,NA,meat_cattle,867,1
 14,Barbados,0.06,NA,offals_edible_cattle,868,1
@@ -1236,7 +1236,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 16,Bangladesh,NA,0.05,oranges,490,0
 16,Bangladesh,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 16,Bangladesh,NA,0.05,lemons_and_limes,497,0
-16,Bangladesh,NA,0.05,grapefruit_inc_pomelos_,507,0
+16,Bangladesh,NA,0.05,grapefruit_inc_pomelos,507,0
 16,Bangladesh,0.65,NA,juice_apple_single_strength,518,1
 16,Bangladesh,NA,0.1,pineapples,574,0
 16,Bangladesh,0.5,NA,pineapples_canned,575,1
@@ -1406,7 +1406,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 19,Bolivia (Plurinational State of),NA,0.2,oranges,490,0
 19,Bolivia (Plurinational State of),NA,0.2,tangerines_mandarins_clementines_satsumas,495,0
 19,Bolivia (Plurinational State of),NA,0.15,lemons_and_limes,497,0
-19,Bolivia (Plurinational State of),NA,0.2,grapefruit_inc_pomelos_,507,0
+19,Bolivia (Plurinational State of),NA,0.2,grapefruit_inc_pomelos,507,0
 19,Bolivia (Plurinational State of),NA,0.08,apples,515,0
 19,Bolivia (Plurinational State of),NA,0.2,pears,521,0
 19,Bolivia (Plurinational State of),NA,0.2,quinces,523,0
@@ -1578,7 +1578,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 21,Brazil,NA,0.031,beans_dry,176,0
 21,Brazil,0.55,NA,brazil_nuts_shelled,229,1
 21,Brazil,0.28,NA,cashew_nuts_shelled,230,1
-21,Brazil,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+21,Brazil,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 21,Brazil,NA,NA,soybeans,236,0
 21,Brazil,0.18,NA,oil_soybean,237,1
 21,Brazil,0.77,NA,cake_soybeans,238,1
@@ -1621,7 +1621,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 21,Brazil,NA,0.15,tangerines_mandarins_clementines_satsumas,495,0
 21,Brazil,NA,0.15,lemons_and_limes,497,0
 21,Brazil,0.08,NA,juice_lemon_concentrated,499,1
-21,Brazil,NA,0.15,grapefruit_inc_pomelos_,507,0
+21,Brazil,NA,0.15,grapefruit_inc_pomelos,507,0
 21,Brazil,0.08,NA,juice_grapefruit_concentrated,510,1
 21,Brazil,NA,0.1,apples,515,0
 21,Brazil,0.55,NA,juice_apple_single_strength,518,1
@@ -1629,7 +1629,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 21,Brazil,NA,0.1,quinces,523,0
 21,Brazil,NA,0.05,cherries,531,0
 21,Brazil,NA,0.1,peaches_and_nectarines,534,0
-21,Brazil,NA,0.05,plums_dried_prunes_,537,0
+21,Brazil,NA,0.05,plums_dried_prunes,537,0
 21,Brazil,0.08,NA,juice_plum_concentrated,539,1
 21,Brazil,NA,0.14,strawberries,544,0
 21,Brazil,NA,0.1,grapes,560,0
@@ -1895,7 +1895,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 27,Bulgaria,NA,0.16,tomatoes_paste,391,0
 27,Bulgaria,0.8,NA,tomatoes_peeled,392,1
 27,Bulgaria,NA,0.15,cucumbers_and_gherkins,397,0
-27,Bulgaria,NA,0.1,eggplants_aubergines_,399,0
+27,Bulgaria,NA,0.1,eggplants_aubergines,399,0
 27,Bulgaria,NA,0.05,onions_shallots_green,402,0
 27,Bulgaria,NA,0.08199999999999999,onions_dry,403,0
 27,Bulgaria,NA,0.1,garlic,406,0
@@ -1911,7 +1911,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 27,Bulgaria,0.6,NA,juice_orange_single_strength,491,1
 27,Bulgaria,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 27,Bulgaria,NA,0.05,lemons_and_limes,497,0
-27,Bulgaria,NA,0.05,grapefruit_inc_pomelos_,507,0
+27,Bulgaria,NA,0.05,grapefruit_inc_pomelos,507,0
 27,Bulgaria,NA,0.069,apples,515,0
 27,Bulgaria,NA,0.095,pears,521,0
 27,Bulgaria,NA,0.1,quinces,523,0
@@ -1919,7 +1919,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 27,Bulgaria,NA,0.3,apricots_dry,527,0
 27,Bulgaria,NA,0.1,cherries,531,0
 27,Bulgaria,NA,0.075,peaches_and_nectarines,534,0
-27,Bulgaria,0.4,NA,plums_dried_prunes_,537,1
+27,Bulgaria,0.4,NA,plums_dried_prunes,537,1
 27,Bulgaria,NA,0.1,strawberries,544,0
 27,Bulgaria,NA,0.1,currants,550,0
 27,Bulgaria,NA,0.12,raisins,561,0
@@ -2204,7 +2204,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 32,Cameroon,0.67,0.11,groundnuts_shelled,243,1
 32,Cameroon,0.31,NA,oil_groundnut,244,1
 32,Cameroon,0.37,NA,cake_groundnuts,245,1
-32,Cameroon,0.6,NA,oil_coconut_copra_,252,1
+32,Cameroon,0.6,NA,oil_coconut_copra,252,1
 32,Cameroon,0.35,NA,cake_copra,253,1
 32,Cameroon,0.13,0.03,oil_palm,257,1
 32,Cameroon,0.57,NA,oil_palm_kernel,258,1
@@ -2346,7 +2346,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 33,Canada,NA,0.04,oranges,490,0
 33,Canada,0.7,NA,juice_orange_single_strength,491,1
 33,Canada,NA,0.033,lemons_and_limes,497,0
-33,Canada,NA,0.03,grapefruit_inc_pomelos_,507,0
+33,Canada,NA,0.03,grapefruit_inc_pomelos,507,0
 33,Canada,0.22,NA,juice_citrus_concentrated,514,1
 33,Canada,NA,0.02,apples,515,0
 33,Canada,NA,0.027999999999999997,pears,521,0
@@ -2494,7 +2494,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 37,Central African Republic,NA,0.1,bananas,486,0
 37,Central African Republic,NA,0.1,oranges,490,0
 37,Central African Republic,NA,0.1,lemons_and_limes,497,0
-37,Central African Republic,NA,0.1,grapefruit_inc_pomelos_,507,0
+37,Central African Republic,NA,0.1,grapefruit_inc_pomelos,507,0
 37,Central African Republic,NA,0.1,avocados,572,0
 37,Central African Republic,NA,0.1,pineapples,574,0
 37,Central African Republic,0.43,NA,coir,813,1
@@ -2780,7 +2780,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 40,Chile,0.4,NA,apricots_dry,527,1
 40,Chile,NA,0.2,cherries,531,0
 40,Chile,NA,0.1,peaches_and_nectarines,534,0
-40,Chile,0.4,NA,plums_dried_prunes_,537,1
+40,Chile,0.4,NA,plums_dried_prunes,537,1
 40,Chile,NA,0.15,grapes,560,0
 40,Chile,0.74,NA,juice_grape,562,1
 40,Chile,0.69,NA,wine,564,1
@@ -2892,7 +2892,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 41,"China, Main",0.3,NA,almonds_shelled,231,1
 41,"China, Main",0.5,NA,walnuts_shelled,232,1
 41,"China, Main",0.5,NA,hazelnuts_shelled,233,1
-41,"China, Main",1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+41,"China, Main",1.0,NA,nuts_prepared_exc_groundnuts,235,1
 41,"China, Main",NA,0.031,soybeans,236,0
 41,"China, Main",0.15,NA,oil_soybean,237,1
 41,"China, Main",0.82,NA,cake_soybeans,238,1
@@ -2950,12 +2950,12 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 41,"China, Main",NA,0.1,oranges,490,0
 41,"China, Main",0.7,NA,juice_orange_single_strength,491,1
 41,"China, Main",NA,0.1,lemons_and_limes,497,0
-41,"China, Main",NA,0.1,grapefruit_inc_pomelos_,507,0
+41,"China, Main",NA,0.1,grapefruit_inc_pomelos,507,0
 41,"China, Main",NA,0.1,apples,515,0
 41,"China, Main",NA,0.1,pears,521,0
 41,"China, Main",NA,0.05,quinces,523,0
 41,"China, Main",NA,0.05,peaches_and_nectarines,534,0
-41,"China, Main",0.3,NA,plums_dried_prunes_,537,1
+41,"China, Main",0.3,NA,plums_dried_prunes,537,1
 41,"China, Main",NA,0.03,grapes,560,0
 41,"China, Main",0.25,NA,raisins,561,1
 41,"China, Main",0.74,NA,wine,564,1
@@ -3109,7 +3109,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 44,Colombia,NA,0.01,soybeans,236,0
 44,Colombia,0.18,NA,oil_soybean,237,1
 44,Colombia,0.7,NA,cake_soybeans,238,1
-44,Colombia,0.64,NA,oil_coconut_copra_,252,1
+44,Colombia,0.64,NA,oil_coconut_copra,252,1
 44,Colombia,0.3,NA,cake_copra,253,1
 44,Colombia,0.18,NA,oil_palm,257,1
 44,Colombia,0.45,NA,oil_palm_kernel,258,1
@@ -3129,7 +3129,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 44,Colombia,NA,0.07,spinach,373,0
 44,Colombia,NA,0.04,tomatoes_paste,391,0
 44,Colombia,NA,0.1,cucumbers_and_gherkins,397,0
-44,Colombia,NA,0.1,eggplants_aubergines_,399,0
+44,Colombia,NA,0.1,eggplants_aubergines,399,0
 44,Colombia,NA,0.18,onions_dry,403,0
 44,Colombia,NA,0.092,carrots_and_turnips,426,0
 44,Colombia,NA,0.07,vegetables_fresh_nes,463,0
@@ -3214,7 +3214,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 45,Comoros,NA,0.05,sweet_potatoes,122,0
 45,Comoros,NA,0.03,cassava,125,0
 45,Comoros,NA,0.05,coconuts,249,0
-45,Comoros,0.6,NA,oil_coconut_copra_,252,1
+45,Comoros,0.6,NA,oil_coconut_copra,252,1
 45,Comoros,0.35,NA,cake_copra,253,1
 45,Comoros,NA,0.1,vegetables_fresh_nes,463,0
 45,Comoros,NA,0.05,bananas,486,0
@@ -3308,7 +3308,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 47,Cook Islands,NA,0.1,vegetables_fresh_nes,463,0
 47,Cook Islands,NA,0.1,bananas,486,0
 47,Cook Islands,NA,0.02,oranges,490,0
-47,Cook Islands,NA,0.05,grapefruit_inc_pomelos_,507,0
+47,Cook Islands,NA,0.05,grapefruit_inc_pomelos,507,0
 47,Cook Islands,NA,0.05,avocados,572,0
 47,Cook Islands,NA,0.02,pineapples,574,0
 47,Cook Islands,0.8,NA,pineapples_canned,575,1
@@ -3351,7 +3351,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 48,Costa Rica,0.17,NA,oil_soybean,237,1
 48,Costa Rica,0.79,NA,cake_soybeans,238,1
 48,Costa Rica,0.16,NA,copra,251,1
-48,Costa Rica,0.64,NA,oil_coconut_copra_,252,1
+48,Costa Rica,0.64,NA,oil_coconut_copra,252,1
 48,Costa Rica,0.35,NA,cake_copra,253,1
 48,Costa Rica,0.24,NA,oil_palm,257,1
 48,Costa Rica,0.45,NA,oil_palm_kernel,258,1
@@ -3440,7 +3440,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 49,Cuba,0.48,NA,cake_cottonseed,332,1
 49,Cuba,NA,0.1,tomatoes_paste,391,0
 49,Cuba,NA,0.1,cucumbers_and_gherkins,397,0
-49,Cuba,NA,0.1,eggplants_aubergines_,399,0
+49,Cuba,NA,0.1,eggplants_aubergines,399,0
 49,Cuba,NA,0.1,onions_dry,403,0
 49,Cuba,NA,0.1,garlic,406,0
 49,Cuba,NA,0.1,vegetables_fresh_nes,463,0
@@ -3448,7 +3448,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 49,Cuba,NA,0.05,oranges,490,0
 49,Cuba,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 49,Cuba,NA,0.05,lemons_and_limes,497,0
-49,Cuba,NA,0.05,grapefruit_inc_pomelos_,507,0
+49,Cuba,NA,0.05,grapefruit_inc_pomelos,507,0
 49,Cuba,NA,0.03,apples,515,0
 49,Cuba,NA,0.05,avocados,572,0
 49,Cuba,NA,0.1,papayas,600,0
@@ -3515,7 +3515,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 50,Cyprus,NA,0.03,lentils,201,0
 50,Cyprus,NA,NA,vetches,205,0
 50,Cyprus,0.65,NA,almonds_shelled,231,1
-50,Cyprus,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+50,Cyprus,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 50,Cyprus,0.7,NA,groundnuts_shelled,243,1
 50,Cyprus,NA,0.05,olives,260,0
 50,Cyprus,NA,0.05,sesame_seed,289,0
@@ -3542,7 +3542,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 50,Cyprus,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 50,Cyprus,NA,0.1,lemons_and_limes,497,0
 50,Cyprus,0.5,NA,juice_lemon_single_strength,498,1
-50,Cyprus,NA,0.05,grapefruit_inc_pomelos_,507,0
+50,Cyprus,NA,0.05,grapefruit_inc_pomelos,507,0
 50,Cyprus,0.25,NA,juice_grapefruit_concentrated,510,1
 50,Cyprus,0.2,NA,juice_citrus_concentrated,514,1
 50,Cyprus,NA,0.03,apples,515,0
@@ -3710,7 +3710,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 53,Benin,0.46,NA,oil_groundnut,244,1
 53,Benin,0.54,NA,cake_groundnuts,245,1
 53,Benin,0.1,NA,coconuts,249,1
-53,Benin,0.6,NA,oil_coconut_copra_,252,1
+53,Benin,0.6,NA,oil_coconut_copra,252,1
 53,Benin,0.35,NA,cake_copra,253,1
 53,Benin,0.091,NA,oil_palm,257,1
 53,Benin,0.44,NA,oil_palm_kernel,258,1
@@ -3858,13 +3858,13 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 54,Denmark,NA,0.03,tangerines_mandarins_clementines_satsumas,495,0
 54,Denmark,NA,0.03,lemons_and_limes,497,0
 54,Grenada,NA,0.05,lemons_and_limes,497,0
-54,Denmark,NA,0.03,grapefruit_inc_pomelos_,507,0
-54,Grenada,NA,0.05,grapefruit_inc_pomelos_,507,0
+54,Denmark,NA,0.03,grapefruit_inc_pomelos,507,0
+54,Grenada,NA,0.05,grapefruit_inc_pomelos,507,0
 54,Denmark,NA,0.028999999999999998,apples,515,0
 54,Grenada,NA,0.05,apples,515,0
 54,Denmark,NA,0.01,pears,521,0
 54,Denmark,NA,0.05,peaches_and_nectarines,534,0
-54,Denmark,NA,0.01,plums_dried_prunes_,537,0
+54,Denmark,NA,0.01,plums_dried_prunes,537,0
 54,Denmark,NA,0.03,grapes,560,0
 54,Grenada,NA,0.05,grapes,560,0
 54,Denmark,NA,0.03,watermelons,567,0
@@ -3985,7 +3985,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 55,Dominica,NA,0.1,oranges,490,0
 55,Dominica,NA,0.1,lemons_and_limes,497,0
 55,Dominica,0.3,NA,juice_lemon_single_strength,498,1
-55,Dominica,NA,0.15,grapefruit_inc_pomelos_,507,0
+55,Dominica,NA,0.15,grapefruit_inc_pomelos,507,0
 55,Dominica,0.12,NA,juice_grapefruit_concentrated,510,1
 55,Dominica,NA,0.05,avocados,572,0
 55,Dominica,NA,0.2,coffee_green,656,0
@@ -4043,7 +4043,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 56,Dominican Republic,0.42,NA,oil_groundnut,244,1
 56,Dominican Republic,0.56,NA,cake_groundnuts,245,1
 56,Dominican Republic,0.33,NA,copra,251,1
-56,Dominican Republic,0.59,NA,oil_coconut_copra_,252,1
+56,Dominican Republic,0.59,NA,oil_coconut_copra,252,1
 56,Dominican Republic,0.35,NA,cake_copra,253,1
 56,Dominican Republic,0.17,NA,oil_palm,257,1
 56,Dominican Republic,0.5,NA,oil_palm_kernel,258,1
@@ -4054,7 +4054,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 56,Dominican Republic,0.48,NA,cake_cottonseed,332,1
 56,Dominican Republic,NA,0.1,tomatoes_paste,391,0
 56,Dominican Republic,NA,0.1,cucumbers_and_gherkins,397,0
-56,Dominican Republic,NA,0.1,eggplants_aubergines_,399,0
+56,Dominican Republic,NA,0.1,eggplants_aubergines,399,0
 56,Dominican Republic,NA,0.1,onions_dry,403,0
 56,Dominican Republic,NA,0.1,garlic,406,0
 56,Dominican Republic,NA,0.1,carrots_and_turnips,426,0
@@ -4064,7 +4064,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 56,Dominican Republic,NA,0.1,bananas,486,0
 56,Dominican Republic,NA,0.1,oranges,490,0
 56,Dominican Republic,NA,0.1,lemons_and_limes,497,0
-56,Dominican Republic,NA,0.1,grapefruit_inc_pomelos_,507,0
+56,Dominican Republic,NA,0.1,grapefruit_inc_pomelos,507,0
 56,Dominican Republic,NA,0.1,avocados,572,0
 56,Dominican Republic,NA,0.1,papayas,600,0
 56,Dominican Republic,NA,0.1,fruit_fresh_nes,619,0
@@ -4221,7 +4221,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 58,Ecuador,0.18,NA,oil_soybean,237,1
 58,Ecuador,0.71,NA,cake_soybeans,238,1
 58,Ecuador,0.2,NA,copra,251,1
-58,Ecuador,0.64,NA,oil_coconut_copra_,252,1
+58,Ecuador,0.64,NA,oil_coconut_copra,252,1
 58,Ecuador,0.3,NA,cake_copra,253,1
 58,Ecuador,0.17,NA,oil_palm,257,1
 58,Ecuador,0.45,NA,oil_palm_kernel,258,1
@@ -4245,7 +4245,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 58,Ecuador,NA,0.1,oranges,490,0
 58,Ecuador,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 58,Ecuador,NA,0.018000000000000002,lemons_and_limes,497,0
-58,Ecuador,NA,0.05,grapefruit_inc_pomelos_,507,0
+58,Ecuador,NA,0.05,grapefruit_inc_pomelos,507,0
 58,Ecuador,NA,0.01,apples,515,0
 58,Ecuador,0.7,NA,juice_apple_concentrated,519,1
 58,Ecuador,NA,0.019,pears,521,0
@@ -4390,7 +4390,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 59,Egypt,NA,0.1,oranges,490,0
 59,Egypt,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 59,Egypt,NA,0.1,lemons_and_limes,497,0
-59,Egypt,NA,0.1,grapefruit_inc_pomelos_,507,0
+59,Egypt,NA,0.1,grapefruit_inc_pomelos,507,0
 59,Egypt,NA,0.1,apples,515,0
 59,Egypt,NA,0.1,pears,521,0
 59,Egypt,NA,0.1,apricots,526,0
@@ -4490,7 +4490,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 60,El Salvador,NA,NA,cashew_nuts_with_shell,217,0
 60,El Salvador,NA,NA,soybeans,236,0
 60,El Salvador,0.2,NA,copra,251,1
-60,El Salvador,0.64,NA,oil_coconut_copra_,252,1
+60,El Salvador,0.64,NA,oil_coconut_copra,252,1
 60,El Salvador,0.35,NA,cake_copra,253,1
 60,El Salvador,0.15,NA,oil_olive_virgin,261,1
 60,El Salvador,0.45,NA,oil_castor_beans,266,1
@@ -4772,14 +4772,14 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 67,Finland,0.7,NA,juice_orange_single_strength,491,1
 67,Finland,NA,0.03,tangerines_mandarins_clementines_satsumas,495,0
 67,Finland,NA,0.03,lemons_and_limes,497,0
-67,Finland,NA,0.03,grapefruit_inc_pomelos_,507,0
+67,Finland,NA,0.03,grapefruit_inc_pomelos,507,0
 67,Finland,NA,0.05,apples,515,0
 67,Finland,NA,0.05,pears,521,0
 67,Finland,NA,0.05,quinces,523,0
 67,Finland,NA,0.05,apricots,526,0
 67,Finland,NA,0.05,cherries,531,0
 67,Finland,NA,0.05,peaches_and_nectarines,534,0
-67,Finland,NA,0.01,plums_dried_prunes_,537,0
+67,Finland,NA,0.01,plums_dried_prunes,537,0
 67,Finland,NA,0.05,strawberries,544,0
 67,Finland,NA,0.03,currants,550,0
 67,Finland,NA,0.01,grapes,560,0
@@ -4885,7 +4885,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 68,France,0.78,NA,cake_soybeans,238,1
 68,France,0.45,NA,oil_groundnut,244,1
 68,France,0.48,NA,cake_groundnuts,245,1
-68,France,0.59,NA,oil_coconut_copra_,252,1
+68,France,0.59,NA,oil_coconut_copra,252,1
 68,France,0.33,NA,cake_copra,253,1
 68,France,0.45,NA,oil_palm_kernel,258,1
 68,France,0.49,NA,cake_palm_kernel,259,1
@@ -4913,7 +4913,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 68,France,0.8,NA,juice_tomato,390,1
 68,France,NA,0.078,tomatoes_paste,391,0
 68,France,NA,0.15,cucumbers_and_gherkins,397,0
-68,France,NA,0.15,eggplants_aubergines_,399,0
+68,France,NA,0.15,eggplants_aubergines,399,0
 68,France,NA,0.15,onions_shallots_green,402,0
 68,France,NA,0.14,onions_dry,403,0
 68,France,NA,0.14,garlic,406,0
@@ -4928,7 +4928,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 68,France,0.2,NA,juice_orange_concentrated,492,1
 68,France,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 68,France,NA,0.1,lemons_and_limes,497,0
-68,France,NA,0.1,grapefruit_inc_pomelos_,507,0
+68,France,NA,0.1,grapefruit_inc_pomelos,507,0
 68,France,NA,0.1,juice_citrus_single_strength,513,0
 68,France,NA,0.048,apples,515,0
 68,France,0.22,NA,juice_apple_concentrated,519,1
@@ -4937,7 +4937,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 68,France,NA,0.15,apricots,526,0
 68,France,NA,0.14,cherries,531,0
 68,France,NA,0.15,peaches_and_nectarines,534,0
-68,France,0.38,NA,plums_dried_prunes_,537,1
+68,France,0.38,NA,plums_dried_prunes,537,1
 68,France,NA,0.15,strawberries,544,0
 68,France,NA,0.14,currants,550,0
 68,France,NA,0.05,blueberries,552,0
@@ -5097,7 +5097,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 70,French Polynesia,NA,0.05,cassava,125,0
 70,French Polynesia,0.92,NA,sugar_refined,164,1
 70,French Polynesia,0.15,NA,coconuts_desiccated,250,1
-70,French Polynesia,0.6,NA,oil_coconut_copra_,252,1
+70,French Polynesia,0.6,NA,oil_coconut_copra,252,1
 70,French Polynesia,0.28,NA,cake_copra,253,1
 70,French Polynesia,NA,0.05,tomatoes_paste,391,0
 70,French Polynesia,NA,0.02,onions_dry,403,0
@@ -5107,7 +5107,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 70,French Polynesia,NA,0.05,bananas,486,0
 70,French Polynesia,NA,0.03,oranges,490,0
 70,French Polynesia,NA,0.03,tangerines_mandarins_clementines_satsumas,495,0
-70,French Polynesia,NA,0.1,grapefruit_inc_pomelos_,507,0
+70,French Polynesia,NA,0.1,grapefruit_inc_pomelos,507,0
 70,French Polynesia,0.5,NA,juice_grapefruit,509,1
 70,French Polynesia,NA,0.1,juice_citrus_single_strength,513,0
 70,French Polynesia,NA,0.05,apples,515,0
@@ -5150,7 +5150,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 72,Djibouti,0.92,NA,sugar_refined,164,1
 72,Djibouti,0.05,NA,molasses,165,1
 72,Djibouti,NA,0.05,tomatoes_paste,391,0
-72,Djibouti,NA,0.02,eggplants_aubergines_,399,0
+72,Djibouti,NA,0.02,eggplants_aubergines,399,0
 72,Djibouti,NA,0.02,onions_shallots_green,402,0
 72,Djibouti,NA,0.1,vegetables_fresh_nes,463,0
 72,Djibouti,NA,0.05,bananas,486,0
@@ -5373,7 +5373,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 79,Germany,0.8,NA,flour_pulses,212,1
 79,Germany,NA,0.02,chestnut,220,0
 79,Germany,NA,0.02,pistachios,223,0
-79,Germany,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+79,Germany,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 79,Germany,NA,0.006,soybeans,236,0
 79,Germany,0.18,NA,oil_soybean,237,1
 79,Germany,0.8,NA,cake_soybeans,238,1
@@ -5419,7 +5419,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 79,Germany,0.8,NA,juice_orange_single_strength,491,1
 79,Germany,NA,0.027999999999999997,tangerines_mandarins_clementines_satsumas,495,0
 79,Germany,NA,0.04,lemons_and_limes,497,0
-79,Germany,NA,0.04,grapefruit_inc_pomelos_,507,0
+79,Germany,NA,0.04,grapefruit_inc_pomelos,507,0
 79,Germany,0.2,NA,juice_grapefruit_concentrated,510,1
 79,Germany,0.15,NA,juice_citrus_concentrated,514,1
 79,Germany,NA,0.06,apples,515,0
@@ -5428,7 +5428,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 79,Germany,NA,0.079,apricots,526,0
 79,Germany,NA,0.1,cherries,531,0
 79,Germany,NA,0.08,peaches_and_nectarines,534,0
-79,Germany,0.42,NA,plums_dried_prunes_,537,1
+79,Germany,0.42,NA,plums_dried_prunes,537,1
 79,Germany,0.15,NA,juice_plum_concentrated,539,1
 79,Germany,NA,0.062,strawberries,544,0
 79,Germany,NA,0.1,gooseberries,549,0
@@ -5632,7 +5632,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 81,Ghana,0.92,NA,sugar_refined,164,1
 81,Ghana,0.035,NA,molasses,165,1
 81,Ghana,NA,0.05,sugar_nes,167,0
-81,Ghana,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+81,Ghana,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 81,Ghana,0.72,NA,groundnuts_shelled,243,1
 81,Ghana,0.38,NA,oil_groundnut,244,1
 81,Ghana,0.54,NA,cake_groundnuts,245,1
@@ -5776,7 +5776,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 84,Greece,NA,0.1,tomatoes_paste,391,0
 84,Greece,0.88,NA,tomatoes_peeled,392,1
 84,Greece,NA,0.1,cucumbers_and_gherkins,397,0
-84,Greece,NA,0.05,eggplants_aubergines_,399,0
+84,Greece,NA,0.05,eggplants_aubergines,399,0
 84,Greece,NA,0.05,onions_shallots_green,402,0
 84,Greece,NA,0.05,onions_dry,403,0
 84,Greece,NA,0.05,garlic,406,0
@@ -5793,7 +5793,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 84,Greece,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 84,Greece,NA,0.08,lemons_and_limes,497,0
 84,Greece,0.55,NA,juice_lemon_single_strength,498,1
-84,Greece,NA,0.02,grapefruit_inc_pomelos_,507,0
+84,Greece,NA,0.02,grapefruit_inc_pomelos,507,0
 84,Greece,0.7,NA,juice_grapefruit,509,1
 84,Greece,0.15,NA,juice_grapefruit_concentrated,510,1
 84,Greece,NA,0.1,apples,515,0
@@ -5910,14 +5910,14 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 87,Guadeloupe,0.45,NA,cake_cottonseed,332,1
 87,Guadeloupe,NA,0.1,tomatoes_paste,391,0
 87,Guadeloupe,NA,0.05,cucumbers_and_gherkins,397,0
-87,Guadeloupe,NA,0.05,eggplants_aubergines_,399,0
+87,Guadeloupe,NA,0.05,eggplants_aubergines,399,0
 87,Guadeloupe,NA,0.08,onions_dry,403,0
 87,Guadeloupe,NA,0.1,vegetables_fresh_nes,463,0
 87,Guadeloupe,NA,0.11,bananas,486,0
 87,Guadeloupe,NA,0.1,oranges,490,0
 87,Guadeloupe,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 87,Guadeloupe,NA,0.1,lemons_and_limes,497,0
-87,Guadeloupe,NA,0.1,grapefruit_inc_pomelos_,507,0
+87,Guadeloupe,NA,0.1,grapefruit_inc_pomelos,507,0
 87,Guadeloupe,NA,0.05,apples,515,0
 87,Guadeloupe,0.2,NA,juice_apple_concentrated,519,1
 87,Guadeloupe,NA,0.05,pears,521,0
@@ -6117,7 +6117,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 90,Guinea,0.7,NA,groundnuts_shelled,243,1
 90,Guinea,0.45,NA,oil_groundnut,244,1
 90,Guinea,0.5,NA,cake_groundnuts,245,1
-90,Guinea,0.6,NA,oil_coconut_copra_,252,1
+90,Guinea,0.6,NA,oil_coconut_copra,252,1
 90,Guinea,0.35,NA,cake_copra,253,1
 90,Guinea,0.063,NA,oil_palm,257,1
 90,Guinea,0.46,NA,oil_palm_kernel,258,1
@@ -6249,7 +6249,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 93,Haiti,0.48,NA,cake_cottonseed,332,1
 93,Haiti,NA,0.1,spinach,373,0
 93,Haiti,NA,0.1,tomatoes_paste,391,0
-93,Haiti,NA,0.1,eggplants_aubergines_,399,0
+93,Haiti,NA,0.1,eggplants_aubergines,399,0
 93,Haiti,NA,0.1,onions_dry,403,0
 93,Haiti,NA,0.1,garlic,406,0
 93,Haiti,NA,0.1,vegetables_fresh_nes,463,0
@@ -6257,7 +6257,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 93,Haiti,NA,0.05,oranges,490,0
 93,Haiti,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 93,Haiti,NA,0.05,lemons_and_limes,497,0
-93,Haiti,NA,0.05,grapefruit_inc_pomelos_,507,0
+93,Haiti,NA,0.05,grapefruit_inc_pomelos,507,0
 93,Haiti,NA,0.25,avocados,572,0
 93,Haiti,NA,0.1,pineapples,574,0
 93,Haiti,NA,0.1,fruit_fresh_nes,619,0
@@ -6336,7 +6336,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 95,Honduras,0.15,NA,oil_soybean,237,1
 95,Honduras,0.8,NA,cake_soybeans,238,1
 95,Honduras,0.2,NA,copra,251,1
-95,Honduras,0.64,NA,oil_coconut_copra_,252,1
+95,Honduras,0.64,NA,oil_coconut_copra,252,1
 95,Honduras,0.35,NA,cake_copra,253,1
 95,Honduras,0.18,NA,oil_palm,257,1
 95,Honduras,0.43,NA,oil_palm_kernel,258,1
@@ -6359,7 +6359,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 95,Honduras,NA,0.05,bananas,486,0
 95,Honduras,NA,0.07,oranges,490,0
 95,Honduras,0.06,NA,juice_orange_concentrated,492,1
-95,Honduras,NA,0.2,grapefruit_inc_pomelos_,507,0
+95,Honduras,NA,0.2,grapefruit_inc_pomelos,507,0
 95,Honduras,NA,0.12,watermelons,567,0
 95,Honduras,NA,0.1,avocados,572,0
 95,Honduras,NA,0.2,fruit_fresh_nes,619,0
@@ -6593,7 +6593,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 97,Hungary,0.7,NA,juice_orange_single_strength,491,1
 97,Hungary,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 97,Hungary,NA,0.1,lemons_and_limes,497,0
-97,Hungary,NA,0.05,grapefruit_inc_pomelos_,507,0
+97,Hungary,NA,0.05,grapefruit_inc_pomelos,507,0
 97,Hungary,NA,0.003,apples,515,0
 97,Hungary,0.6,NA,juice_apple_single_strength,518,1
 97,Hungary,NA,0.02,pears,521,0
@@ -6601,7 +6601,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 97,Hungary,NA,0.015,apricots,526,0
 97,Hungary,NA,0.021,cherries,531,0
 97,Hungary,NA,0.021,peaches_and_nectarines,534,0
-97,Hungary,0.4,NA,plums_dried_prunes_,537,1
+97,Hungary,0.4,NA,plums_dried_prunes,537,1
 97,Hungary,NA,0.049,strawberries,544,0
 97,Hungary,NA,0.022000000000000002,gooseberries,549,0
 97,Hungary,NA,0.037000000000000005,currants,550,0
@@ -6713,7 +6713,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 98,Croatia,NA,0.02,vetches,205,0
 98,Croatia,NA,0.03,pistachios,223,0
 98,Croatia,0.35,NA,walnuts_shelled,232,1
-98,Croatia,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+98,Croatia,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 98,Croatia,NA,0.051,soybeans,236,0
 98,Croatia,0.18,NA,oil_soybean,237,1
 98,Croatia,0.72,NA,cake_soybeans,238,1
@@ -6742,14 +6742,14 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 98,Croatia,0.7,NA,juice_orange_single_strength,491,1
 98,Croatia,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 98,Croatia,NA,0.03,lemons_and_limes,497,0
-98,Croatia,NA,0.05,grapefruit_inc_pomelos_,507,0
+98,Croatia,NA,0.05,grapefruit_inc_pomelos,507,0
 98,Croatia,NA,0.05,apples,515,0
 98,Croatia,NA,0.05,pears,521,0
 98,Croatia,NA,0.05,quinces,523,0
 98,Croatia,NA,0.05,apricots,526,0
 98,Croatia,NA,0.05,cherries,531,0
 98,Croatia,NA,0.05,peaches_and_nectarines,534,0
-98,Croatia,0.43,NA,plums_dried_prunes_,537,1
+98,Croatia,0.43,NA,plums_dried_prunes,537,1
 98,Croatia,NA,0.05,strawberries,544,0
 98,Croatia,NA,0.02,grapes,560,0
 98,Croatia,0.69,NA,wine,564,1
@@ -6826,7 +6826,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 99,Iceland,NA,0.02,oranges,490,0
 99,Iceland,NA,0.02,tangerines_mandarins_clementines_satsumas,495,0
 99,Iceland,NA,0.02,lemons_and_limes,497,0
-99,Iceland,NA,0.02,grapefruit_inc_pomelos_,507,0
+99,Iceland,NA,0.02,grapefruit_inc_pomelos,507,0
 99,Iceland,NA,0.02,apples,515,0
 99,Iceland,NA,0.02,pears,521,0
 99,Iceland,NA,0.02,peaches_and_nectarines,534,0
@@ -6909,7 +6909,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 100,India,0.3,NA,cashew_nuts_shelled,230,1
 100,India,0.35,NA,almonds_shelled,231,1
 100,India,0.4,NA,walnuts_shelled,232,1
-100,India,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+100,India,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 100,India,NA,0.045,soybeans,236,0
 100,India,0.18,NA,oil_soybean,237,1
 100,India,0.8,NA,cake_soybeans,238,1
@@ -6956,7 +6956,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 100,India,NA,0.1,oranges,490,0
 100,India,0.6,NA,juice_orange_single_strength,491,1
 100,India,NA,0.1,lemons_and_limes,497,0
-100,India,NA,0.1,grapefruit_inc_pomelos_,507,0
+100,India,NA,0.1,grapefruit_inc_pomelos,507,0
 100,India,0.25,NA,juice_grapefruit_concentrated,510,1
 100,India,NA,0.1,apples,515,0
 100,India,0.55,NA,juice_apple_single_strength,518,1
@@ -6964,7 +6964,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 100,India,NA,0.1,apricots,526,0
 100,India,NA,0.1,cherries,531,0
 100,India,NA,0.1,peaches_and_nectarines,534,0
-100,India,0.3,NA,plums_dried_prunes_,537,1
+100,India,0.3,NA,plums_dried_prunes,537,1
 100,India,NA,0.1,grapes,560,0
 100,India,NA,0.15,figs,569,0
 100,India,0.55,NA,pineapples_canned,575,1
@@ -7069,7 +7069,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 101,Indonesia,0.035,NA,molasses,165,1
 101,Indonesia,NA,0.1,beans_dry,176,0
 101,Indonesia,0.7,NA,flour_pulses,212,1
-101,Indonesia,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+101,Indonesia,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 101,Indonesia,NA,0.049,soybeans,236,0
 101,Indonesia,0.18,NA,oil_soybean,237,1
 101,Indonesia,0.8,NA,cake_soybeans,238,1
@@ -7227,7 +7227,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 102,Iran (Islamic Republic of),NA,0.1,oranges,490,0
 102,Iran (Islamic Republic of),NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 102,Iran (Islamic Republic of),NA,0.1,lemons_and_limes,497,0
-102,Iran (Islamic Republic of),NA,0.1,grapefruit_inc_pomelos_,507,0
+102,Iran (Islamic Republic of),NA,0.1,grapefruit_inc_pomelos,507,0
 102,Iran (Islamic Republic of),NA,0.1,apples,515,0
 102,Iran (Islamic Republic of),NA,0.1,pears,521,0
 102,Iran (Islamic Republic of),NA,0.05,quinces,523,0
@@ -7360,7 +7360,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 103,Iraq,NA,0.1,oranges,490,0
 103,Iraq,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 103,Iraq,NA,0.1,lemons_and_limes,497,0
-103,Iraq,NA,0.1,grapefruit_inc_pomelos_,507,0
+103,Iraq,NA,0.1,grapefruit_inc_pomelos,507,0
 103,Iraq,NA,0.1,apples,515,0
 103,Iraq,NA,0.1,pears,521,0
 103,Iraq,NA,0.1,quinces,523,0
@@ -7474,7 +7474,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 104,Ireland,0.7,NA,juice_orange_single_strength,491,1
 104,Ireland,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 104,Ireland,NA,0.05,lemons_and_limes,497,0
-104,Ireland,NA,0.05,grapefruit_inc_pomelos_,507,0
+104,Ireland,NA,0.05,grapefruit_inc_pomelos,507,0
 104,Ireland,0.2,NA,juice_citrus_concentrated,514,1
 104,Ireland,NA,0.05,apples,515,0
 104,Ireland,0.55,NA,juice_apple_single_strength,518,1
@@ -7620,7 +7620,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 105,Israel,NA,0.01,lemons_and_limes,497,0
 105,Israel,0.5,NA,juice_lemon_single_strength,498,1
 105,Israel,0.25,NA,juice_lemon_concentrated,499,1
-105,Israel,NA,0.002,grapefruit_inc_pomelos_,507,0
+105,Israel,NA,0.002,grapefruit_inc_pomelos,507,0
 105,Israel,0.25,NA,juice_grapefruit_concentrated,510,1
 105,Israel,NA,0.027000000000000003,apples,515,0
 105,Israel,0.5,NA,juice_apple_single_strength,518,1
@@ -7792,7 +7792,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 106,Italy,NA,0.034,tomatoes_paste,391,0
 106,Italy,0.78,NA,tomatoes_peeled,392,1
 106,Italy,NA,0.12,cucumbers_and_gherkins,397,0
-106,Italy,NA,0.13,eggplants_aubergines_,399,0
+106,Italy,NA,0.13,eggplants_aubergines,399,0
 106,Italy,NA,0.05,onions_shallots_green,402,0
 106,Italy,NA,0.1,onions_dry,403,0
 106,Italy,NA,0.1,garlic,406,0
@@ -7811,7 +7811,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 106,Italy,NA,0.027999999999999997,tangerines_mandarins_clementines_satsumas,495,0
 106,Italy,NA,0.067,lemons_and_limes,497,0
 106,Italy,0.35,NA,juice_lemon_single_strength,498,1
-106,Italy,NA,0.05,grapefruit_inc_pomelos_,507,0
+106,Italy,NA,0.05,grapefruit_inc_pomelos,507,0
 106,Italy,0.15,NA,juice_grapefruit_concentrated,510,1
 106,Italy,NA,0.1,apples,515,0
 106,Italy,0.22,NA,juice_apple_concentrated,519,1
@@ -7820,7 +7820,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 106,Italy,NA,0.12,apricots,526,0
 106,Italy,NA,0.064,cherries,531,0
 106,Italy,NA,0.025,peaches_and_nectarines,534,0
-106,Italy,0.27,0.05,plums_dried_prunes_,537,1
+106,Italy,0.27,0.05,plums_dried_prunes,537,1
 106,Italy,NA,0.1,strawberries,544,0
 106,Italy,NA,0.03,blueberries,552,0
 106,Italy,NA,0.002,raisins,561,0
@@ -7955,7 +7955,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 107,Cote dIvore,0.45,NA,oil_groundnut,244,1
 107,Cote dIvore,0.54,NA,cake_groundnuts,245,1
 107,Cote dIvore,0.25,NA,coconuts_desiccated,250,1
-107,Cote dIvore,0.64,NA,oil_coconut_copra_,252,1
+107,Cote dIvore,0.64,NA,oil_coconut_copra,252,1
 107,Cote dIvore,0.35,NA,cake_copra,253,1
 107,Cote dIvore,0.21,NA,oil_palm,257,1
 107,Cote dIvore,0.45,NA,oil_palm_kernel,258,1
@@ -7966,7 +7966,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 107,Cote dIvore,0.18,NA,oil_cottonseed,331,1
 107,Cote dIvore,0.45,NA,cake_cottonseed,332,1
 107,Cote dIvore,NA,0.15,tomatoes_paste,391,0
-107,Cote dIvore,NA,0.2,eggplants_aubergines_,399,0
+107,Cote dIvore,NA,0.2,eggplants_aubergines,399,0
 107,Cote dIvore,NA,0.1,onions_shallots_green,402,0
 107,Cote dIvore,NA,0.1,vegetables_fresh_nes,463,0
 107,Cote dIvore,NA,0.1,bananas,486,0
@@ -8199,7 +8199,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 109,Jamaica,NA,0.1,oranges,490,0
 109,Jamaica,0.1,0.1,tangerines_mandarins_clementines_satsumas,495,1
 109,Jamaica,0.56,NA,juice_lemon_single_strength,498,1
-109,Jamaica,NA,0.1,grapefruit_inc_pomelos_,507,0
+109,Jamaica,NA,0.1,grapefruit_inc_pomelos,507,0
 109,Jamaica,0.1,NA,juice_grapefruit_concentrated,510,1
 109,Jamaica,0.32,NA,juice_apple_single_strength,518,1
 109,Jamaica,0.095,NA,juice_plum_concentrated,539,1
@@ -8349,7 +8349,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 110,Japan,NA,0.14,oranges,490,0
 110,Japan,NA,0.14,tangerines_mandarins_clementines_satsumas,495,0
 110,Japan,NA,0.15,lemons_and_limes,497,0
-110,Japan,NA,0.15,grapefruit_inc_pomelos_,507,0
+110,Japan,NA,0.15,grapefruit_inc_pomelos,507,0
 110,Japan,NA,0.1,apples,515,0
 110,Japan,NA,0.17,pears,521,0
 110,Japan,NA,0.17,cherries,531,0
@@ -8643,7 +8643,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 114,Kenya,NA,0.15,bananas,486,0
 114,Kenya,NA,0.1,oranges,490,0
 114,Kenya,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
-114,Kenya,NA,0.05,grapefruit_inc_pomelos_,507,0
+114,Kenya,NA,0.05,grapefruit_inc_pomelos,507,0
 114,Kenya,0.5,NA,juice_apple_single_strength,518,1
 114,Kenya,NA,0.05,pears,521,0
 114,Kenya,NA,0.1,pineapples,574,0
@@ -8747,7 +8747,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 115,Cambodia,0.7,NA,groundnuts_shelled,243,1
 115,Cambodia,0.41,NA,oil_groundnut,244,1
 115,Cambodia,0.53,NA,cake_groundnuts,245,1
-115,Cambodia,0.63,NA,oil_coconut_copra_,252,1
+115,Cambodia,0.63,NA,oil_coconut_copra,252,1
 115,Cambodia,0.35,NA,cake_copra,253,1
 115,Cambodia,NA,0.02,kapokseed_in_shell,311,0
 115,Cambodia,0.66,NA,cottonseed,329,1
@@ -8755,7 +8755,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 115,Cambodia,NA,0.05,bananas,486,0
 115,Cambodia,NA,0.1,oranges,490,0
 115,Cambodia,NA,0.1,lemons_and_limes,497,0
-115,Cambodia,NA,0.1,grapefruit_inc_pomelos_,507,0
+115,Cambodia,NA,0.1,grapefruit_inc_pomelos,507,0
 115,Cambodia,NA,0.1,pineapples,574,0
 115,Cambodia,NA,0.1,fruit_fresh_nes,619,0
 115,Cambodia,0.33,NA,coir,813,1
@@ -8889,7 +8889,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 117,Republic of Korea,NA,0.03,peas_dry,187,0
 117,Republic of Korea,0.8,NA,flour_pulses,212,1
 117,Republic of Korea,NA,0.05,chestnut,220,0
-117,Republic of Korea,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+117,Republic of Korea,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 117,Republic of Korea,NA,0.006999999999999999,soybeans,236,0
 117,Republic of Korea,0.18,NA,oil_soybean,237,1
 117,Republic of Korea,0.76,NA,cake_soybeans,238,1
@@ -8932,7 +8932,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 117,Republic of Korea,NA,0.1,apples,515,0
 117,Republic of Korea,NA,0.1,pears,521,0
 117,Republic of Korea,NA,0.1,peaches_and_nectarines,534,0
-117,Republic of Korea,0.25,NA,plums_dried_prunes_,537,1
+117,Republic of Korea,0.25,NA,plums_dried_prunes,537,1
 117,Republic of Korea,NA,0.1,strawberries,544,0
 117,Republic of Korea,NA,0.1,grapes,560,0
 117,Republic of Korea,NA,0.15,watermelons,567,0
@@ -9149,7 +9149,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 120,Lao People's Democratic Republic,NA,0.05,oranges,490,0
 120,Lao People's Democratic Republic,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 120,Lao People's Democratic Republic,NA,0.05,lemons_and_limes,497,0
-120,Lao People's Democratic Republic,NA,0.05,grapefruit_inc_pomelos_,507,0
+120,Lao People's Democratic Republic,NA,0.05,grapefruit_inc_pomelos,507,0
 120,Lao People's Democratic Republic,NA,0.05,pineapples,574,0
 120,Lao People's Democratic Republic,NA,0.05,fruit_fresh_nes,619,0
 120,Lao People's Democratic Republic,0.33,NA,coir,813,1
@@ -9221,7 +9221,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 121,Lebanon,NA,0.08,spinach,373,0
 121,Lebanon,NA,0.1,tomatoes_paste,391,0
 121,Lebanon,NA,0.05,cucumbers_and_gherkins,397,0
-121,Lebanon,NA,0.05,eggplants_aubergines_,399,0
+121,Lebanon,NA,0.05,eggplants_aubergines,399,0
 121,Lebanon,NA,0.07,onions_dry,403,0
 121,Lebanon,NA,0.07,garlic,406,0
 121,Lebanon,NA,0.1,vegetables_fresh_nes,463,0
@@ -9233,7 +9233,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 121,Lebanon,NA,0.07,oranges,490,0
 121,Lebanon,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 121,Lebanon,NA,0.07,lemons_and_limes,497,0
-121,Lebanon,NA,0.1,grapefruit_inc_pomelos_,507,0
+121,Lebanon,NA,0.1,grapefruit_inc_pomelos,507,0
 121,Lebanon,NA,0.1,apples,515,0
 121,Lebanon,NA,0.15,pears,521,0
 121,Lebanon,NA,0.05,quinces,523,0
@@ -9584,7 +9584,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 129,Madagascar,0.46,NA,oil_groundnut,244,1
 129,Madagascar,0.54,NA,cake_groundnuts,245,1
 129,Madagascar,NA,0.05,coconuts,249,0
-129,Madagascar,0.6,NA,oil_coconut_copra_,252,1
+129,Madagascar,0.6,NA,oil_coconut_copra,252,1
 129,Madagascar,0.4,NA,cake_copra,253,1
 129,Madagascar,0.16,NA,oil_palm,257,1
 129,Madagascar,0.45,NA,oil_palm_kernel,258,1
@@ -9595,7 +9595,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 129,Madagascar,0.46,NA,cake_cottonseed,332,1
 129,Madagascar,NA,0.1,tomatoes_paste,391,0
 129,Madagascar,NA,0.1,cucumbers_and_gherkins,397,0
-129,Madagascar,NA,0.1,eggplants_aubergines_,399,0
+129,Madagascar,NA,0.1,eggplants_aubergines,399,0
 129,Madagascar,NA,0.1,onions_shallots_green,402,0
 129,Madagascar,NA,0.05,onions_dry,403,0
 129,Madagascar,NA,0.1,garlic,406,0
@@ -9608,7 +9608,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 129,Madagascar,NA,0.1,bananas,486,0
 129,Madagascar,NA,0.1,oranges,490,0
 129,Madagascar,NA,0.1,lemons_and_limes,497,0
-129,Madagascar,NA,0.1,grapefruit_inc_pomelos_,507,0
+129,Madagascar,NA,0.1,grapefruit_inc_pomelos,507,0
 129,Madagascar,NA,0.1,apples,515,0
 129,Madagascar,NA,0.05,pears,521,0
 129,Madagascar,NA,0.1,apricots,526,0
@@ -9774,7 +9774,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 131,Malaysia,0.96,NA,sugar_refined,164,1
 131,Malaysia,0.048,NA,molasses,165,1
 131,Malaysia,0.5,NA,hazelnuts_shelled,233,1
-131,Malaysia,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+131,Malaysia,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 131,Malaysia,NA,NA,soybeans,236,0
 131,Malaysia,0.18,NA,oil_soybean,237,1
 131,Malaysia,0.79,NA,cake_soybeans,238,1
@@ -9801,10 +9801,10 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 131,Malaysia,NA,0.2,bananas,486,0
 131,Malaysia,NA,0.03,oranges,490,0
 131,Malaysia,NA,0.03,lemons_and_limes,497,0
-131,Malaysia,NA,0.05,grapefruit_inc_pomelos_,507,0
+131,Malaysia,NA,0.05,grapefruit_inc_pomelos,507,0
 131,Malaysia,0.15,NA,juice_grapefruit_concentrated,510,1
 131,Malaysia,0.15,NA,juice_citrus_concentrated,514,1
-131,Malaysia,0.4,NA,plums_dried_prunes_,537,1
+131,Malaysia,0.4,NA,plums_dried_prunes,537,1
 131,Malaysia,0.15,NA,juice_plum_concentrated,539,1
 131,Malaysia,NA,0.1,watermelons,567,0
 131,Malaysia,0.35,NA,pineapples_canned,575,1
@@ -9990,7 +9990,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 134,Malta,0.4,NA,juice_orange_single_strength,491,1
 134,Malta,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 134,Malta,NA,0.028999999999999998,lemons_and_limes,497,0
-134,Malta,NA,0.05,grapefruit_inc_pomelos_,507,0
+134,Malta,NA,0.05,grapefruit_inc_pomelos,507,0
 134,Malta,NA,0.05,apples,515,0
 134,Malta,0.55,NA,juice_apple_single_strength,518,1
 134,Malta,NA,0.03,pears,521,0
@@ -10058,7 +10058,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 135,Martinique,NA,0.05,kapokseed_in_shell,311,0
 135,Martinique,NA,0.05,tomatoes_paste,391,0
 135,Martinique,NA,0.02,cucumbers_and_gherkins,397,0
-135,Martinique,NA,0.02,eggplants_aubergines_,399,0
+135,Martinique,NA,0.02,eggplants_aubergines,399,0
 135,Martinique,NA,0.03,onions_dry,403,0
 135,Martinique,NA,0.05,vegetables_fresh_nes,463,0
 135,Martinique,NA,0.2,bananas,486,0
@@ -10272,7 +10272,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 138,Mexico,0.42,NA,oil_groundnut,244,1
 138,Mexico,0.56,NA,cake_groundnuts,245,1
 138,Mexico,0.19,NA,copra,251,1
-138,Mexico,0.62,NA,oil_coconut_copra_,252,1
+138,Mexico,0.62,NA,oil_coconut_copra,252,1
 138,Mexico,0.35,NA,cake_copra,253,1
 138,Mexico,0.24,NA,oil_palm,257,1
 138,Mexico,0.5,NA,oil_palm_kernel,258,1
@@ -10299,7 +10299,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 138,Mexico,NA,0.05,asparagus,367,0
 138,Mexico,NA,0.042,tomatoes_paste,391,0
 138,Mexico,NA,0.05,cucumbers_and_gherkins,397,0
-138,Mexico,NA,0.03,eggplants_aubergines_,399,0
+138,Mexico,NA,0.03,eggplants_aubergines,399,0
 138,Mexico,NA,0.05,onions_shallots_green,402,0
 138,Mexico,NA,0.05,garlic,406,0
 138,Mexico,NA,0.05,beans_green,414,0
@@ -10318,7 +10318,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 138,Mexico,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 138,Mexico,NA,0.1,lemons_and_limes,497,0
 138,Mexico,0.5,NA,juice_lemon_concentrated,499,1
-138,Mexico,NA,0.1,grapefruit_inc_pomelos_,507,0
+138,Mexico,NA,0.1,grapefruit_inc_pomelos,507,0
 138,Mexico,NA,0.1,apples,515,0
 138,Mexico,0.7,NA,juice_apple_concentrated,519,1
 138,Mexico,NA,0.1,pears,521,0
@@ -10572,7 +10572,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 143,Morocco,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 143,Morocco,NA,0.05,lemons_and_limes,497,0
 143,Morocco,0.42,NA,juice_lemon_single_strength,498,1
-143,Morocco,NA,0.05,grapefruit_inc_pomelos_,507,0
+143,Morocco,NA,0.05,grapefruit_inc_pomelos,507,0
 143,Morocco,0.42,NA,juice_grapefruit,509,1
 143,Morocco,0.09,NA,juice_grapefruit_concentrated,510,1
 143,Morocco,NA,0.05,juice_citrus_single_strength,513,0
@@ -10581,7 +10581,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 143,Morocco,NA,0.1,apricots,526,0
 143,Morocco,0.3,NA,apricots_dry,527,1
 143,Morocco,NA,0.1,peaches_and_nectarines,534,0
-143,Morocco,0.35,NA,plums_dried_prunes_,537,1
+143,Morocco,0.35,NA,plums_dried_prunes,537,1
 143,Morocco,NA,0.01,raisins,561,0
 143,Morocco,0.24,NA,raisins,561,1
 143,Morocco,0.75,NA,juice_grape,562,1
@@ -10717,7 +10717,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 144,Mozambique,NA,0.1,oranges,490,0
 144,Mozambique,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 144,Mozambique,NA,0.1,lemons_and_limes,497,0
-144,Mozambique,NA,0.1,grapefruit_inc_pomelos_,507,0
+144,Mozambique,NA,0.1,grapefruit_inc_pomelos,507,0
 144,Mozambique,NA,0.05,apples,515,0
 144,Mozambique,NA,0.1,pineapples,574,0
 144,Mozambique,NA,0.1,papayas,600,0
@@ -10789,7 +10789,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 146,Republic of Moldova,0.3,NA,almonds_shelled,231,1
 146,Republic of Moldova,0.5,NA,walnuts_shelled,232,1
 146,Republic of Moldova,0.5,NA,hazelnuts_shelled,233,1
-146,Republic of Moldova,0.9,NA,nuts_prepared_exc_groundnuts_,235,1
+146,Republic of Moldova,0.9,NA,nuts_prepared_exc_groundnuts,235,1
 146,Republic of Moldova,NA,NA,soybeans,236,0
 146,Republic of Moldova,0.17,NA,oil_soybean,237,1
 146,Republic of Moldova,0.76,NA,cake_soybeans,238,1
@@ -10817,7 +10817,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 146,Republic of Moldova,NA,0.1,apricots,526,0
 146,Republic of Moldova,NA,0.1,cherries,531,0
 146,Republic of Moldova,NA,0.1,peaches_and_nectarines,534,0
-146,Republic of Moldova,0.2,NA,plums_dried_prunes_,537,1
+146,Republic of Moldova,0.2,NA,plums_dried_prunes,537,1
 146,Republic of Moldova,NA,0.05,strawberries,544,0
 146,Republic of Moldova,NA,0.05,gooseberries,549,0
 146,Republic of Moldova,NA,0.05,currants,550,0
@@ -11034,7 +11034,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 150,Netherlands,0.75,NA,flour_pulses,212,1
 150,Netherlands,0.4,NA,walnuts_shelled,232,1
 150,Netherlands,0.5,NA,hazelnuts_shelled,233,1
-150,Netherlands,0.9,NA,nuts_prepared_exc_groundnuts_,235,1
+150,Netherlands,0.9,NA,nuts_prepared_exc_groundnuts,235,1
 150,Netherlands,0.18,NA,oil_soybean,237,1
 150,Netherlands,0.78,NA,cake_soybeans,238,1
 150,Netherlands,0.7,NA,groundnuts_shelled,243,1
@@ -11074,7 +11074,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 150,Netherlands,NA,0.01,tangerines_mandarins_clementines_satsumas,495,0
 150,Netherlands,NA,0.01,lemons_and_limes,497,0
 150,Netherlands,0.4,NA,juice_lemon_single_strength,498,1
-150,Netherlands,NA,0.01,grapefruit_inc_pomelos_,507,0
+150,Netherlands,NA,0.01,grapefruit_inc_pomelos,507,0
 150,Netherlands,0.3,NA,juice_citrus_concentrated,514,1
 150,Netherlands,NA,0.009000000000000001,apples,515,0
 150,Netherlands,0.4,NA,juice_apple_single_strength,518,1
@@ -11082,7 +11082,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 150,Netherlands,NA,0.1,apricots,526,0
 150,Netherlands,NA,0.1,cherries,531,0
 150,Netherlands,NA,0.1,peaches_and_nectarines,534,0
-150,Netherlands,NA,0.05,plums_dried_prunes_,537,0
+150,Netherlands,NA,0.05,plums_dried_prunes,537,0
 150,Netherlands,NA,0.02,strawberries,544,0
 150,Netherlands,NA,0.1,gooseberries,549,0
 150,Netherlands,NA,0.02,currants,550,0
@@ -11182,7 +11182,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 153,New Caledonia,NA,0.2,cassava,125,0
 153,New Caledonia,0.93,NA,sugar_refined,164,1
 153,New Caledonia,NA,0.05,nuts_nes,234,0
-153,New Caledonia,0.65,NA,oil_coconut_copra_,252,1
+153,New Caledonia,0.65,NA,oil_coconut_copra,252,1
 153,New Caledonia,0.29,NA,cake_copra,253,1
 153,New Caledonia,NA,0.05,tomatoes_paste,391,0
 153,New Caledonia,NA,0.05,onions_shallots_green,402,0
@@ -11246,7 +11246,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 154,North Macedonia,NA,0.02,lentils,201,0
 154,North Macedonia,NA,0.013000000000000001,vetches,205,0
 154,North Macedonia,0.3,NA,almonds_shelled,231,1
-154,North Macedonia,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+154,North Macedonia,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 154,North Macedonia,NA,0.051,soybeans,236,0
 154,North Macedonia,0.7,NA,groundnuts_shelled,243,1
 154,North Macedonia,NA,0.17,sunflower_seed,267,0
@@ -11275,7 +11275,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 154,North Macedonia,NA,0.1,oranges,490,0
 154,North Macedonia,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 154,North Macedonia,NA,0.1,lemons_and_limes,497,0
-154,North Macedonia,NA,0.05,grapefruit_inc_pomelos_,507,0
+154,North Macedonia,NA,0.05,grapefruit_inc_pomelos,507,0
 154,North Macedonia,0.3,NA,juice_citrus_concentrated,514,1
 154,North Macedonia,NA,0.1,apples,515,0
 154,North Macedonia,NA,0.1,pears,521,0
@@ -11283,7 +11283,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 154,North Macedonia,NA,0.1,apricots,526,0
 154,North Macedonia,NA,0.1,cherries,531,0
 154,North Macedonia,NA,0.1,peaches_and_nectarines,534,0
-154,North Macedonia,0.2,NA,plums_dried_prunes_,537,1
+154,North Macedonia,0.2,NA,plums_dried_prunes,537,1
 154,North Macedonia,NA,0.1,strawberries,544,0
 154,North Macedonia,NA,0.1,grapes,560,0
 154,North Macedonia,0.63,NA,wine,564,1
@@ -11389,7 +11389,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 156,New Zealand,NA,0.05,beans_dry,176,0
 156,New Zealand,NA,0.05,peas_dry,187,0
 156,New Zealand,0.8,NA,flour_pulses,212,1
-156,New Zealand,0.9,NA,nuts_prepared_exc_groundnuts_,235,1
+156,New Zealand,0.9,NA,nuts_prepared_exc_groundnuts,235,1
 156,New Zealand,NA,0.02,linseed,333,0
 156,New Zealand,0.35,NA,oil_linseed,334,1
 156,New Zealand,0.62,NA,cake_linseed,335,1
@@ -11414,7 +11414,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 156,New Zealand,0.7,NA,juice_orange_single_strength,491,1
 156,New Zealand,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 156,New Zealand,NA,0.05,lemons_and_limes,497,0
-156,New Zealand,NA,0.05,grapefruit_inc_pomelos_,507,0
+156,New Zealand,NA,0.05,grapefruit_inc_pomelos,507,0
 156,New Zealand,NA,0.05,apples,515,0
 156,New Zealand,NA,0.05,pears,521,0
 156,New Zealand,NA,0.05,quinces,523,0
@@ -11512,7 +11512,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 157,Nicaragua,0.46,NA,oil_groundnut,244,1
 157,Nicaragua,0.52,NA,cake_groundnuts,245,1
 157,Nicaragua,0.2,NA,copra,251,1
-157,Nicaragua,0.64,NA,oil_coconut_copra_,252,1
+157,Nicaragua,0.64,NA,oil_coconut_copra,252,1
 157,Nicaragua,0.32,NA,cake_copra,253,1
 157,Nicaragua,0.14,NA,oil_palm,257,1
 157,Nicaragua,0.45,NA,oil_palm_kernel,258,1
@@ -11812,13 +11812,13 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 162,Norway,NA,0.04,oranges,490,0
 162,Norway,NA,0.04,tangerines_mandarins_clementines_satsumas,495,0
 162,Norway,NA,0.04,lemons_and_limes,497,0
-162,Norway,NA,0.04,grapefruit_inc_pomelos_,507,0
+162,Norway,NA,0.04,grapefruit_inc_pomelos,507,0
 162,Norway,NA,0.05,apples,515,0
 162,Norway,NA,0.05,pears,521,0
 162,Norway,NA,0.05,apricots,526,0
 162,Norway,NA,0.05,cherries,531,0
 162,Norway,NA,0.05,peaches_and_nectarines,534,0
-162,Norway,NA,0.01,plums_dried_prunes_,537,0
+162,Norway,NA,0.01,plums_dried_prunes,537,0
 162,Norway,NA,0.1,strawberries,544,0
 162,Norway,NA,0.1,gooseberries,549,0
 162,Norway,NA,0.1,currants,550,0
@@ -11913,7 +11913,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 165,Pakistan,0.75,NA,flour_pulses,212,1
 165,Pakistan,0.35,NA,almonds_shelled,231,1
 165,Pakistan,0.5,NA,walnuts_shelled,232,1
-165,Pakistan,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+165,Pakistan,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 165,Pakistan,0.17,NA,oil_soybean,237,1
 165,Pakistan,0.8,NA,cake_soybeans,238,1
 165,Pakistan,0.8,NA,groundnuts_shelled,243,1
@@ -11951,7 +11951,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 165,Pakistan,NA,0.05,pears,521,0
 165,Pakistan,NA,0.05,apricots,526,0
 165,Pakistan,NA,0.05,peaches_and_nectarines,534,0
-165,Pakistan,0.35,NA,plums_dried_prunes_,537,1
+165,Pakistan,0.35,NA,plums_dried_prunes,537,1
 165,Pakistan,NA,0.05,grapes,560,0
 165,Pakistan,0.35,NA,raisins,561,1
 165,Pakistan,0.5,NA,figs_dried,570,1
@@ -12029,7 +12029,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 166,Panama,0.043,NA,molasses,165,1
 166,Panama,NA,0.08900000000000001,beans_dry,176,0
 166,Panama,0.3,NA,copra,251,1
-166,Panama,0.55,NA,oil_coconut_copra_,252,1
+166,Panama,0.55,NA,oil_coconut_copra,252,1
 166,Panama,0.35,NA,cake_copra,253,1
 166,Panama,NA,0.05,sesame_seed,289,0
 166,Panama,0.4,NA,oil_sesame,290,1
@@ -12344,7 +12344,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 169,Paraguay,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 169,Paraguay,NA,0.1,lemons_and_limes,497,0
 169,Paraguay,0.55,NA,juice_lemon_concentrated,499,1
-169,Paraguay,NA,0.1,grapefruit_inc_pomelos_,507,0
+169,Paraguay,NA,0.1,grapefruit_inc_pomelos,507,0
 169,Paraguay,0.08,NA,juice_grapefruit_concentrated,510,1
 169,Paraguay,NA,0.05,apples,515,0
 169,Paraguay,NA,0.1,pears,521,0
@@ -12467,7 +12467,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 170,Peru,NA,0.15,oranges,490,0
 170,Peru,NA,0.15,tangerines_mandarins_clementines_satsumas,495,0
 170,Peru,NA,0.15,lemons_and_limes,497,0
-170,Peru,NA,0.15,grapefruit_inc_pomelos_,507,0
+170,Peru,NA,0.15,grapefruit_inc_pomelos,507,0
 170,Peru,NA,0.1,apples,515,0
 170,Peru,NA,0.15,pears,521,0
 170,Peru,NA,0.15,quinces,523,0
@@ -12574,7 +12574,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 171,Philippines,NA,0.02,beans_dry,176,0
 171,Philippines,NA,0.01,peas_dry,187,0
 171,Philippines,NA,0.01,chick_peas,191,0
-171,Philippines,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+171,Philippines,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 171,Philippines,NA,0.048,soybeans,236,0
 171,Philippines,0.18,NA,oil_soybean,237,1
 171,Philippines,0.8,NA,cake_soybeans,238,1
@@ -12752,7 +12752,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 173,Poland,NA,0.1,oranges,490,0
 173,Poland,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 173,Poland,NA,0.05,lemons_and_limes,497,0
-173,Poland,NA,0.1,grapefruit_inc_pomelos_,507,0
+173,Poland,NA,0.1,grapefruit_inc_pomelos,507,0
 173,Poland,0.13,NA,juice_grapefruit_concentrated,510,1
 173,Poland,0.3,NA,juice_citrus_concentrated,514,1
 173,Poland,NA,0.09699999999999999,apples,515,0
@@ -12930,7 +12930,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 174,Portugal,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 174,Portugal,NA,0.1,lemons_and_limes,497,0
 174,Portugal,0.38,NA,juice_lemon_single_strength,498,1
-174,Portugal,NA,0.1,grapefruit_inc_pomelos_,507,0
+174,Portugal,NA,0.1,grapefruit_inc_pomelos,507,0
 174,Portugal,0.22,NA,juice_citrus_concentrated,514,1
 174,Portugal,NA,0.1,apples,515,0
 174,Portugal,0.6,NA,juice_apple_single_strength,518,1
@@ -13042,7 +13042,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 175,Guinea-Bissau,0.7,NA,groundnuts_shelled,243,1
 175,Guinea-Bissau,0.4,NA,oil_groundnut,244,1
 175,Guinea-Bissau,0.54,NA,cake_groundnuts,245,1
-175,Guinea-Bissau,0.63,NA,oil_coconut_copra_,252,1
+175,Guinea-Bissau,0.63,NA,oil_coconut_copra,252,1
 175,Guinea-Bissau,0.35,NA,cake_copra,253,1
 175,Guinea-Bissau,0.055999999999999994,NA,oil_palm,257,1
 175,Guinea-Bissau,0.48,NA,oil_palm_kernel,258,1
@@ -13097,7 +13097,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 177,Puerto Rico,NA,0.1,bananas,486,0
 177,Puerto Rico,NA,0.05,oranges,490,0
 177,Puerto Rico,NA,0.05,lemons_and_limes,497,0
-177,Puerto Rico,NA,0.05,grapefruit_inc_pomelos_,507,0
+177,Puerto Rico,NA,0.05,grapefruit_inc_pomelos,507,0
 177,Puerto Rico,NA,0.05,avocados,572,0
 177,Puerto Rico,NA,0.05,pineapples,574,0
 177,Puerto Rico,NA,0.1,fruit_fresh_nes,619,0
@@ -13359,13 +13359,13 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 182,Reunion,NA,0.1,coconuts,249,0
 182,Reunion,NA,0.05,kapokseed_in_shell,311,0
 182,Reunion,NA,0.1,tomatoes_paste,391,0
-182,Reunion,NA,0.05,eggplants_aubergines_,399,0
+182,Reunion,NA,0.05,eggplants_aubergines,399,0
 182,Reunion,NA,0.1,onions_shallots_green,402,0
 182,Reunion,NA,0.1,vegetables_fresh_nes,463,0
 182,Reunion,NA,0.1,bananas,486,0
 182,Reunion,NA,0.1,oranges,490,0
 182,Reunion,NA,0.1,lemons_and_limes,497,0
-182,Reunion,NA,0.1,grapefruit_inc_pomelos_,507,0
+182,Reunion,NA,0.1,grapefruit_inc_pomelos,507,0
 182,Reunion,NA,0.1,apples,515,0
 182,Reunion,NA,0.1,peaches_and_nectarines,534,0
 182,Reunion,NA,0.1,strawberries,544,0
@@ -13467,14 +13467,14 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 183,Romania,NA,0.2,bananas,486,0
 183,Romania,NA,0.2,oranges,490,0
 183,Romania,NA,0.2,lemons_and_limes,497,0
-183,Romania,NA,0.2,grapefruit_inc_pomelos_,507,0
+183,Romania,NA,0.2,grapefruit_inc_pomelos,507,0
 183,Romania,NA,0.15,apples,515,0
 183,Romania,NA,0.15,pears,521,0
 183,Romania,NA,0.15,quinces,523,0
 183,Romania,NA,0.1,apricots,526,0
 183,Romania,NA,0.15,cherries,531,0
 183,Romania,NA,0.15,peaches_and_nectarines,534,0
-183,Romania,0.2,NA,plums_dried_prunes_,537,1
+183,Romania,0.2,NA,plums_dried_prunes,537,1
 183,Romania,NA,0.05,strawberries,544,0
 183,Romania,NA,0.1,raisins,561,0
 183,Romania,0.62,NA,wine,564,1
@@ -13782,7 +13782,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 189,Saint Lucia,NA,0.07,bananas,486,0
 189,Saint Lucia,NA,0.05,oranges,490,0
 189,Saint Lucia,NA,0.05,lemons_and_limes,497,0
-189,Saint Lucia,NA,0.05,grapefruit_inc_pomelos_,507,0
+189,Saint Lucia,NA,0.05,grapefruit_inc_pomelos,507,0
 189,Saint Lucia,NA,0.02,apples,515,0
 189,Saint Lucia,NA,0.05,grapes,560,0
 189,Saint Lucia,NA,0.1,avocados,572,0
@@ -13839,7 +13839,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 191,Saint Vincent and the Grenadines,NA,0.1,vegetables_fresh_nes,463,0
 191,Saint Vincent and the Grenadines,NA,0.1,lemons_and_limes,497,0
 191,Saint Vincent and the Grenadines,0.5,NA,juice_lemon_single_strength,498,1
-191,Saint Vincent and the Grenadines,NA,0.05,grapefruit_inc_pomelos_,507,0
+191,Saint Vincent and the Grenadines,NA,0.05,grapefruit_inc_pomelos,507,0
 191,Saint Vincent and the Grenadines,0.5,NA,juice_apple_single_strength,518,1
 191,Saint Vincent and the Grenadines,NA,0.1,pears,521,0
 191,Saint Vincent and the Grenadines,NA,0.05,coffee_green,656,0
@@ -13880,7 +13880,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 193,Sao Tome and Principe,NA,0.05,potatoes,116,0
 193,Sao Tome and Principe,NA,0.1,cassava,125,0
 193,Sao Tome and Principe,NA,0.14,coconuts,249,0
-193,Sao Tome and Principe,0.64,NA,oil_coconut_copra_,252,1
+193,Sao Tome and Principe,0.64,NA,oil_coconut_copra,252,1
 193,Sao Tome and Principe,0.35,NA,cake_copra,253,1
 193,Sao Tome and Principe,0.05,NA,oil_palm,257,1
 193,Sao Tome and Principe,0.48,NA,oil_palm_kernel,258,1
@@ -13955,7 +13955,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 194,Saudi Arabia,NA,0.02,oranges,490,0
 194,Saudi Arabia,NA,0.02,tangerines_mandarins_clementines_satsumas,495,0
 194,Saudi Arabia,NA,0.02,lemons_and_limes,497,0
-194,Saudi Arabia,NA,0.02,grapefruit_inc_pomelos_,507,0
+194,Saudi Arabia,NA,0.02,grapefruit_inc_pomelos,507,0
 194,Saudi Arabia,NA,0.1,apples,515,0
 194,Saudi Arabia,0.5,NA,juice_apple_single_strength,518,1
 194,Saudi Arabia,NA,0.1,pears,521,0
@@ -14252,7 +14252,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 198,Slovenia,0.4,NA,juice_orange_single_strength,491,1
 198,Slovenia,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 198,Slovenia,NA,0.1,lemons_and_limes,497,0
-198,Slovenia,NA,0.1,grapefruit_inc_pomelos_,507,0
+198,Slovenia,NA,0.1,grapefruit_inc_pomelos,507,0
 198,Slovenia,NA,0.17,apples,515,0
 198,Slovenia,0.55,NA,juice_apple_single_strength,518,1
 198,Slovenia,NA,0.1,pears,521,0
@@ -14260,7 +14260,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 198,Slovenia,NA,0.05,apricots,526,0
 198,Slovenia,NA,0.05,cherries,531,0
 198,Slovenia,NA,0.05,peaches_and_nectarines,534,0
-198,Slovenia,0.24,NA,plums_dried_prunes_,537,1
+198,Slovenia,0.24,NA,plums_dried_prunes,537,1
 198,Slovenia,NA,0.05,strawberries,544,0
 198,Slovenia,NA,0.02,grapes,560,0
 198,Slovenia,0.72,0.061,wine,564,1
@@ -14396,13 +14396,13 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 199,Slovakia,0.28,NA,juice_orange_concentrated,492,1
 199,Slovakia,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 199,Slovakia,NA,0.05,lemons_and_limes,497,0
-199,Slovakia,NA,0.05,grapefruit_inc_pomelos_,507,0
+199,Slovakia,NA,0.05,grapefruit_inc_pomelos,507,0
 199,Slovakia,NA,0.13,apples,515,0
 199,Slovakia,NA,0.08,pears,521,0
 199,Slovakia,NA,0.1,apricots,526,0
 199,Slovakia,NA,0.1,cherries,531,0
 199,Slovakia,NA,0.08,peaches_and_nectarines,534,0
-199,Slovakia,0.28,NA,plums_dried_prunes_,537,1
+199,Slovakia,0.28,NA,plums_dried_prunes,537,1
 199,Slovakia,NA,0.08,strawberries,544,0
 199,Slovakia,NA,0.05,gooseberries,549,0
 199,Slovakia,NA,0.05,currants,550,0
@@ -14498,7 +14498,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 200,Singapore,NA,0.02,flour_cassava,126,0
 200,Singapore,0.38,NA,cassava_dried,128,1
 200,Singapore,0.92,NA,sugar_refined,164,1
-200,Singapore,0.8,NA,nuts_prepared_exc_groundnuts_,235,1
+200,Singapore,0.8,NA,nuts_prepared_exc_groundnuts,235,1
 200,Singapore,0.45,NA,oil_groundnut,244,1
 200,Singapore,0.5,NA,cake_groundnuts,245,1
 200,Singapore,0.48,NA,oil_palm_kernel,258,1
@@ -14518,7 +14518,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 200,Singapore,NA,0.05,oranges,490,0
 200,Singapore,NA,0.05,lemons_and_limes,497,0
 200,Singapore,0.6,NA,juice_lemon_single_strength,498,1
-200,Singapore,NA,0.02,grapefruit_inc_pomelos_,507,0
+200,Singapore,NA,0.02,grapefruit_inc_pomelos,507,0
 200,Singapore,0.15,NA,juice_grapefruit_concentrated,510,1
 200,Singapore,NA,0.05,apples,515,0
 200,Singapore,0.08,NA,juice_apple_concentrated,519,1
@@ -14584,7 +14584,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 201,Somalia,NA,0.05,bananas,486,0
 201,Somalia,NA,0.02,oranges,490,0
 201,Somalia,NA,0.02,lemons_and_limes,497,0
-201,Somalia,NA,0.02,grapefruit_inc_pomelos_,507,0
+201,Somalia,NA,0.02,grapefruit_inc_pomelos,507,0
 201,Somalia,NA,0.05,watermelons,567,0
 201,Somalia,NA,0.02,dates,577,0
 201,Somalia,NA,0.1,fruit_fresh_nes,619,0
@@ -14693,14 +14693,14 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 202,South Africa,NA,0.051,oranges,490,0
 202,South Africa,0.65,NA,juice_orange_single_strength,491,1
 202,South Africa,NA,0.055,lemons_and_limes,497,0
-202,South Africa,NA,0.055999999999999994,grapefruit_inc_pomelos_,507,0
+202,South Africa,NA,0.055999999999999994,grapefruit_inc_pomelos,507,0
 202,South Africa,NA,0.05,apples,515,0
 202,South Africa,0.5,NA,juice_apple_single_strength,518,1
 202,South Africa,NA,0.052000000000000005,pears,521,0
 202,South Africa,NA,0.05,quinces,523,0
 202,South Africa,NA,0.05,apricots,526,0
 202,South Africa,NA,0.05,peaches_and_nectarines,534,0
-202,South Africa,0.4,NA,plums_dried_prunes_,537,1
+202,South Africa,0.4,NA,plums_dried_prunes,537,1
 202,South Africa,0.15,NA,juice_plum_concentrated,539,1
 202,South Africa,NA,0.02,strawberries,544,0
 202,South Africa,0.25,NA,raisins,561,1
@@ -14843,11 +14843,11 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 203,Spain,0.4,NA,walnuts_with_shell,222,1
 203,Spain,NA,0.05,pistachios,223,0
 203,Spain,0.49,NA,hazelnuts_with_shell,225,1
-203,Spain,0.9,NA,nuts_prepared_exc_groundnuts_,235,1
+203,Spain,0.9,NA,nuts_prepared_exc_groundnuts,235,1
 203,Spain,NA,0.0,soybeans,236,0
 203,Spain,0.17,NA,oil_soybean,237,1
 203,Spain,0.81,NA,cake_soybeans,238,1
-203,Spain,0.63,NA,oil_coconut_copra_,252,1
+203,Spain,0.63,NA,oil_coconut_copra,252,1
 203,Spain,0.33,NA,cake_copra,253,1
 203,Spain,0.47,NA,oil_palm_kernel,258,1
 203,Spain,0.5,NA,cake_palm_kernel,259,1
@@ -14876,7 +14876,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 203,Spain,NA,0.098,tomatoes_paste,391,0
 203,Spain,0.85,NA,tomatoes_peeled,392,1
 203,Spain,NA,0.1,cucumbers_and_gherkins,397,0
-203,Spain,NA,0.1,eggplants_aubergines_,399,0
+203,Spain,NA,0.1,eggplants_aubergines,399,0
 203,Spain,NA,0.1,onions_shallots_green,402,0
 203,Spain,NA,0.1,onions_dry,403,0
 203,Spain,NA,0.1,garlic,406,0
@@ -14896,7 +14896,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 203,Spain,NA,0.071,tangerines_mandarins_clementines_satsumas,495,0
 203,Spain,NA,0.07400000000000001,lemons_and_limes,497,0
 203,Spain,0.38,NA,juice_lemon_concentrated,499,1
-203,Spain,NA,0.022000000000000002,grapefruit_inc_pomelos_,507,0
+203,Spain,NA,0.022000000000000002,grapefruit_inc_pomelos,507,0
 203,Spain,0.15,NA,juice_grapefruit_concentrated,510,1
 203,Spain,NA,0.1,apples,515,0
 203,Spain,0.7,NA,juice_apple_concentrated,519,1
@@ -15036,7 +15036,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 207,Suriname,NA,0.1,vegetables_fresh_nes,463,0
 207,Suriname,NA,0.02,bananas,486,0
 207,Suriname,NA,0.1,oranges,490,0
-207,Suriname,NA,0.14,grapefruit_inc_pomelos_,507,0
+207,Suriname,NA,0.14,grapefruit_inc_pomelos,507,0
 207,Suriname,NA,0.14,watermelons,567,0
 207,Suriname,NA,0.05,pineapples,574,0
 207,Suriname,NA,0.14,fruit_fresh_nes,619,0
@@ -15157,7 +15157,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 209,Eswatini,NA,0.1,vegetables_fresh_nes,463,0
 209,Eswatini,NA,0.05,bananas,486,0
 209,Eswatini,NA,0.1,oranges,490,0
-209,Eswatini,NA,0.1,grapefruit_inc_pomelos_,507,0
+209,Eswatini,NA,0.1,grapefruit_inc_pomelos,507,0
 209,Eswatini,NA,0.05,pineapples,574,0
 209,Eswatini,0.4,NA,pineapples_canned,575,1
 209,Eswatini,NA,0.1,fruit_fresh_nes,619,0
@@ -15246,13 +15246,13 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 210,Sweden,NA,0.025,oranges,490,0
 210,Sweden,NA,0.025,tangerines_mandarins_clementines_satsumas,495,0
 210,Sweden,NA,0.025,lemons_and_limes,497,0
-210,Sweden,NA,0.025,grapefruit_inc_pomelos_,507,0
+210,Sweden,NA,0.025,grapefruit_inc_pomelos,507,0
 210,Sweden,NA,0.08,apples,515,0
 210,Sweden,NA,0.08,pears,521,0
 210,Sweden,NA,0.06,apricots,526,0
 210,Sweden,NA,0.06,cherries,531,0
 210,Sweden,NA,0.06,peaches_and_nectarines,534,0
-210,Sweden,NA,0.02,plums_dried_prunes_,537,0
+210,Sweden,NA,0.02,plums_dried_prunes,537,0
 210,Sweden,NA,0.1,strawberries,544,0
 210,Sweden,NA,0.1,currants,550,0
 210,Sweden,NA,0.1,blueberries,552,0
@@ -15356,7 +15356,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 211,Switzerland,0.43,NA,oil_groundnut,244,1
 211,Switzerland,0.52,NA,cake_groundnuts,245,1
 211,Switzerland,NA,0.05,coconuts,249,0
-211,Switzerland,0.58,NA,oil_coconut_copra_,252,1
+211,Switzerland,0.58,NA,oil_coconut_copra,252,1
 211,Switzerland,0.37,NA,cake_copra,253,1
 211,Switzerland,0.42,NA,oil_palm_kernel,258,1
 211,Switzerland,0.53,NA,cake_palm_kernel,259,1
@@ -15372,7 +15372,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 211,Switzerland,NA,0.17,spinach,373,0
 211,Switzerland,NA,0.1,tomatoes_paste,391,0
 211,Switzerland,NA,0.06,cucumbers_and_gherkins,397,0
-211,Switzerland,NA,0.1,eggplants_aubergines_,399,0
+211,Switzerland,NA,0.1,eggplants_aubergines,399,0
 211,Switzerland,NA,0.15,onions_shallots_green,402,0
 211,Switzerland,NA,0.042,onions_dry,403,0
 211,Switzerland,NA,0.15,garlic,406,0
@@ -15383,7 +15383,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 211,Switzerland,NA,0.04,oranges,490,0
 211,Switzerland,NA,0.04,tangerines_mandarins_clementines_satsumas,495,0
 211,Switzerland,NA,0.04,lemons_and_limes,497,0
-211,Switzerland,NA,0.04,grapefruit_inc_pomelos_,507,0
+211,Switzerland,NA,0.04,grapefruit_inc_pomelos,507,0
 211,Switzerland,NA,0.06,apples,515,0
 211,Switzerland,0.3,NA,juice_apple_concentrated,519,1
 211,Switzerland,NA,0.06,pears,521,0
@@ -15818,7 +15818,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 216,Thailand,NA,0.03,peas_dry,187,0
 216,Thailand,0.75,NA,flour_pulses,212,1
 216,Thailand,0.25,NA,cashew_nuts_shelled,230,1
-216,Thailand,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+216,Thailand,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 216,Thailand,NA,0.05,soybeans,236,0
 216,Thailand,0.16,NA,oil_soybean,237,1
 216,Thailand,0.78,NA,cake_soybeans,238,1
@@ -15964,7 +15964,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 217,Togo,0.45,NA,oil_groundnut,244,1
 217,Togo,0.5,NA,cake_groundnuts,245,1
 217,Togo,NA,0.04,coconuts,249,0
-217,Togo,0.64,NA,oil_coconut_copra_,252,1
+217,Togo,0.64,NA,oil_coconut_copra,252,1
 217,Togo,0.35,NA,cake_copra,253,1
 217,Togo,0.059000000000000004,NA,oil_palm,257,1
 217,Togo,0.45,NA,oil_palm_kernel,258,1
@@ -16072,7 +16072,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 220,Trinidad and Tobago,NA,0.02,beans_dry,176,0
 220,Trinidad and Tobago,NA,0.02,peas_dry,187,0
 220,Trinidad and Tobago,NA,0.02,chick_peas,191,0
-220,Trinidad and Tobago,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+220,Trinidad and Tobago,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 220,Trinidad and Tobago,NA,0.02,soybeans,236,0
 220,Trinidad and Tobago,0.18,NA,oil_soybean,237,1
 220,Trinidad and Tobago,0.7,NA,cake_soybeans,238,1
@@ -16092,7 +16092,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 220,Trinidad and Tobago,NA,0.1,bananas,486,0
 220,Trinidad and Tobago,NA,0.03,oranges,490,0
 220,Trinidad and Tobago,NA,0.03,lemons_and_limes,497,0
-220,Trinidad and Tobago,NA,0.03,grapefruit_inc_pomelos_,507,0
+220,Trinidad and Tobago,NA,0.03,grapefruit_inc_pomelos,507,0
 220,Trinidad and Tobago,NA,0.05,apples,515,0
 220,Trinidad and Tobago,0.38,NA,juice_apple_single_strength,518,1
 220,Trinidad and Tobago,NA,0.05,grapes,560,0
@@ -16237,7 +16237,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 222,Tunisia,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 222,Tunisia,NA,0.1,lemons_and_limes,497,0
 222,Tunisia,0.15,NA,juice_lemon_concentrated,499,1
-222,Tunisia,NA,0.1,grapefruit_inc_pomelos_,507,0
+222,Tunisia,NA,0.1,grapefruit_inc_pomelos,507,0
 222,Tunisia,NA,0.07,juice_citrus_single_strength,513,0
 222,Tunisia,NA,0.1,apples,515,0
 222,Tunisia,NA,0.1,pears,521,0
@@ -16357,7 +16357,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 223,Turkey,0.35,NA,almonds_shelled,231,1
 223,Turkey,0.47,NA,walnuts_shelled,232,1
 223,Turkey,0.5,NA,hazelnuts_shelled,233,1
-223,Turkey,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+223,Turkey,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 223,Turkey,NA,0.04,soybeans,236,0
 223,Turkey,0.18,NA,oil_soybean,237,1
 223,Turkey,0.8,NA,cake_soybeans,238,1
@@ -16406,7 +16406,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 223,Turkey,0.7,NA,juice_orange_single_strength,491,1
 223,Turkey,NA,0.07,tangerines_mandarins_clementines_satsumas,495,0
 223,Turkey,NA,0.07,lemons_and_limes,497,0
-223,Turkey,NA,0.07,grapefruit_inc_pomelos_,507,0
+223,Turkey,NA,0.07,grapefruit_inc_pomelos,507,0
 223,Turkey,0.17,NA,juice_grapefruit_concentrated,510,1
 223,Turkey,0.2,NA,juice_citrus_concentrated,514,1
 223,Turkey,NA,0.07,apples,515,0
@@ -16416,7 +16416,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 223,Turkey,NA,0.1,apricots,526,0
 223,Turkey,NA,0.25,cherries,531,0
 223,Turkey,NA,0.1,peaches_and_nectarines,534,0
-223,Turkey,0.3,NA,plums_dried_prunes_,537,1
+223,Turkey,0.3,NA,plums_dried_prunes,537,1
 223,Turkey,0.17,NA,juice_plum_concentrated,539,1
 223,Turkey,NA,0.2,strawberries,544,0
 223,Turkey,NA,0.1,grapes,560,0
@@ -16709,7 +16709,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 229,United Kingdom,NA,0.01,lentils,201,0
 229,United Kingdom,0.85,NA,flour_pulses,212,1
 229,United Kingdom,NA,0.03,chestnut,220,0
-229,United Kingdom,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+229,United Kingdom,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 229,United Kingdom,0.18,NA,oil_soybean,237,1
 229,United Kingdom,0.74,NA,cake_soybeans,238,1
 229,United Kingdom,0.7,0.02,groundnuts_shelled,243,1
@@ -16750,14 +16750,14 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 229,United Kingdom,NA,0.05,oranges,490,0
 229,United Kingdom,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 229,United Kingdom,NA,0.05,lemons_and_limes,497,0
-229,United Kingdom,NA,0.05,grapefruit_inc_pomelos_,507,0
+229,United Kingdom,NA,0.05,grapefruit_inc_pomelos,507,0
 229,United Kingdom,0.22,NA,juice_grapefruit_concentrated,510,1
 229,United Kingdom,NA,0.003,apples,515,0
 229,United Kingdom,NA,0.002,pears,521,0
 229,United Kingdom,NA,0.05,apricots,526,0
 229,United Kingdom,NA,0.0,cherries,531,0
 229,United Kingdom,NA,0.14,peaches_and_nectarines,534,0
-229,United Kingdom,NA,0.05,plums_dried_prunes_,537,0
+229,United Kingdom,NA,0.05,plums_dried_prunes,537,0
 229,United Kingdom,0.2,NA,juice_plum_concentrated,539,1
 229,United Kingdom,NA,0.12,strawberries,544,0
 229,United Kingdom,NA,0.07400000000000001,gooseberries,549,0
@@ -16992,7 +16992,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 231,United States of America,0.6,NA,almonds_shelled,231,1
 231,United States of America,0.4,NA,walnuts_shelled,232,1
 231,United States of America,0.4,NA,hazelnuts_shelled,233,1
-231,United States of America,1.0,NA,nuts_prepared_exc_groundnuts_,235,1
+231,United States of America,1.0,NA,nuts_prepared_exc_groundnuts,235,1
 231,United States of America,NA,0.05,soybeans,236,0
 231,United States of America,0.19,NA,oil_soybean,237,1
 231,United States of America,0.8,NA,cake_soybeans,238,1
@@ -17047,7 +17047,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 231,United States of America,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
 231,United States of America,NA,0.05,lemons_and_limes,497,0
 231,United States of America,0.33,NA,juice_lemon_single_strength,498,1
-231,United States of America,NA,0.05,grapefruit_inc_pomelos_,507,0
+231,United States of America,NA,0.05,grapefruit_inc_pomelos,507,0
 231,United States of America,0.12,NA,juice_grapefruit_concentrated,510,1
 231,United States of America,0.22,NA,juice_citrus_concentrated,514,1
 231,United States of America,NA,0.05,apples,515,0
@@ -17056,7 +17056,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 231,United States of America,NA,0.05,apricots,526,0
 231,United States of America,NA,0.05,cherries,531,0
 231,United States of America,NA,0.05,peaches_and_nectarines,534,0
-231,United States of America,0.32,0.05,plums_dried_prunes_,537,1
+231,United States of America,0.32,0.05,plums_dried_prunes,537,1
 231,United States of America,0.21,NA,juice_plum_concentrated,539,1
 231,United States of America,NA,0.05,strawberries,544,0
 231,United States of America,NA,0.05,currants,550,0
@@ -17283,7 +17283,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 234,Uruguay,0.066,NA,juice_orange_concentrated,492,1
 234,Uruguay,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 234,Uruguay,NA,0.1,lemons_and_limes,497,0
-234,Uruguay,NA,0.1,grapefruit_inc_pomelos_,507,0
+234,Uruguay,NA,0.1,grapefruit_inc_pomelos,507,0
 234,Uruguay,0.13,NA,juice_grapefruit_concentrated,510,1
 234,Uruguay,NA,0.1,apples,515,0
 234,Uruguay,NA,0.1,pears,521,0
@@ -17463,7 +17463,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 236,Venezuela (Bolivarian Republic of),0.45,NA,oil_groundnut,244,1
 236,Venezuela (Bolivarian Republic of),0.5,NA,cake_groundnuts,245,1
 236,Venezuela (Bolivarian Republic of),0.14,0.01,copra,251,1
-236,Venezuela (Bolivarian Republic of),0.6,NA,oil_coconut_copra_,252,1
+236,Venezuela (Bolivarian Republic of),0.6,NA,oil_coconut_copra,252,1
 236,Venezuela (Bolivarian Republic of),0.35,NA,cake_copra,253,1
 236,Venezuela (Bolivarian Republic of),0.2,NA,oil_palm,257,1
 236,Venezuela (Bolivarian Republic of),0.45,NA,oil_palm_kernel,258,1
@@ -17482,7 +17482,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 236,Venezuela (Bolivarian Republic of),NA,0.19,tomatoes_paste,391,0
 236,Venezuela (Bolivarian Republic of),0.38,NA,tomatoes_peeled,392,1
 236,Venezuela (Bolivarian Republic of),NA,0.1,cucumbers_and_gherkins,397,0
-236,Venezuela (Bolivarian Republic of),NA,0.1,eggplants_aubergines_,399,0
+236,Venezuela (Bolivarian Republic of),NA,0.1,eggplants_aubergines,399,0
 236,Venezuela (Bolivarian Republic of),NA,0.11,onions_dry,403,0
 236,Venezuela (Bolivarian Republic of),NA,0.12,garlic,406,0
 236,Venezuela (Bolivarian Republic of),NA,0.15,carrots_and_turnips,426,0
@@ -17493,7 +17493,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 236,Venezuela (Bolivarian Republic of),0.38,NA,juice_orange_single_strength,491,1
 236,Venezuela (Bolivarian Republic of),NA,0.11,tangerines_mandarins_clementines_satsumas,495,0
 236,Venezuela (Bolivarian Republic of),NA,0.11,lemons_and_limes,497,0
-236,Venezuela (Bolivarian Republic of),NA,0.11,grapefruit_inc_pomelos_,507,0
+236,Venezuela (Bolivarian Republic of),NA,0.11,grapefruit_inc_pomelos,507,0
 236,Venezuela (Bolivarian Republic of),NA,0.1,apples,515,0
 236,Venezuela (Bolivarian Republic of),0.7,NA,juice_apple_concentrated,519,1
 236,Venezuela (Bolivarian Republic of),NA,0.1,pears,521,0
@@ -17592,7 +17592,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 237,Viet Nam,0.75,0.02,groundnuts_shelled,243,1
 237,Viet Nam,0.44,NA,oil_groundnut,244,1
 237,Viet Nam,0.54,NA,cake_groundnuts,245,1
-237,Viet Nam,0.64,NA,oil_coconut_copra_,252,1
+237,Viet Nam,0.64,NA,oil_coconut_copra,252,1
 237,Viet Nam,0.35,NA,cake_copra,253,1
 237,Viet Nam,0.43,NA,oil_sesame,290,1
 237,Viet Nam,0.52,NA,cake_sesame_seed,291,1
@@ -17604,7 +17604,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 237,Viet Nam,0.85,NA,vegetables_preserved_frozen,475,1
 237,Viet Nam,NA,0.1,bananas,486,0
 237,Viet Nam,NA,0.05,oranges,490,0
-237,Viet Nam,NA,0.03,grapefruit_inc_pomelos_,507,0
+237,Viet Nam,NA,0.03,grapefruit_inc_pomelos,507,0
 237,Viet Nam,NA,0.03,apples,515,0
 237,Viet Nam,NA,0.03,pears,521,0
 237,Viet Nam,NA,0.02,raisins,561,0
@@ -17946,7 +17946,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 250,Democratic Republic of the Congo,NA,0.1,bananas,486,0
 250,Democratic Republic of the Congo,NA,0.1,oranges,490,0
 250,Democratic Republic of the Congo,NA,0.1,lemons_and_limes,497,0
-250,Democratic Republic of the Congo,NA,0.1,grapefruit_inc_pomelos_,507,0
+250,Democratic Republic of the Congo,NA,0.1,grapefruit_inc_pomelos,507,0
 250,Democratic Republic of the Congo,NA,0.19,avocados,572,0
 250,Democratic Republic of the Congo,NA,0.1,pineapples,574,0
 250,Democratic Republic of the Congo,NA,0.1,papayas,600,0
@@ -18112,7 +18112,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 255,Belgium,0.45,NA,oil_groundnut,244,1
 255,Belgium,0.5,NA,cake_groundnuts,245,1
 255,Belgium,NA,0.035,coconuts,249,0
-255,Belgium,0.64,NA,oil_coconut_copra_,252,1
+255,Belgium,0.64,NA,oil_coconut_copra,252,1
 255,Belgium,0.34,NA,cake_copra,253,1
 255,Belgium,0.47,NA,oil_palm_kernel,258,1
 255,Belgium,0.51,NA,cake_palm_kernel,259,1
@@ -18135,7 +18135,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 255,Belgium,0.7,NA,juice_tomato,390,1
 255,Belgium,NA,0.04,tomatoes_paste,391,0
 255,Belgium,NA,0.04,cucumbers_and_gherkins,397,0
-255,Belgium,NA,0.02,eggplants_aubergines_,399,0
+255,Belgium,NA,0.02,eggplants_aubergines,399,0
 255,Belgium,NA,0.04,onions_shallots_green,402,0
 255,Belgium,NA,0.04,onions_dry,403,0
 255,Belgium,NA,0.04,garlic,406,0
@@ -18150,7 +18150,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 255,Belgium,NA,0.03,tangerines_mandarins_clementines_satsumas,495,0
 255,Belgium,NA,0.03,lemons_and_limes,497,0
 255,Belgium,0.4,NA,juice_lemon_single_strength,498,1
-255,Belgium,NA,0.03,grapefruit_inc_pomelos_,507,0
+255,Belgium,NA,0.03,grapefruit_inc_pomelos,507,0
 255,Belgium,0.4,NA,juice_grapefruit,509,1
 255,Belgium,NA,0.035,apples,515,0
 255,Belgium,0.22,NA,juice_apple_concentrated,519,1
@@ -18288,7 +18288,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 256,Luxembourg,0.45,NA,oil_groundnut,244,1
 256,Luxembourg,0.5,NA,cake_groundnuts,245,1
 256,Luxembourg,NA,0.035,coconuts,249,0
-256,Luxembourg,0.64,NA,oil_coconut_copra_,252,1
+256,Luxembourg,0.64,NA,oil_coconut_copra,252,1
 256,Luxembourg,0.34,NA,cake_copra,253,1
 256,Luxembourg,0.47,NA,oil_palm_kernel,258,1
 256,Luxembourg,0.51,NA,cake_palm_kernel,259,1
@@ -18311,7 +18311,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 256,Luxembourg,0.7,NA,juice_tomato,390,1
 256,Luxembourg,NA,0.04,tomatoes_paste,391,0
 256,Luxembourg,NA,0.04,cucumbers_and_gherkins,397,0
-256,Luxembourg,NA,0.02,eggplants_aubergines_,399,0
+256,Luxembourg,NA,0.02,eggplants_aubergines,399,0
 256,Luxembourg,NA,0.04,onions_shallots_green,402,0
 256,Luxembourg,NA,0.04,onions_dry,403,0
 256,Luxembourg,NA,0.04,garlic,406,0
@@ -18326,7 +18326,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 256,Luxembourg,NA,0.03,tangerines_mandarins_clementines_satsumas,495,0
 256,Luxembourg,NA,0.03,lemons_and_limes,497,0
 256,Luxembourg,0.4,NA,juice_lemon_single_strength,498,1
-256,Luxembourg,NA,0.03,grapefruit_inc_pomelos_,507,0
+256,Luxembourg,NA,0.03,grapefruit_inc_pomelos,507,0
 256,Luxembourg,0.4,NA,juice_grapefruit,509,1
 256,Luxembourg,NA,0.035,apples,515,0
 256,Luxembourg,0.22,NA,juice_apple_concentrated,519,1
@@ -18466,7 +18466,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 276,Sudan,NA,0.15,oranges,490,0
 276,Sudan,NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
 276,Sudan,NA,0.15,lemons_and_limes,497,0
-276,Sudan,NA,0.15,grapefruit_inc_pomelos_,507,0
+276,Sudan,NA,0.15,grapefruit_inc_pomelos,507,0
 276,Sudan,NA,0.15,watermelons,567,0
 276,Sudan,NA,0.1,pineapples,574,0
 276,Sudan,NA,0.1,dates,577,0

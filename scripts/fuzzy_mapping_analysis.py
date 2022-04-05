@@ -24,6 +24,8 @@ df = pd.read_excel(file_name_fao)
 df["Item_description"] = (
     df["Item_description"].str.replace(regex_pat, "_", regex=True).str.lower()
 )
+# Remove the last underscore if it's at the end of the name
+df["Item_description"] = df["Item_description"].str.replace("_$", "", regex=True)
 # FAO Spanish trade
 # https://fenixservices.fao.org/faostat/static/bulkdownloads/Producci%C3%B3n_Cultivos_ProductosGanaderia_S_Todos_los_Datos_(Normalizado).zip
 file_name_spa = (
@@ -40,8 +42,10 @@ code_name_spa = df_spa.drop_duplicates(subset=["Código Producto", "Producto"])[
 code_name_spa["Producto"] = (
     code_name_spa["Producto"].str.replace(regex_pat, "_", regex=True).str.lower()
 )
+# Remove the last underscore if it's at the end of the name
+code_name_spa["Producto"] = code_name_spa["Producto"].str.replace("_$", "", regex=True)
 # FAO French trade
-# https://fenixservices.fao.org/faostat/static/bulkdownloads/Commerce_MatricesCommerceDetaillees_F_Toutes_les_Données_(Normalisé).zip
+# https://fenixservices.fao.org/faostat/static/bulkdownloads/Commerce_MatricesCommerceDetaillees_F_Toutes_les_Donn%C3%A9es.zip
 file_name_fra = (
     Path.cwd()
     / "scripts"
@@ -56,6 +60,8 @@ code_name_fra = df_fra.drop_duplicates(subset=["Code Produit", "Produit"])[
 code_name_fra["Produit"] = (
     code_name_fra["Produit"].str.replace(regex_pat, "_", regex=True).str.lower()
 )
+# Remove the last underscore if it's at the end of the name
+code_name_fra["Produit"] = code_name_fra["Produit"].str.replace("_$", "", regex=True)
 # FAO English trade
 # https://fenixservices.fao.org/faostat/static/bulkdownloads/Production_Crops_Livestock_E_All_Data_(Normalized).zip
 file_name_eng = (
@@ -70,6 +76,8 @@ code_name_eng = df_eng.drop_duplicates(subset=["Item Code", "Item"])[
 code_name_eng["Item"] = (
     code_name_eng["Item"].str.replace(regex_pat, "_", regex=True).str.lower()
 )
+# Remove the last underscore if it's at the end of the name
+code_name_eng["Item"] = code_name_eng["Item"].str.replace("_$", "", regex=True)
 # Merge different translations to have mapping betwen code and product name
 spa_eng_code_name = code_name_spa.merge(
     code_name_eng, how="left", left_on="Código Producto", right_on="Item Code"
@@ -176,6 +184,8 @@ while n_list < len(myList1):
         score_nr = 0
 # Drop nan values
 match1 = match1.dropna().reset_index(drop=True)
+# Int type of product_code column
+match1["product_code"] = match1.product_code.astype("Int64")
 # Store the matches as a csv file "fuzzy_match.csv"
 match1.to_csv(
     Path.cwd() / "scripts" / "fuzzy_match.csv",

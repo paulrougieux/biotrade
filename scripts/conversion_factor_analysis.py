@@ -52,6 +52,8 @@ df = df[
 df["Item_description"] = (
     df["Item_description"].str.replace(regex_pat, "_", regex=True).str.lower()
 )
+# Remove the last underscore if it's at the end of the name
+df["Item_description"] = df["Item_description"].str.replace("_$", "", regex=True)
 # Change match list: [product code old, product new, product code new]
 manual_match_to_change = [
     [866, "meat_cattle", 867],
