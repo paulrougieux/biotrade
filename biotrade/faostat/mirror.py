@@ -3,6 +3,7 @@
 """
 Functions to analyse mirror flows.
 """
+import warnings
 
 
 def put_mirror_beside(df):
@@ -52,15 +53,19 @@ def put_mirror_beside(df):
     df_m["element"] = df_m["element"].str.replace("import", "xxx")
     df_m["element"] = df_m["element"].str.replace("export", "import")
     df_m["element"] = df_m["element"].str.replace("xxx", "export")
-    # Rename value and flag
+    # Rename the value column
     df_m["value_mirror"] = df_m["value"]
-    df_m["flag_mirror"] = df_m["flag"]
-    df_m.drop(columns=["value", "flag"], inplace=True)
+    # Rename the flag column
+    if "flag" in df.columns:
+        df_m["flag_mirror"] = df_m["flag"]
+        df_m.drop(columns=["value", "flag"], inplace=True)
     # Drop the element_code column
-    df_m.drop(columns="element_code", inplace=True)
+    if "element_code" in df.columns:
+        df_m.drop(columns="element_code", inplace=True)
     # Merge with original data frame
-    # index contains every column except value and flag (because flags might differ)
-    index = [
+    # index contains every column except value and flag
+    columns = [
+        "source",
         "reporter_code",
         "reporter",
         "partner_code",
@@ -68,8 +73,14 @@ def put_mirror_beside(df):
         "product_code",
         "product",
         "element",
-        "period",
-        "year",
         "unit",
+        "year",
+        "period",
     ]
+    # Keep only columns that are present in the input data frame
+    index = []
+    for col in columns:
+        if col in df.columns:
+            index += [col]
+    warnings.warn(f"\nMerging mirror flows on the following index:\n {index}")
     return df.merge(df_m, on=index, how="left")
