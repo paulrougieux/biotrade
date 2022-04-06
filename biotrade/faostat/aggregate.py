@@ -112,9 +112,7 @@ def agg_trade_eu_row(
     ]
     # Remove columns from the index
     for col in drop_index_var + reporter_and_partner_cols + ["value"]:
-        print(col)
         if col in df.columns:
-            print(col, "in df")
             index.remove(col)
     if grouping_side == "partner":
         index = ["reporter_code", "reporter", country_group] + index

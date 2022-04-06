@@ -74,6 +74,7 @@ class Pump:
         "crop_trade": "Trade_DetailedTradeMatrix_E_All_Data_(Normalized).zip",
         "land_cover": "Environment_LandCover_E_All_Data_(Normalized).zip",
         "land_use": "Inputs_LandUse_E_All_Data_(Normalized).zip",
+        "food_balance": "SUA_Crops_Livestock_E_All_Data_(Normalized).zip",
     }
     # Link to the metadata
     metadata_link = {
@@ -84,6 +85,7 @@ class Pump:
         "crop_trade": "https://www.fao.org/faostat/en/#data/TM/metadata",
         "land_cover": "https://www.fao.org/faostat/en/#data/LC/metadata",
         "land_use": "https://www.fao.org/faostat/en/#data/RL/metadata",
+        "food_balance": "https://www.fao.org/faostat/en/#data/SCL/metadata",
     }
 
     def __init__(self, parent):
@@ -256,6 +258,7 @@ class Pump:
 
     def download_all_datasets(self):
         """Download all files in the datasets dictionary"""
+        # TODO https://gitlab.com/bioeconomy/forobs/biotrade/-/issues/48
         for zip_file_name in self.datasets.values():
             self.download_zip_csv(zip_file_name)
 

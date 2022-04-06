@@ -96,22 +96,24 @@ class DatabaseFaostat(Database):
         self.forestry_production = self.describe_production_table(
             name="forestry_production"
         )
-        self.forestry_trade = self.describe_trade_table(name="forestry_trade")
+        self.country = self.describe_country_table(name="country")
         self.crop_production = self.describe_production_table(name="crop_production")
         self.crop_trade = self.describe_trade_table(name="crop_trade")
-        self.land_use = self.describe_land_table(name="land_use")
-        self.land_cover = self.describe_land_table(name="land_cover")
+        self.food_balance = self.describe_land_table(name="food_balance")
         self.forest_land = self.describe_land_table(name="forest_land")
-        self.country = self.describe_country_table(name="country")
+        self.forestry_trade = self.describe_trade_table(name="forestry_trade")
+        self.land_cover = self.describe_land_table(name="land_cover")
+        self.land_use = self.describe_land_table(name="land_use")
         self.tables = {
-            "forestry_production": self.forestry_production,
-            "forestry_trade": self.forestry_trade,
+            "country": self.country,
             "crop_production": self.crop_production,
             "crop_trade": self.crop_trade,
+            "food_balance": self.food_balance,
+            "forest_land": self.forest_land,
+            "forestry_production": self.forestry_production,
+            "forestry_trade": self.forestry_trade,
             "land_cover": self.land_cover,
             "land_use": self.land_use,
-            "forest_land": self.forest_land,
-            "country": self.country,
         }
         # Create tables if they don't exist
         for table in self.tables.values():
@@ -228,6 +230,36 @@ class DatabaseFaostat(Database):
             Column("value", Float),
             Column("flag", Text),
             Column("note", Text),
+            UniqueConstraint(
+                "period",
+                "reporter_code",
+                "item_code",
+                "element_code",
+                "unit",
+                "flag",
+            ),
+            schema=self.schema,
+        )
+        return table
+
+    def describe_food_balance_table(self, name):
+        """Define the metadata for the Supply and Utilisation Accounts table
+        containing data about food balance, production and trade
+        """
+        table = Table(
+            name,
+            self.metadata,
+            Column("reporter_code", Integer),
+            Column("reporter", Text),
+            Column("product_code", Integer),
+            Column("product", Text),
+            Column("element_code", Integer),
+            Column("element", Text),
+            Column("period", Integer),
+            Column("year", Integer),
+            Column("unit", Text),
+            Column("value", Float),
+            Column("flag", Text),
             UniqueConstraint(
                 "period",
                 "reporter_code",
