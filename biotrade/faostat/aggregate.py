@@ -19,16 +19,19 @@ CONTINENTS = faostat.country_groups.continents[
 EU_COUNTRY_NAMES_LIST = faostat.country_groups.eu_country_names
 
 
-def agg_trade_eu_row(df, grouping_side="partner", index_side=None):
+def agg_trade_eu_row(
+    df, grouping_side="partner", drop_index_var=["flag"], index_side=None
+):
     """Aggregate bilateral trade data to eu and row as partners
 
     :param data frame df: Bilateral trade flows from faostat
     :param str grouping_side: "reporter" or "partner" defines on which side of the
     aggregation index country will be grouped together between EU and rest of
     the world, defaults to partner.
+    :param drop_index_var list or str: variables to be dropped from the grouping index
     :return bilateral trade flows aggregated by eu and row
 
-    Usage:
+    Aggregate over many products in one country
 
         >>> from biotrade.faostat import faostat
         >>> from biotrade.faostat.aggregate import agg_trade_eu_row
@@ -43,27 +46,23 @@ def agg_trade_eu_row(df, grouping_side="partner", index_side=None):
         >>> ft_can_mirror_agg = agg_trade_eu_row(ft_can_mirror,
                 grouping_side="reporter")
 
-    Notice how when aggregating over partner groups, the function creates new
-    elements such as "eu_export_quantity", "row_export_quantity" etc. This
-    table can be concatenated with a production table for further analysis.
+    Aggregate two products in many countries on both the reporter and partner sides
 
-        In : ft_can_agg["element"].unique()
-        Out:
-        array(['eu_export_quantity', 'eu_export_value', 'eu_import_quantity',
-               'eu_import_value', 'row_export_quantity', 'row_export_value',
-               'row_import_quantity', 'row_import_value'], dtype=object)
+        >>> swd = faostat.db.select(table="forestry_trade", product="sawnwood")
+        >>> swdagg1 = agg_trade_eu_row(swd, grouping_side="partner")
+        >>> swdagg2 = agg_trade_eu_row(swdagg1, grouping_side="reporter")
+        >>> swdagg2[["product", "reporter", "partner"]].drop_duplicates()
 
-    When aggregating over reporter groups, the reporter takes the name of the
-    reporter group, partner information is kept and can be later deleted, if
-    only one partner is present for the purpose of concatenating with
-    production data.
+    When aggregating over partner or reporter groups, the reporter takes the
+    name of the reporter group, partner information is kept and can be later
+    deleted, if only one partner is present for the purpose of concatenating
+    with production data.
 
         In : ft_can_mirror_agg["reporter"].unique()
         Out: array(['eu', 'row'], dtype=object)
 
-    Aggregate Brazil Soy Exports
-
-    Select crop trade where products contain the word "soy"
+    Select crop trade where products contain the word "soy". Then Aggregate
+    Brazil Soy Exports.
 
         >>> from biotrade.faostat import faostat
         >>> from biotrade.faostat.aggregate import agg_trade_eu_row
@@ -84,8 +83,13 @@ def agg_trade_eu_row(df, grouping_side="partner", index_side=None):
         raise ValueError(
             "grouping_side can only take the values 'reporter' or 'partner'"
         )
+    # Make add_index_var a list
+    if isinstance(drop_index_var, str):
+        drop_index_var = [drop_index_var]
     # Remove "Total FAO" and "World" rows if present
-    selector = (df["partner_code"] < 1000) & (df["partner"] != "World")
+    selector = df["partner"] != "World"
+    if "partner_code" in df.columns:
+        selector = selector & (df["partner_code"] < 1000)
     if any(~selector):
         partner_removed = df.loc[~selector, "partner"].unique()
         warnings.warn(f"Removing {partner_removed} from df")
@@ -96,15 +100,30 @@ def agg_trade_eu_row(df, grouping_side="partner", index_side=None):
     df[country_group] = df[country_group].where(
         ~df[grouping_side].isin(EU_COUNTRY_NAMES_LIST), "eu"
     )
-    # The aggregation index depends on the flow reporting side
-    index = ["product_code", "product", "element", "unit", "year"]
+    # The aggregation index depends on the grouping_side
+    # Keep the code column of the other side if available in df
+    index = df.columns.to_list()
+    reporter_and_partner_cols = [
+        "reporter_code",
+        "reporter",
+        "partner_code",
+        "partner",
+        country_group,
+    ]
+    # Remove columns from the index
+    for col in drop_index_var + reporter_and_partner_cols + ["value"]:
+        print(col)
+        if col in df.columns:
+            print(col, "in df")
+            index.remove(col)
     if grouping_side == "partner":
         index = ["reporter_code", "reporter", country_group] + index
+        if "reporter_code" not in df.columns:
+            index.remove("reporter_code")
     if grouping_side == "reporter":
         index = [country_group, "partner_code", "partner"] + index
-    # Add the "source" column to the index if it is present in comparison tables
-    if "source" in df.columns:
-        index = ["source"] + index
+        if "partner_code" not in df.columns:
+            index.remove("partner_code")
     # Aggregate
     df_agg = df.groupby(index).agg(value=("value", sum)).reset_index()
     # When aggregating over partner groups, rename country_group to partner
