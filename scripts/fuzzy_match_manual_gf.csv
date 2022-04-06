@@ -74,7 +74,7 @@ sorgho,sorgho,100.0,sorghum,83
 pommes_de_terre,pommes_de_terre,100.0,potatoes,116
 haricots_secs,haricots_secs,100.0,beans_dry,176
 vesces,vesces,100.0,vetches,205
-sucre_betterave_brut,sucre_betterave,83.0,sugar_beet,157
+sucre_betterave_brut,sucre_betterave,86.0,sugar_beet,157
 sucre_raffiné,sucre_raffiné,100.0,sugar_refined,164
 mélasses,mélasses,100.0,molasses,165
 huile_de_soja,huile_de_soja,100.0,oil_soybean,237
@@ -90,7 +90,7 @@ tourteaux_de_coton,tourteaux_de_coton,100.0,cake_cottonseed,332
 tomates,tomate_pasta,74.0,tomatoes_paste,391
 légumes_frais_nda,légumes_frais_nda,100.0,vegetables_fresh_nes,463
 légumes_déshydratés,légumes_déshydratés,100.0,vegetables_dehydrated,469
-légumes_conserv_autres,légumes_conservés_surgelés,82.0,vegetables_preserved_frozen,475
+légumes_conserv_autres,légumes_conservés_surgelés,83.0,vegetables_preserved_frozen,475
 pastèques,pastèques,100.0,watermelons,567
 pommes,pommes,100.0,apples,515
 poires,poires,100.0,pears,521
@@ -116,7 +116,7 @@ graisse_de_bovins,graisses_de_bovins,97.0,fat_cattle,869
 graisse_de_caprins,graisse_de_camélidés,79.0,fat_camels,1129
 graisse_de_porc,graisses_de_porcs,94.0,fat_pigs,1037
 beurre_de_lait_de_vache,beurre_de_lait_de_vache,100.0,butter_cow_milk,886
-fromage_lait_ent_vache,fromage_au_lait_de_vache_entier,78.0,cheese_whole_cow_milk,901
+fromage_lait_ent_vache,fromage_au_lait_de_vache_entier,75.0,cheese_whole_cow_milk,901
 fromage_de_brebis,fromage_au_lait_de_brebis,81.0,cheese_sheep_milk,984
 laine_en_suint,laine_en_suint,100.0,wool_greasy,987
 son_de_sorgho,son_de_sorgho,100.0,bran_sorghum,85
@@ -213,6 +213,7 @@ salvado_de_sorgo,salvado_de_sorgo,100.0,bran_sorghum,85
 alpiste,alpiste,100.0,canary_seed,101
 cereales_nep,harina_cereales_nep,77.0,flour_cereals,111
 patatas,papas_patatas,70.0,potatoes,116
+batatas_camotes,batatas_boniatos,71.0,sweet_potatoes,122
 frijoles_secos,frijoles_secos,100.0,beans_dry,176
 guisantes_secos,guisantes_secos,100.0,peas_dry,187
 garbanzos,garbanzos,100.0,chick_peas,191
@@ -255,7 +256,7 @@ zanahorias,zanahorias_y_nabos,71.0,carrots_and_turnips,426
 hortalizas_frescas_nep,hortalizas_frescas_nep,100.0,vegetables_fresh_nes,463
 hortalizas_deshidratadas,hortalizas_deshidratadas,100.0,vegetables_dehydrated,469
 hortalizas_en_vinagre,hortalizas_en_vinagre,100.0,vegetables_in_vinegar,471
-hortalizas_conserv_otras,hortalizas_conservadas_congeladas,76.0,vegetables_preserved_frozen,475
+hortalizas_conserv_otras,hortalizas_conservadas_congeladas,77.0,vegetables_preserved_frozen,475
 hortalizas_congeladas,hortalizas_congeladas,100.0,vegetables_frozen,473
 hortalizas_conserv_temp,hortalizas_conservadas_nep,86.0,vegetables_preserved_nes,472
 sandías,sandías,100.0,watermelons,567
@@ -309,7 +310,7 @@ mantequilla_leche_vaca,mantequilla_de_leche_de_vaca,88.0,butter_cow_milk,886
 leche_entera_condensada,leche_entera_condensada,100.0,milk_whole_condensed,889
 leche_entera_evaporada,leche_entera_evaporada,100.0,milk_whole_evaporated,894
 leche_vaca_ent_polvo,leche_entera_de_vaca_en_polvo,78.0,milk_whole_dried,897
-queso_leche_ent_vaca,queso_de_leche_entera_de_vaca,80.0,cheese_whole_cow_milk,901
+queso_leche_ent_vaca,queso_de_leche_entera_de_vaca,82.0,cheese_whole_cow_milk,901
 huevos_de_gallina,huevos_de_gallina,100.0,eggs_hen_in_shell,1062
 lana_grasienta,lana_grasa,83.0,wool_greasy,987
 rice_husked,rice_husked,100.0,rice_husked,28
@@ -320,7 +321,7 @@ garlic,garlic,100.0,garlic,406
 peas_green,peas_green,100.0,peas_green,417
 applejuice_concentrated,juice_citrus_concentrated,75.0,juice_citrus_concentrated,514
 wine,wine,100.0,wine,564
-cheese_whole_cow_milk,cheese_whole_cow_milk,98.0,cheese_whole_cow_milk,901
+cheese_whole_cow_milk,cheese_whole_cow_milk,100.0,cheese_whole_cow_milk,901
 germ_of_maize,germ_maize,87.0,germ_maize,57
 oil_of_maize,oil_maize,86.0,oil_maize,60
 cake_of_maize,cake_maize,87.0,cake_maize,61
@@ -341,7 +342,7 @@ cake_of_soya_beans,cake_soybeans,84.0,cake_soybeans,238
 groundnuts_shelled,groundnuts_shelled,100.0,groundnuts_shelled,243
 oil_of_groundnuts,oil_groundnut,87.0,oil_groundnut,244
 cake_of_groundnuts,cake_groundnuts,91.0,cake_groundnuts,245
-prepared_groundnuts,nuts_prepared_exc_groundnuts,79.0,nuts_prepared_exc_groundnuts,235
+prepared_groundnuts,nuts_prepared_exc_groundnuts,81.0,nuts_prepared_exc_groundnuts,235
 rapeseed,rapeseed,100.0,rapeseed,270
 oil_of_rapeseed,oil_rapeseed,89.0,oil_rapeseed,271
 cake_of_rapeseed,cake_rapeseed,90.0,cake_rapeseed,272
@@ -356,7 +357,7 @@ oranjuice_single_strengt,juice_apple_single_strength,78.0,juice_apple_single_str
 oranjuice_concentrated,juice_plum_concentrated,80.0,juice_plum_concentrated,539
 lemonjuice_single_streng,juice_lemon_single_strength,75.0,juice_lemon_single_strength,498
 lemonjuice_concentrated,juice_lemon_concentrated,77.0,juice_lemon_concentrated,499
-grapefruit_and_pomelo,grapefruit_inc_pomelos,86.0,grapefruit_inc_pomelos,507
+grapefruit_and_pomelo,grapefruit_inc_pomelos,88.0,grapefruit_inc_pomelos,507
 grapefruitjuice_concentr,juice_grapefruit_concentrated,72.0,juice_grapefruit_concentrated,510
 applejuice_single_streng,juice_orange_single_strength,73.0,juice_orange_single_strength,491
 quinces,quinces,100.0,quinces,523
@@ -410,12 +411,12 @@ tea,tea,100.0,tea,667
 oil_of_rice_bran,oil_rice_bran,90.0,oil_rice_bran,36
 cake_of_rice_bran,cake_rice_bran,90.0,cake_rice_bran,37
 sugar_cane,sugar_nes,84.0,sugar_nes,167
-sugar_noncentrifugal,sugar_non_centrifugal,95.0,sugar_non_centrifugal,163
+sugar_noncentrifugal,sugar_non_centrifugal,98.0,sugar_non_centrifugal,163
 coconuts,coconuts,100.0,coconuts,249
 oil_of_castor_beans,oil_castor_beans,91.0,oil_castor_beans,266
 buffaloes,buffaloes,100.0,buffaloes,946
-ghee_from_buffalo_milk,ghee_buffalo_milk,85.0,ghee_buffalo_milk,953
-riz_usiné_décortiqué,riz_usiné_décortiqué,98.0,rice_milled_husked,29
+ghee_from_buffalo_milk,ghee_buffalo_milk,87.0,ghee_buffalo_milk,953
+riz_usiné_décortiqué,riz_usiné_décortiqué,100.0,rice_milled_husked,29
 farine_de_riz,farine_de_riz,100.0,flour_rice,38
 orge_perlé,orge_perlé,100.0,barley_pearled,46
 germe_de_maïs,germe_de_maïs,100.0,germ_maize,57
@@ -443,7 +444,7 @@ jus_de_tomate,jus_de_tomates,96.0,juice_tomato,390
 autres_légumes_alliacés,poireaux_et_autres_légumes_alliacés,79.0,leeks_other_alliaceous_vegetables,407
 champignons,champignons_en_boîte,71.0,mushrooms_canned,451
 légumes_surgelés,légumes_surgelés,100.0,vegetables_frozen,473
-jus_de_citron_non_conc,jus_de_citron,72.0,juice_lemon_single_strength,498
+jus_de_citron_non_conc,jus_de_citron,74.0,juice_lemon_single_strength,498
 jus_de_pomme_concentré,jus_de_pomme_concentré,100.0,juice_apple_concentrated,519
 fraises,fraises,100.0,strawberries,544
 groseilles,grosellas,84.0,currants,550
@@ -502,7 +503,7 @@ peanut_butter,peanut_butter,100.0,peanut_butter,247
 sweet_corn_frozen,sweet_corn_frozen,100.0,sweet_corn_frozen,447
 sweet_corn_prep_or_pres,sweet_corn_prep_or_preserved,90.0,sweet_corn_prep_or_preserved,448
 cranberries,cranberries,100.0,cranberries,554
-azúcar_remolacha_bruto,azucar_remolacha,77.0,sugar_beet,157
+azúcar_remolacha_bruto,azucar_remolacha,79.0,sugar_beet,157
 almendras_sin_cáscara,almendras_con_cáscara,90.0,almonds_with_shell,221
 nueces_sin_cáscara,nueces_con_cáscara,89.0,walnuts_with_shell,222
 jugo_de_tomate,jugo_tomate,88.0,juice_tomato,390
@@ -510,7 +511,7 @@ crema_nata_fresca,crema_nata_fresca,100.0,cream_fresh,885
 soya_sauce,soya_sauce,100.0,soya_sauce,239
 onions_shallots_green,onions_shallots_green,100.0,onions_shallots_green,402
 vegetables_canned_nes,vegetables_canned_nes,100.0,vegetables_canned_nes,465
-sugar_centrifugal_raw,sugar_raw_centrifugal,79.0,sugar_raw_centrifugal,162
+sugar_centrifugal_raw,sugar_raw_centrifugal,81.0,sugar_raw_centrifugal,162
 cebada_perlada,cebada_perlada,100.0,barley_pearled,46
 salvado_de_cebada,cerveza_de_cebada,71.0,beer_of_barley,51
 harina_semola_de_cebada,harina_semilla_de_mostaza,75.0,flour_mustard,295
@@ -543,8 +544,10 @@ myrtilles,myrtilles,100.0,blueberries,552
 butter_of_karité_nuts,butter_of_karite_nuts,95.0,butter_of_karite_nuts,264
 jus_de_pamplemousse_conc,jus_de_pamplemousse_concentré,91.0,juice_grapefruit_concentrated,510
 sucre_non_centrifugé,sucre_non_centrifugé,100.0,sugar_non_centrifugal,163
+pineapplejuice_concentr,juice_pineapple_concentrated,71.0,juice_pineapple_concentrated,580
 olives_preserved,olives_preserved,100.0,olives_preserved,262
 fruits_à_noyau_frais_nda,fruits_à_coque_nda,71.0,nuts_nes,234
+fromage_lait_de_buffl,ghee_de_lait_de_bufflesse,70.0,ghee_buffalo_milk,953
 soya_paste,soya_paste,100.0,soya_paste,240
 jus_de_mangue,jus_de_pomme,72.0,juice_apple_single_strength,518
 jugo_limon_noconcentrado,jugo_limón_concentrado,91.0,juice_lemon_concentrated,499

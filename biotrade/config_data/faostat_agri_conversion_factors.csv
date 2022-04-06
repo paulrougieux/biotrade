@@ -538,6 +538,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 9,Argentina,NA,0.027999999999999997,canary_seed,101,0
 9,Argentina,NA,0.02,flour_cereals,111,0
 9,Argentina,NA,0.1,potatoes,116,0
+9,Argentina,NA,0.08,sweet_potatoes,122,0
 9,Argentina,0.92,NA,sugar_refined,164,1
 9,Argentina,0.045,NA,molasses,165,1
 9,Argentina,NA,0.016,beans_dry,176,0
@@ -647,7 +648,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 9,Argentina,0.35,NA,NA,NA,1
 9,Argentina,0.55,NA,NA,NA,1
 9,Argentina,0.85,NA,NA,NA,1
-9,Argentina,NA,0.08,NA,NA,0
 9,Argentina,NA,0.065,NA,NA,0
 9,Argentina,0.25,NA,NA,NA,1
 9,Argentina,NA,0.015,NA,NA,0
@@ -1377,6 +1377,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 19,Bolivia (Plurinational State of),NA,0.09,quinoa,92,0
 19,Bolivia (Plurinational State of),NA,0.08,potatoes,116,0
 19,Bolivia (Plurinational State of),0.25,0.02,flour_potatoes,117,1
+19,Bolivia (Plurinational State of),NA,0.08,sweet_potatoes,122,0
 19,Bolivia (Plurinational State of),0.92,0.02,sugar_refined,164,1
 19,Bolivia (Plurinational State of),0.018000000000000002,0.01,molasses,165,1
 19,Bolivia (Plurinational State of),NA,0.15,beans_dry,176,0
@@ -1451,7 +1452,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 19,Bolivia (Plurinational State of),0.79,NA,NA,NA,1
 19,Bolivia (Plurinational State of),0.18,NA,NA,NA,1
 19,Bolivia (Plurinational State of),0.79,NA,NA,NA,1
-19,Bolivia (Plurinational State of),NA,0.08,NA,NA,0
 19,Bolivia (Plurinational State of),NA,0.25,NA,NA,0
 19,Bolivia (Plurinational State of),NA,0.11,NA,NA,0
 19,Bolivia (Plurinational State of),0.09300000000000001,NA,NA,NA,1
@@ -2731,6 +2731,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 40,Chile,0.2,NA,bran_buckwheat,91,1
 40,Chile,NA,0.051,potatoes,116,0
 40,Chile,0.25,NA,flour_potatoes,117,1
+40,Chile,NA,0.05,sweet_potatoes,122,0
 40,Chile,0.13,NA,sugar_beet,157,1
 40,Chile,0.92,NA,sugar_refined,164,1
 40,Chile,0.031,NA,molasses,165,1
@@ -2819,7 +2820,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 40,Chile,0.75,NA,NA,NA,1
 40,Chile,0.22,NA,NA,NA,1
 40,Chile,0.55,NA,NA,NA,1
-40,Chile,NA,0.05,NA,NA,0
 40,Chile,NA,NA,NA,NA,0
 40,Chile,0.25,NA,NA,NA,1
 40,Chile,0.06,NA,NA,NA,1
@@ -3428,6 +3428,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 49,Cuba,0.08,NA,bran_millet,81,1
 49,Cuba,NA,0.05,sorghum,83,0
 49,Cuba,NA,0.1,potatoes,116,0
+49,Cuba,NA,0.1,sweet_potatoes,122,0
 49,Cuba,0.92,NA,sugar_refined,164,1
 49,Cuba,0.031,NA,molasses,165,1
 49,Cuba,NA,0.03,beans_dry,176,0
@@ -3480,7 +3481,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 49,Cuba,NA,0.1,asses,1107,0
 49,Cuba,NA,0.1,beehives,1181,0
 49,Cuba,NA,0.05,hides_nes,1216,0
-49,Cuba,NA,0.1,NA,NA,0
 49,Cuba,NA,0.071,NA,NA,0
 49,Cuba,0.1,NA,NA,NA,1
 49,Cuba,0.25,NA,NA,NA,1
@@ -4031,6 +4031,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 56,Dominican Republic,NA,0.05,sorghum,83,0
 56,Dominican Republic,0.2,NA,bran_buckwheat,91,1
 56,Dominican Republic,NA,0.1,potatoes,116,0
+56,Dominican Republic,NA,0.1,sweet_potatoes,122,0
 56,Dominican Republic,0.4,NA,cassava_dried,128,1
 56,Dominican Republic,0.92,NA,sugar_refined,164,1
 56,Dominican Republic,0.042,NA,molasses,165,1
@@ -4091,7 +4092,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 56,Dominican Republic,NA,0.1,asses,1107,0
 56,Dominican Republic,NA,0.1,beehives,1181,0
 56,Dominican Republic,0.55,NA,NA,NA,1
-56,Dominican Republic,NA,0.1,NA,NA,0
 56,Dominican Republic,NA,0.1,NA,NA,0
 56,Dominican Republic,0.25,NA,NA,NA,1
 56,Dominican Republic,NA,0.03,NA,NA,0
@@ -4209,6 +4209,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 58,Ecuador,0.31,NA,bran_buckwheat,91,1
 58,Ecuador,NA,0.1,quinoa,92,0
 58,Ecuador,NA,0.002,potatoes,116,0
+58,Ecuador,NA,0.05,sweet_potatoes,122,0
 58,Ecuador,0.4,NA,cassava_dried,128,1
 58,Ecuador,0.92,NA,sugar_refined,164,1
 58,Ecuador,0.028999999999999998,NA,molasses,165,1
@@ -4295,7 +4296,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 58,Ecuador,0.85,NA,NA,NA,1
 58,Ecuador,0.12,NA,NA,NA,1
 58,Ecuador,0.59,NA,NA,NA,1
-58,Ecuador,NA,0.05,NA,NA,0
 58,Ecuador,NA,0.05,NA,NA,0
 58,Ecuador,NA,0.2,NA,NA,0
 58,Ecuador,NA,0.21,NA,NA,0
@@ -4483,6 +4483,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 60,El Salvador,0.08,NA,bran_millet,81,1
 60,El Salvador,NA,0.05,sorghum,83,0
 60,El Salvador,NA,0.05,potatoes,116,0
+60,El Salvador,NA,0.05,sweet_potatoes,122,0
 60,El Salvador,0.1,NA,sugar_non_centrifugal,163,1
 60,El Salvador,0.92,NA,sugar_refined,164,1
 60,El Salvador,0.046,NA,molasses,165,1
@@ -4544,7 +4545,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 60,El Salvador,NA,0.1,asses,1107,0
 60,El Salvador,NA,0.08,beehives,1181,0
 60,El Salvador,0.95,NA,NA,NA,1
-60,El Salvador,NA,0.05,NA,NA,0
 60,El Salvador,NA,0.1,NA,NA,0
 60,El Salvador,0.095,NA,NA,NA,1
 60,El Salvador,0.25,NA,NA,NA,1
@@ -4571,6 +4571,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 60,El Salvador,NA,0.1,NA,NA,0
 60,El Salvador,NA,0.05,NA,NA,0
 60,El Salvador,0.23,NA,NA,NA,1
+61,Equatorial Guinea,NA,0.1,sweet_potatoes,122,0
 61,Equatorial Guinea,0.075,NA,almonds_shelled,231,1
 61,Equatorial Guinea,0.12,NA,oil_palm,257,1
 61,Equatorial Guinea,0.45,NA,oil_palm_kernel,258,1
@@ -4589,7 +4590,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 61,Equatorial Guinea,0.067,NA,fat_pigs,1037,1
 61,Equatorial Guinea,0.72,NA,chickens,1057,1
 61,Equatorial Guinea,NA,NA,eggs_hen_in_shell,1062,0
-61,Equatorial Guinea,NA,0.1,NA,NA,0
 61,Equatorial Guinea,NA,0.15,NA,NA,0
 61,Equatorial Guinea,0.023,NA,NA,NA,1
 61,Equatorial Guinea,0.018000000000000002,NA,NA,NA,1
@@ -6326,6 +6326,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 95,Honduras,0.08,NA,bran_millet,81,1
 95,Honduras,NA,0.12,sorghum,83,0
 95,Honduras,NA,0.11,potatoes,116,0
+95,Honduras,NA,0.2,sweet_potatoes,122,0
 95,Honduras,0.4,NA,cassava_dried,128,1
 95,Honduras,0.053,NA,sugar_non_centrifugal,163,1
 95,Honduras,0.92,NA,sugar_refined,164,1
@@ -6392,7 +6393,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 95,Honduras,0.15,NA,NA,NA,1
 95,Honduras,0.8,NA,NA,NA,1
 95,Honduras,0.95,NA,NA,NA,1
-95,Honduras,NA,0.2,NA,NA,0
 95,Honduras,NA,0.2,NA,NA,0
 95,Honduras,0.08800000000000001,NA,NA,NA,1
 95,Honduras,0.25,NA,NA,NA,1
@@ -7113,6 +7113,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 101,Indonesia,NA,0.1,avocados,572,0
 101,Indonesia,NA,0.1,pineapples,574,0
 101,Indonesia,0.55,NA,pineapples_canned,575,1
+101,Indonesia,0.1,NA,juice_pineapple_concentrated,580,1
 101,Indonesia,NA,0.1,papayas,600,0
 101,Indonesia,NA,0.1,fruit_tropical_fresh_nes,603,0
 101,Indonesia,NA,0.1,fruit_fresh_nes,619,0
@@ -7178,7 +7179,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 101,Indonesia,0.2,NA,NA,NA,1
 101,Indonesia,0.2,NA,NA,NA,1
 101,Indonesia,1.1,NA,NA,NA,1
-101,Indonesia,0.1,NA,NA,NA,1
 102,Iran (Islamic Republic of),NA,0.05,wheat,15,0
 102,Iran (Islamic Republic of),0.88,NA,flour_wheat,16,1
 102,Iran (Islamic Republic of),0.1,NA,bran_wheat,17,1
@@ -7845,6 +7845,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 106,Italy,0.044000000000000004,NA,butter_cow_milk,886,1
 106,Italy,0.1,NA,cheese_whole_cow_milk,901,1
 106,Italy,0.49,NA,buffaloes,946,1
+106,Italy,0.11,NA,ghee_buffalo_milk,953,1
 106,Italy,0.56,NA,sheep,976,1
 106,Italy,0.036000000000000004,NA,offals_sheep_edible,978,1
 106,Italy,0.17,NA,cheese_sheep_milk,984,1
@@ -7929,7 +7930,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 106,Italy,0.12,NA,NA,NA,1
 106,Italy,0.95,NA,NA,NA,1
 106,Italy,NA,0.05,NA,NA,0
-106,Italy,0.11,NA,NA,NA,1
 107,Cote dIvore,0.75,0.02,flour_wheat,16,1
 107,Cote dIvore,0.18,NA,bran_wheat,17,1
 107,Cote dIvore,NA,0.15,rice_paddy,27,0
@@ -10256,6 +10256,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 138,Mexico,0.3,NA,bran_buckwheat,91,1
 138,Mexico,NA,0.02,canary_seed,101,0
 138,Mexico,NA,0.1,potatoes,116,0
+138,Mexico,NA,0.07,sweet_potatoes,122,0
 138,Mexico,0.073,NA,sugar_non_centrifugal,163,1
 138,Mexico,0.92,NA,sugar_refined,164,1
 138,Mexico,0.039,NA,molasses,165,1
@@ -10373,7 +10374,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 138,Mexico,0.82,NA,NA,NA,1
 138,Mexico,0.15,NA,NA,NA,1
 138,Mexico,0.8,NA,NA,NA,1
-138,Mexico,NA,0.07,NA,NA,0
 138,Mexico,NA,0.1,NA,NA,0
 138,Mexico,NA,0.05,NA,NA,0
 138,Mexico,0.1,NA,NA,NA,1
@@ -11094,6 +11094,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 150,Netherlands,NA,0.051,pineapples,574,0
 150,Netherlands,0.55,NA,pineapples_canned,575,1
 150,Netherlands,NA,0.05,dates,577,0
+150,Netherlands,0.2,NA,juice_pineapple_concentrated,580,1
 150,Netherlands,NA,0.03,kiwi_fruit,592,0
 150,Netherlands,NA,0.03,papayas,600,0
 150,Netherlands,NA,0.1,fruit_fresh_nes,619,0
@@ -11171,7 +11172,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 150,Netherlands,0.85,NA,NA,NA,1
 150,Netherlands,0.75,NA,NA,NA,1
 150,Netherlands,1.2,NA,NA,NA,1
-150,Netherlands,0.2,NA,NA,NA,1
 153,New Caledonia,NA,0.01,wheat,15,0
 153,New Caledonia,0.72,NA,flour_wheat,16,1
 153,New Caledonia,0.24,NA,bran_wheat,17,1
@@ -12310,6 +12310,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 169,Paraguay,0.1,NA,bran_millet,81,1
 169,Paraguay,NA,0.05,sorghum,83,0
 169,Paraguay,NA,0.1,potatoes,116,0
+169,Paraguay,NA,0.1,sweet_potatoes,122,0
 169,Paraguay,0.92,NA,sugar_refined,164,1
 169,Paraguay,0.03,NA,molasses,165,1
 169,Paraguay,NA,0.042,beans_dry,176,0
@@ -12382,7 +12383,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 169,Paraguay,0.5,NA,horses,1096,1
 169,Paraguay,NA,0.1,asses,1107,0
 169,Paraguay,NA,0.1,NA,NA,0
-169,Paraguay,NA,0.1,NA,NA,0
 169,Paraguay,0.25,NA,NA,NA,1
 169,Paraguay,NA,0.03,NA,NA,0
 169,Paraguay,0.095,NA,NA,NA,1
@@ -12424,6 +12424,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 170,Peru,NA,0.02,sorghum,83,0
 170,Peru,NA,0.02,quinoa,92,0
 170,Peru,NA,0.08,potatoes,116,0
+170,Peru,NA,0.077,sweet_potatoes,122,0
 170,Peru,0.062,NA,sugar_non_centrifugal,163,1
 170,Peru,0.92,0.006,sugar_refined,164,1
 170,Peru,0.042,NA,molasses,165,1
@@ -12516,7 +12517,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 170,Peru,0.78,NA,NA,NA,1
 170,Peru,0.78,NA,NA,NA,1
 170,Peru,0.2,NA,NA,NA,1
-170,Peru,NA,0.077,NA,NA,0
 170,Peru,NA,0.1,NA,NA,0
 170,Peru,NA,0.02,NA,NA,0
 170,Peru,NA,0.02,NA,NA,0
@@ -12612,6 +12612,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 171,Philippines,NA,0.05,avocados,572,0
 171,Philippines,NA,0.05,pineapples,574,0
 171,Philippines,0.5,NA,pineapples_canned,575,1
+171,Philippines,0.08,NA,juice_pineapple_concentrated,580,1
 171,Philippines,NA,0.05,papayas,600,0
 171,Philippines,NA,0.03,fruit_tropical_fresh_nes,603,0
 171,Philippines,NA,0.05,fruit_fresh_nes,619,0
@@ -12679,7 +12680,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 171,Philippines,0.18,NA,NA,NA,1
 171,Philippines,0.12,NA,NA,NA,1
 171,Philippines,0.7,NA,NA,NA,1
-171,Philippines,0.08,NA,NA,NA,1
 171,Philippines,2.0,NA,NA,NA,1
 173,Poland,NA,0.046,wheat,15,0
 173,Poland,0.79,0.01,flour_wheat,16,1
@@ -12947,6 +12947,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 174,Portugal,0.2,NA,figs_dried,570,1
 174,Portugal,NA,0.03,pineapples,574,0
 174,Portugal,0.55,NA,pineapples_canned,575,1
+174,Portugal,0.2,NA,juice_pineapple_concentrated,580,1
 174,Portugal,NA,0.03,kiwi_fruit,592,0
 174,Portugal,NA,0.05,fruit_fresh_nes,619,0
 174,Portugal,0.8,NA,coffee_roasted,657,1
@@ -13025,7 +13026,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 174,Portugal,0.061,NA,NA,NA,1
 174,Portugal,NA,0.05,NA,NA,0
 174,Portugal,0.8,NA,NA,NA,1
-174,Portugal,0.2,NA,NA,NA,1
 174,Portugal,0.2,NA,NA,NA,1
 175,Guinea-Bissau,NA,0.05,rice_paddy,27,0
 175,Guinea-Bissau,NA,0.05,maize,56,0
@@ -14528,6 +14528,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 200,Singapore,NA,0.05,watermelons,567,0
 200,Singapore,NA,0.05,pineapples,574,0
 200,Singapore,0.55,NA,pineapples_canned,575,1
+200,Singapore,0.05,NA,juice_pineapple_concentrated,580,1
 200,Singapore,NA,0.05,papayas,600,0
 200,Singapore,NA,0.05,fruit_tropical_fresh_nes,603,0
 200,Singapore,NA,0.05,fruit_fresh_nes,619,0
@@ -14557,7 +14558,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 200,Singapore,NA,0.01,NA,NA,0
 200,Singapore,0.2,NA,NA,NA,1
 200,Singapore,NA,NA,NA,NA,0
-200,Singapore,0.05,NA,NA,NA,1
 200,Singapore,1.7,NA,NA,NA,1
 201,Somalia,NA,0.023,wheat,15,0
 201,Somalia,0.8,0.02,flour_wheat,16,1
@@ -14828,6 +14828,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 203,Spain,NA,NA,grain_mixed,103,0
 203,Spain,NA,0.044000000000000004,potatoes,116,0
 203,Spain,0.58,NA,potatoes_frozen,118,1
+203,Spain,NA,0.1,sweet_potatoes,122,0
 203,Spain,0.14,NA,sugar_beet,157,1
 203,Spain,0.92,NA,sugar_refined,164,1
 203,Spain,0.047,NA,molasses,165,1
@@ -14957,7 +14958,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 203,Spain,0.7,0.018000000000000002,NA,NA,1
 203,Spain,0.28,NA,NA,NA,1
 203,Spain,0.59,NA,NA,NA,1
-203,Spain,NA,0.1,NA,NA,0
 203,Spain,NA,0.05,NA,NA,0
 203,Spain,NA,0.05,NA,NA,0
 203,Spain,0.083,NA,NA,NA,1
@@ -17072,6 +17072,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 231,United States of America,NA,0.05,pineapples,574,0
 231,United States of America,0.5,NA,pineapples_canned,575,1
 231,United States of America,NA,0.05,dates,577,0
+231,United States of America,0.15,NA,juice_pineapple_concentrated,580,1
 231,United States of America,NA,0.05,papayas,600,0
 231,United States of America,NA,0.05,fruit_fresh_nes,619,0
 231,United States of America,0.8,NA,coffee_roasted,657,1
@@ -17153,7 +17154,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 231,United States of America,NA,0.05,NA,NA,0
 231,United States of America,0.6,NA,NA,NA,1
 231,United States of America,0.13,NA,NA,NA,1
-231,United States of America,0.15,NA,NA,NA,1
 231,United States of America,0.95,NA,NA,NA,1
 233,Burkina Faso,0.75,0.02,flour_wheat,16,1
 233,Burkina Faso,0.2,NA,bran_wheat,17,1
@@ -17247,6 +17247,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 234,Uruguay,0.3,NA,bran_buckwheat,91,1
 234,Uruguay,NA,0.1,canary_seed,101,0
 234,Uruguay,NA,0.1,potatoes,116,0
+234,Uruguay,NA,0.1,sweet_potatoes,122,0
 234,Uruguay,0.13,NA,sugar_beet,157,1
 234,Uruguay,0.92,NA,sugar_refined,164,1
 234,Uruguay,0.037000000000000005,NA,molasses,165,1
@@ -17322,7 +17323,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 234,Uruguay,0.1,NA,NA,NA,1
 234,Uruguay,0.7,NA,NA,NA,1
 234,Uruguay,0.45,NA,NA,NA,1
-234,Uruguay,NA,0.1,NA,NA,0
 234,Uruguay,NA,0.1,NA,NA,0
 234,Uruguay,0.1,NA,NA,NA,1
 234,Uruguay,0.25,NA,NA,NA,1
@@ -17447,6 +17447,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 236,Venezuela (Bolivarian Republic of),NA,0.16,sorghum,83,0
 236,Venezuela (Bolivarian Republic of),0.15,NA,bran_buckwheat,91,1
 236,Venezuela (Bolivarian Republic of),NA,0.05,potatoes,116,0
+236,Venezuela (Bolivarian Republic of),NA,0.1,sweet_potatoes,122,0
 236,Venezuela (Bolivarian Republic of),0.33,NA,cassava_dried,128,1
 236,Venezuela (Bolivarian Republic of),0.1,NA,sugar_non_centrifugal,163,1
 236,Venezuela (Bolivarian Republic of),0.94,0.001,sugar_refined,164,1
@@ -17537,7 +17538,6 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 236,Venezuela (Bolivarian Republic of),0.82,NA,NA,NA,1
 236,Venezuela (Bolivarian Republic of),0.15,NA,NA,NA,1
 236,Venezuela (Bolivarian Republic of),0.45,NA,NA,NA,1
-236,Venezuela (Bolivarian Republic of),NA,0.1,NA,NA,0
 236,Venezuela (Bolivarian Republic of),NA,0.26,NA,NA,0
 236,Venezuela (Bolivarian Republic of),0.081,NA,NA,NA,1
 236,Venezuela (Bolivarian Republic of),0.25,NA,NA,NA,1
