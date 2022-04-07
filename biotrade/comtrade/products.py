@@ -34,7 +34,7 @@ class Products(object):
     Update the list of product codes from Comtrade
 
         >>> from biotrade.comtrade import comtrade
-        >>> comtrade.pump.update_product_hs()
+        >>> comtrade.pump.update_db_parameter()
 
     """
 
