@@ -68,11 +68,19 @@ Faostat provides agriculture and forestry data on their website https://www.fao.
 The biotrade package has a `faostat.pump` object that loads a selection of datasets. The 
 list of downloaded datasets is visible in `faostat.pump.datasets`. Column names and 
 product descriptions are reformatted to snake case in a way that is convenient for 
-analysis. The data is then stored into an SQLite database (or PostgreSQL):
+analysis. The data is then stored into an SQLite database (or PostgreSQL). The following 
+commands download and transfer the given datasets to the database:
 
     >>> from biotrade.faostat import faostat
-    >>> faostat.pump.download_all_datasets()
-    >>> faostat.pump.update_db()
+    >>> faostat.pump.update(["crop_production", "crop_trade"])
+    >>> faostat.pump.update(["forestry_production", "forestry_trade", "forest_land"])
+    >>> faostat.pump.update(["food_balance"])
+    >>> faostat.pump.update(["land_use", "land_cover"])
+
+List available datasets and metadata links:
+
+    >>> faostat.pump.datasets
+    >>> faostat.pump.metadata_link
 
 Once the data has been loaded into the database, you can query it. For example select 
 crop production data for 2 countries
