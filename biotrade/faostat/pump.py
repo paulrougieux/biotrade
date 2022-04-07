@@ -25,32 +25,60 @@ import numpy as np
 from biotrade.common.url_request_header import HEADER
 
 
+def choose_column_renaming(short_name):
+    """Choose which column from config_data/column_names.csv to use for
+    renaming."""
+    output = None
+    for keyword in ["production", "trade", "land", "food_balance"]:
+        if keyword in short_name:
+            output = "faostat_" + keyword
+    if output is None:
+        raise ValueError("No column to use for renaming", short_name)
+    return output
+
+
 class Pump:
     """
-    Download trade data from FAOSTAT and store it locally.
-    Read the zipped csv files into pandas data frames.
+    Download trade data from FAOSTAT and store it locally in a database.
 
-    Update all FAOSTAT datasets by downloading bulk files,
-    then storing them in a SQLite or PostGreSQL database:
+    The pump can perform the following tasks:
+        1. Download compressed csv files from FAOSTAT.
+        2. Read the compressed csv files into pandas data frames.
+        3. Transfer the data frames to a database.
+
+    An update performs all 3 tasks, it download files, reads them in chunks and
+    stores them in the database
 
         >>> from biotrade.faostat import faostat
+        >>> faostat.pump.update(["crop_production", "crop_trade"])
+        >>> faostat.pump.update(["food_balance"])
+        >>> faostat.pump.update(["land_use", "land_cover"])
+
+    List available datasets and metadata links:
+
+        >>> faostat.pump.datasets
+        >>> faostat.pump.metadata_link
+
+    Update all FAOSTAT datasets:
+
         >>> faostat.pump.download_all_datasets()
-        >>> faostat.pump.update_db()
-        >>> # Optionally, you can skip the very large crop trade data
-        >>> faostat.pump.update_db(skip_crop_trade=True)
+        >>> faostat.pump.transfer_all_datasets()
+        >>> # Optionally, you can skip some of the large datasets
+        >>> faostat.pump.transfer_all_datasets(skip=["food_balance", "crop_trade"])
+
+    The following examples use lower level function which are not needed for
+    normal use.
 
     Read an entire table directly from a CSV file to a data frame
     without going through the database:
 
         >>> fp = faostat.pump.read_df("forestry_production")
-        >>> fp = faostat.pump.forestry_production
 
     Note that reading the entire dataset into a data frames can take a large
     part of the memory. It is recommended to start an analysis with a smaller
     data frame for a specific country or a specific product, using the
     faostat.db.select method.
 
-    Those lower level function are not needed for normal use.
     Update a dataset by downloading it again from FAOSTAT:
 
         >>> faostat.pump.download_zip_csv("Forestry_E_All_Data_(Normalized).zip")
@@ -95,6 +123,8 @@ class Pump:
         self.data_dir = self.parent.data_dir
         # Mapping table used to rename columns
         self.column_names = self.parent.column_names
+        # Number of lines to transfer from csv files to the database at once
+        self.chunk_size = 10 ** 5
 
     def download_zip_csv(self, zip_file_name):
         """Download a compressed csv file from the FAOSTAT website
@@ -201,16 +231,10 @@ class Pump:
         >>> fl = faostat.pump.read_df("forest_land")
 
         """
-        # Choose which column in the config_data/column_names.csv
-        # to use for renaming.
-        column_renaming = None
-        for keyword in ["production", "trade", "land"]:
-            if keyword in short_name:
-                column_renaming = "faostat_" + keyword
         # Read the compressed CSV into a data frame
         df = self.read_zip_csv_to_df(
             zip_file=self.data_dir / self.datasets[short_name],
-            column_renaming=column_renaming,
+            column_renaming=choose_column_renaming(short_name),
         )
         return df
 
@@ -233,76 +257,110 @@ class Pump:
                 ".zip$", ".csv", self.datasets[short_name]
             )
             encoding_var = "latin1"
-        # Choose which column in the config_data/column_names.csv
-        # to use for renaming.
-        column_renaming = None
-        for keyword in ["production", "trade", "land", "country"]:
-            if keyword in short_name:
-                column_renaming = "faostat_" + keyword
         for df_chunk in pandas.read_csv(
             csv_file_name, chunksize=chunk_size, encoding=encoding_var
         ):
-            df_chunk = self.sanitize_variable_names(df_chunk, column_renaming)
+            df_chunk = self.sanitize_variable_names(
+                df_chunk, choose_column_renaming(short_name)
+            )
             print(df_chunk.head(1))
             self.db.append(df=df_chunk, table=short_name)
 
-    @property
-    def forestry_production(self):
-        """Forestry production data"""
-        return self.read_df("forestry_production")
+    def confirm_db_table_deletion(self, datasets):
+        """Confirm database table deletion
 
-    @property
-    def forestry_trade(self):
-        """Forestry bilateral trade flows (trade matrix)"""
-        return self.read_df("forestry_trade")
+        Separate method, because it is reused at different places."""
+        msg = f"\nIf the database {self.db.engine} exists already, "
+        msg += "this command will erase the following tables "
+        msg += "and replace them with new data:\n - "
+        msg += "\n - ".join(datasets)
+        if input(msg + "\nPlease confirm [y/n]:") != "y":
+            print("Cancelled.")
+            return False
+        else:
+            return True
 
-    def download_all_datasets(self):
-        """Download all files in the datasets dictionary"""
-        # TODO https://gitlab.com/bioeconomy/forobs/biotrade/-/issues/48
-        for zip_file_name in self.datasets.values():
-            self.download_zip_csv(zip_file_name)
+    def transfer_to_db(self, datasets, skip_confirmation=False):
+        """Transfer from a csv file to the database by replacing the table
+        content with the content of the zipped CSV files. Database field types
+        are determined in faostat.db.
 
-    def update_db(self, chunk_size=10 ** 5, skip_crop_trade=False):
-        """Update the database by replacing table content with the content of
-        the bulk zipped CSV files. Database field types are determined in faostat.db.
-
-        :param int chunk_size: size of the data frame chunks
-                               to transfer to the database
-        :param bool skip_crop_trade: skip the large crop trade table
+        :param list datasets: list of dataset names, whose keys should be in
+            the faostat.pump.datasets and faostat.db.tables dictionaries
         :return: Nothing
 
         Usage:
 
-        >>> from biotrade.faostat import faostat
-        >>> faostat.pump.update_db()
+            >>> from biotrade.faostat import faostat
+            >>> faostat.pump.transfer_to_db()
 
         Use a larger chunk size
 
-        >>> faostat.pump.update_db(chunk_size = 10 ** 6)
+            >>> faostat.pump.chunk_size = 10 ** 6
 
-        Skip the large crop trade dataset
+        Skip the large crop trade and food balance datasets
 
-        >>> faostat.pump.update_db(skip_crop_trade=True)
+            >>> faostat.pump.transfer_to_db(skip_crop_trade=True)
+
         """
-        msg = f"\nIf the database {self.db.engine} exists already, "
-        msg += "this command will erase the following tables and replace them with new data:\n"
-        msg += f"{', '.join(self.datasets.keys())}\n\n"
-        if input(msg + "Please confirm [y/n]:") != "y":
-            print("Cancelled.")
-            return
-
-        for table_name, table in self.db.tables.items():
+        # Make datasets a list
+        if isinstance(datasets, str):
+            datasets = [datasets]
+        if not skip_confirmation:
+            if not self.confirm_db_table_deletion(datasets):
+                return
+        for table_name in datasets:
+            # Drop and recreate the table
+            table = self.db.tables[table_name]
             table.drop()
             self.db.create_if_not_existing(table)
-        # List of table datasets
-        datasets = list(self.db.tables.keys())
-        # Skip the crop trade data entirely if it's not needed on this machine
-        if skip_crop_trade:
-            datasets.remove("crop_trade")
-        for table_name in datasets:
-            # There could be a memory error with dataset.
-            # Read the file in chunks so that the memory doesn't get too full
-            self.transfer_csv_to_db_in_chunks(table_name, chunk_size)
+            # Transfer the compressed CSV file to the database
+            self.transfer_csv_to_db_in_chunks(table_name, self.chunk_size)
+
+    def update(self, datasets):
+        """Update the given datasets by downloading them from FAOSTAT and
+        transferring them to the database
+
+        :param list or str datasets: list of dataset names, whose keys should
+            be in the faostat.pump.datasets and faostat.db.tables dictionaries
+
+        Usage:
+
+            >>> from biotrade.faostat import faostat
+            >>> faostat.pump.update(["crop_production", "crop_trade"])
+            >>> faostat.pump.update(["food_balance"])
+            >>> faostat.pump.update(["land_use", "land_cover"])
+
+        """
+        # Make datasets a list
+        if isinstance(datasets, str):
+            datasets = [datasets]
+        # Confirmation message
+        if not self.confirm_db_table_deletion(datasets):
+            return
+        # Download datasets from FAOSTAT
+        for this_dataset in datasets:
+            zip_file_name = self.datasets[this_dataset]
+            self.download_zip_csv(zip_file_name)
+        # Transfer to the database
+        # Skip confirmation because we already confirmed above
+        self.transfer_to_db(datasets, skip_confirmation=True)
+
+    def download_all_datasets(self):
+        """Download all files in the datasets dictionary"""
+        for zip_file_name in self.datasets.values():
+            self.download_zip_csv(zip_file_name)
+
+    def transfer_all_datasets(self, skip):
+        """Transfer all datasets to the database
+        :param list skip: skip datasets in this list"""
+        datasets = list(self.datasets.keys())
+        # Make skip a list and remove list items from datasets
+        if isinstance(skip, str):
+            skip = [skip]
+        for this_dataset in skip:
+            datasets.remove(this_dataset)
+        self.transfer_to_db(datasets)
 
     def show_metadata_link(self, short_name):
         """Display the metadata link associated with a dataset

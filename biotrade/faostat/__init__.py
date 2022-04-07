@@ -14,8 +14,8 @@ Read forestry production and trade data from the database
 Read forestry production and trade data from the bulk FAOSTAT files directly
 (loading large files takes a few seconds)
 
-    >>> fp = faostat.pump.forestry_production
-    >>> ft = faostat.pump.forestry_trade
+    >>> fp = faostat.pump.read_df("forestry_production")
+    >>> ft = faostat.pump.read_df("forestry_trade")
 
 Download or update zipped CSV files from FAOSTAT.
 

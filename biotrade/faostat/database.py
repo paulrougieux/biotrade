@@ -55,11 +55,8 @@ class DatabaseFaostat(Database):
         >>> query = "SELECT * FROM forestry_trade WHERE reporter = 'Italy'"
         >>> ft_it = pandas.read_sql_query(query, db.engine)
 
-    Lower level method to store forestry production data in the database. This
-    should be taken care of by faostat.pump:
+    Database update methods are in the faostat.pump object.
 
-        >>> fp = faostat.pump.forestry_production
-        >>> faostat.db_sqlite.append(fp, "forestry_production")
     """
 
     # To be overwritten by the children
@@ -99,7 +96,7 @@ class DatabaseFaostat(Database):
         self.country = self.describe_country_table(name="country")
         self.crop_production = self.describe_production_table(name="crop_production")
         self.crop_trade = self.describe_trade_table(name="crop_trade")
-        self.food_balance = self.describe_land_table(name="food_balance")
+        self.food_balance = self.describe_food_balance_table(name="food_balance")
         self.forest_land = self.describe_land_table(name="forest_land")
         self.forestry_trade = self.describe_trade_table(name="forestry_trade")
         self.land_cover = self.describe_land_table(name="land_cover")
@@ -140,7 +137,7 @@ class DatabaseFaostat(Database):
         And dropping these columns from the data frame before loading it back to the database
 
             >>> from biotrade.faostat import faostat
-            >>> fp = faostat.pump.forestry_production
+            >>> fp = faostat.pump.read_df("forestry_production")
             >>> fp.drop(columns=["reporter", "product", "element", "unit", "flag"], inplace=True)
             >>> faostat.db_sqlite.append(fp, "forestry_production")
 
@@ -263,7 +260,7 @@ class DatabaseFaostat(Database):
             UniqueConstraint(
                 "period",
                 "reporter_code",
-                "item_code",
+                "product_code",
                 "element_code",
                 "unit",
                 "flag",

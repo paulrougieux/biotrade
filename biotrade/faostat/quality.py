@@ -32,7 +32,7 @@ def compare_aggregate_to_constituents(df, prod_aggregate, prod_constituents):
 
     >>> from biotrade.faostat import faostat
     >>> from biotrade.faostat.quality import compare_aggregate_to_constituents
-    >>> fp = faostat.pump.forestry_production
+    >>> fp = faostat.pump.read_df("forestry_production")
     >>> rwd = compare_aggregate_to_constituents(
     >>>     fp, "roundwood", ["industrial_roundwood", "wood_fuel"]
     >>> )

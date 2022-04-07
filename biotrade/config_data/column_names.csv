@@ -14,11 +14,11 @@ reporter_iso,,reporter_iso,rt3iso,,,,,
 partner_code,PARTNER,partner_code,ptcode,,partner_country_code,,,
 partner,,partner,pttitle,,partner_countries,,,
 partner_iso,,partner_iso,pt3iso,,,,,
-product_code,PRODUCT_NC,commodity_code,cmdcode,item_code,item_code,,,
-product,,,,item,item,,,
+product_code,PRODUCT_NC,commodity_code,cmdcode,item_code,item_code,,,item_code
+product,,,,item,item,,,item
 product_description,,commodity,cmddesce,,,,,
-item_code,,,,,,item_code,,item_code
-item,,,,,,item,,item
+item_code,,,,,,item_code,,
+item,,,,,,item,,
 unit_code,,qty_unit_code,qtcode,,,,,
 unit,,qty_unit,qtdesc,unit,unit,unit,,unit
 quantity,SUP_QUANTITY,qty,qtaltcode,,,,,
