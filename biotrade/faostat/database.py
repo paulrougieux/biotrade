@@ -251,7 +251,7 @@ class DatabaseFaostat(Database):
             self.metadata,
             Column("reporter_code", Integer),
             Column("reporter", Text),
-            Column("product_code", Integer),
+            Column("product_code", Text),
             Column("product", Text),
             Column("element_code", Integer),
             Column("element", Text),
