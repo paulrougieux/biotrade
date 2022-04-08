@@ -83,7 +83,7 @@ def agg_trade_eu_row(
         raise ValueError(
             "grouping_side can only take the values 'reporter' or 'partner'"
         )
-    # Make add_index_var a list
+    # Make drop_index_var a list
     if isinstance(drop_index_var, str):
         drop_index_var = [drop_index_var]
     # Remove "Total FAO" and "World" rows if present
@@ -100,9 +100,11 @@ def agg_trade_eu_row(
     df[country_group] = df[country_group].where(
         ~df[grouping_side].isin(EU_COUNTRY_NAMES_LIST), "eu"
     )
-    # The aggregation index depends on the grouping_side
-    # Keep the code column of the other side if available in df
+    # Build the aggregation index
+    # based on all columns
     index = df.columns.to_list()
+    # Remove the reporter, partner and grouping column from the index
+    # Some will be added back
     reporter_and_partner_cols = [
         "reporter_code",
         "reporter",
@@ -110,10 +112,12 @@ def agg_trade_eu_row(
         "partner",
         country_group,
     ]
-    # Remove columns from the index
     for col in drop_index_var + reporter_and_partner_cols + ["value"]:
         if col in df.columns:
             index.remove(col)
+    # The aggregation index depends on the grouping_side
+    # Add back the column that are not on the grouping side
+    # Keep the code column only if available in df
     if grouping_side == "partner":
         index = ["reporter_code", "reporter", country_group] + index
         if "reporter_code" not in df.columns:
@@ -123,7 +127,7 @@ def agg_trade_eu_row(
         if "partner_code" not in df.columns:
             index.remove("partner_code")
     # Aggregate
-    df_agg = df.groupby(index).agg(value=("value", sum)).reset_index()
+    df_agg = df.groupby(index, dropna=False).agg(value=("value", sum)).reset_index()
     # When aggregating over partner groups, rename country_group to partner
     if grouping_side == "partner":
         df_agg = df_agg.rename(columns={country_group: "partner"})
