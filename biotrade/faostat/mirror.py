@@ -53,12 +53,6 @@ def put_mirror_beside(df):
     df_m["element"] = df_m["element"].str.replace("import", "xxx")
     df_m["element"] = df_m["element"].str.replace("export", "import")
     df_m["element"] = df_m["element"].str.replace("xxx", "export")
-    # Rename the value column
-    df_m["value_mirror"] = df_m["value"]
-    # Rename the flag column
-    if "flag" in df.columns:
-        df_m["flag_mirror"] = df_m["flag"]
-        df_m.drop(columns=["value", "flag"], inplace=True)
     # Drop the element_code column
     if "element_code" in df.columns:
         df_m.drop(columns="element_code", inplace=True)
@@ -83,4 +77,4 @@ def put_mirror_beside(df):
         if col in df.columns:
             index += [col]
     warnings.warn(f"\nMerging mirror flows on the following index:\n {index}")
-    return df.merge(df_m, on=index, how="left")
+    return df.merge(df_m, on=index, how="left", suffixes=("", "_mirror"))
