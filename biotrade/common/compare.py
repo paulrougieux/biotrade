@@ -189,7 +189,11 @@ def merge_faostat_comtrade(faostat_table, comtrade_table, faostat_code):
     # 1. Load FAOSTAT bilateral trade data for the given codes
     df_faostat = faostat.db.select(faostat_table, product_code=faostat_code)
     product_names = df_faostat[["product_code", "product"]].drop_duplicates()
-    # 2. Load Comtrade biltaral trade data for the given codes
+    # Convert trade values from 1000 USD to USD
+    selector = df_faostat["unit"] == "1000 US$"
+    df_faostat.loc[selector, "value"] = df_faostat.loc[selector, "value"] * 1e3
+    df_faostat.loc[selector, "unit"] = "usd"
+    # 2. Load Comtrade bilateral trade data for the given codes
     df_comtrade = transform_comtrade_using_faostat_codes(
         comtrade_table=comtrade_table, faostat_code=faostat_code
     )
