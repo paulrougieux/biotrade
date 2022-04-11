@@ -119,9 +119,7 @@ class DatabaseComtrade(Database):
             Column("product_code", Text),
             Column("product_description", Text),
             Column("parent", Text),
-            UniqueConstraint(
-                "product_code",
-            ),
+            UniqueConstraint("product_code",),
             schema=self.schema,
         )
         return table
@@ -189,7 +187,6 @@ class DatabaseComtrade(Database):
                 "reporter_code",
                 "partner_code",
                 "product_code",
-                "unit_code",
                 "flag",
             ),
             schema=self.schema,
@@ -201,11 +198,7 @@ class DatabaseComtrade(Database):
         return pandas.read_sql_query(stmt, self.engine)
 
     def check_data_presence(
-        self,
-        table,
-        start_year,
-        end_year,
-        frequency,
+        self, table, start_year, end_year, frequency,
     ):
         """
         Query db table to check if data are present or not for a certain
@@ -254,10 +247,7 @@ class DatabaseComtrade(Database):
         return check_presence
 
     def delete_data(
-        self,
-        table,
-        start_period,
-        end_period,
+        self, table, start_period, end_period,
     ):
         """
         Database method to delete rows from Comtrade db.
@@ -282,10 +272,7 @@ class DatabaseComtrade(Database):
             if end_period is not None:
                 # Construct delete statement
                 stmt = table.delete().where(
-                    and_(
-                        table.c.period >= start_period,
-                        table.c.period <= end_period,
-                    )
+                    and_(table.c.period >= start_period, table.c.period <= end_period,)
                 )
                 # Execute delete statement
                 stmt.execute()
