@@ -161,7 +161,7 @@ def merge_faostat_comtrade(faostat_table, comtrade_table, faostat_code):
             extrapolate to the current year based on values from the last 12 months
         4. Concatenate FAOSTAT and Comtrade data
 
-    Usage:
+    For example load sawwood data from both faostat and comtrade:
 
         >>> from biotrade.common.compare import merge_faostat_comtrade
         >>> merge_faostat_comtrade(faostat_table="forestry_trade",
@@ -193,6 +193,10 @@ def merge_faostat_comtrade(faostat_table, comtrade_table, faostat_code):
     selector = df_faostat["unit"] == "1000 US$"
     df_faostat.loc[selector, "value"] = df_faostat.loc[selector, "value"] * 1e3
     df_faostat.loc[selector, "unit"] = "usd"
+    # Convert tonnes to kg
+    selector = df_faostat["unit"] == "tonnes"
+    df_faostat.loc[selector, "value"] = df_faostat.loc[selector, "value"] * 1e3
+    df_faostat.loc[selector, "unit"] = "kg"
     # 2. Load Comtrade bilateral trade data for the given codes
     df_comtrade = transform_comtrade_using_faostat_codes(
         comtrade_table=comtrade_table, faostat_code=faostat_code
