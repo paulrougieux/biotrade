@@ -29,6 +29,7 @@ def agg_trade_eu_row(
     aggregation index country will be grouped together between EU and rest of
     the world, defaults to partner.
     :param drop_index_var list or str: variables to be dropped from the grouping index
+    defaults to ["flag"]
     :return bilateral trade flows aggregated by eu and row
 
     Aggregate over many products in one country
@@ -83,7 +84,9 @@ def agg_trade_eu_row(
         raise ValueError(
             "grouping_side can only take the values 'reporter' or 'partner'"
         )
-    # Make drop_index_var a list
+    # Give drop_index_var its default value and make it a list
+    if drop_index_var is None:
+        drop_index_var = ["flag"]
     if isinstance(drop_index_var, str):
         drop_index_var = [drop_index_var]
     # Remove "Total FAO" and "World" rows if present
