@@ -48,3 +48,4 @@ Sources of inspiration
   - Example script 
     [batch/austria](https://github.com/owid/covid-19-data/blob/master/scripts/src/cowidev/vax/batch/austria.py)
 
+  - mentions https://www.datawrapper.de/ as a web visualization tool
