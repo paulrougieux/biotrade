@@ -35,7 +35,7 @@ The database structure is defined as SQL Alchemy statements in faostat/database.
 comtrade/database.py.
 
 
-## Insipration
+## Inspiration
 
 Sources of inspiration
 
