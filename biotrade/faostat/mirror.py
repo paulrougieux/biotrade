@@ -51,14 +51,15 @@ def put_mirror_beside(df, drop_index_col=None):
         >>> from biotrade.faostat import faostat
         >>> from biotrade.faostat.mirror import put_mirror_beside
         >>> from biotrade.faostat.aggregate import agg_trade_eu_row
-        >>> # Load trade reported by Brazil and group on the partner side
-        >>> brar = faostat.db.select("crop_trade", reporter="Brazil", product_code="268")
-        >>> braragg = agg_trade_eu_row(brar, grouping_side="partner")
-        >>> # Load trade reported by its partners and group on the reporter side
-        >>> brap = faostat.db.select("crop_trade", partner="Brazil", product_code="268")
-        >>> brapagg = agg_trade_eu_row(brap, grouping_side="reporter")
+        >>> country = "Russian Federation"
+        >>> # Load trade reported by the country and group EU-ROW on the partner side
+        >>> dfr = faostat.db.select("crop_trade", reporter=country, product_code="268")
+        >>> dfragg = agg_trade_eu_row(dfr, grouping_side="partner")
+        >>> # Load trade reported by its partners and group EU-ROW on the reporter side
+        >>> dfp = faostat.db.select("crop_trade", partner=country, product_code="268")
+        >>> dfpagg = agg_trade_eu_row(dfp, grouping_side="reporter")
         >>> # Concatenate the 2 datasets and put mirror value beside the value
-        >>> bram = put_mirror_beside(pandas.concat([braragg, brapagg]))
+        >>> dfm = put_mirror_beside(pandas.concat([dfragg, dfpagg]))
 
     """
     # Give drop_index_col its default value and make it a list
