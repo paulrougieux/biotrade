@@ -20,7 +20,7 @@ EU_COUNTRY_NAMES_LIST = faostat.country_groups.eu_country_names
 
 
 def agg_trade_eu_row(
-    df, grouping_side="partner", drop_index_var=["flag"], index_side=None
+    df, grouping_side="partner", drop_index_col=["flag"], index_side=None
 ):
     """Aggregate bilateral trade data to eu and row as partners
 
@@ -28,7 +28,7 @@ def agg_trade_eu_row(
     :param str grouping_side: "reporter" or "partner" defines on which side of the
     aggregation index country will be grouped together between EU and rest of
     the world, defaults to partner.
-    :param drop_index_var list or str: variables to be dropped from the grouping index
+    :param drop_index_col list or str: variables to be dropped from the grouping index
     defaults to ["flag"]
     :return bilateral trade flows aggregated by eu and row
 
@@ -84,11 +84,11 @@ def agg_trade_eu_row(
         raise ValueError(
             "grouping_side can only take the values 'reporter' or 'partner'"
         )
-    # Give drop_index_var its default value and make it a list
-    if drop_index_var is None:
-        drop_index_var = ["flag"]
-    if isinstance(drop_index_var, str):
-        drop_index_var = [drop_index_var]
+    # Give drop_index_col its default value and make it a list
+    if drop_index_col is None:
+        drop_index_col = ["flag"]
+    if isinstance(drop_index_col, str):
+        drop_index_col = [drop_index_col]
     # Remove "Total FAO" and "World" rows if present
     selector = df["partner"] != "World"
     if "partner_code" in df.columns:
@@ -115,7 +115,7 @@ def agg_trade_eu_row(
         "partner",
         country_group,
     ]
-    for col in drop_index_var + reporter_and_partner_cols + ["value"]:
+    for col in drop_index_col + reporter_and_partner_cols + ["value"]:
         if col in df.columns:
             index.remove(col)
     # The aggregation index depends on the grouping_side

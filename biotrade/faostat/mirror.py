@@ -6,13 +6,13 @@ Functions to analyse mirror flows.
 import warnings
 
 
-def put_mirror_beside(df, drop_index_var=None):
+def put_mirror_beside(df, drop_index_col=None):
     """Merge mirror flows to obtain a value column and a value_mirror column
     for the corresponding mirror flow.
 
     :param data frame df: bilateral trade flows in faostat compatible format,
         with an element column and a value column.
-    :param drop_index_var list or str: variables to be dropped from the grouping index
+    :param drop_index_col list or str: variables to be dropped from the grouping index
     :return data frame with the same number of rows a new column value_mirror.
 
     The input data frame should contain data for both the export flow reported
@@ -61,11 +61,11 @@ def put_mirror_beside(df, drop_index_var=None):
         >>> bram = put_mirror_beside(pandas.concat([braragg, brapagg]))
 
     """
-    # Give drop_index_var its default value and make it a list
-    if drop_index_var is None:
-        drop_index_var = ["flag"]
-    if isinstance(drop_index_var, str):
-        drop_index_var = [drop_index_var]
+    # Give drop_index_col its default value and make it a list
+    if drop_index_col is None:
+        drop_index_col = ["flag"]
+    if isinstance(drop_index_col, str):
+        drop_index_col = [drop_index_col]
     # Swap reporter and partner columns
     df_m = df.copy()
     reporter_cols = ["reporter", "reporter_code"]
@@ -82,9 +82,9 @@ def put_mirror_beside(df, drop_index_var=None):
     if "element_code" in df.columns:
         df_m.drop(columns="element_code", inplace=True)
     # Build the aggregation index based on all columns in df_m
-    # Removing the "value" and the drop_index_var columns
+    # Removing the "value" and the drop_index_col columns
     index = df_m.columns.to_list()
-    for col in drop_index_var + ["value"]:
+    for col in drop_index_col + ["value"]:
         if col in df.columns:
             index.remove(col)
     warnings.warn(f"\nMerging mirror flows on the following index:\n {index}")
