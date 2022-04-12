@@ -123,5 +123,10 @@ class Dump:
             >>> comtrade.dump.load_2d_csv("monthly", file_path)
 
         """
-        df = pandas.read_csv(file_path)
+        df = pandas.read_csv(
+            file_path,
+            # Force the id column to remain a character column,
+            # otherwise str "01" becomes int 1.
+            dtype={"product_code": str},
+        )
         self.db.append(df, table)
