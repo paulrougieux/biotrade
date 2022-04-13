@@ -1,7 +1,7 @@
 """
 Written by Selene Patani.
 
-Functions to return time series change detections.
+Functions to return time series change detections and associated plots.
 """
 
 import pandas as pd
@@ -10,6 +10,68 @@ from scipy import optimize, stats
 import matplotlib.pyplot as plt
 import pymannkendall as mk
 from collections import OrderedDict
+
+
+def plot_relative_absolute_change(df):
+    """
+    Function to plot relative and absolute change values (see relative_absolute_change function for the calculations)
+    for each group of data
+    :param (DataFrame) df, the output of relative_absolute_change function
+
+    For example, select production quantity of palm oil from 1986 with Malaysia as reporter, compute the change values with respect
+    to the previous five years and plot results
+
+        >>> from biotrade.faostat import faostat
+        >>> from biotrade.common.time_series import relative_absolute_change, plot_relative_absolute_change
+        >>> palm_oil_data = faostat.db.select(
+        >>>     table="crop_production", reporter="Malaysia", product_code=257
+        >>> )
+        >>> palm_oil_prod = palm_oil_data[
+        >>>     (palm_oil_data["element"] == "production") & (palm_oil_data["year"] > 1986)
+        >>> ]
+        >>> df_change = relative_absolute_change(palm_oil_prod, last_value=False)
+        >>> plot_relative_absolute_change(df_change)
+    
+    """
+    # Group of columns to be considered
+    group_data_pivot_table = [
+        "reporter",
+        "unit",
+        "product_code",
+    ]
+    # Depending on the df, other columns to be considered in order to group the data
+    add_group_data_column = ["product", "partner", "element", "flow", "unit_code"]
+    # Select for grouping the data only columns contained into the df
+    for column in df:
+        if column in add_group_data_column:
+            # If Comtrade db, unit code and unit are nan and have to be removed
+            if column == "unit_code":
+                group_data_pivot_table.remove("unit")
+                continue
+            group_data_pivot_table.append(column)
+    # Reshape df to plot
+    df_reshape = df.pivot_table(
+        index="year",
+        columns=group_data_pivot_table,
+        values=["relative_change", "absolute_change"],
+    )
+    # Plot relative change values
+    ax = df_reshape["relative_change"].plot.bar(figsize=(20, 10), fontsize=16,)
+    ax.set_xlabel("Time [y]", fontsize=20)
+    ax.set_ylabel("[%]", fontsize=20)
+    if len(df["year_range_lower"].unique()) > 1:
+        add_title = " (wrt average of 5 previous years)"
+    else:
+        add_title = f" (wrt average of {df['year_range_lower'].unique()[0]}-{df['year_range_upper'].unique()[0]})"
+    ax.set_title("Relative change" + add_title, fontsize=20)
+    # Plot absolute change values
+    ax = df_reshape["absolute_change"].plot.line(figsize=(20, 10), fontsize=16,)
+    ax.set_xlabel("Time [y]", fontsize=20)
+    if "unit" in group_data_pivot_table:
+        ax.set_ylabel(f"[{'/'.join(df['unit'].unique().tolist())}]", fontsize=20)
+    ax.set_title("Absolute change" + add_title, fontsize=20)
+    # Show plot
+    plt.show()
 
 
 def obj_function(breakpoints, x, y, num_breakpoints, function, fcache):
@@ -153,9 +215,10 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
     # Check if columns are present in the original dataframe
     for column in add_columns:
         if column in df.columns:
-            # For comtrade db, do not consider unit column which is always nan
+            # For comtrade db, do not consider unit and unit_code columns which are always nan
             if column == "unit_code":
                 groupby_column_list.remove("unit")
+                continue
             groupby_column_list.append(column)
     # Define groups with respect to calculate the segmented regressions
     df_groups = df.groupby(groupby_column_list)
@@ -320,32 +383,35 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
     return df_segmented_regression
 
 
-def relative_change(df, years=5, last_value=True, year_range=[]):
+def relative_absolute_change(df, years=5, last_value=True, year_range=[]):
     """
-    Calculate the relative change of a quantity with respect to
+    Calculate the relative and absolute change of a quantity with respect to
     values assumed by that quantity in the n previous years or with respect to a year range given, for
     production and trade data.
     Relative change of a value is calculated as:
         (value of the reference year - mean of values of previous n years (or year range given)) / mean of values of previous n years (or year range given) * 100
+    Absolute change of a value is calculated as:
+        value of the reference year - mean of values of previous n years (or year range given)
 
-    :param (DataFrame) df, dataframe containing the quantity with respect to calculate the relative change in time
-    :param (int) years, temporal window over calculating the relative change (default = 5)
+    :param (DataFrame) df, dataframe containing the quantity with respect to calculate the relative and absolute change in time
+    :param (int) years, temporal window over calculating the relative and absolute change (default = 5)
     :param (boolean) last_value, if True returns only values related to the most recent year (default = True)
     :param (list) year_range -> [lower year (int), upper year (int)], if given the function computes the average value with respect to this range and does not consider the years argument (default = empty)
 
-    :return (DataFrame) df_rel_change, dataframe which contains new columns
+    :return (DataFrame) df_change, dataframe which contains new columns
         "average_value" mean of values of the year range
         "relative_change" value calculated
+        "absolute_change" value calculated
         "year_range_lower" lower year with respect to compute the average value
         "year_range_upper" upper year with respect to compute the average value
 
-    As example, compute the relative change for soy trade products from Brazil as reporter to Europe and
+    As example, compute the relative and absolute change for soy trade products from Brazil as reporter to Europe and
     rest of the world as partners.
     Import dependencies
     
         >>> from biotrade.faostat import faostat
         >>> from biotrade.faostat.aggregate import agg_trade_eu_row
-        >>> from biotrade.common.time_series import relative_change
+        >>> from biotrade.common.time_series import relative_absolute_change
 
     Select soy trade products with Brazil as reporter
 
@@ -356,13 +422,13 @@ def relative_change(df, years=5, last_value=True, year_range=[]):
 
         >>> soy_trade_agg = agg_trade_eu_row(soy_trade)
 
-    Calculate the relative change of values in time for the most recent year, considering the last 5 years
+    Calculate the relative and absolute change of values in time for the most recent year, considering the last 5 years
         
-        >>> soy_trade_relative_change1 = relative_change(soy_trade_agg, years= 5, last_value = True)
+        >>> soy_trade_change1 = relative_absolute_change(soy_trade_agg, years= 5, last_value = True)
 
-    Calculate the relative change of values in time with respect to the average value between 2000 and 2010
+    Calculate the relative and absolute change of values in time with respect to the average value between 2000 and 2010
         
-        >>> soy_trade_relative_change2 = relative_change(soy_trade_agg, year_range = [2000, 2010], last_value = False)
+        >>> soy_trade_change2 = relative_absolute_change(soy_trade_agg, year_range = [2000, 2010], last_value = False)
     
     """
     # Define value column name
@@ -379,14 +445,15 @@ def relative_change(df, years=5, last_value=True, year_range=[]):
     # Check if columns are present in the original dataframe
     for column in add_columns:
         if column in df.columns:
-            # For comtrade db, do not consider unit column which is always nan
+            # For comtrade db, do not consider unit and unit_code columns which are always nan
             if column == "unit_code":
                 groupby_column_list.remove("unit")
+                continue
             groupby_column_list.append(column)
-    # Define groups with respect to calculate the relative change of values in time
+    # Define groups with respect to calculate the relative and absolute change of values in time
     df_groups = df.groupby(groupby_column_list)
     # Allocate df reshaped to return
-    df_rel_change = pd.DataFrame()
+    df_change = pd.DataFrame()
     # Column list to perform calculations
     column_list_calc = []
     # If a year range is given, consider it to calculate the average value
@@ -394,7 +461,7 @@ def relative_change(df, years=5, last_value=True, year_range=[]):
         years = 0
     # If a year range is not given, consider the n years before
     elif years > 0:
-        # Add columns with respect to the number of years to calculate the relative change
+        # Add columns with respect to the number of years to calculate the relative and absolute change
         for year in range(1, years + 1):
             column_list_calc.append(f"value_{year}_year_before")
     # Colum to perform the average value
@@ -424,12 +491,13 @@ def relative_change(df, years=5, last_value=True, year_range=[]):
                 break
             # Shift value column up with respect to the number of years considered
             df_key[column] = df_key[value_column].shift(-(idx) - 1)
-        # Finally calculate the relative change column
+        # Finally calculate the relative and absolute change columns
         df_key["relative_change"] = (
             (df_key[value_column] - df_key["average_value"])
             / df_key["average_value"]
             * 100
         )
+        df_key["absolute_change"] = df_key[value_column] - df_key["average_value"]
         # 0/0 and float/0 treated as NaN
         df_key["relative_change"].replace([np.inf, -np.inf], np.nan, inplace=True)
         # Define 2 new columns with the lower and upper years of the average value
@@ -445,6 +513,6 @@ def relative_change(df, years=5, last_value=True, year_range=[]):
         if last_value:
             df_key = df_key[0:1]
         # Add the group to the final dataframe to return
-        df_rel_change = pd.concat([df_rel_change, df_key], ignore_index=True)
-    # Final dataframe with the new column relative_change
-    return df_rel_change
+        df_change = pd.concat([df_change, df_key], ignore_index=True)
+    # Final dataframe with the new columns
+    return df_change
