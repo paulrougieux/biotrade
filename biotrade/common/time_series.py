@@ -338,9 +338,13 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
                 ]
             # If plot is True plot the x-y estimated values of the segmented regression
             if plot:
-                x_interval = np.array([xi.min(), xi.max()])
-                y_interval = f.slope * x_interval + f.intercept
-                plt.plot(x_interval, y_interval, "ro-", label="Segmented regression")
+                # Plot only statically significant results
+                if f.pvalue < 0.05:
+                    x_interval = np.array([xi.min(), xi.max()])
+                    y_interval = f.slope * x_interval + f.intercept
+                    plt.plot(
+                        x_interval, y_interval, "ro-", label="Segmented regression"
+                    )
                 if xi.max() == x.max():
                     if mk_results.h:
                         x_mk_interval = np.array([xi.min(), xi.max()])
