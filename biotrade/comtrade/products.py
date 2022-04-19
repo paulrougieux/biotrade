@@ -45,7 +45,7 @@ class Products(object):
         self.hs_csv_file = self.parent.data_dir / "classificationHS.csv"
 
     @property
-    def hs(self, update=False):
+    def hs(self):
         """List of products as stored in the database
 
         Usage:
@@ -63,7 +63,7 @@ class Products(object):
         return df
 
     @property
-    def short_names(self, update=False):
+    def short_names(self):
         """List of short product names as stored in the package config_data folder
 
         Usage:
@@ -73,7 +73,10 @@ class Products(object):
 
         """
         file_name = self.config_data_dir / "comtrade_hs_product_short_names.csv"
-        df = pandas.read_csv(file_name)
+        df = pandas.read_csv(
+            file_name,
+            dtype={"product_code": "str"},
+        )
         return df
 
     @property
