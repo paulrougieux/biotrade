@@ -113,6 +113,11 @@ class Pump:
         # Rename columns using the naming convention defined in self.column_names
         mapping = self.column_names.set_index(renaming_from).to_dict()[renaming_to]
         df.rename(columns=mapping, inplace=True)
+        # Rename column content to snake case using a compiled regex
+        regex_pat = re.compile(r"\W+")
+        df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+        # Remove the plural "s"
+        df["flow"] = df["flow"].str.replace("s", "", regex=True)
         return df
 
     def download_bulk_csv(self, period, frequency):
