@@ -63,6 +63,20 @@ class Products(object):
         return df
 
     @property
+    def short_names(self, update=False):
+        """List of short product names as stored in the package config_data folder
+
+        Usage:
+
+            >>> from biotrade.comtrade import comtrade
+            >>> comtrade.products.short_names
+
+        """
+        file_name = self.config_data_dir / "comtrade_hs_product_short_names.csv"
+        df = pandas.read_csv(file_name)
+        return df
+
+    @property
     def hs2d(self):
         """The module internal list of products at the 2 digits level.
 
