@@ -4,6 +4,7 @@ Written by Selene Patani.
 Functions to return time series change detections and associated plots.
 """
 
+import math
 import pandas as pd
 import numpy as np
 from scipy import optimize, stats
@@ -74,7 +75,7 @@ def plot_relative_absolute_change(df):
     plt.show()
 
 
-def obj_function(breakpoints, x, y, num_breakpoints, function, fcache):
+def obj_function(breakpoints, x, y, num_breakpoints, function, min_data_points, fcache):
     """
     Function which computes the obj of the segmented regressions
     based on the mean of coefficient of determination (R2) with respect to the number of break points or based on the Residual Sum of Squares (RSS),
@@ -84,8 +85,12 @@ def obj_function(breakpoints, x, y, num_breakpoints, function, fcache):
     :param (float) y, values of dependent variable
     :param (string) function, the objective to calculate could be "R2" or "RSS"
     :param (integer) num_breakpoints, number of breaks, in other terms nr. segments - 1
+    :param (string) function, the objective to calculate could be "R2" or "RSS", i.e. coefficient of determination based or
+        residual sum of squares based (default = "RSS")
+    :param (int) min_data_points, minimum nr of data for each segment of the linear regression (default = 7)
     :param (dictionary) fcache, values of the objective function for each evaluated
         location
+
     :return (dictionary) fcache updated
     """
     # Reorder breakpoint locations into a tuple
@@ -93,7 +98,7 @@ def obj_function(breakpoints, x, y, num_breakpoints, function, fcache):
     # Calculate obj function if not already done for the specific breakpoint location
     if breakpoints not in fcache:
         # Calculate the linear regression coefficients for the segments cut by breakpoint locations
-        result = find_best_piecewise_polynomial(breakpoints, x, y)
+        result = find_best_piecewise_polynomial(breakpoints, x, y, min_data_points)
         # Segments with more than 6 point
         if result:
             # Initialization
@@ -111,19 +116,23 @@ def obj_function(breakpoints, x, y, num_breakpoints, function, fcache):
                         - (np.sum((yi - (f.slope * xi + f.intercept)) ** 2))
                         / (np.sum((yi - yi.mean()) ** 2))
                     ) / (num_breakpoints + 1)
-        # Penalize segments with less then 7 points
+        # Penalize segments with less than min_data_points
         else:
             obj = np.inf
         fcache[breakpoints] = obj
     return fcache[breakpoints]
 
 
-def find_best_piecewise_polynomial(breakpoints, x, y):
+def find_best_piecewise_polynomial(
+    breakpoints, x, y, min_data_points,
+):
     """
     Function with computes the linear regression statistics for the breakpoint locations
     :param (np.array) breakpoints, the location of breakpoints
     :param (float) x, values of independent variable
     :param (float) y, values of dependent variable
+    :param (int) min_data_points, minimum nr of data for each segment of the linear regression (default = 7)
+
     :return (list) result, containing statistics of the linear regression and values of the independent and
     dependent piece variables
     """
@@ -143,8 +152,8 @@ def find_best_piecewise_polynomial(breakpoints, x, y):
         # Do not consider empty arrays
         if not xi.size:
             continue
-        # Do not consider linear regressions with less than 7 points
-        elif 0 < len(xi) < 7:
+        # Do not consider linear regressions with less than minimum number of points argument
+        elif 0 < len(xi) < min_data_points:
             # Break the loop and penalize the result putting an empty list
             result = []
             break
@@ -155,7 +164,9 @@ def find_best_piecewise_polynomial(breakpoints, x, y):
     return result
 
 
-def segmented_regression(df, plot=False, last_value=True, function="RSS"):
+def segmented_regression(
+    df, plot=False, last_value=True, function="RSS", min_data_points=7, alpha=0.05
+):
     """
     Calculate the linear regression statistics of the segmented regression
     based on the optimization of the objective function built on R2 results
@@ -165,6 +176,8 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
     :param (boolean) last_value, if True returns only values related to the most recent year (default = True)
     :param (string) function, the objective to calculate could be "R2" or "RSS", i.e. coefficient of determination based or
         residual sum of squares based (default = "RSS")
+    :param (int) min_data_points, minimum nr of data for each segment of the linear regression (default = 7)
+    :param (float) alpha, significance level of statistical tests (default = 0.05)
 
     :return (DataFrame) df_segmented_regression, dataframe which contains new columns related to
     linear regression calculations
@@ -233,16 +246,16 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
         y = np.array(df_key[value_column].values.tolist())
         # Pre allocation
         best_breakpoints = ()
-        # Loop over the number of breakpoints (max number of breakpoints is round(len(x))/7 -1)
+        # Loop over the number of breakpoints (max number of breakpoints is floor(len(x)/min_data_points) -1)
         # to check the best objective function result
-        for num_breakpoints in range(0, round(len(x) / 7)):
+        for num_breakpoints in range(0, math.floor(len(x) / min_data_points)):
             # If no breakpoints, no need to optimize the breakpoint location
             if num_breakpoints == 0:
                 # Fake position
                 breakpoints_pos = (0,)
                 # Calculate the objective function for the entire array
                 breakpoints_result = obj_function(
-                    (0,), x, y, num_breakpoints, function, {}
+                    (0,), x, y, num_breakpoints, function, min_data_points, {}
                 )
                 # Store results
                 breakpoints = (breakpoints_pos, breakpoints_result)
@@ -256,7 +269,7 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
                 breakpoints = optimize.brute(
                     obj_function,
                     grid,
-                    args=(x, y, num_breakpoints, function, {}),
+                    args=(x, y, num_breakpoints, function, min_data_points, {}),
                     full_output=True,
                     finish=None,
                 )
@@ -289,7 +302,9 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
                 ylabel, fontsize=20,
             )
         # Add new columns to df reporting the linear regression statistics
-        for f, xi, yi in find_best_piecewise_polynomial(best_breakpoints[0], x, y):
+        for f, xi, yi in find_best_piecewise_polynomial(
+            best_breakpoints[0], x, y, min_data_points
+        ):
             df_key.loc[
                 (df_key["year"] >= xi.min()) & (df_key["year"] <= xi.max()),
                 [
@@ -313,8 +328,8 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
                 xi.max(),
             ]
             if xi.max() == x.max():
-                # Significance level (0.05 is the default)
-                mk_results = mk.original_test(yi)
+                # Significance level alpha (0.05 is the default)
+                mk_results = mk.original_test(yi, alpha)
                 # The estimate of the intercept is calculated by use of the Conover (1980) equation
                 mk_results = mk_results._replace(
                     intercept=np.median(yi) - np.median(xi) * mk_results.slope
@@ -338,8 +353,8 @@ def segmented_regression(df, plot=False, last_value=True, function="RSS"):
                 ]
             # If plot is True plot the x-y estimated values of the segmented regression
             if plot:
-                # Plot only statically significant results
-                if f.pvalue < 0.05:
+                # Plot only statically significant results below the significance level
+                if f.pvalue < alpha:
                     x_interval = np.array([xi.min(), xi.max()])
                     y_interval = f.slope * x_interval + f.intercept
                     plt.plot(
