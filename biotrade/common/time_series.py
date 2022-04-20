@@ -75,6 +75,133 @@ def plot_relative_absolute_change(df):
     plt.show()
 
 
+def plot_segmented_regression(df):
+    """
+    Function to plot segments defined by the linear regression interpolant (see segmented_regression function for the calculations)
+    for each group of data
+    :param (DataFrame) df, the output of segmented_regression function
+
+    For example, select production quantity of palm oil from 1986 with Malaysia as reporter, compute the segmented regression analysis and plot results
+
+        >>> from biotrade.faostat import faostat
+        >>> from biotrade.common.time_series import segmented_regression, plot_segmented_regression
+        >>> palm_oil_data = faostat.db.select(
+        >>>     table="crop_production", reporter="Malaysia", product_code=257
+        >>> )
+        >>> palm_oil_prod = palm_oil_data[
+        >>>     (palm_oil_data["element"] == "production") & (palm_oil_data["year"] > 1986)
+        >>> ]
+        >>> df_segment_reg = segmented_regression(palm_oil_prod, last_value=False, function="R2")
+        >>> plot_segmented_regression(df_segment_reg)
+    
+    """
+    # Define value column name
+    if "value" in df.columns:
+        # Value column of faostat db
+        value_column = "value"
+    elif "net_weight" in df.columns:
+        # Value column is called "net_weight" in comtrade db
+        value_column = "net_weight"
+    # Define group columns
+    groupby_column_list = ["reporter_code", "product_code", "unit"]
+    # Depending on the db tables, different columns can be used to group the dataframe
+    add_columns = ["partner", "element", "flow", "unit_code"]
+    # Check if columns are present in the original dataframe
+    for column in add_columns:
+        if column in df.columns:
+            # For comtrade db, do not consider unit and unit_code columns which are always nan
+            if column == "unit_code":
+                groupby_column_list.remove("unit")
+                continue
+            groupby_column_list.append(column)
+    # Define groups with respect to calculate the segmented regressions
+    df_groups = df.groupby(groupby_column_list)
+    # Extract the information of significance level imposed and the type of obj function
+    alpha = df["significance_level"].unique()[0]
+    function = df["obj_function"].unique()[0]
+    # Loop on each group to plot
+    for key in df_groups.groups.keys():
+        # Select data related to the specific group
+        df_key = df_groups.get_group(key).sort_values(by="year")
+        # Create arrays of independent (column "year") and dependent (colum "values") variables
+        x = np.array(df_key["year"].values.tolist())
+        y = np.array(df_key[value_column].values.tolist())
+        # Plot the x-y scattered values
+        plt.figure(figsize=(20, 10))
+        plt.rc("font", size=16)
+        plt.scatter(x, y, c="blue", s=50, label="Time series")
+        plt.xlabel("Time [y]", fontsize=20)
+        if "partner" in df_key:
+            title = f"Reporter {df_key['reporter'].unique()[0]} - Partner {df_key['partner'].unique()[0]} ({function})"
+        # No partner, only production
+        else:
+            title = f"Reporter {df_key['reporter'].unique()[0]} ({function})"
+        plt.title(
+            title, fontsize=20,
+        )
+        # Faostat tables
+        if "element" in df_key:
+            ylabel = f"Product {df_key['product'].unique()[0]} ({df_key['element'].unique()[0]}) [{df_key['unit'].unique()[0]}]"
+        # Comtrade tables
+        else:
+            ylabel = f"Product {df_key['product'].unique()[0]} ({df_key['flow'].unique()[0]})"
+        plt.ylabel(
+            ylabel, fontsize=20,
+        )
+        # Plot segments
+        for year_range in (
+            df_key[["year_range_lower", "year_range_upper"]].drop_duplicates().values
+        ):
+            # Extract segment dataframe
+            df_key_segment = df_key[
+                (df_key["year"] >= year_range[0]) & (df_key["year"] <= year_range[1])
+            ]
+            # Extract information to plot
+            pvalue_segment = df_key_segment["pvalue"].unique()[0]
+            lower_year_segment = df_key_segment["year_range_lower"].unique()[0]
+            upper_year_segment = df_key_segment["year_range_upper"].unique()[0]
+            slope_segment = df_key_segment["slope"].unique()[0]
+            intercept_segment = df_key_segment["intercept"].unique()[0]
+            # Plot only statically significant results below the significance level for the segmented regression
+            if pvalue_segment < alpha:
+                x_interval = np.array([lower_year_segment, upper_year_segment])
+                y_interval = slope_segment * x_interval + intercept_segment
+                plt.plot(x_interval, y_interval, "ro-", label="Segmented regression")
+            # For the last segment the Mann Kendall test has been performed
+            if upper_year_segment == x.max():
+                mk_ha_segment = df_key_segment["mk_ha_test"].unique()[0]
+                # If the test succeeded, plot the associated results
+                if mk_ha_segment:
+                    mk_slope_segment = df_key_segment["mk_slope"].unique()[0]
+                    mk_intercept_segment = df_key_segment["mk_intercept"].unique()[0]
+                    x_mk_interval = np.array([lower_year_segment, upper_year_segment])
+                    y_mk_interval = (
+                        mk_slope_segment * x_mk_interval + mk_intercept_segment
+                    )
+                    plt.plot(
+                        x_mk_interval,
+                        y_mk_interval,
+                        "o-",
+                        color="orange",
+                        label="Theil–Sen estimator",
+                    )
+            # Do not plot vertical line if it is the last value of the time series
+            else:
+                plt.axvline(
+                    x=upper_year_segment + 0.5,
+                    linestyle="--",
+                    color="k",
+                    label="Breakpoint",
+                )
+        # Create legend without repetitions
+        handles, labels = plt.gca().get_legend_handles_labels()
+        by_label = OrderedDict(zip(labels, handles))
+        plt.legend(by_label.values(), by_label.keys())
+
+    # Show plot
+    plt.show()
+
+
 def obj_function(breakpoints, x, y, num_breakpoints, function, min_data_points, fcache):
     """
     Function which computes the obj of the segmented regressions
@@ -165,14 +292,13 @@ def find_best_piecewise_polynomial(
 
 
 def segmented_regression(
-    df, plot=False, last_value=True, function="RSS", min_data_points=7, alpha=0.05
+    df, last_value=True, function="RSS", min_data_points=7, alpha=0.05
 ):
     """
     Calculate the linear regression statistics of the segmented regression
     based on the optimization of the objective function built on R2 results
 
     :param (DataFrame) df, dataframe containing the time series with respect to calculate the segmented regressions
-    :param (boolean) plot, if True return plot of the regressions (default = False)
     :param (boolean) last_value, if True returns only values related to the most recent year (default = True)
     :param (string) function, the objective to calculate could be "R2" or "RSS", i.e. coefficient of determination based or
         residual sum of squares based (default = "RSS")
@@ -189,7 +315,6 @@ def segmented_regression(
         >>> from biotrade.faostat import faostat
         >>> from biotrade.faostat.aggregate import agg_trade_eu_row
         >>> from biotrade.common.time_series import segmented_regression
-        >>> import matplotlib.pyplot as plt
 
     Select soybean trade products with Brazil as reporter
 
@@ -204,14 +329,10 @@ def segmented_regression(
 
         >>> soybean_exp_agg = soybean_trade_agg[soybean_trade_agg["element"] == "export_quantity"]
 
-    Calculate the segmented regression of values returning the most recent year, first using RSS and then R2 objective function
+    Calculate the segmented regression of values returning the most recent year, first using RSS and then R2 objective function, keeping the minimum number of points and the significance level as default
 
-        >>> soybean_exp_rss = segmented_regression(soybean_exp_agg, plot = True, last_value = True, function = "RSS")
-        >>> soybean_exp_r2 = segmented_regression(soybean_exp_agg, plot = True, last_value = True, function = "R2")
-    
-    Plot results
-    
-        >>> plt.show()
+        >>> soybean_exp_rss = segmented_regression(soybean_exp_agg, last_value = True, function = "RSS")
+        >>> soybean_exp_r2 = segmented_regression(soybean_exp_agg, last_value = True, function = "R2")
 
     """
     # Define value column name
@@ -278,29 +399,6 @@ def segmented_regression(
                 best_breakpoints = breakpoints
             elif breakpoints[1] < best_breakpoints[1]:
                 best_breakpoints = breakpoints
-        # If plot is True plot the x-y scattered values
-        if plot:
-            plt.figure(figsize=(20, 10))
-            plt.rc("font", size=16)
-            plt.scatter(x, y, c="blue", s=50, label="Time series")
-            plt.xlabel("Time [y]", fontsize=20)
-            if "partner" in df_key:
-                title = f"Reporter {df_key['reporter'].unique()[0]} - Partner {df_key['partner'].unique()[0]} ({function})"
-            # No partner, only production
-            else:
-                title = f"Reporter {df_key['reporter'].unique()[0]} ({function})"
-            plt.title(
-                title, fontsize=20,
-            )
-            # Faostat tables
-            if "element" in df_key:
-                ylabel = f"Product {df_key['product'].unique()[0]} ({df_key['element'].unique()[0]}) [{df_key['unit'].unique()[0]}]"
-            # Comtrade tables
-            else:
-                ylabel = f"Product {df_key['product'].unique()[0]} ({df_key['flow'].unique()[0]})"
-            plt.ylabel(
-                ylabel, fontsize=20,
-            )
         # Add new columns to df reporting the linear regression statistics
         for f, xi, yi in find_best_piecewise_polynomial(
             best_breakpoints[0], x, y, min_data_points
@@ -351,42 +449,6 @@ def segmented_regression(
                     mk_results.slope,
                     mk_results.intercept,
                 ]
-            # If plot is True plot the x-y estimated values of the segmented regression
-            if plot:
-                # Plot only statically significant results below the significance level
-                if f.pvalue < alpha:
-                    x_interval = np.array([xi.min(), xi.max()])
-                    y_interval = f.slope * x_interval + f.intercept
-                    plt.plot(
-                        x_interval, y_interval, "ro-", label="Segmented regression"
-                    )
-                if xi.max() == x.max():
-                    if mk_results.h:
-                        x_mk_interval = np.array([xi.min(), xi.max()])
-                        y_mk_interval = (
-                            mk_results.slope * x_mk_interval + mk_results.intercept
-                        )
-                        plt.plot(
-                            x_mk_interval,
-                            y_mk_interval,
-                            "o-",
-                            color="orange",
-                            label="Theil–Sen estimator",
-                        )
-                # Do not plot vertical line if it is last value of the time series
-                else:
-                    plt.axvline(
-                        x=df_key[
-                            (df_key["year"] >= xi.min()) & (df_key["year"] <= xi.max())
-                        ]["year_range_upper"].unique()[0]
-                        + 0.5,
-                        linestyle="--",
-                        color="k",
-                        label="Breakpoint",
-                    )
-                handles, labels = plt.gca().get_legend_handles_labels()
-                by_label = OrderedDict(zip(labels, handles))
-                plt.legend(by_label.values(), by_label.keys())
         # Return values related to most recent year at disposal
         if last_value:
             df_key = df_key.sort_values(by="year", ascending=False)[0:1]
@@ -398,6 +460,10 @@ def segmented_regression(
     df_segmented_regression[
         ["year_range_lower", "year_range_upper"]
     ] = df_segmented_regression[["year_range_lower", "year_range_upper"]].astype("int")
+    # Add information regarding the obj function used
+    df_segmented_regression["obj_function"] = function
+    # Add information regarding the significance level
+    df_segmented_regression["significance_level"] = alpha
     # Final dataframe with the new column statistic columns
     return df_segmented_regression
 
