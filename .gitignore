@@ -10,7 +10,9 @@
 *.xlsx
 .vscode
 /debug.py
-scripts/faostat_commodity_change_export.csv
+scripts/commodity_change_production.csv
+scripts/commodity_change_harvested_area.csv
+scripts/commodity_change_trade.csv
 scripts/Trade_DetailedTradeMatrix_E_All_Data_(Normalized).csv
 scripts/Commerce_MatricesCommerceDetaillees_F_Toutes_les_Données.csv
 scripts/Comercio_MatrizDetalladaComercio_S_Todos_los_Datos_(Normalizado).csv
