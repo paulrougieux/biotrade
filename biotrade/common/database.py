@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Written by Paul Rougieux.
+Written by Paul Rougieux and Selene Patani.
 
 JRC biomass Project.
 Unit D1 Bioeconomy.
@@ -10,6 +10,9 @@ Unit D1 Bioeconomy.
 Parent object to faostat.database.py and comtrade.database.py
 
 """
+
+from sqlalchemy import select
+from sqlalchemy.sql import func
 
 
 class Database:
@@ -63,3 +66,28 @@ class Database:
             table.create()
             self.logger.info("Created table %s in schema %s.", table.name, self.schema)
         return table
+
+    def most_recent_year(
+        self, table,
+    ):
+        """
+        Query db table to check which is the most recent year of data.
+
+        :param (string) table, name of table to check data
+
+        :return (int) most_recent_year, the year of the most updated version of table data
+
+        For example check which is the most recent year for yearly table of Comtrade db
+
+            >>> from biotrade.comtrade import comtrade
+            >>> most_recent_year = comtrade.db.most_recent_year("yearly")
+
+        """
+        # Select table
+        table = self.tables[table]
+        # Most recent year statement
+        stmt = select(func.max(table.c.year))
+        # Read data from db to data frame and select the first one
+        most_recent_year = self.read_sql_query(stmt)
+        most_recent_year = most_recent_year.values[0][0]
+        return most_recent_year
