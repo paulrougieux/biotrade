@@ -16,11 +16,14 @@ jupyter:
 
 Here we report some examples of the application of segmeted regression implemented into the biotrade package
 
+General comment: objective function based on the residual sum of squares (RSS) tends to overfit the data and seems to be related
+to the minimum number of points used for the segments
+
 ```python
 # Import dependencies
 from biotrade.faostat import faostat
 from biotrade.faostat.aggregate import agg_trade_eu_row
-from biotrade.common.time_series import segmented_regression
+from biotrade.common.time_series import segmented_regression, plot_segmented_regression
 import matplotlib.pyplot as plt
 ```
 
@@ -35,14 +38,18 @@ soybean_trade = faostat.db.select(
 soybean_trade_agg = agg_trade_eu_row(soybean_trade)
 # Select export quantity and eu as partner
 soybean_exp_agg_eu = soybean_trade_agg[(soybean_trade_agg["element"] == "export_quantity") & (soybean_trade_agg["partner"] == "eu")]
-# Use as objective function the residual sum of squares (RSS)
+# Use as objective function the residual sum of squares (RSS) and at least 10 points for the linear regression
 soybean_exp_eu_regression1 = segmented_regression(
-    soybean_exp_agg_eu, plot=True, last_value=False, function="RSS"
+    soybean_exp_agg_eu, last_value=False, function="RSS", alpha = 0.05, min_data_points = 10,
 )
-# Use as objective function the coefficient of determination (R2)
+# Plot results
+plot_segmented_regression(soybean_exp_eu_regression1)
+# Use as objective function the coefficient of determination (R2) and at least 7 points for the linear regression
 soybean_exp_eu_regression2 = segmented_regression(
-    soybean_exp_agg_eu, plot=True, last_value=False, function="R2"
+    soybean_exp_agg_eu, last_value=False, function="R2", alpha = 0.05, min_data_points = 7,
 )
+# Plot results
+plot_segmented_regression(soybean_exp_eu_regression2)
 ```
 
 ```python
@@ -62,14 +69,18 @@ soybean_exp_eu_regression2
 ```python
 # Select export quantity and row as partner
 soybean_exp_agg_row = soybean_trade_agg[(soybean_trade_agg["element"] == "export_quantity") & (soybean_trade_agg["partner"] == "row")]
-# Use as objective function the residual sum of squares (RSS)
+# Use as objective function the residual sum of squares (RSS)  and at least 10 points for the linear regression
 soybean_exp_row_regression1 = segmented_regression(
-    soybean_exp_agg_row, plot=True, last_value=False, function="RSS"
+    soybean_exp_agg_row, last_value=False, function="RSS", alpha = 0.05, min_data_points = 10,
 )
-# Use as objective function the coefficient of determination (R2)
+#Plot results
+plot_segmented_regression(soybean_exp_row_regression1)
+# Use as objective function the coefficient of determination (R2) and at least 7 points for the linear regression
 soybean_exp_row_regression2 = segmented_regression(
-    soybean_exp_agg_row, plot=True, last_value=False, function="R2"
+    soybean_exp_agg_row, last_value=False, function="R2", alpha = 0.05, min_data_points = 7,
 )
+#Plot results
+plot_segmented_regression(soybean_exp_row_regression2)
 ```
 
 ### Db: Faostat, Reporter: Malaysia, Product: palm oil (257), Flow: production
@@ -81,14 +92,18 @@ palm_oil_data = faostat.db.select(
 )
 # Select production quantity from 1986
 palm_oil_prod = palm_oil_data[(palm_oil_data["element"] == "production") & (palm_oil_data["year"] > 1986)]
-# Use as objective function the residual sum of squares (RSS)
+# Use as objective function the residual sum of squares (RSS) and at least 10 points for the linear regression
 palm_oil_prod_regression1 = segmented_regression(
-    palm_oil_prod, plot=True, last_value=False, function="RSS"
+    palm_oil_prod, last_value=False, function="RSS", alpha = 0.05, min_data_points = 10,
 )
-# Use as objective function the coefficient of determination (R2)
+# Plot results
+plot_segmented_regression(palm_oil_prod_regression1)
+# Use as objective function the coefficient of determination (R2) and at least 7 points for the linear regression
 palm_oil_prod_regression2 = segmented_regression(
-    palm_oil_prod, plot=True, last_value=False, function="R2"
+    palm_oil_prod, last_value=False, function="R2", alpha = 0.05, min_data_points = 7,
 )
+# Plot results
+plot_segmented_regression(palm_oil_prod_regression2)
 ```
 
 ### Db: Faostat, Reporter: Cameroon, Partner: EU, Product: cocoabeans (661), Flow: export quantity
@@ -102,14 +117,18 @@ cocoabean_trade = faostat.db.select(
 cocoabean_trade_agg = agg_trade_eu_row(cocoabean_trade)
 # Select export quantity and eu as partner
 cocoabean_exp_agg_eu = cocoabean_trade_agg[(cocoabean_trade_agg["element"] == "export_quantity") & (cocoabean_trade_agg["partner"] == "eu")]
-# Use as objective function the residual sum of squares (RSS)
+# Use as objective function the residual sum of squares (RSS) and at least 10 points for the linear regression
 cocoabean_exp_eu_regression1 = segmented_regression(
-    cocoabean_exp_agg_eu, plot=True, last_value=False, function="RSS"
+    cocoabean_exp_agg_eu, last_value=False, function="RSS", alpha = 0.05, min_data_points = 10,
 )
-# Use as objective function the coefficient of determination (R2)
+# Plot results
+plot_segmented_regression(cocoabean_exp_eu_regression1)
+# Use as objective function the coefficient of determination (R2) and at least 7 points for the linear regression
 cocoabean_exp_eu_regression2 = segmented_regression(
-    cocoabean_exp_agg_eu, plot=True, last_value=False, function="R2"
+    cocoabean_exp_agg_eu, last_value=False, function="R2", alpha = 0.05, min_data_points = 7,
 )
+# Plot results
+plot_segmented_regression(cocoabean_exp_eu_regression2)
 ```
 
 ### Db: Faostat, Reporter: Cameroon, Partner: Row, Product: cocoabeans (661), Flow: export quantity
@@ -117,14 +136,17 @@ cocoabean_exp_eu_regression2 = segmented_regression(
 ```python
 # Select export quantity and row as partner
 cocoabean_exp_agg_row = cocoabean_trade_agg[(cocoabean_trade_agg["element"] == "export_quantity") & (cocoabean_trade_agg["partner"] == "row")]
-# Use as objective function the residual sum of squares (RSS)
+# Use as objective function the residual sum of squares (RSS) and at least 10 points for the linear regression
 cocoabean_exp_row_regression1 = segmented_regression(
-    cocoabean_exp_agg_row, plot=True, last_value=False, function="RSS"
+    cocoabean_exp_agg_row, last_value=False, function="RSS", alpha = 0.05, min_data_points = 10,
 )
-# Use as objective function the coefficient of determination (R2)
+# Plot results
+plot_segmented_regression(cocoabean_exp_row_regression1)
+# Use as objective function the coefficient of determination (R2) and at least 7 points for the linear regression
 cocoabean_exp_row_regression2 = segmented_regression(
-    cocoabean_exp_agg_row, plot=True, last_value=False, function="R2"
+    cocoabean_exp_agg_row, last_value=False, function="R2", alpha = 0.05, min_data_points = 7,
 )
+plot_segmented_regression(cocoabean_exp_row_regression2)
 ```
 
 ### Db: Faostat, Reporter: Brazil, Product: coffee green (656), Flow: area harvested
@@ -136,15 +158,18 @@ coffe_green_data = faostat.db.select(
 )
 # Select area harvested quantity from 1986
 coffe_green_areah = coffe_green_data[(coffe_green_data["element"] == "area_harvested") & (coffe_green_data["year"] > 1986)]
-# Use as objective function the residual sum of squares (RSS)
+# Use as objective function the residual sum of squares (RSS) and at least 10 points for the linear regression
 coffe_green_areah_regression1 = segmented_regression(
-    coffe_green_areah, plot=True, last_value=False, function="RSS"
+    coffe_green_areah, last_value=False, function="RSS", alpha = 0.05, min_data_points = 10,
 )
-# Use as objective function the coefficient of determination (R2)
+# Plot results
+plot_segmented_regression(coffe_green_areah_regression1)
+# Use as objective function the coefficient of determination (R2) and at least 7 points for the linear regression
 coffe_green_areah_regression2 = segmented_regression(
-    coffe_green_areah, plot=True, last_value=False, function="R2"
+    coffe_green_areah, last_value=False, function="R2", alpha = 0.05, min_data_points = 7,
 )
-
+# Plot results
+plot_segmented_regression(coffe_green_areah_regression2)
 ```
 
 ```python

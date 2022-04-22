@@ -103,7 +103,7 @@ def plot_segmented_regression(df):
         # Value column is called "net_weight" in comtrade db
         value_column = "net_weight"
     # Define group columns
-    groupby_column_list = ["reporter_code", "product_code", "unit"]
+    groupby_column_list = ["reporter", "product_code", "unit"]
     # Depending on the db tables, different columns can be used to group the dataframe
     add_columns = ["partner", "element", "flow", "unit_code"]
     # Check if columns are present in the original dataframe
@@ -343,7 +343,7 @@ def segmented_regression(
         # Value column is called "net_weight" in comtrade db
         value_column = "net_weight"
     # Define group columns
-    groupby_column_list = ["reporter_code", "product_code", "unit"]
+    groupby_column_list = ["reporter", "product_code", "unit"]
     # Depending on the db tables, different columns can be used to group the dataframe
     add_columns = ["partner", "element", "flow", "unit_code"]
     # Check if columns are present in the original dataframe
@@ -524,9 +524,14 @@ def relative_absolute_change(df, years=5, last_value=True, year_range=[]):
         # Value column is called "net_weight" in comtrade db
         value_column = "net_weight"
     # Define group columns
-    groupby_column_list = ["reporter_code", "product_code", "unit"]
+    groupby_column_list = ["reporter", "product_code", "unit"]
     # Depending on the db tables, different columns can be used to group the dataframe
-    add_columns = ["partner", "element", "flow", "unit_code"]
+    add_columns = [
+        "partner",
+        "element",
+        "flow",
+        "unit_code",
+    ]
     # Check if columns are present in the original dataframe
     for column in add_columns:
         if column in df.columns:
