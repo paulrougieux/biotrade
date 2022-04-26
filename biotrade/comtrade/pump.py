@@ -216,7 +216,7 @@ class Pump:
                     encoding="utf-8",
                     # Force the id column to remain a character column,
                     # otherwise str "01" becomes int 1.
-                    dtype={"Commodity Code": str, "cmdcode": str},
+                    dtype={"Commodity Code": str, "Reporter ISO": str},
                     chunksize=chunk_size,
                 ):
                     # If length is > 0 select rows
@@ -308,6 +308,11 @@ class Pump:
                     check_data_presence = data_check,
                 )
         """
+        # Adjust frequency parameter in case it is wrong provided
+        if table_name in ("yearly", "yearly_hs2"):
+            frequency = "A"
+        elif table_name == "monthly":
+            frequency = "M"
         # Period list of downloads failed
         period_list_failed = []
         # Total records transferred from zip files of API requests
@@ -422,6 +427,11 @@ class Pump:
         >>> from biotrade.comtrade import comtrade
         >>> comtrade.pump.update_db(table_name = "monthly", frequency = "M")
         """
+        # Adjust frequency parameter in case it is wrong provided
+        if table_name in ("yearly", "yearly_hs2"):
+            frequency = "A"
+        elif table_name == "monthly":
+            frequency = "M"
         current_year = datetime.datetime.now(pytz.timezone("Europe/Rome")).date().year
         # Check if data from 2016 are present into db
         data_check = self.db.check_data_presence(
