@@ -2843,240 +2843,240 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 40,Chile,NA,NA,NA,NA,0
 40,Chile,0.07,NA,NA,NA,1
 40,Chile,0.4,NA,NA,NA,1
-41,"China, Main",NA,0.11,wheat,15,0
-41,"China, Main",0.75,0.01,flour_wheat,16,1
-41,"China, Main",0.2,NA,bran_wheat,17,1
-41,"China, Main",NA,0.05,macaroni,18,0
-41,"China, Main",NA,0.08800000000000001,rice_paddy,27,0
-41,"China, Main",0.79,NA,rice_husked,28,1
-41,"China, Main",0.15,NA,oil_rice_bran,36,1
-41,"China, Main",0.8,NA,cake_rice_bran,37,1
-41,"China, Main",0.75,0.01,flour_rice,38,1
-41,"China, Main",NA,0.04,barley,44,0
-41,"China, Main",0.55,NA,barley_pearled,46,1
-41,"China, Main",0.2,NA,beer_of_barley,51,1
-41,"China, Main",NA,0.15,maize,56,0
-41,"China, Main",0.06,NA,germ_maize,57,1
-41,"China, Main",0.8,0.02,flour_maize,58,1
-41,"China, Main",0.09,NA,bran_maize,59,1
-41,"China, Main",0.45,NA,oil_maize,60,1
-41,"China, Main",0.5,NA,cake_maize,61,1
-41,"China, Main",NA,0.042,rye,71,0
-41,"China, Main",NA,0.04,oats,75,0
-41,"China, Main",0.6,0.01,oats_rolled,76,1
-41,"China, Main",NA,0.040999999999999995,millet,79,0
-41,"China, Main",0.15,NA,bran_millet,81,1
-41,"China, Main",NA,0.042,sorghum,83,0
-41,"China, Main",0.15,NA,bran_sorghum,85,1
-41,"China, Main",NA,0.040999999999999995,buckwheat,89,0
-41,"China, Main",0.2,NA,bran_buckwheat,91,1
-41,"China, Main",NA,0.040999999999999995,triticale,97,0
-41,"China, Main",NA,0.05,potatoes,116,0
-41,"China, Main",0.2,NA,flour_potatoes,117,1
-41,"China, Main",0.58,NA,potatoes_frozen,118,1
-41,"China, Main",0.35,NA,potato_offals,120,1
-41,"China, Main",NA,0.42,sweet_potatoes,122,0
-41,"China, Main",NA,0.03,cassava,125,0
-41,"China, Main",0.35,NA,cassava_dried,128,1
-41,"China, Main",0.08,NA,sugar_non_centrifugal,163,1
-41,"China, Main",0.92,NA,sugar_refined,164,1
-41,"China, Main",0.039,NA,molasses,165,1
-41,"China, Main",0.05,NA,beet_pulp,169,1
-41,"China, Main",NA,0.031,beans_dry,176,0
-41,"China, Main",NA,0.032,peas_dry,187,0
-41,"China, Main",NA,0.03,lentils,201,0
-41,"China, Main",0.7,NA,flour_pulses,212,1
-41,"China, Main",NA,0.03,chestnut,220,0
-41,"China, Main",NA,0.03,pistachios,223,0
-41,"China, Main",0.25,NA,cashew_nuts_shelled,230,1
-41,"China, Main",0.3,NA,almonds_shelled,231,1
-41,"China, Main",0.5,NA,walnuts_shelled,232,1
-41,"China, Main",0.5,NA,hazelnuts_shelled,233,1
-41,"China, Main",1.0,NA,nuts_prepared_exc_groundnuts,235,1
-41,"China, Main",NA,0.031,soybeans,236,0
-41,"China, Main",0.15,NA,oil_soybean,237,1
-41,"China, Main",0.82,NA,cake_soybeans,238,1
-41,"China, Main",3.5,NA,soya_sauce,239,1
-41,"China, Main",0.7,NA,groundnuts_shelled,243,1
-41,"China, Main",0.42,NA,oil_groundnut,244,1
-41,"China, Main",0.55,NA,cake_groundnuts,245,1
-41,"China, Main",0.95,NA,peanut_butter,247,1
-41,"China, Main",NA,0.05,coconuts,249,0
-41,"China, Main",0.2,NA,coconuts_desiccated,250,1
-41,"China, Main",0.07,NA,palm_kernels,256,1
-41,"China, Main",0.3,NA,oil_palm,257,1
-41,"China, Main",0.48,NA,oil_palm_kernel,258,1
-41,"China, Main",0.5,NA,cake_palm_kernel,259,1
-41,"China, Main",0.45,NA,oil_castor_beans,266,1
-41,"China, Main",NA,0.03,sunflower_seed,267,0
-41,"China, Main",0.35,NA,oil_sunflower,268,1
-41,"China, Main",0.5,NA,cake_sunflower,269,1
-41,"China, Main",NA,0.042,rapeseed,270,0
-41,"China, Main",0.35,NA,oil_rapeseed,271,1
-41,"China, Main",0.63,NA,cake_rapeseed,272,1
-41,"China, Main",NA,0.03,sesame_seed,289,0
-41,"China, Main",0.45,NA,oil_sesame,290,1
-41,"China, Main",0.51,NA,cake_sesame_seed,291,1
-41,"China, Main",NA,0.05,mustard_seed,292,0
-41,"China, Main",0.66,0.031,cottonseed,329,1
-41,"China, Main",0.14,NA,oil_cottonseed,331,1
-41,"China, Main",0.55,NA,cake_cottonseed,332,1
-41,"China, Main",NA,0.03,linseed,333,0
-41,"China, Main",0.35,NA,oil_linseed,334,1
-41,"China, Main",0.61,NA,cake_linseed,335,1
-41,"China, Main",NA,0.05,artichokes,366,0
-41,"China, Main",NA,0.05,asparagus,367,0
-41,"China, Main",NA,0.05,spinach,373,0
-41,"China, Main",NA,0.07,tomatoes,388,0
-41,"China, Main",0.26,NA,tomatoes_paste,391,1
-41,"China, Main",NA,0.05,pumpkins_squash_and_gourds,394,0
-41,"China, Main",NA,0.05,cucumbers_and_gherkins,397,0
-41,"China, Main",NA,0.05,chillies_and_peppers_green,401,0
-41,"China, Main",NA,0.05,onions_shallots_green,402,0
-41,"China, Main",NA,0.1,onions_dry,403,0
-41,"China, Main",NA,0.05,garlic,406,0
-41,"China, Main",NA,0.05,leeks_other_alliaceous_vegetables,407,0
-41,"China, Main",NA,0.03,beans_green,414,0
-41,"China, Main",NA,0.03,peas_green,417,0
-41,"China, Main",0.1,NA,maize_green,446,1
-41,"China, Main",NA,0.1,mushrooms_canned,451,0
-41,"China, Main",NA,0.1,vegetables_fresh_nes,463,0
-41,"China, Main",0.9,NA,vegetables_canned_nes,465,1
-41,"China, Main",0.25,NA,vegetables_dehydrated,469,1
-41,"China, Main",1.2,NA,vegetables_in_vinegar,471,1
-41,"China, Main",0.85,NA,vegetables_preserved_nes,472,1
-41,"China, Main",0.9,NA,vegetables_frozen,473,1
-41,"China, Main",NA,0.1,bananas,486,0
-41,"China, Main",NA,0.1,oranges,490,0
-41,"China, Main",0.7,NA,juice_orange_single_strength,491,1
-41,"China, Main",NA,0.1,lemons_and_limes,497,0
-41,"China, Main",NA,0.1,grapefruit_inc_pomelos,507,0
-41,"China, Main",NA,0.1,apples,515,0
-41,"China, Main",NA,0.1,pears,521,0
-41,"China, Main",NA,0.05,quinces,523,0
-41,"China, Main",NA,0.05,peaches_and_nectarines,534,0
-41,"China, Main",0.3,NA,plums_dried_prunes,537,1
-41,"China, Main",NA,0.03,grapes,560,0
-41,"China, Main",0.25,NA,raisins,561,1
-41,"China, Main",0.74,NA,wine,564,1
-41,"China, Main",NA,0.1,watermelons,567,0
-41,"China, Main",NA,0.05,figs,569,0
-41,"China, Main",NA,0.05,pineapples,574,0
-41,"China, Main",0.5,NA,pineapples_canned,575,1
-41,"China, Main",NA,0.05,dates,577,0
-41,"China, Main",NA,0.05,persimmons,587,0
-41,"China, Main",NA,0.05,fruit_tropical_fresh_nes,603,0
-41,"China, Main",NA,0.05,fruit_fresh_nes,619,0
-41,"China, Main",0.85,NA,coffee_roasted,657,1
-41,"China, Main",0.5,NA,coffee_extracts,659,1
-41,"China, Main",0.8,NA,cocoa_paste,662,1
-41,"China, Main",0.2,NA,cocoa_husks_shell,663,1
-41,"China, Main",0.47,NA,cocoa_butter,664,1
-41,"China, Main",0.53,NA,cocoa_powder_cake,665,1
-41,"China, Main",4.7,NA,chocolate_products_nes,666,1
-41,"China, Main",NA,0.03,tea,667,0
-41,"China, Main",0.33,NA,cotton_lint,767,1
-41,"China, Main",0.04,NA,cotton_waste,769,1
-41,"China, Main",0.02,NA,cotton_linter,770,1
-41,"China, Main",0.45,NA,meat_cattle,867,1
-41,"China, Main",0.098,NA,offals_edible_cattle,868,1
-41,"China, Main",0.022000000000000002,NA,fat_cattle,869,1
-41,"China, Main",NA,0.03,milk_whole_fresh_cow,882,0
-41,"China, Main",0.04,NA,butter_cow_milk,886,1
-41,"China, Main",0.38,NA,whey_condensed,890,1
-41,"China, Main",0.33,NA,milk_whole_evaporated,894,1
-41,"China, Main",0.15,NA,cheese_whole_cow_milk,901,1
-41,"China, Main",0.1,NA,hides_cattle_fresh,919,1
-41,"China, Main",0.45,NA,buffaloes,946,1
-41,"China, Main",0.49,NA,sheep,976,1
-41,"China, Main",0.021,NA,meat_sheep,977,1
-41,"China, Main",0.084,NA,offals_sheep_edible,978,1
-41,"China, Main",0.2,NA,cheese_sheep_milk,984,1
-41,"China, Main",NA,NA,wool_greasy,987,0
-41,"China, Main",0.5,NA,goats,1016,1
-41,"China, Main",0.75,NA,pigs,1034,1
-41,"China, Main",0.033,NA,offals_pigs_edible,1036,1
-41,"China, Main",0.044000000000000004,NA,fat_pigs,1037,1
-41,"China, Main",0.75,NA,chickens,1057,1
-41,"China, Main",NA,NA,ducks,1068,0
-41,"China, Main",0.48,NA,horses,1096,1
-41,"China, Main",NA,0.05,asses,1107,0
-41,"China, Main",0.48,NA,camels,1126,1
-41,"China, Main",0.022000000000000002,NA,fat_camels,1129,1
-41,"China, Main",NA,0.05,hides_nes,1216,0
-41,"China, Main",0.67,0.085,NA,NA,1
-41,"China, Main",0.08,NA,NA,NA,1
-41,"China, Main",0.8,0.01,NA,NA,1
-41,"China, Main",0.12,NA,NA,NA,1
-41,"China, Main",0.11,NA,NA,NA,1
-41,"China, Main",0.25,NA,NA,NA,1
-41,"China, Main",NA,0.1,NA,NA,0
-41,"China, Main",0.18,NA,NA,NA,1
-41,"China, Main",NA,0.05,NA,NA,0
-41,"China, Main",NA,0.05,NA,NA,0
-41,"China, Main",0.08800000000000001,NA,NA,NA,1
-41,"China, Main",0.067,NA,NA,NA,1
-41,"China, Main",0.02,NA,NA,NA,1
-41,"China, Main",0.11,NA,NA,NA,1
-41,"China, Main",0.1,NA,NA,NA,1
-41,"China, Main",0.067,NA,NA,NA,1
-41,"China, Main",NA,NA,NA,NA,0
-41,"China, Main",NA,NA,NA,NA,0
-41,"China, Main",0.2,NA,NA,NA,1
-41,"China, Main",NA,NA,NA,NA,0
-41,"China, Main",NA,NA,NA,NA,0
-41,"China, Main",NA,0.05,NA,NA,0
-41,"China, Main",NA,0.05,NA,NA,0
-41,"China, Main",NA,0.05,NA,NA,0
-41,"China, Main",0.9,NA,NA,NA,1
-41,"China, Main",NA,0.05,NA,NA,0
-41,"China, Main",0.76,NA,NA,NA,1
-41,"China, Main",0.21,NA,NA,NA,1
-41,"China, Main",NA,NA,NA,NA,0
-41,"China, Main",NA,NA,NA,NA,0
-41,"China, Main",0.75,NA,NA,NA,1
-41,"China, Main",0.08,NA,NA,NA,1
-41,"China, Main",0.7,0.01,NA,NA,1
-41,"China, Main",0.22,NA,NA,NA,1
-41,"China, Main",0.1,NA,NA,NA,1
-41,"China, Main",NA,0.03,NA,NA,0
-41,"China, Main",0.2,NA,NA,NA,1
-41,"China, Main",1.0,NA,NA,NA,1
-41,"China, Main",NA,0.04,NA,NA,0
-41,"China, Main",NA,0.09,NA,NA,0
-41,"China, Main",NA,0.05,NA,NA,0
-41,"China, Main",0.78,NA,NA,NA,1
-41,"China, Main",0.5,NA,NA,NA,1
-41,"China, Main",0.88,NA,NA,NA,1
-41,"China, Main",0.65,0.02,NA,NA,1
-41,"China, Main",0.2,NA,NA,NA,1
-41,"China, Main",0.084,NA,NA,NA,1
-41,"China, Main",0.6,0.01,NA,NA,1
-41,"China, Main",0.43,NA,NA,NA,1
-41,"China, Main",0.7,NA,NA,NA,1
-41,"China, Main",0.9,NA,NA,NA,1
-41,"China, Main",0.75,NA,NA,NA,1
-41,"China, Main",NA,NA,NA,NA,0
-41,"China, Main",0.06,NA,NA,NA,1
-41,"China, Main",0.75,NA,NA,NA,1
-41,"China, Main",NA,0.05,NA,NA,0
-41,"China, Main",0.14,NA,NA,NA,1
-41,"China, Main",0.032,NA,NA,NA,1
-41,"China, Main",0.13,NA,NA,NA,1
-41,"China, Main",NA,NA,NA,NA,0
-41,"China, Main",0.75,0.01,NA,NA,1
-41,"China, Main",0.8,NA,NA,NA,1
-41,"China, Main",0.8,0.01,NA,NA,1
-41,"China, Main",0.22,NA,NA,NA,1
-41,"China, Main",0.18,NA,NA,NA,1
-41,"China, Main",0.15,NA,NA,NA,1
-41,"China, Main",0.75,0.01,NA,NA,1
-41,"China, Main",0.23,NA,NA,NA,1
-41,"China, Main",0.25,NA,NA,NA,1
-41,"China, Main",1.15,NA,NA,NA,1
-41,"China, Main",0.2,NA,NA,NA,1
-41,"China, Main",0.05,NA,NA,NA,1
-41,"China, Main",0.2,NA,NA,NA,1
+41,"China, mainland",NA,0.11,wheat,15,0
+41,"China, mainland",0.75,0.01,flour_wheat,16,1
+41,"China, mainland",0.2,NA,bran_wheat,17,1
+41,"China, mainland",NA,0.05,macaroni,18,0
+41,"China, mainland",NA,0.08800000000000001,rice_paddy,27,0
+41,"China, mainland",0.79,NA,rice_husked,28,1
+41,"China, mainland",0.15,NA,oil_rice_bran,36,1
+41,"China, mainland",0.8,NA,cake_rice_bran,37,1
+41,"China, mainland",0.75,0.01,flour_rice,38,1
+41,"China, mainland",NA,0.04,barley,44,0
+41,"China, mainland",0.55,NA,barley_pearled,46,1
+41,"China, mainland",0.2,NA,beer_of_barley,51,1
+41,"China, mainland",NA,0.15,maize,56,0
+41,"China, mainland",0.06,NA,germ_maize,57,1
+41,"China, mainland",0.8,0.02,flour_maize,58,1
+41,"China, mainland",0.09,NA,bran_maize,59,1
+41,"China, mainland",0.45,NA,oil_maize,60,1
+41,"China, mainland",0.5,NA,cake_maize,61,1
+41,"China, mainland",NA,0.042,rye,71,0
+41,"China, mainland",NA,0.04,oats,75,0
+41,"China, mainland",0.6,0.01,oats_rolled,76,1
+41,"China, mainland",NA,0.040999999999999995,millet,79,0
+41,"China, mainland",0.15,NA,bran_millet,81,1
+41,"China, mainland",NA,0.042,sorghum,83,0
+41,"China, mainland",0.15,NA,bran_sorghum,85,1
+41,"China, mainland",NA,0.040999999999999995,buckwheat,89,0
+41,"China, mainland",0.2,NA,bran_buckwheat,91,1
+41,"China, mainland",NA,0.040999999999999995,triticale,97,0
+41,"China, mainland",NA,0.05,potatoes,116,0
+41,"China, mainland",0.2,NA,flour_potatoes,117,1
+41,"China, mainland",0.58,NA,potatoes_frozen,118,1
+41,"China, mainland",0.35,NA,potato_offals,120,1
+41,"China, mainland",NA,0.42,sweet_potatoes,122,0
+41,"China, mainland",NA,0.03,cassava,125,0
+41,"China, mainland",0.35,NA,cassava_dried,128,1
+41,"China, mainland",0.08,NA,sugar_non_centrifugal,163,1
+41,"China, mainland",0.92,NA,sugar_refined,164,1
+41,"China, mainland",0.039,NA,molasses,165,1
+41,"China, mainland",0.05,NA,beet_pulp,169,1
+41,"China, mainland",NA,0.031,beans_dry,176,0
+41,"China, mainland",NA,0.032,peas_dry,187,0
+41,"China, mainland",NA,0.03,lentils,201,0
+41,"China, mainland",0.7,NA,flour_pulses,212,1
+41,"China, mainland",NA,0.03,chestnut,220,0
+41,"China, mainland",NA,0.03,pistachios,223,0
+41,"China, mainland",0.25,NA,cashew_nuts_shelled,230,1
+41,"China, mainland",0.3,NA,almonds_shelled,231,1
+41,"China, mainland",0.5,NA,walnuts_shelled,232,1
+41,"China, mainland",0.5,NA,hazelnuts_shelled,233,1
+41,"China, mainland",1.0,NA,nuts_prepared_exc_groundnuts,235,1
+41,"China, mainland",NA,0.031,soybeans,236,0
+41,"China, mainland",0.15,NA,oil_soybean,237,1
+41,"China, mainland",0.82,NA,cake_soybeans,238,1
+41,"China, mainland",3.5,NA,soya_sauce,239,1
+41,"China, mainland",0.7,NA,groundnuts_shelled,243,1
+41,"China, mainland",0.42,NA,oil_groundnut,244,1
+41,"China, mainland",0.55,NA,cake_groundnuts,245,1
+41,"China, mainland",0.95,NA,peanut_butter,247,1
+41,"China, mainland",NA,0.05,coconuts,249,0
+41,"China, mainland",0.2,NA,coconuts_desiccated,250,1
+41,"China, mainland",0.07,NA,palm_kernels,256,1
+41,"China, mainland",0.3,NA,oil_palm,257,1
+41,"China, mainland",0.48,NA,oil_palm_kernel,258,1
+41,"China, mainland",0.5,NA,cake_palm_kernel,259,1
+41,"China, mainland",0.45,NA,oil_castor_beans,266,1
+41,"China, mainland",NA,0.03,sunflower_seed,267,0
+41,"China, mainland",0.35,NA,oil_sunflower,268,1
+41,"China, mainland",0.5,NA,cake_sunflower,269,1
+41,"China, mainland",NA,0.042,rapeseed,270,0
+41,"China, mainland",0.35,NA,oil_rapeseed,271,1
+41,"China, mainland",0.63,NA,cake_rapeseed,272,1
+41,"China, mainland",NA,0.03,sesame_seed,289,0
+41,"China, mainland",0.45,NA,oil_sesame,290,1
+41,"China, mainland",0.51,NA,cake_sesame_seed,291,1
+41,"China, mainland",NA,0.05,mustard_seed,292,0
+41,"China, mainland",0.66,0.031,cottonseed,329,1
+41,"China, mainland",0.14,NA,oil_cottonseed,331,1
+41,"China, mainland",0.55,NA,cake_cottonseed,332,1
+41,"China, mainland",NA,0.03,linseed,333,0
+41,"China, mainland",0.35,NA,oil_linseed,334,1
+41,"China, mainland",0.61,NA,cake_linseed,335,1
+41,"China, mainland",NA,0.05,artichokes,366,0
+41,"China, mainland",NA,0.05,asparagus,367,0
+41,"China, mainland",NA,0.05,spinach,373,0
+41,"China, mainland",NA,0.07,tomatoes,388,0
+41,"China, mainland",0.26,NA,tomatoes_paste,391,1
+41,"China, mainland",NA,0.05,pumpkins_squash_and_gourds,394,0
+41,"China, mainland",NA,0.05,cucumbers_and_gherkins,397,0
+41,"China, mainland",NA,0.05,chillies_and_peppers_green,401,0
+41,"China, mainland",NA,0.05,onions_shallots_green,402,0
+41,"China, mainland",NA,0.1,onions_dry,403,0
+41,"China, mainland",NA,0.05,garlic,406,0
+41,"China, mainland",NA,0.05,leeks_other_alliaceous_vegetables,407,0
+41,"China, mainland",NA,0.03,beans_green,414,0
+41,"China, mainland",NA,0.03,peas_green,417,0
+41,"China, mainland",0.1,NA,maize_green,446,1
+41,"China, mainland",NA,0.1,mushrooms_canned,451,0
+41,"China, mainland",NA,0.1,vegetables_fresh_nes,463,0
+41,"China, mainland",0.9,NA,vegetables_canned_nes,465,1
+41,"China, mainland",0.25,NA,vegetables_dehydrated,469,1
+41,"China, mainland",1.2,NA,vegetables_in_vinegar,471,1
+41,"China, mainland",0.85,NA,vegetables_preserved_nes,472,1
+41,"China, mainland",0.9,NA,vegetables_frozen,473,1
+41,"China, mainland",NA,0.1,bananas,486,0
+41,"China, mainland",NA,0.1,oranges,490,0
+41,"China, mainland",0.7,NA,juice_orange_single_strength,491,1
+41,"China, mainland",NA,0.1,lemons_and_limes,497,0
+41,"China, mainland",NA,0.1,grapefruit_inc_pomelos,507,0
+41,"China, mainland",NA,0.1,apples,515,0
+41,"China, mainland",NA,0.1,pears,521,0
+41,"China, mainland",NA,0.05,quinces,523,0
+41,"China, mainland",NA,0.05,peaches_and_nectarines,534,0
+41,"China, mainland",0.3,NA,plums_dried_prunes,537,1
+41,"China, mainland",NA,0.03,grapes,560,0
+41,"China, mainland",0.25,NA,raisins,561,1
+41,"China, mainland",0.74,NA,wine,564,1
+41,"China, mainland",NA,0.1,watermelons,567,0
+41,"China, mainland",NA,0.05,figs,569,0
+41,"China, mainland",NA,0.05,pineapples,574,0
+41,"China, mainland",0.5,NA,pineapples_canned,575,1
+41,"China, mainland",NA,0.05,dates,577,0
+41,"China, mainland",NA,0.05,persimmons,587,0
+41,"China, mainland",NA,0.05,fruit_tropical_fresh_nes,603,0
+41,"China, mainland",NA,0.05,fruit_fresh_nes,619,0
+41,"China, mainland",0.85,NA,coffee_roasted,657,1
+41,"China, mainland",0.5,NA,coffee_extracts,659,1
+41,"China, mainland",0.8,NA,cocoa_paste,662,1
+41,"China, mainland",0.2,NA,cocoa_husks_shell,663,1
+41,"China, mainland",0.47,NA,cocoa_butter,664,1
+41,"China, mainland",0.53,NA,cocoa_powder_cake,665,1
+41,"China, mainland",4.7,NA,chocolate_products_nes,666,1
+41,"China, mainland",NA,0.03,tea,667,0
+41,"China, mainland",0.33,NA,cotton_lint,767,1
+41,"China, mainland",0.04,NA,cotton_waste,769,1
+41,"China, mainland",0.02,NA,cotton_linter,770,1
+41,"China, mainland",0.45,NA,meat_cattle,867,1
+41,"China, mainland",0.098,NA,offals_edible_cattle,868,1
+41,"China, mainland",0.022000000000000002,NA,fat_cattle,869,1
+41,"China, mainland",NA,0.03,milk_whole_fresh_cow,882,0
+41,"China, mainland",0.04,NA,butter_cow_milk,886,1
+41,"China, mainland",0.38,NA,whey_condensed,890,1
+41,"China, mainland",0.33,NA,milk_whole_evaporated,894,1
+41,"China, mainland",0.15,NA,cheese_whole_cow_milk,901,1
+41,"China, mainland",0.1,NA,hides_cattle_fresh,919,1
+41,"China, mainland",0.45,NA,buffaloes,946,1
+41,"China, mainland",0.49,NA,sheep,976,1
+41,"China, mainland",0.021,NA,meat_sheep,977,1
+41,"China, mainland",0.084,NA,offals_sheep_edible,978,1
+41,"China, mainland",0.2,NA,cheese_sheep_milk,984,1
+41,"China, mainland",NA,NA,wool_greasy,987,0
+41,"China, mainland",0.5,NA,goats,1016,1
+41,"China, mainland",0.75,NA,pigs,1034,1
+41,"China, mainland",0.033,NA,offals_pigs_edible,1036,1
+41,"China, mainland",0.044000000000000004,NA,fat_pigs,1037,1
+41,"China, mainland",0.75,NA,chickens,1057,1
+41,"China, mainland",NA,NA,ducks,1068,0
+41,"China, mainland",0.48,NA,horses,1096,1
+41,"China, mainland",NA,0.05,asses,1107,0
+41,"China, mainland",0.48,NA,camels,1126,1
+41,"China, mainland",0.022000000000000002,NA,fat_camels,1129,1
+41,"China, mainland",NA,0.05,hides_nes,1216,0
+41,"China, mainland",0.67,0.085,NA,NA,1
+41,"China, mainland",0.08,NA,NA,NA,1
+41,"China, mainland",0.8,0.01,NA,NA,1
+41,"China, mainland",0.12,NA,NA,NA,1
+41,"China, mainland",0.11,NA,NA,NA,1
+41,"China, mainland",0.25,NA,NA,NA,1
+41,"China, mainland",NA,0.1,NA,NA,0
+41,"China, mainland",0.18,NA,NA,NA,1
+41,"China, mainland",NA,0.05,NA,NA,0
+41,"China, mainland",NA,0.05,NA,NA,0
+41,"China, mainland",0.08800000000000001,NA,NA,NA,1
+41,"China, mainland",0.067,NA,NA,NA,1
+41,"China, mainland",0.02,NA,NA,NA,1
+41,"China, mainland",0.11,NA,NA,NA,1
+41,"China, mainland",0.1,NA,NA,NA,1
+41,"China, mainland",0.067,NA,NA,NA,1
+41,"China, mainland",NA,NA,NA,NA,0
+41,"China, mainland",NA,NA,NA,NA,0
+41,"China, mainland",0.2,NA,NA,NA,1
+41,"China, mainland",NA,NA,NA,NA,0
+41,"China, mainland",NA,NA,NA,NA,0
+41,"China, mainland",NA,0.05,NA,NA,0
+41,"China, mainland",NA,0.05,NA,NA,0
+41,"China, mainland",NA,0.05,NA,NA,0
+41,"China, mainland",0.9,NA,NA,NA,1
+41,"China, mainland",NA,0.05,NA,NA,0
+41,"China, mainland",0.76,NA,NA,NA,1
+41,"China, mainland",0.21,NA,NA,NA,1
+41,"China, mainland",NA,NA,NA,NA,0
+41,"China, mainland",NA,NA,NA,NA,0
+41,"China, mainland",0.75,NA,NA,NA,1
+41,"China, mainland",0.08,NA,NA,NA,1
+41,"China, mainland",0.7,0.01,NA,NA,1
+41,"China, mainland",0.22,NA,NA,NA,1
+41,"China, mainland",0.1,NA,NA,NA,1
+41,"China, mainland",NA,0.03,NA,NA,0
+41,"China, mainland",0.2,NA,NA,NA,1
+41,"China, mainland",1.0,NA,NA,NA,1
+41,"China, mainland",NA,0.04,NA,NA,0
+41,"China, mainland",NA,0.09,NA,NA,0
+41,"China, mainland",NA,0.05,NA,NA,0
+41,"China, mainland",0.78,NA,NA,NA,1
+41,"China, mainland",0.5,NA,NA,NA,1
+41,"China, mainland",0.88,NA,NA,NA,1
+41,"China, mainland",0.65,0.02,NA,NA,1
+41,"China, mainland",0.2,NA,NA,NA,1
+41,"China, mainland",0.084,NA,NA,NA,1
+41,"China, mainland",0.6,0.01,NA,NA,1
+41,"China, mainland",0.43,NA,NA,NA,1
+41,"China, mainland",0.7,NA,NA,NA,1
+41,"China, mainland",0.9,NA,NA,NA,1
+41,"China, mainland",0.75,NA,NA,NA,1
+41,"China, mainland",NA,NA,NA,NA,0
+41,"China, mainland",0.06,NA,NA,NA,1
+41,"China, mainland",0.75,NA,NA,NA,1
+41,"China, mainland",NA,0.05,NA,NA,0
+41,"China, mainland",0.14,NA,NA,NA,1
+41,"China, mainland",0.032,NA,NA,NA,1
+41,"China, mainland",0.13,NA,NA,NA,1
+41,"China, mainland",NA,NA,NA,NA,0
+41,"China, mainland",0.75,0.01,NA,NA,1
+41,"China, mainland",0.8,NA,NA,NA,1
+41,"China, mainland",0.8,0.01,NA,NA,1
+41,"China, mainland",0.22,NA,NA,NA,1
+41,"China, mainland",0.18,NA,NA,NA,1
+41,"China, mainland",0.15,NA,NA,NA,1
+41,"China, mainland",0.75,0.01,NA,NA,1
+41,"China, mainland",0.23,NA,NA,NA,1
+41,"China, mainland",0.25,NA,NA,NA,1
+41,"China, mainland",1.15,NA,NA,NA,1
+41,"China, mainland",0.2,NA,NA,NA,1
+41,"China, mainland",0.05,NA,NA,NA,1
+41,"China, mainland",0.2,NA,NA,NA,1
 44,Colombia,NA,0.015,wheat,15,0
 44,Colombia,0.75,NA,flour_wheat,16,1
 44,Colombia,0.23,NA,bran_wheat,17,1
@@ -7930,102 +7930,102 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 106,Italy,0.12,NA,NA,NA,1
 106,Italy,0.95,NA,NA,NA,1
 106,Italy,NA,0.05,NA,NA,0
-107,Cote dIvore,0.75,0.02,flour_wheat,16,1
-107,Cote dIvore,0.18,NA,bran_wheat,17,1
-107,Cote dIvore,NA,0.15,rice_paddy,27,0
-107,Cote dIvore,0.65,NA,rice_husked,28,1
-107,Cote dIvore,NA,0.15,maize,56,0
-107,Cote dIvore,0.9,0.02,flour_maize,58,1
-107,Cote dIvore,0.07,NA,bran_maize,59,1
-107,Cote dIvore,NA,0.1,millet,79,0
-107,Cote dIvore,0.1,NA,bran_millet,81,1
-107,Cote dIvore,NA,0.1,sorghum,83,0
-107,Cote dIvore,0.1,NA,bran_sorghum,85,1
-107,Cote dIvore,0.1,NA,bran_buckwheat,91,1
-107,Cote dIvore,NA,0.1,fonio,94,0
-107,Cote dIvore,NA,0.02,potatoes,116,0
-107,Cote dIvore,NA,0.15,sweet_potatoes,122,0
-107,Cote dIvore,NA,0.1,cassava,125,0
-107,Cote dIvore,0.25,NA,flour_cassava,126,1
-107,Cote dIvore,0.92,NA,sugar_refined,164,1
-107,Cote dIvore,0.043,NA,molasses,165,1
-107,Cote dIvore,NA,0.035,sugar_nes,167,0
-107,Cote dIvore,NA,0.05,brazil_nuts_shelled,229,0
-107,Cote dIvore,0.65,0.05,groundnuts_shelled,243,1
-107,Cote dIvore,0.45,NA,oil_groundnut,244,1
-107,Cote dIvore,0.54,NA,cake_groundnuts,245,1
-107,Cote dIvore,0.25,NA,coconuts_desiccated,250,1
-107,Cote dIvore,0.64,NA,oil_coconut_copra,252,1
-107,Cote dIvore,0.35,NA,cake_copra,253,1
-107,Cote dIvore,0.21,NA,oil_palm,257,1
-107,Cote dIvore,0.45,NA,oil_palm_kernel,258,1
-107,Cote dIvore,0.54,NA,cake_palm_kernel,259,1
-107,Cote dIvore,0.2,NA,butter_of_karite_nuts,264,1
-107,Cote dIvore,NA,0.05,kapokseed_in_shell,311,0
-107,Cote dIvore,0.51,NA,cottonseed,329,1
-107,Cote dIvore,0.18,NA,oil_cottonseed,331,1
-107,Cote dIvore,0.45,NA,cake_cottonseed,332,1
-107,Cote dIvore,NA,0.15,tomatoes_paste,391,0
-107,Cote dIvore,NA,0.2,eggplants_aubergines,399,0
-107,Cote dIvore,NA,0.1,onions_shallots_green,402,0
-107,Cote dIvore,NA,0.1,vegetables_fresh_nes,463,0
-107,Cote dIvore,NA,0.1,bananas,486,0
-107,Cote dIvore,NA,0.1,oranges,490,0
-107,Cote dIvore,NA,0.14,juice_citrus_single_strength,513,0
-107,Cote dIvore,NA,0.1,avocados,572,0
-107,Cote dIvore,NA,0.07,pineapples,574,0
-107,Cote dIvore,0.08800000000000001,NA,pineapples_canned,575,1
-107,Cote dIvore,0.5,NA,juice_pineapple,576,1
-107,Cote dIvore,NA,0.1,fruit_tropical_fresh_nes,603,0
-107,Cote dIvore,NA,0.1,fruit_fresh_nes,619,0
-107,Cote dIvore,0.8,NA,coffee_roasted,657,1
-107,Cote dIvore,4.7,NA,chocolate_products_nes,666,1
-107,Cote dIvore,0.44,NA,coir,813,1
-107,Cote dIvore,0.5,NA,meat_cattle,867,1
-107,Cote dIvore,0.11,NA,offals_edible_cattle,868,1
-107,Cote dIvore,0.015,NA,fat_cattle,869,1
-107,Cote dIvore,0.5,NA,sheep,976,1
-107,Cote dIvore,0.12,NA,offals_sheep_edible,978,1
-107,Cote dIvore,0.5,NA,goats,1016,1
-107,Cote dIvore,0.04,NA,offals_edible_goats,1018,1
-107,Cote dIvore,0.8,NA,pigs,1034,1
-107,Cote dIvore,0.048,NA,fat_pigs,1037,1
-107,Cote dIvore,0.84,NA,chickens,1057,1
-107,Cote dIvore,0.015,NA,fat_camels,1129,1
-107,Cote dIvore,0.85,0.02,meal_meat,1173,1
-107,Cote dIvore,0.25,NA,NA,NA,1
-107,Cote dIvore,0.6,0.005,NA,NA,1
-107,Cote dIvore,NA,0.05,NA,NA,0
-107,Cote dIvore,NA,0.05,NA,NA,0
-107,Cote dIvore,0.3,NA,NA,NA,1
-107,Cote dIvore,0.12,NA,NA,NA,1
-107,Cote dIvore,0.015,NA,NA,NA,1
-107,Cote dIvore,0.066,NA,NA,NA,1
-107,Cote dIvore,0.12,NA,NA,NA,1
-107,Cote dIvore,0.12,NA,NA,NA,1
-107,Cote dIvore,NA,0.05,NA,NA,0
-107,Cote dIvore,NA,NA,NA,NA,0
-107,Cote dIvore,0.85,0.02,NA,NA,1
-107,Cote dIvore,NA,0.1,NA,NA,0
-107,Cote dIvore,0.8,NA,NA,NA,1
-107,Cote dIvore,0.2,NA,NA,NA,1
-107,Cote dIvore,0.47,NA,NA,NA,1
-107,Cote dIvore,0.53,NA,NA,NA,1
-107,Cote dIvore,NA,0.019,NA,NA,0
-107,Cote dIvore,0.1,NA,NA,NA,1
-107,Cote dIvore,0.028999999999999998,NA,NA,NA,1
-107,Cote dIvore,NA,0.05,NA,NA,0
-107,Cote dIvore,NA,0.05,NA,NA,0
-107,Cote dIvore,0.2,NA,NA,NA,1
-107,Cote dIvore,0.36,NA,NA,NA,1
-107,Cote dIvore,0.65,0.02,NA,NA,1
-107,Cote dIvore,0.15,NA,NA,NA,1
-107,Cote dIvore,NA,0.1,NA,NA,0
-107,Cote dIvore,NA,0.2,NA,NA,0
-107,Cote dIvore,0.2,NA,NA,NA,1
-107,Cote dIvore,NA,0.2,NA,NA,0
-107,Cote dIvore,NA,0.052000000000000005,NA,NA,0
-107,Cote dIvore,NA,0.1,NA,NA,0
+107,Côte d'Ivoire,0.75,0.02,flour_wheat,16,1
+107,Côte d'Ivoire,0.18,NA,bran_wheat,17,1
+107,Côte d'Ivoire,NA,0.15,rice_paddy,27,0
+107,Côte d'Ivoire,0.65,NA,rice_husked,28,1
+107,Côte d'Ivoire,NA,0.15,maize,56,0
+107,Côte d'Ivoire,0.9,0.02,flour_maize,58,1
+107,Côte d'Ivoire,0.07,NA,bran_maize,59,1
+107,Côte d'Ivoire,NA,0.1,millet,79,0
+107,Côte d'Ivoire,0.1,NA,bran_millet,81,1
+107,Côte d'Ivoire,NA,0.1,sorghum,83,0
+107,Côte d'Ivoire,0.1,NA,bran_sorghum,85,1
+107,Côte d'Ivoire,0.1,NA,bran_buckwheat,91,1
+107,Côte d'Ivoire,NA,0.1,fonio,94,0
+107,Côte d'Ivoire,NA,0.02,potatoes,116,0
+107,Côte d'Ivoire,NA,0.15,sweet_potatoes,122,0
+107,Côte d'Ivoire,NA,0.1,cassava,125,0
+107,Côte d'Ivoire,0.25,NA,flour_cassava,126,1
+107,Côte d'Ivoire,0.92,NA,sugar_refined,164,1
+107,Côte d'Ivoire,0.043,NA,molasses,165,1
+107,Côte d'Ivoire,NA,0.035,sugar_nes,167,0
+107,Côte d'Ivoire,NA,0.05,brazil_nuts_shelled,229,0
+107,Côte d'Ivoire,0.65,0.05,groundnuts_shelled,243,1
+107,Côte d'Ivoire,0.45,NA,oil_groundnut,244,1
+107,Côte d'Ivoire,0.54,NA,cake_groundnuts,245,1
+107,Côte d'Ivoire,0.25,NA,coconuts_desiccated,250,1
+107,Côte d'Ivoire,0.64,NA,oil_coconut_copra,252,1
+107,Côte d'Ivoire,0.35,NA,cake_copra,253,1
+107,Côte d'Ivoire,0.21,NA,oil_palm,257,1
+107,Côte d'Ivoire,0.45,NA,oil_palm_kernel,258,1
+107,Côte d'Ivoire,0.54,NA,cake_palm_kernel,259,1
+107,Côte d'Ivoire,0.2,NA,butter_of_karite_nuts,264,1
+107,Côte d'Ivoire,NA,0.05,kapokseed_in_shell,311,0
+107,Côte d'Ivoire,0.51,NA,cottonseed,329,1
+107,Côte d'Ivoire,0.18,NA,oil_cottonseed,331,1
+107,Côte d'Ivoire,0.45,NA,cake_cottonseed,332,1
+107,Côte d'Ivoire,NA,0.15,tomatoes_paste,391,0
+107,Côte d'Ivoire,NA,0.2,eggplants_aubergines,399,0
+107,Côte d'Ivoire,NA,0.1,onions_shallots_green,402,0
+107,Côte d'Ivoire,NA,0.1,vegetables_fresh_nes,463,0
+107,Côte d'Ivoire,NA,0.1,bananas,486,0
+107,Côte d'Ivoire,NA,0.1,oranges,490,0
+107,Côte d'Ivoire,NA,0.14,juice_citrus_single_strength,513,0
+107,Côte d'Ivoire,NA,0.1,avocados,572,0
+107,Côte d'Ivoire,NA,0.07,pineapples,574,0
+107,Côte d'Ivoire,0.08800000000000001,NA,pineapples_canned,575,1
+107,Côte d'Ivoire,0.5,NA,juice_pineapple,576,1
+107,Côte d'Ivoire,NA,0.1,fruit_tropical_fresh_nes,603,0
+107,Côte d'Ivoire,NA,0.1,fruit_fresh_nes,619,0
+107,Côte d'Ivoire,0.8,NA,coffee_roasted,657,1
+107,Côte d'Ivoire,4.7,NA,chocolate_products_nes,666,1
+107,Côte d'Ivoire,0.44,NA,coir,813,1
+107,Côte d'Ivoire,0.5,NA,meat_cattle,867,1
+107,Côte d'Ivoire,0.11,NA,offals_edible_cattle,868,1
+107,Côte d'Ivoire,0.015,NA,fat_cattle,869,1
+107,Côte d'Ivoire,0.5,NA,sheep,976,1
+107,Côte d'Ivoire,0.12,NA,offals_sheep_edible,978,1
+107,Côte d'Ivoire,0.5,NA,goats,1016,1
+107,Côte d'Ivoire,0.04,NA,offals_edible_goats,1018,1
+107,Côte d'Ivoire,0.8,NA,pigs,1034,1
+107,Côte d'Ivoire,0.048,NA,fat_pigs,1037,1
+107,Côte d'Ivoire,0.84,NA,chickens,1057,1
+107,Côte d'Ivoire,0.015,NA,fat_camels,1129,1
+107,Côte d'Ivoire,0.85,0.02,meal_meat,1173,1
+107,Côte d'Ivoire,0.25,NA,NA,NA,1
+107,Côte d'Ivoire,0.6,0.005,NA,NA,1
+107,Côte d'Ivoire,NA,0.05,NA,NA,0
+107,Côte d'Ivoire,NA,0.05,NA,NA,0
+107,Côte d'Ivoire,0.3,NA,NA,NA,1
+107,Côte d'Ivoire,0.12,NA,NA,NA,1
+107,Côte d'Ivoire,0.015,NA,NA,NA,1
+107,Côte d'Ivoire,0.066,NA,NA,NA,1
+107,Côte d'Ivoire,0.12,NA,NA,NA,1
+107,Côte d'Ivoire,0.12,NA,NA,NA,1
+107,Côte d'Ivoire,NA,0.05,NA,NA,0
+107,Côte d'Ivoire,NA,NA,NA,NA,0
+107,Côte d'Ivoire,0.85,0.02,NA,NA,1
+107,Côte d'Ivoire,NA,0.1,NA,NA,0
+107,Côte d'Ivoire,0.8,NA,NA,NA,1
+107,Côte d'Ivoire,0.2,NA,NA,NA,1
+107,Côte d'Ivoire,0.47,NA,NA,NA,1
+107,Côte d'Ivoire,0.53,NA,NA,NA,1
+107,Côte d'Ivoire,NA,0.019,NA,NA,0
+107,Côte d'Ivoire,0.1,NA,NA,NA,1
+107,Côte d'Ivoire,0.028999999999999998,NA,NA,NA,1
+107,Côte d'Ivoire,NA,0.05,NA,NA,0
+107,Côte d'Ivoire,NA,0.05,NA,NA,0
+107,Côte d'Ivoire,0.2,NA,NA,NA,1
+107,Côte d'Ivoire,0.36,NA,NA,NA,1
+107,Côte d'Ivoire,0.65,0.02,NA,NA,1
+107,Côte d'Ivoire,0.15,NA,NA,NA,1
+107,Côte d'Ivoire,NA,0.1,NA,NA,0
+107,Côte d'Ivoire,NA,0.2,NA,NA,0
+107,Côte d'Ivoire,0.2,NA,NA,NA,1
+107,Côte d'Ivoire,NA,0.2,NA,NA,0
+107,Côte d'Ivoire,NA,0.052000000000000005,NA,NA,0
+107,Côte d'Ivoire,NA,0.1,NA,NA,0
 108,Kazakhstan,NA,0.033,wheat,15,0
 108,Kazakhstan,0.78,0.006999999999999999,flour_wheat,16,1
 108,Kazakhstan,0.17,NA,bran_wheat,17,1
@@ -16680,165 +16680,165 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 227,Tuvalu,NA,NA,NA,NA,0
 227,Tuvalu,0.65,NA,NA,NA,1
 227,Tuvalu,0.32,NA,NA,NA,1
-229,United Kingdom,NA,0.005,wheat,15,0
-229,United Kingdom,0.8,NA,flour_wheat,16,1
-229,United Kingdom,0.2,NA,bran_wheat,17,1
-229,United Kingdom,NA,0.09300000000000001,macaroni,18,0
-229,United Kingdom,0.8,NA,flour_rice,38,1
-229,United Kingdom,NA,0.005,barley,44,0
-229,United Kingdom,0.7,NA,barley_pearled,46,1
-229,United Kingdom,0.23,NA,beer_of_barley,51,1
-229,United Kingdom,NA,0.005,maize,56,0
-229,United Kingdom,0.08,NA,germ_maize,57,1
-229,United Kingdom,0.87,NA,flour_maize,58,1
-229,United Kingdom,0.03,NA,bran_maize,59,1
-229,United Kingdom,0.4,NA,oil_maize,60,1
-229,United Kingdom,0.5,NA,cake_maize,61,1
-229,United Kingdom,NA,NA,rye,71,0
-229,United Kingdom,NA,0.005,oats,75,0
-229,United Kingdom,0.49,NA,oats_rolled,76,1
-229,United Kingdom,NA,NA,triticale,97,0
-229,United Kingdom,0.8,NA,flour_mixed_grain,104,1
-229,United Kingdom,NA,0.11,potatoes,116,0
-229,United Kingdom,0.92,NA,sugar_refined,164,1
-229,United Kingdom,0.040999999999999995,NA,molasses,165,1
-229,United Kingdom,0.25,NA,beet_pulp,169,1
-229,United Kingdom,NA,0.01,beans_dry,176,0
-229,United Kingdom,NA,0.069,broad_beans_horse_beans_dry,181,0
-229,United Kingdom,NA,0.021,peas_dry,187,0
-229,United Kingdom,NA,0.01,lentils,201,0
-229,United Kingdom,0.85,NA,flour_pulses,212,1
-229,United Kingdom,NA,0.03,chestnut,220,0
-229,United Kingdom,1.0,NA,nuts_prepared_exc_groundnuts,235,1
-229,United Kingdom,0.18,NA,oil_soybean,237,1
-229,United Kingdom,0.74,NA,cake_soybeans,238,1
-229,United Kingdom,0.7,0.02,groundnuts_shelled,243,1
-229,United Kingdom,0.48,NA,cake_groundnuts,245,1
-229,United Kingdom,0.95,NA,peanut_butter,247,1
-229,United Kingdom,0.43,NA,oil_palm_kernel,258,1
-229,United Kingdom,0.54,NA,cake_palm_kernel,259,1
-229,United Kingdom,0.43,NA,oil_sunflower,268,1
-229,United Kingdom,0.56,NA,cake_sunflower,269,1
-229,United Kingdom,NA,NA,rapeseed,270,0
-229,United Kingdom,0.41,NA,oil_rapeseed,271,1
-229,United Kingdom,0.58,NA,cake_rapeseed,272,1
-229,United Kingdom,0.7,NA,flour_mustard,295,1
-229,United Kingdom,0.55,NA,cake_cottonseed,332,1
-229,United Kingdom,NA,NA,linseed,333,0
-229,United Kingdom,0.35,NA,oil_linseed,334,1
-229,United Kingdom,0.64,NA,cake_linseed,335,1
-229,United Kingdom,NA,NA,oilseeds_nes,339,0
-229,United Kingdom,NA,0.05,artichokes,366,0
-229,United Kingdom,NA,0.05,asparagus,367,0
-229,United Kingdom,NA,0.05,spinach,373,0
-229,United Kingdom,NA,0.003,tomatoes,388,0
-229,United Kingdom,NA,0.05,pumpkins_squash_and_gourds,394,0
-229,United Kingdom,NA,0.011000000000000001,cucumbers_and_gherkins,397,0
-229,United Kingdom,NA,0.002,chillies_and_peppers_green,401,0
-229,United Kingdom,NA,0.05,onions_shallots_green,402,0
-229,United Kingdom,NA,0.022000000000000002,onions_dry,403,0
-229,United Kingdom,NA,0.05,garlic,406,0
-229,United Kingdom,NA,0.05,leeks_other_alliaceous_vegetables,407,0
-229,United Kingdom,NA,0.03,beans_green,414,0
-229,United Kingdom,NA,0.017,peas_green,417,0
-229,United Kingdom,0.15,NA,maize_green,446,1
-229,United Kingdom,NA,0.1,mushrooms_canned,451,0
-229,United Kingdom,NA,0.1,vegetables_fresh_nes,463,0
-229,United Kingdom,NA,0.03,vegetables_dehydrated,469,0
-229,United Kingdom,NA,0.03,vegetables_in_vinegar,471,0
-229,United Kingdom,NA,0.05,bananas,486,0
-229,United Kingdom,NA,0.05,oranges,490,0
-229,United Kingdom,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
-229,United Kingdom,NA,0.05,lemons_and_limes,497,0
-229,United Kingdom,NA,0.05,grapefruit_inc_pomelos,507,0
-229,United Kingdom,0.22,NA,juice_grapefruit_concentrated,510,1
-229,United Kingdom,NA,0.003,apples,515,0
-229,United Kingdom,NA,0.002,pears,521,0
-229,United Kingdom,NA,0.05,apricots,526,0
-229,United Kingdom,NA,0.0,cherries,531,0
-229,United Kingdom,NA,0.14,peaches_and_nectarines,534,0
-229,United Kingdom,NA,0.05,plums_dried_prunes,537,0
-229,United Kingdom,0.2,NA,juice_plum_concentrated,539,1
-229,United Kingdom,NA,0.12,strawberries,544,0
-229,United Kingdom,NA,0.07400000000000001,gooseberries,549,0
-229,United Kingdom,NA,0.06,currants,550,0
-229,United Kingdom,NA,0.1,grapes,560,0
-229,United Kingdom,0.75,NA,wine,564,1
-229,United Kingdom,NA,0.05,watermelons,567,0
-229,United Kingdom,NA,0.1,figs,569,0
-229,United Kingdom,NA,0.05,figs_dried,570,0
-229,United Kingdom,NA,0.05,avocados,572,0
-229,United Kingdom,NA,0.05,pineapples,574,0
-229,United Kingdom,NA,0.05,dates,577,0
-229,United Kingdom,NA,0.05,kiwi_fruit,592,0
-229,United Kingdom,NA,0.05,papayas,600,0
-229,United Kingdom,NA,0.15,fruit_fresh_nes,619,0
-229,United Kingdom,0.65,NA,coffee_roasted,657,1
-229,United Kingdom,0.6,NA,coffee_substitutes_containing_coffee,658,1
-229,United Kingdom,0.8,NA,cocoa_paste,662,1
-229,United Kingdom,0.2,NA,cocoa_husks_shell,663,1
-229,United Kingdom,0.47,NA,cocoa_butter,664,1
-229,United Kingdom,0.53,NA,cocoa_powder_cake,665,1
-229,United Kingdom,4.71,NA,chocolate_products_nes,666,1
-229,United Kingdom,0.54,NA,meat_cattle,867,1
-229,United Kingdom,0.051,NA,offals_edible_cattle,868,1
-229,United Kingdom,0.033,NA,fat_cattle,869,1
-229,United Kingdom,NA,NA,milk_whole_fresh_cow,882,0
-229,United Kingdom,0.11,NA,cream_fresh,885,1
-229,United Kingdom,0.049,NA,butter_cow_milk,886,1
-229,United Kingdom,0.25,NA,milk_whole_evaporated,894,1
-229,United Kingdom,0.1,NA,cheese_whole_cow_milk,901,1
-229,United Kingdom,0.05,NA,hides_cattle_fresh,919,1
-229,United Kingdom,0.51,NA,sheep,976,1
-229,United Kingdom,0.027000000000000003,NA,meat_sheep,977,1
-229,United Kingdom,0.073,NA,offals_sheep_edible,978,1
-229,United Kingdom,NA,NA,wool_greasy,987,0
-229,United Kingdom,0.76,NA,pigs,1034,1
-229,United Kingdom,0.025,NA,offals_pigs_edible,1036,1
-229,United Kingdom,0.048,NA,fat_pigs,1037,1
-229,United Kingdom,0.68,NA,chickens,1057,1
-229,United Kingdom,NA,NA,ducks,1068,0
-229,United Kingdom,0.82,NA,turkeys,1079,1
-229,United Kingdom,0.5,NA,horses,1096,1
-229,United Kingdom,NA,0.05,asses,1107,0
-229,United Kingdom,NA,0.08900000000000001,hides_nes,1216,0
-229,United Kingdom,0.16,NA,NA,NA,1
-229,United Kingdom,NA,0.15,NA,NA,0
-229,United Kingdom,NA,0.031,NA,NA,0
-229,United Kingdom,0.11,NA,NA,NA,1
-229,United Kingdom,NA,NA,NA,NA,0
-229,United Kingdom,0.63,NA,NA,NA,1
-229,United Kingdom,0.35,NA,NA,NA,1
-229,United Kingdom,NA,0.03,NA,NA,0
-229,United Kingdom,NA,0.16,NA,NA,0
-229,United Kingdom,NA,0.05,NA,NA,0
-229,United Kingdom,NA,0.03,NA,NA,0
-229,United Kingdom,NA,0.13,NA,NA,0
-229,United Kingdom,NA,NA,NA,NA,0
-229,United Kingdom,0.1,NA,NA,NA,1
-229,United Kingdom,0.9,NA,NA,NA,1
-229,United Kingdom,0.78,NA,NA,NA,1
-229,United Kingdom,0.18,NA,NA,NA,1
-229,United Kingdom,0.28,NA,NA,NA,1
-229,United Kingdom,0.14,NA,NA,NA,1
-229,United Kingdom,NA,0.03,NA,NA,0
-229,United Kingdom,NA,0.03,NA,NA,0
-229,United Kingdom,0.8,NA,NA,NA,1
-229,United Kingdom,NA,0.009000000000000001,NA,NA,0
-229,United Kingdom,0.74,NA,NA,NA,1
-229,United Kingdom,NA,0.03,NA,NA,0
-229,United Kingdom,0.6,NA,NA,NA,1
-229,United Kingdom,NA,0.084,NA,NA,0
-229,United Kingdom,0.11,NA,NA,NA,1
-229,United Kingdom,0.13,NA,NA,NA,1
-229,United Kingdom,0.7,NA,NA,NA,1
-229,United Kingdom,0.3,NA,NA,NA,1
-229,United Kingdom,0.85,NA,NA,NA,1
-229,United Kingdom,0.15,NA,NA,NA,1
-229,United Kingdom,NA,NA,NA,NA,0
-229,United Kingdom,0.052000000000000005,NA,NA,NA,1
-229,United Kingdom,0.8,NA,NA,NA,1
-229,United Kingdom,0.9,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.005,wheat,15,0
+229,United Kingdom of Great Britain and Northern Ireland,0.8,NA,flour_wheat,16,1
+229,United Kingdom of Great Britain and Northern Ireland,0.2,NA,bran_wheat,17,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.09300000000000001,macaroni,18,0
+229,United Kingdom of Great Britain and Northern Ireland,0.8,NA,flour_rice,38,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.005,barley,44,0
+229,United Kingdom of Great Britain and Northern Ireland,0.7,NA,barley_pearled,46,1
+229,United Kingdom of Great Britain and Northern Ireland,0.23,NA,beer_of_barley,51,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.005,maize,56,0
+229,United Kingdom of Great Britain and Northern Ireland,0.08,NA,germ_maize,57,1
+229,United Kingdom of Great Britain and Northern Ireland,0.87,NA,flour_maize,58,1
+229,United Kingdom of Great Britain and Northern Ireland,0.03,NA,bran_maize,59,1
+229,United Kingdom of Great Britain and Northern Ireland,0.4,NA,oil_maize,60,1
+229,United Kingdom of Great Britain and Northern Ireland,0.5,NA,cake_maize,61,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,NA,rye,71,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.005,oats,75,0
+229,United Kingdom of Great Britain and Northern Ireland,0.49,NA,oats_rolled,76,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,NA,triticale,97,0
+229,United Kingdom of Great Britain and Northern Ireland,0.8,NA,flour_mixed_grain,104,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.11,potatoes,116,0
+229,United Kingdom of Great Britain and Northern Ireland,0.92,NA,sugar_refined,164,1
+229,United Kingdom of Great Britain and Northern Ireland,0.040999999999999995,NA,molasses,165,1
+229,United Kingdom of Great Britain and Northern Ireland,0.25,NA,beet_pulp,169,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.01,beans_dry,176,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.069,broad_beans_horse_beans_dry,181,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.021,peas_dry,187,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.01,lentils,201,0
+229,United Kingdom of Great Britain and Northern Ireland,0.85,NA,flour_pulses,212,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.03,chestnut,220,0
+229,United Kingdom of Great Britain and Northern Ireland,1.0,NA,nuts_prepared_exc_groundnuts,235,1
+229,United Kingdom of Great Britain and Northern Ireland,0.18,NA,oil_soybean,237,1
+229,United Kingdom of Great Britain and Northern Ireland,0.74,NA,cake_soybeans,238,1
+229,United Kingdom of Great Britain and Northern Ireland,0.7,0.02,groundnuts_shelled,243,1
+229,United Kingdom of Great Britain and Northern Ireland,0.48,NA,cake_groundnuts,245,1
+229,United Kingdom of Great Britain and Northern Ireland,0.95,NA,peanut_butter,247,1
+229,United Kingdom of Great Britain and Northern Ireland,0.43,NA,oil_palm_kernel,258,1
+229,United Kingdom of Great Britain and Northern Ireland,0.54,NA,cake_palm_kernel,259,1
+229,United Kingdom of Great Britain and Northern Ireland,0.43,NA,oil_sunflower,268,1
+229,United Kingdom of Great Britain and Northern Ireland,0.56,NA,cake_sunflower,269,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,NA,rapeseed,270,0
+229,United Kingdom of Great Britain and Northern Ireland,0.41,NA,oil_rapeseed,271,1
+229,United Kingdom of Great Britain and Northern Ireland,0.58,NA,cake_rapeseed,272,1
+229,United Kingdom of Great Britain and Northern Ireland,0.7,NA,flour_mustard,295,1
+229,United Kingdom of Great Britain and Northern Ireland,0.55,NA,cake_cottonseed,332,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,NA,linseed,333,0
+229,United Kingdom of Great Britain and Northern Ireland,0.35,NA,oil_linseed,334,1
+229,United Kingdom of Great Britain and Northern Ireland,0.64,NA,cake_linseed,335,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,NA,oilseeds_nes,339,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,artichokes,366,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,asparagus,367,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,spinach,373,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.003,tomatoes,388,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,pumpkins_squash_and_gourds,394,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.011000000000000001,cucumbers_and_gherkins,397,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.002,chillies_and_peppers_green,401,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,onions_shallots_green,402,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.022000000000000002,onions_dry,403,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,garlic,406,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,leeks_other_alliaceous_vegetables,407,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.03,beans_green,414,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.017,peas_green,417,0
+229,United Kingdom of Great Britain and Northern Ireland,0.15,NA,maize_green,446,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.1,mushrooms_canned,451,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.1,vegetables_fresh_nes,463,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.03,vegetables_dehydrated,469,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.03,vegetables_in_vinegar,471,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,bananas,486,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,oranges,490,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,tangerines_mandarins_clementines_satsumas,495,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,lemons_and_limes,497,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,grapefruit_inc_pomelos,507,0
+229,United Kingdom of Great Britain and Northern Ireland,0.22,NA,juice_grapefruit_concentrated,510,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.003,apples,515,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.002,pears,521,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,apricots,526,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.0,cherries,531,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.14,peaches_and_nectarines,534,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,plums_dried_prunes,537,0
+229,United Kingdom of Great Britain and Northern Ireland,0.2,NA,juice_plum_concentrated,539,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.12,strawberries,544,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.07400000000000001,gooseberries,549,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.06,currants,550,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.1,grapes,560,0
+229,United Kingdom of Great Britain and Northern Ireland,0.75,NA,wine,564,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,watermelons,567,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.1,figs,569,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,figs_dried,570,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,avocados,572,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,pineapples,574,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,dates,577,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,kiwi_fruit,592,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,papayas,600,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.15,fruit_fresh_nes,619,0
+229,United Kingdom of Great Britain and Northern Ireland,0.65,NA,coffee_roasted,657,1
+229,United Kingdom of Great Britain and Northern Ireland,0.6,NA,coffee_substitutes_containing_coffee,658,1
+229,United Kingdom of Great Britain and Northern Ireland,0.8,NA,cocoa_paste,662,1
+229,United Kingdom of Great Britain and Northern Ireland,0.2,NA,cocoa_husks_shell,663,1
+229,United Kingdom of Great Britain and Northern Ireland,0.47,NA,cocoa_butter,664,1
+229,United Kingdom of Great Britain and Northern Ireland,0.53,NA,cocoa_powder_cake,665,1
+229,United Kingdom of Great Britain and Northern Ireland,4.71,NA,chocolate_products_nes,666,1
+229,United Kingdom of Great Britain and Northern Ireland,0.54,NA,meat_cattle,867,1
+229,United Kingdom of Great Britain and Northern Ireland,0.051,NA,offals_edible_cattle,868,1
+229,United Kingdom of Great Britain and Northern Ireland,0.033,NA,fat_cattle,869,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,NA,milk_whole_fresh_cow,882,0
+229,United Kingdom of Great Britain and Northern Ireland,0.11,NA,cream_fresh,885,1
+229,United Kingdom of Great Britain and Northern Ireland,0.049,NA,butter_cow_milk,886,1
+229,United Kingdom of Great Britain and Northern Ireland,0.25,NA,milk_whole_evaporated,894,1
+229,United Kingdom of Great Britain and Northern Ireland,0.1,NA,cheese_whole_cow_milk,901,1
+229,United Kingdom of Great Britain and Northern Ireland,0.05,NA,hides_cattle_fresh,919,1
+229,United Kingdom of Great Britain and Northern Ireland,0.51,NA,sheep,976,1
+229,United Kingdom of Great Britain and Northern Ireland,0.027000000000000003,NA,meat_sheep,977,1
+229,United Kingdom of Great Britain and Northern Ireland,0.073,NA,offals_sheep_edible,978,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,NA,wool_greasy,987,0
+229,United Kingdom of Great Britain and Northern Ireland,0.76,NA,pigs,1034,1
+229,United Kingdom of Great Britain and Northern Ireland,0.025,NA,offals_pigs_edible,1036,1
+229,United Kingdom of Great Britain and Northern Ireland,0.048,NA,fat_pigs,1037,1
+229,United Kingdom of Great Britain and Northern Ireland,0.68,NA,chickens,1057,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,NA,ducks,1068,0
+229,United Kingdom of Great Britain and Northern Ireland,0.82,NA,turkeys,1079,1
+229,United Kingdom of Great Britain and Northern Ireland,0.5,NA,horses,1096,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,asses,1107,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.08900000000000001,hides_nes,1216,0
+229,United Kingdom of Great Britain and Northern Ireland,0.16,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.15,NA,NA,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.031,NA,NA,0
+229,United Kingdom of Great Britain and Northern Ireland,0.11,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,NA,NA,NA,0
+229,United Kingdom of Great Britain and Northern Ireland,0.63,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,0.35,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.03,NA,NA,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.16,NA,NA,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.05,NA,NA,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.03,NA,NA,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.13,NA,NA,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,NA,NA,NA,0
+229,United Kingdom of Great Britain and Northern Ireland,0.1,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,0.9,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,0.78,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,0.18,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,0.28,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,0.14,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.03,NA,NA,0
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.03,NA,NA,0
+229,United Kingdom of Great Britain and Northern Ireland,0.8,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.009000000000000001,NA,NA,0
+229,United Kingdom of Great Britain and Northern Ireland,0.74,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.03,NA,NA,0
+229,United Kingdom of Great Britain and Northern Ireland,0.6,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,0.084,NA,NA,0
+229,United Kingdom of Great Britain and Northern Ireland,0.11,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,0.13,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,0.7,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,0.3,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,0.85,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,0.15,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,NA,NA,NA,NA,0
+229,United Kingdom of Great Britain and Northern Ireland,0.052000000000000005,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,0.8,NA,NA,NA,1
+229,United Kingdom of Great Britain and Northern Ireland,0.9,NA,NA,NA,1
 230,Ukraine,NA,0.027999999999999997,wheat,15,0
 230,Ukraine,0.78,0.011000000000000001,flour_wheat,16,1
 230,Ukraine,0.19,NA,bran_wheat,17,1
