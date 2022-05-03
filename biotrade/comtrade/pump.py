@@ -8,6 +8,21 @@ JRC biomass Project.
 Unit D1 Bioeconomy.
 
 
+The database can be updated every 2 weeks with a cron job such as
+
+To run comtrade.pump.update_db periodically as a cron job, edit crontab:
+
+    sudo vim /etc/crontab
+
+And enter:
+
+    0 0 0 */2 * cronjob_update_db.py
+
+Where the cronjob_update_db.py file contains
+
+    from biotrade.comtrade import comtrade
+    comtrade.pump.update_db(table_name = "monthly", frequency = "M")
+
 """
 # Built-in modules
 from pathlib import Path
@@ -262,7 +277,9 @@ class Pump:
             # Delete already existing data
             if check_data_presence:
                 self.db.delete_data(
-                    table_name, api_period, api_period,
+                    table_name,
+                    api_period,
+                    api_period,
                 )
             # Append data to db
             self.db.append(df, table_name)
@@ -271,7 +288,12 @@ class Pump:
         return records_downloaded_csv
 
     def transfer_bulk_csv(
-        self, table_name, start_year, end_year, frequency, check_data_presence,
+        self,
+        table_name,
+        start_year,
+        end_year,
+        frequency,
+        check_data_presence,
     ):
         """
         Pump method to transfer bulk csv file of Comtrade API requests to
@@ -361,7 +383,10 @@ class Pump:
                 # Construct the period to pass to transfer_csv_chunk method
                 api_period = int(str(period) + month)
                 # Store zip data into the temporary directory
-                temp_dir, response_code = self.download_bulk_csv(api_period, frequency,)
+                temp_dir, response_code = self.download_bulk_csv(
+                    api_period,
+                    frequency,
+                )
                 # If data are downloaded (response = 200) copy the csv of
                 # the zip file into a pandas data frame
                 if response_code == 200:
@@ -410,7 +435,9 @@ class Pump:
         return period_list_failed
 
     def update_db(
-        self, table_name, frequency,
+        self,
+        table_name,
+        frequency,
     ):
         """
         Pump method to update db. If data from 2016 are already present,
@@ -435,7 +462,10 @@ class Pump:
         current_year = datetime.datetime.now(pytz.timezone("Europe/Rome")).date().year
         # Check if data from 2016 are present into db
         data_check = self.db.check_data_presence(
-            table_name, 2016, current_year, frequency,
+            table_name,
+            2016,
+            current_year,
+            frequency,
         )
         # If data are already inside db, update from the last year
         if data_check:
@@ -445,7 +475,11 @@ class Pump:
             start_year = 2016
         # Transfer from api bulk requests to db
         period_list_failed = self.transfer_bulk_csv(
-            table_name, start_year, current_year, frequency, data_check,
+            table_name,
+            start_year,
+            current_year,
+            frequency,
+            data_check,
         )
         # If some periods failed to be uploaded, raise an error
         if len(period_list_failed):

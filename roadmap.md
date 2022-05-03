@@ -49,3 +49,12 @@ Sources of inspiration
     [batch/austria](https://github.com/owid/covid-19-data/blob/master/scripts/src/cowidev/vax/batch/austria.py)
 
   - mentions https://www.datawrapper.de/ as a web visualization tool
+
+Concerning open source packages used for data preparation
+
+- [Coordinate 
+  Clearner](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13152) [R 
+  package](https://cran.r-project.org/web/packages/CoordinateCleaner/index.html)
+
+
+
