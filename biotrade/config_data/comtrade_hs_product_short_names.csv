@@ -3,15 +3,25 @@ product_code,product_name
 440131,wood fuel in pellets
 440290,wood charcoal
 440395,roundwood birch
+440710,sawnwood coniferous
 440711,sawnwood pine
 440712,sawnwood spruce
+440713,sawnwood fir
+440714,sawnwood hem-fir
 440719,sawnwood coniferous other
 440791,sawnwood oak
+440792,sawnwood beech
+440793,sawnwood maple
+440794,sawnwood cherry
+440795,sawnwood ash
+440796,sawnwood birch
+440797,sawnwood poplar
+440799,sawnwood other
 440890,sheets for veneer or plywood
 440910,wood flooring
 441011,particle board
 441233,plywood
 441520,wood pallets and box pallets
 441875,wood assembled flooring panels
-442199,Wood frames
-441899,Builders joinery - others
+441899,builders joinery - others
+442199,wood frames
