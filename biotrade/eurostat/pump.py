@@ -16,15 +16,16 @@ import pandas
 
 class Pump:
     """
-    Download trade data from the Eurostat bulk download platform
+    Download exchange rates from the Eurostat bulk download platform
 
         >>> from biotrade.eurostat import eurostat
-        >>> exchange_rate_m = eurostat.pump.download_bulk_df()
+        >>> exch_rates = eurostat.pump.download_bulk_df("ert_bil_eur_m")
 
-    Download the table of content of all datasets
+    Download the table of content of all datasets and search for population change
 
-
-    Query the table of content
+        >>> from biotrade.eurostat import eurostat
+        >>> toc = eurostat.pump.download_toc()
+        >>> toc.loc[toc.title.str.contains("population change", case=False)]
 
     """
 
