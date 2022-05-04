@@ -180,5 +180,5 @@ See the [LICENCE.md](LICENCE.md) file.
 The authors would like to acknowledge ideas and feedback received from the following 
 persons: Lucas Sinclair, Roberto Pilli, Mirco Migliavacca, Giovanni Bausano.
 
-
-
+Noemi Cazzaniga's package [eurostat](https://pypi.org/project/eurostat/) was taken as an 
+inspiration to load Eurostat data from the bulk download repository.
