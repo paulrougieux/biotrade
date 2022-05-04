@@ -155,7 +155,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 132,154,MV,MV,MDV,MDV,462,member,Maldives,the Republic of Maldives,Maldives,Maldivas,1965,,World,Asia,5300,Southern Asia,5303,Developing,0
 133,155,ML,ML,MLI,MLI,466,member,Mali,the Republic of Mali,Mali,Malí,1960,,World,Africa,5100,Western Africa,5105,Developing,0
 134,156,MT,MT,MLT,MLT,470,member,Malta,the Republic of Malta,Malta,Soberana Orden de Malta,1964,,World,Europe,5400,Southern Europe,5403,Developed,1
-127,157,MH,MH,MHL,MHL,584,member,the Marshall Islands,the Republic of the Marshall Islands,Marshall Islands,Islas Marshall,1991,,World,Oceania,5500,Micronesia,5503,Developing,0
+127,157,MH,MH,MHL,MHL,584,member,Marshall Islands,the Republic of the Marshall Islands,Marshall Islands,Islas Marshall,1991,,World,Oceania,5500,Micronesia,5503,Developing,0
 135,158,MQ,MQ,MTQ,MTQ,474,areas and territories,Martinique,Martinique,Martinique,Martinica,,,World,Americas,5200,Caribbean,5206,Developing,0
 136,159,MR,MR,MRT,MRT,478,member,Mauritania,the Islamic Republic of Mauritania,Mauritania,Mauritania,1961,,World,Africa,5100,Western Africa,5105,Developing,0
 137,160,MU,MU,MUS,MUS,480,member,Mauritius,the Republic of Mauritius,Mauritius,Mauricio,1968,,World,Africa,5100,Eastern Africa,5101,Developing,0
@@ -236,7 +236,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 228,,SU,SU,SUN,MON,810,old,Union of Soviet Socialist Republic,Union of Soviet Socialist Republic,Union of Soviet Socialist Republic,Union of Soviet Socialist Republic,,1991,World,Europe,5400,Eastern Europe,5401,,0
 203,229,ES,ES,ESP,ESP,724,member,Spain,the Kingdom of Spain,Spain,España,1955,,World,Europe,5400,Southern Europe,5403,Developed,1
 38,231,LK,LK,LKA,LKA,144,member,Sri Lanka,the Democratic Socialist Republic of Sri Lanka,Sri Lanka,Sri Lanka,1955,,World,Asia,5300,Southern Asia,5303,Developing,0
-206,40764,SD,SD,SDN,SDN,736,old,the Sudan,the Republic of the Sudan,Sudan,Sudán,1956,2010,World,Africa,5100,Northern Africa,5103,Developing,0
+206,40764,SD,SD,SDN,SDN,736,old,Sudan (former),the Republic of the Sudan,Sudan,Sudán,1956,2010,World,Africa,5100,Northern Africa,5103,Developing,0
 276,,SD,SD,SDN,SDN,729,member,Sudan,the Republic of the Sudan,Sudan,Sudán,2011,,World,Africa,5100,Northern Africa,5103,Developing,0
 207,233,SR,SR,SUR,SUR,740,member,Suriname,the Republic of Suriname,Suriname,Suriname,1975,,World,Americas,5200,South America,5207,Developing,0
 260,234,SJ,SJ,SJM,SJM,744,areas and territories,Svalbard and Jan Mayen Islands,Svalbard and Jan Mayen Islands,Svalbard and Jan Mayen Islands,Islas Svalbard y Jan Mayen,,,World,Europe,5400,Northern Europe,5402,Developed,0
