@@ -33,6 +33,10 @@ def create_logger():
     """Create a logger to keep track of debug and error messages"""
     # create logger with 'biotrade'
     logger = logging.getLogger("biotrade")
+    # If it exists already it will just be reused
+    if logger.hasHandlers():
+        return
+    # Set level
     logger.setLevel(logging.DEBUG)
     # create file handler which logs even debug messages
     fh = logging.FileHandler(data_dir / "biotrade.log")
