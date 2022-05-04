@@ -3767,39 +3767,24 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 53,Benin,0.25,NA,NA,NA,1
 53,Benin,0.16,NA,NA,NA,1
 54,Denmark,NA,0.024,wheat,15,0
-54,Grenada,NA,0.021,wheat,15,0
 54,Denmark,0.78,NA,flour_wheat,16,1
-54,Grenada,0.72,0.05,flour_wheat,16,1
 54,Denmark,0.21,NA,bran_wheat,17,1
-54,Grenada,0.23,NA,bran_wheat,17,1
 54,Denmark,NA,0.18,macaroni,18,0
-54,Grenada,NA,0.1,macaroni,18,0
 54,Denmark,0.95,NA,flour_rice,38,1
 54,Denmark,NA,0.028999999999999998,barley,44,0
 54,Denmark,0.85,NA,barley_pearled,46,1
 54,Denmark,0.1,NA,beer_of_barley,51,1
-54,Grenada,NA,0.023,maize,56,0
 54,Denmark,0.08,NA,germ_maize,57,1
 54,Denmark,0.68,NA,flour_maize,58,1
-54,Grenada,0.9,NA,flour_maize,58,1
 54,Denmark,0.2,NA,bran_maize,59,1
-54,Grenada,0.08,NA,bran_maize,59,1
 54,Denmark,NA,0.03,rye,71,0
 54,Denmark,NA,0.031,oats,75,0
 54,Denmark,0.6,NA,oats_rolled,76,1
 54,Denmark,NA,0.09699999999999999,potatoes,116,0
-54,Grenada,NA,0.05,potatoes,116,0
 54,Denmark,0.17,NA,flour_potatoes,117,1
-54,Grenada,NA,0.1,sweet_potatoes,122,0
-54,Grenada,NA,0.1,cassava,125,0
-54,Grenada,NA,0.1,roots_and_tubers_nes,149,0
 54,Denmark,0.92,NA,sugar_refined,164,1
-54,Grenada,0.92,NA,sugar_refined,164,1
 54,Denmark,0.042,NA,molasses,165,1
-54,Grenada,0.03,NA,molasses,165,1
-54,Grenada,NA,0.03,sugar_nes,167,0
 54,Denmark,0.07,NA,beet_pulp,169,1
-54,Grenada,NA,0.1,beans_dry,176,0
 54,Denmark,NA,0.052000000000000005,peas_dry,187,0
 54,Denmark,NA,0.02,lentils,201,0
 54,Denmark,0.8,NA,flour_pulses,212,1
@@ -3808,9 +3793,7 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 54,Denmark,0.7,NA,groundnuts_shelled,243,1
 54,Denmark,0.45,NA,oil_groundnut,244,1
 54,Denmark,0.55,NA,cake_groundnuts,245,1
-54,Grenada,NA,0.2,coconuts,249,0
 54,Denmark,0.2,NA,copra,251,1
-54,Grenada,0.17,NA,copra,251,1
 54,Denmark,0.4,NA,oil_palm_kernel,258,1
 54,Denmark,0.32,NA,oil_sunflower,268,1
 54,Denmark,0.65,NA,cake_sunflower,269,1
@@ -3823,121 +3806,75 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 54,Denmark,0.49,NA,cake_sesame_seed,291,1
 54,Denmark,NA,NA,mustard_seed,292,0
 54,Denmark,0.8,NA,flour_mustard,295,1
-54,Grenada,0.6,NA,cottonseed,329,1
-54,Grenada,0.16,NA,oil_cottonseed,331,1
-54,Grenada,0.45,NA,cake_cottonseed,332,1
 54,Denmark,NA,0.01,linseed,333,0
 54,Denmark,0.35,NA,oil_linseed,334,1
 54,Denmark,0.61,NA,cake_linseed,335,1
 54,Denmark,NA,0.038,oilseeds_nes,339,0
-54,Grenada,NA,0.02,oilseeds_nes,339,0
 54,Denmark,NA,0.12,artichokes,366,0
 54,Denmark,NA,0.12,asparagus,367,0
 54,Denmark,NA,0.02,tomatoes,388,0
-54,Grenada,NA,0.1,tomatoes,388,0
 54,Denmark,NA,0.13,pumpkins_squash_and_gourds,394,0
-54,Grenada,NA,0.1,pumpkins_squash_and_gourds,394,0
 54,Denmark,NA,0.03,chillies_and_peppers_green,401,0
 54,Denmark,NA,0.03,onions_shallots_green,402,0
 54,Denmark,NA,0.065,onions_dry,403,0
-54,Grenada,NA,0.05,onions_dry,403,0
 54,Denmark,NA,0.03,garlic,406,0
-54,Grenada,NA,0.051,garlic,406,0
 54,Denmark,NA,0.03,leeks_other_alliaceous_vegetables,407,0
 54,Denmark,NA,0.03,peas_green,417,0
 54,Denmark,NA,0.053,mushrooms_canned,451,0
 54,Denmark,NA,0.13,vegetables_fresh_nes,463,0
-54,Grenada,NA,0.1,vegetables_fresh_nes,463,0
 54,Denmark,1.2,NA,vegetables_in_vinegar,471,1
 54,Denmark,0.8,NA,vegetables_frozen,473,1
 54,Denmark,NA,0.05,bananas,486,0
-54,Grenada,NA,0.092,bananas,486,0
 54,Denmark,NA,0.03,oranges,490,0
-54,Grenada,NA,0.05,oranges,490,0
 54,Denmark,0.7,NA,juice_orange_single_strength,491,1
 54,Denmark,NA,0.03,tangerines_mandarins_clementines_satsumas,495,0
 54,Denmark,NA,0.03,lemons_and_limes,497,0
-54,Grenada,NA,0.05,lemons_and_limes,497,0
 54,Denmark,NA,0.03,grapefruit_inc_pomelos,507,0
-54,Grenada,NA,0.05,grapefruit_inc_pomelos,507,0
 54,Denmark,NA,0.028999999999999998,apples,515,0
-54,Grenada,NA,0.05,apples,515,0
 54,Denmark,NA,0.01,pears,521,0
 54,Denmark,NA,0.05,peaches_and_nectarines,534,0
 54,Denmark,NA,0.01,plums_dried_prunes,537,0
 54,Denmark,NA,0.03,grapes,560,0
-54,Grenada,NA,0.05,grapes,560,0
 54,Denmark,NA,0.03,watermelons,567,0
 54,Denmark,NA,0.05,avocados,572,0
-54,Grenada,NA,0.1,avocados,572,0
 54,Denmark,NA,0.03,pineapples,574,0
 54,Denmark,NA,0.03,kiwi_fruit,592,0
 54,Denmark,NA,0.02,fruit_fresh_nes,619,0
-54,Grenada,NA,0.19,fruit_fresh_nes,619,0
 54,Denmark,NA,0.03,juice_fruit_nes,622,0
-54,Grenada,NA,0.05,juice_fruit_nes,622,0
 54,Denmark,0.8,NA,coffee_roasted,657,1
 54,Denmark,0.4,NA,coffee_substitutes_containing_coffee,658,1
 54,Denmark,0.8,NA,cocoa_paste,662,1
 54,Denmark,0.2,NA,cocoa_husks_shell,663,1
 54,Denmark,0.47,NA,cocoa_butter,664,1
 54,Denmark,0.53,NA,cocoa_powder_cake,665,1
-54,Grenada,0.33,NA,cotton_lint,767,1
 54,Denmark,0.49,NA,meat_cattle,867,1
-54,Grenada,0.49,NA,meat_cattle,867,1
 54,Denmark,0.044000000000000004,NA,offals_edible_cattle,868,1
-54,Grenada,0.083,NA,offals_edible_cattle,868,1
 54,Denmark,0.027000000000000003,NA,fat_cattle,869,1
-54,Grenada,0.013000000000000001,NA,fat_cattle,869,1
 54,Denmark,NA,NA,milk_whole_fresh_cow,882,0
-54,Grenada,NA,0.1,milk_whole_fresh_cow,882,0
 54,Denmark,0.14,NA,cream_fresh,885,1
 54,Denmark,0.04,NA,butter_cow_milk,886,1
 54,Denmark,0.2,NA,milk_whole_evaporated,894,1
 54,Denmark,0.13,NA,cheese_whole_cow_milk,901,1
 54,Denmark,0.06,NA,hides_cattle_fresh,919,1
-54,Grenada,0.073,NA,hides_cattle_fresh,919,1
 54,Denmark,0.49,NA,sheep,976,1
-54,Grenada,0.5,NA,sheep,976,1
 54,Denmark,0.035,NA,meat_sheep,977,1
-54,Grenada,0.015,NA,meat_sheep,977,1
 54,Denmark,0.1,NA,offals_sheep_edible,978,1
-54,Grenada,0.09,NA,offals_sheep_edible,978,1
 54,Denmark,NA,NA,wool_greasy,987,0
-54,Grenada,0.51,NA,goats,1016,1
 54,Denmark,0.7,NA,pigs,1034,1
-54,Grenada,0.71,NA,pigs,1034,1
 54,Denmark,0.031,NA,offals_pigs_edible,1036,1
-54,Grenada,0.038,NA,offals_pigs_edible,1036,1
 54,Denmark,0.042,NA,fat_pigs,1037,1
-54,Grenada,0.057,NA,fat_pigs,1037,1
 54,Denmark,0.76,NA,chickens,1057,1
-54,Grenada,0.57,NA,chickens,1057,1
 54,Denmark,NA,NA,ducks,1068,0
 54,Denmark,0.71,NA,turkeys,1079,1
 54,Denmark,0.46,NA,horses,1096,1
 54,Denmark,NA,0.03,asses,1107,0
-54,Grenada,NA,0.1,asses,1107,0
-54,Grenada,NA,0.052000000000000005,NA,NA,0
-54,Grenada,0.086,NA,NA,NA,1
 54,Denmark,0.16,NA,NA,NA,1
-54,Grenada,0.25,NA,NA,NA,1
 54,Denmark,NA,0.03,NA,NA,0
-54,Grenada,NA,0.05,NA,NA,0
-54,Grenada,0.1,NA,NA,NA,1
-54,Grenada,0.013999999999999999,NA,NA,NA,1
 54,Denmark,0.14,NA,NA,NA,1
-54,Grenada,0.075,NA,NA,NA,1
-54,Grenada,0.091,NA,NA,NA,1
 54,Denmark,NA,NA,NA,NA,0
-54,Grenada,NA,NA,NA,NA,0
 54,Denmark,0.6,NA,NA,NA,1
-54,Grenada,0.64,NA,NA,NA,1
 54,Denmark,0.34,NA,NA,NA,1
-54,Grenada,0.35,NA,NA,NA,1
-54,Grenada,NA,0.1,NA,NA,0
 54,Denmark,NA,0.078,NA,NA,0
-54,Grenada,NA,0.1,NA,NA,0
 54,Denmark,NA,0.03,NA,NA,0
 54,Denmark,NA,NA,NA,NA,0
 54,Denmark,0.16,NA,NA,NA,1
@@ -3961,10 +3898,8 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 54,Denmark,0.85,NA,NA,NA,1
 54,Denmark,NA,NA,NA,NA,0
 54,Denmark,0.024,NA,NA,NA,1
-54,Grenada,NA,0.05,NA,NA,0
 54,Denmark,0.8,NA,NA,NA,1
 54,Denmark,0.95,NA,NA,NA,1
-54,Grenada,NA,0.05,NA,NA,0
 54,Denmark,1.15,NA,NA,NA,1
 55,Dominica,NA,0.02,flour_wheat,16,0
 55,Dominica,NA,0.15,macaroni,18,0
@@ -5891,6 +5826,71 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 85,Greenland,0.013999999999999999,NA,meat_sheep,977,1
 85,Greenland,0.086,NA,offals_sheep_edible,978,1
 85,Greenland,NA,NA,wool_greasy,987,0
+86,Grenada,NA,0.021,wheat,15,0
+86,Grenada,0.72,0.05,flour_wheat,16,1
+86,Grenada,0.23,NA,bran_wheat,17,1
+86,Grenada,NA,0.1,macaroni,18,0
+86,Grenada,NA,0.023,maize,56,0
+86,Grenada,0.9,NA,flour_maize,58,1
+86,Grenada,0.08,NA,bran_maize,59,1
+86,Grenada,NA,0.05,potatoes,116,0
+86,Grenada,NA,0.1,sweet_potatoes,122,0
+86,Grenada,NA,0.1,cassava,125,0
+86,Grenada,NA,0.1,roots_and_tubers_nes,149,0
+86,Grenada,0.92,NA,sugar_refined,164,1
+86,Grenada,0.03,NA,molasses,165,1
+86,Grenada,NA,0.03,sugar_nes,167,0
+86,Grenada,NA,0.1,beans_dry,176,0
+86,Grenada,NA,0.2,coconuts,249,0
+86,Grenada,0.17,NA,copra,251,1
+86,Grenada,0.6,NA,cottonseed,329,1
+86,Grenada,0.16,NA,oil_cottonseed,331,1
+86,Grenada,0.45,NA,cake_cottonseed,332,1
+86,Grenada,NA,0.02,oilseeds_nes,339,0
+86,Grenada,NA,0.1,tomatoes,388,0
+86,Grenada,NA,0.1,pumpkins_squash_and_gourds,394,0
+86,Grenada,NA,0.05,onions_dry,403,0
+86,Grenada,NA,0.051,garlic,406,0
+86,Grenada,NA,0.1,vegetables_fresh_nes,463,0
+86,Grenada,NA,0.092,bananas,486,0
+86,Grenada,NA,0.05,oranges,490,0
+86,Grenada,NA,0.05,lemons_and_limes,497,0
+86,Grenada,NA,0.05,grapefruit_inc_pomelos,507,0
+86,Grenada,NA,0.05,apples,515,0
+86,Grenada,NA,0.05,grapes,560,0
+86,Grenada,NA,0.1,avocados,572,0
+86,Grenada,NA,0.19,fruit_fresh_nes,619,0
+86,Grenada,NA,0.05,juice_fruit_nes,622,0
+86,Grenada,0.33,NA,cotton_lint,767,1
+86,Grenada,0.49,NA,meat_cattle,867,1
+86,Grenada,0.083,NA,offals_edible_cattle,868,1
+86,Grenada,0.013000000000000001,NA,fat_cattle,869,1
+86,Grenada,NA,0.1,milk_whole_fresh_cow,882,0
+86,Grenada,0.073,NA,hides_cattle_fresh,919,1
+86,Grenada,0.5,NA,sheep,976,1
+86,Grenada,0.015,NA,meat_sheep,977,1
+86,Grenada,0.09,NA,offals_sheep_edible,978,1
+86,Grenada,0.51,NA,goats,1016,1
+86,Grenada,0.71,NA,pigs,1034,1
+86,Grenada,0.038,NA,offals_pigs_edible,1036,1
+86,Grenada,0.057,NA,fat_pigs,1037,1
+86,Grenada,0.57,NA,chickens,1057,1
+86,Grenada,NA,0.1,asses,1107,0
+86,Grenada,NA,0.052000000000000005,NA,NA,0
+86,Grenada,0.086,NA,NA,NA,1
+86,Grenada,0.25,NA,NA,NA,1
+86,Grenada,NA,0.05,NA,NA,0
+86,Grenada,0.1,NA,NA,NA,1
+86,Grenada,0.013999999999999999,NA,NA,NA,1
+86,Grenada,0.075,NA,NA,NA,1
+86,Grenada,0.091,NA,NA,NA,1
+86,Grenada,NA,NA,NA,NA,0
+86,Grenada,0.64,NA,NA,NA,1
+86,Grenada,0.35,NA,NA,NA,1
+86,Grenada,NA,0.1,NA,NA,0
+86,Grenada,NA,0.1,NA,NA,0
+86,Grenada,NA,0.05,NA,NA,0
+86,Grenada,NA,0.05,NA,NA,0
 87,Guadeloupe,NA,0.083,wheat,15,0
 87,Guadeloupe,0.72,0.05,flour_wheat,16,1
 87,Guadeloupe,0.27,NA,bran_wheat,17,1
@@ -6414,102 +6414,102 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 95,Honduras,0.2,NA,NA,NA,1
 95,Honduras,1.0,NA,NA,NA,1
 95,Honduras,0.4,NA,NA,NA,1
-96,"China,H.Kong",NA,0.024,wheat,15,0
-96,"China,H.Kong",0.72,NA,flour_wheat,16,1
-96,"China,H.Kong",0.24,NA,bran_wheat,17,1
-96,"China,H.Kong",NA,0.02,rice_husked,28,0
-96,"China,H.Kong",NA,0.1,maize,56,0
-96,"China,H.Kong",0.08,NA,germ_maize,57,1
-96,"China,H.Kong",0.72,NA,flour_maize,58,1
-96,"China,H.Kong",0.12,NA,bran_maize,59,1
-96,"China,H.Kong",0.45,NA,oil_maize,60,1
-96,"China,H.Kong",0.54,NA,cake_maize,61,1
-96,"China,H.Kong",NA,0.02,oats_rolled,76,0
-96,"China,H.Kong",NA,0.05,potatoes,116,0
-96,"China,H.Kong",NA,0.05,flour_potatoes,117,0
-96,"China,H.Kong",NA,0.05,sweet_potatoes,122,0
-96,"China,H.Kong",NA,0.05,roots_and_tubers_nes,149,0
-96,"China,H.Kong",NA,0.011000000000000001,sugar_raw_centrifugal,162,0
-96,"China,H.Kong",0.92,NA,sugar_refined,164,1
-96,"China,H.Kong",0.6,NA,flour_pulses,212,1
-96,"China,H.Kong",NA,0.05,chestnut,220,0
-96,"China,H.Kong",0.5,NA,hazelnuts_shelled,233,1
-96,"China,H.Kong",NA,0.05,soybeans,236,0
-96,"China,H.Kong",3.0,NA,soya_sauce,239,1
-96,"China,H.Kong",NA,0.05,groundnuts_shelled,243,0
-96,"China,H.Kong",NA,0.05,coconuts_desiccated,250,0
-96,"China,H.Kong",0.2,NA,copra,251,1
-96,"China,H.Kong",NA,0.01,sesame_seed,289,0
-96,"China,H.Kong",NA,0.1,spinach,373,0
-96,"China,H.Kong",NA,0.1,tomatoes,388,0
-96,"China,H.Kong",NA,0.1,pumpkins_squash_and_gourds,394,0
-96,"China,H.Kong",NA,0.1,cucumbers_and_gherkins,397,0
-96,"China,H.Kong",NA,0.1,onions_shallots_green,402,0
-96,"China,H.Kong",NA,0.1,onions_dry,403,0
-96,"China,H.Kong",NA,0.1,beans_green,414,0
-96,"China,H.Kong",NA,0.15,vegetables_fresh_nes,463,0
-96,"China,H.Kong",0.5,NA,vegetables_dehydrated,469,1
-96,"China,H.Kong",NA,0.01,vegetables_in_vinegar,471,0
-96,"China,H.Kong",NA,0.05,vegetables_frozen,473,0
-96,"China,H.Kong",NA,0.1,bananas,486,0
-96,"China,H.Kong",NA,0.1,oranges,490,0
-96,"China,H.Kong",NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
-96,"China,H.Kong",NA,0.1,apples,515,0
-96,"China,H.Kong",NA,0.1,pears,521,0
-96,"China,H.Kong",NA,0.1,grapes,560,0
-96,"China,H.Kong",NA,0.05,raisins,561,0
-96,"China,H.Kong",NA,0.05,watermelons,567,0
-96,"China,H.Kong",NA,0.02,figs_dried,570,0
-96,"China,H.Kong",NA,0.1,pineapples,574,0
-96,"China,H.Kong",NA,0.1,dates,577,0
-96,"China,H.Kong",NA,0.1,papayas,600,0
-96,"China,H.Kong",NA,0.1,fruit_tropical_fresh_nes,603,0
-96,"China,H.Kong",NA,0.1,fruit_fresh_nes,619,0
-96,"China,H.Kong",NA,0.05,juice_fruit_nes,622,0
-96,"China,H.Kong",NA,0.02,tea,667,0
-96,"China,H.Kong",0.5,NA,meat_cattle,867,1
-96,"China,H.Kong",0.098,NA,offals_edible_cattle,868,1
-96,"China,H.Kong",0.023,NA,fat_cattle,869,1
-96,"China,H.Kong",NA,0.05,milk_whole_fresh_cow,882,0
-96,"China,H.Kong",0.1,NA,cream_fresh,885,1
-96,"China,H.Kong",0.076,NA,hides_cattle_fresh,919,1
-96,"China,H.Kong",0.5,NA,sheep,976,1
-96,"China,H.Kong",0.013000000000000001,NA,meat_sheep,977,1
-96,"China,H.Kong",0.1,NA,offals_sheep_edible,978,1
-96,"China,H.Kong",0.49,NA,goats,1016,1
-96,"China,H.Kong",0.68,NA,pigs,1034,1
-96,"China,H.Kong",0.054000000000000006,NA,offals_pigs_edible,1036,1
-96,"China,H.Kong",0.026000000000000002,NA,fat_pigs,1037,1
-96,"China,H.Kong",0.8,NA,chickens,1057,1
-96,"China,H.Kong",NA,NA,ducks,1068,0
-96,"China,H.Kong",NA,0.05,asses,1107,0
-96,"China,H.Kong",NA,0.05,hides_nes,1216,0
-96,"China,H.Kong",0.65,NA,NA,NA,1
-96,"China,H.Kong",0.08,NA,NA,NA,1
-96,"China,H.Kong",NA,0.05,NA,NA,0
-96,"China,H.Kong",NA,0.1,NA,NA,0
-96,"China,H.Kong",0.1,NA,NA,NA,1
-96,"China,H.Kong",0.016,NA,NA,NA,1
-96,"China,H.Kong",0.066,NA,NA,NA,1
-96,"China,H.Kong",0.1,NA,NA,NA,1
-96,"China,H.Kong",NA,NA,NA,NA,0
-96,"China,H.Kong",0.6,NA,NA,NA,1
-96,"China,H.Kong",0.35,NA,NA,NA,1
-96,"China,H.Kong",NA,0.1,NA,NA,0
-96,"China,H.Kong",NA,0.1,NA,NA,0
-96,"China,H.Kong",NA,NA,NA,NA,0
-96,"China,H.Kong",0.8,NA,NA,NA,1
-96,"China,H.Kong",0.1,NA,NA,NA,1
-96,"China,H.Kong",NA,0.01,NA,NA,0
-96,"China,H.Kong",0.2,NA,NA,NA,1
-96,"China,H.Kong",NA,0.01,NA,NA,0
-96,"China,H.Kong",0.6,NA,NA,NA,1
-96,"China,H.Kong",NA,0.021,NA,NA,0
-96,"China,H.Kong",NA,0.1,NA,NA,0
-96,"China,H.Kong",NA,0.05,NA,NA,0
-96,"China,H.Kong",NA,0.01,NA,NA,0
-96,"China,H.Kong",NA,0.02,NA,NA,0
-96,"China,H.Kong",NA,0.051,NA,NA,0
+96,"China, Hong Kong SAR",NA,0.024,wheat,15,0
+96,"China, Hong Kong SAR",0.72,NA,flour_wheat,16,1
+96,"China, Hong Kong SAR",0.24,NA,bran_wheat,17,1
+96,"China, Hong Kong SAR",NA,0.02,rice_husked,28,0
+96,"China, Hong Kong SAR",NA,0.1,maize,56,0
+96,"China, Hong Kong SAR",0.08,NA,germ_maize,57,1
+96,"China, Hong Kong SAR",0.72,NA,flour_maize,58,1
+96,"China, Hong Kong SAR",0.12,NA,bran_maize,59,1
+96,"China, Hong Kong SAR",0.45,NA,oil_maize,60,1
+96,"China, Hong Kong SAR",0.54,NA,cake_maize,61,1
+96,"China, Hong Kong SAR",NA,0.02,oats_rolled,76,0
+96,"China, Hong Kong SAR",NA,0.05,potatoes,116,0
+96,"China, Hong Kong SAR",NA,0.05,flour_potatoes,117,0
+96,"China, Hong Kong SAR",NA,0.05,sweet_potatoes,122,0
+96,"China, Hong Kong SAR",NA,0.05,roots_and_tubers_nes,149,0
+96,"China, Hong Kong SAR",NA,0.011000000000000001,sugar_raw_centrifugal,162,0
+96,"China, Hong Kong SAR",0.92,NA,sugar_refined,164,1
+96,"China, Hong Kong SAR",0.6,NA,flour_pulses,212,1
+96,"China, Hong Kong SAR",NA,0.05,chestnut,220,0
+96,"China, Hong Kong SAR",0.5,NA,hazelnuts_shelled,233,1
+96,"China, Hong Kong SAR",NA,0.05,soybeans,236,0
+96,"China, Hong Kong SAR",3.0,NA,soya_sauce,239,1
+96,"China, Hong Kong SAR",NA,0.05,groundnuts_shelled,243,0
+96,"China, Hong Kong SAR",NA,0.05,coconuts_desiccated,250,0
+96,"China, Hong Kong SAR",0.2,NA,copra,251,1
+96,"China, Hong Kong SAR",NA,0.01,sesame_seed,289,0
+96,"China, Hong Kong SAR",NA,0.1,spinach,373,0
+96,"China, Hong Kong SAR",NA,0.1,tomatoes,388,0
+96,"China, Hong Kong SAR",NA,0.1,pumpkins_squash_and_gourds,394,0
+96,"China, Hong Kong SAR",NA,0.1,cucumbers_and_gherkins,397,0
+96,"China, Hong Kong SAR",NA,0.1,onions_shallots_green,402,0
+96,"China, Hong Kong SAR",NA,0.1,onions_dry,403,0
+96,"China, Hong Kong SAR",NA,0.1,beans_green,414,0
+96,"China, Hong Kong SAR",NA,0.15,vegetables_fresh_nes,463,0
+96,"China, Hong Kong SAR",0.5,NA,vegetables_dehydrated,469,1
+96,"China, Hong Kong SAR",NA,0.01,vegetables_in_vinegar,471,0
+96,"China, Hong Kong SAR",NA,0.05,vegetables_frozen,473,0
+96,"China, Hong Kong SAR",NA,0.1,bananas,486,0
+96,"China, Hong Kong SAR",NA,0.1,oranges,490,0
+96,"China, Hong Kong SAR",NA,0.1,tangerines_mandarins_clementines_satsumas,495,0
+96,"China, Hong Kong SAR",NA,0.1,apples,515,0
+96,"China, Hong Kong SAR",NA,0.1,pears,521,0
+96,"China, Hong Kong SAR",NA,0.1,grapes,560,0
+96,"China, Hong Kong SAR",NA,0.05,raisins,561,0
+96,"China, Hong Kong SAR",NA,0.05,watermelons,567,0
+96,"China, Hong Kong SAR",NA,0.02,figs_dried,570,0
+96,"China, Hong Kong SAR",NA,0.1,pineapples,574,0
+96,"China, Hong Kong SAR",NA,0.1,dates,577,0
+96,"China, Hong Kong SAR",NA,0.1,papayas,600,0
+96,"China, Hong Kong SAR",NA,0.1,fruit_tropical_fresh_nes,603,0
+96,"China, Hong Kong SAR",NA,0.1,fruit_fresh_nes,619,0
+96,"China, Hong Kong SAR",NA,0.05,juice_fruit_nes,622,0
+96,"China, Hong Kong SAR",NA,0.02,tea,667,0
+96,"China, Hong Kong SAR",0.5,NA,meat_cattle,867,1
+96,"China, Hong Kong SAR",0.098,NA,offals_edible_cattle,868,1
+96,"China, Hong Kong SAR",0.023,NA,fat_cattle,869,1
+96,"China, Hong Kong SAR",NA,0.05,milk_whole_fresh_cow,882,0
+96,"China, Hong Kong SAR",0.1,NA,cream_fresh,885,1
+96,"China, Hong Kong SAR",0.076,NA,hides_cattle_fresh,919,1
+96,"China, Hong Kong SAR",0.5,NA,sheep,976,1
+96,"China, Hong Kong SAR",0.013000000000000001,NA,meat_sheep,977,1
+96,"China, Hong Kong SAR",0.1,NA,offals_sheep_edible,978,1
+96,"China, Hong Kong SAR",0.49,NA,goats,1016,1
+96,"China, Hong Kong SAR",0.68,NA,pigs,1034,1
+96,"China, Hong Kong SAR",0.054000000000000006,NA,offals_pigs_edible,1036,1
+96,"China, Hong Kong SAR",0.026000000000000002,NA,fat_pigs,1037,1
+96,"China, Hong Kong SAR",0.8,NA,chickens,1057,1
+96,"China, Hong Kong SAR",NA,NA,ducks,1068,0
+96,"China, Hong Kong SAR",NA,0.05,asses,1107,0
+96,"China, Hong Kong SAR",NA,0.05,hides_nes,1216,0
+96,"China, Hong Kong SAR",0.65,NA,NA,NA,1
+96,"China, Hong Kong SAR",0.08,NA,NA,NA,1
+96,"China, Hong Kong SAR",NA,0.05,NA,NA,0
+96,"China, Hong Kong SAR",NA,0.1,NA,NA,0
+96,"China, Hong Kong SAR",0.1,NA,NA,NA,1
+96,"China, Hong Kong SAR",0.016,NA,NA,NA,1
+96,"China, Hong Kong SAR",0.066,NA,NA,NA,1
+96,"China, Hong Kong SAR",0.1,NA,NA,NA,1
+96,"China, Hong Kong SAR",NA,NA,NA,NA,0
+96,"China, Hong Kong SAR",0.6,NA,NA,NA,1
+96,"China, Hong Kong SAR",0.35,NA,NA,NA,1
+96,"China, Hong Kong SAR",NA,0.1,NA,NA,0
+96,"China, Hong Kong SAR",NA,0.1,NA,NA,0
+96,"China, Hong Kong SAR",NA,NA,NA,NA,0
+96,"China, Hong Kong SAR",0.8,NA,NA,NA,1
+96,"China, Hong Kong SAR",0.1,NA,NA,NA,1
+96,"China, Hong Kong SAR",NA,0.01,NA,NA,0
+96,"China, Hong Kong SAR",0.2,NA,NA,NA,1
+96,"China, Hong Kong SAR",NA,0.01,NA,NA,0
+96,"China, Hong Kong SAR",0.6,NA,NA,NA,1
+96,"China, Hong Kong SAR",NA,0.021,NA,NA,0
+96,"China, Hong Kong SAR",NA,0.1,NA,NA,0
+96,"China, Hong Kong SAR",NA,0.05,NA,NA,0
+96,"China, Hong Kong SAR",NA,0.01,NA,NA,0
+96,"China, Hong Kong SAR",NA,0.02,NA,NA,0
+96,"China, Hong Kong SAR",NA,0.051,NA,NA,0
 97,Hungary,NA,0.027999999999999997,wheat,15,0
 97,Hungary,0.76,0.006,flour_wheat,16,1
 97,Hungary,0.19,NA,bran_wheat,17,1
@@ -13339,81 +13339,81 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 181,Zimbabwe,0.13,NA,NA,NA,1
 181,Zimbabwe,0.2,NA,NA,NA,1
 181,Zimbabwe,0.8,NA,NA,NA,1
-182,Reunion,NA,0.023,wheat,15,0
-182,Reunion,0.8,0.04,flour_wheat,16,1
-182,Reunion,0.18,NA,bran_wheat,17,1
-182,Reunion,NA,0.04,maize,56,0
-182,Reunion,0.8,NA,flour_maize,58,1
-182,Reunion,0.13,NA,bran_maize,59,1
-182,Reunion,NA,0.1,potatoes,116,0
-182,Reunion,NA,0.14,sweet_potatoes,122,0
-182,Reunion,NA,0.14,cassava,125,0
-182,Reunion,NA,0.1,cassava_dried,128,0
-182,Reunion,0.92,NA,sugar_refined,164,1
-182,Reunion,0.035,NA,molasses,165,1
-182,Reunion,NA,0.1,beans_dry,176,0
-182,Reunion,NA,0.1,nuts_nes,234,0
-182,Reunion,0.7,NA,groundnuts_shelled,243,1
-182,Reunion,0.42,NA,oil_groundnut,244,1
-182,Reunion,0.55,NA,cake_groundnuts,245,1
-182,Reunion,NA,0.1,coconuts,249,0
-182,Reunion,NA,0.05,kapokseed_in_shell,311,0
-182,Reunion,NA,0.1,tomatoes_paste,391,0
-182,Reunion,NA,0.05,eggplants_aubergines,399,0
-182,Reunion,NA,0.1,onions_shallots_green,402,0
-182,Reunion,NA,0.1,vegetables_fresh_nes,463,0
-182,Reunion,NA,0.1,bananas,486,0
-182,Reunion,NA,0.1,oranges,490,0
-182,Reunion,NA,0.1,lemons_and_limes,497,0
-182,Reunion,NA,0.1,grapefruit_inc_pomelos,507,0
-182,Reunion,NA,0.1,apples,515,0
-182,Reunion,NA,0.1,peaches_and_nectarines,534,0
-182,Reunion,NA,0.1,strawberries,544,0
-182,Reunion,NA,0.1,raisins,561,0
-182,Reunion,0.59,NA,wine,564,1
-182,Reunion,NA,0.1,avocados,572,0
-182,Reunion,NA,0.1,pineapples,574,0
-182,Reunion,NA,0.05,papayas,600,0
-182,Reunion,NA,0.05,fruit_tropical_fresh_nes,603,0
-182,Reunion,NA,0.1,fruit_fresh_nes,619,0
-182,Reunion,NA,0.04,cigarettes,828,0
-182,Reunion,0.54,NA,meat_cattle,867,1
-182,Reunion,0.052000000000000005,NA,offals_edible_cattle,868,1
-182,Reunion,0.009000000000000001,NA,fat_cattle,869,1
-182,Reunion,0.5,NA,sheep,976,1
-182,Reunion,0.1,NA,offals_sheep_edible,978,1
-182,Reunion,0.4,NA,goats,1016,1
-182,Reunion,0.02,NA,offals_edible_goats,1018,1
-182,Reunion,0.76,NA,pigs,1034,1
-182,Reunion,0.017,NA,fat_pigs,1037,1
-182,Reunion,0.76,NA,chickens,1057,1
-182,Reunion,NA,NA,ducks,1068,0
-182,Reunion,0.85,NA,turkeys,1079,1
-182,Reunion,0.5,NA,horses,1096,1
-182,Reunion,0.022000000000000002,NA,meat_horse,1097,1
-182,Reunion,0.012,NA,fat_camels,1129,1
-182,Reunion,0.25,NA,hides_nes,1216,1
-182,Reunion,0.25,NA,NA,NA,1
-182,Reunion,NA,0.11,NA,NA,0
-182,Reunion,NA,0.1,NA,NA,0
-182,Reunion,0.1,NA,NA,NA,1
-182,Reunion,0.021,NA,NA,NA,1
-182,Reunion,0.05,NA,NA,NA,1
-182,Reunion,0.1,NA,NA,NA,1
-182,Reunion,0.08199999999999999,NA,NA,NA,1
-182,Reunion,NA,0.05,NA,NA,0
-182,Reunion,NA,NA,NA,NA,0
-182,Reunion,NA,NA,NA,NA,0
-182,Reunion,NA,0.06,NA,NA,0
-182,Reunion,NA,0.1,NA,NA,0
-182,Reunion,0.8,NA,NA,NA,1
-182,Reunion,0.2,NA,NA,NA,1
-182,Reunion,0.47,NA,NA,NA,1
-182,Reunion,0.53,NA,NA,NA,1
-182,Reunion,0.75,NA,NA,NA,1
-182,Reunion,0.036000000000000004,NA,NA,NA,1
-182,Reunion,0.11,NA,NA,NA,1
-182,Reunion,NA,0.08,NA,NA,0
+182,Réunion,NA,0.023,wheat,15,0
+182,Réunion,0.8,0.04,flour_wheat,16,1
+182,Réunion,0.18,NA,bran_wheat,17,1
+182,Réunion,NA,0.04,maize,56,0
+182,Réunion,0.8,NA,flour_maize,58,1
+182,Réunion,0.13,NA,bran_maize,59,1
+182,Réunion,NA,0.1,potatoes,116,0
+182,Réunion,NA,0.14,sweet_potatoes,122,0
+182,Réunion,NA,0.14,cassava,125,0
+182,Réunion,NA,0.1,cassava_dried,128,0
+182,Réunion,0.92,NA,sugar_refined,164,1
+182,Réunion,0.035,NA,molasses,165,1
+182,Réunion,NA,0.1,beans_dry,176,0
+182,Réunion,NA,0.1,nuts_nes,234,0
+182,Réunion,0.7,NA,groundnuts_shelled,243,1
+182,Réunion,0.42,NA,oil_groundnut,244,1
+182,Réunion,0.55,NA,cake_groundnuts,245,1
+182,Réunion,NA,0.1,coconuts,249,0
+182,Réunion,NA,0.05,kapokseed_in_shell,311,0
+182,Réunion,NA,0.1,tomatoes_paste,391,0
+182,Réunion,NA,0.05,eggplants_aubergines,399,0
+182,Réunion,NA,0.1,onions_shallots_green,402,0
+182,Réunion,NA,0.1,vegetables_fresh_nes,463,0
+182,Réunion,NA,0.1,bananas,486,0
+182,Réunion,NA,0.1,oranges,490,0
+182,Réunion,NA,0.1,lemons_and_limes,497,0
+182,Réunion,NA,0.1,grapefruit_inc_pomelos,507,0
+182,Réunion,NA,0.1,apples,515,0
+182,Réunion,NA,0.1,peaches_and_nectarines,534,0
+182,Réunion,NA,0.1,strawberries,544,0
+182,Réunion,NA,0.1,raisins,561,0
+182,Réunion,0.59,NA,wine,564,1
+182,Réunion,NA,0.1,avocados,572,0
+182,Réunion,NA,0.1,pineapples,574,0
+182,Réunion,NA,0.05,papayas,600,0
+182,Réunion,NA,0.05,fruit_tropical_fresh_nes,603,0
+182,Réunion,NA,0.1,fruit_fresh_nes,619,0
+182,Réunion,NA,0.04,cigarettes,828,0
+182,Réunion,0.54,NA,meat_cattle,867,1
+182,Réunion,0.052000000000000005,NA,offals_edible_cattle,868,1
+182,Réunion,0.009000000000000001,NA,fat_cattle,869,1
+182,Réunion,0.5,NA,sheep,976,1
+182,Réunion,0.1,NA,offals_sheep_edible,978,1
+182,Réunion,0.4,NA,goats,1016,1
+182,Réunion,0.02,NA,offals_edible_goats,1018,1
+182,Réunion,0.76,NA,pigs,1034,1
+182,Réunion,0.017,NA,fat_pigs,1037,1
+182,Réunion,0.76,NA,chickens,1057,1
+182,Réunion,NA,NA,ducks,1068,0
+182,Réunion,0.85,NA,turkeys,1079,1
+182,Réunion,0.5,NA,horses,1096,1
+182,Réunion,0.022000000000000002,NA,meat_horse,1097,1
+182,Réunion,0.012,NA,fat_camels,1129,1
+182,Réunion,0.25,NA,hides_nes,1216,1
+182,Réunion,0.25,NA,NA,NA,1
+182,Réunion,NA,0.11,NA,NA,0
+182,Réunion,NA,0.1,NA,NA,0
+182,Réunion,0.1,NA,NA,NA,1
+182,Réunion,0.021,NA,NA,NA,1
+182,Réunion,0.05,NA,NA,NA,1
+182,Réunion,0.1,NA,NA,NA,1
+182,Réunion,0.08199999999999999,NA,NA,NA,1
+182,Réunion,NA,0.05,NA,NA,0
+182,Réunion,NA,NA,NA,NA,0
+182,Réunion,NA,NA,NA,NA,0
+182,Réunion,NA,0.06,NA,NA,0
+182,Réunion,NA,0.1,NA,NA,0
+182,Réunion,0.8,NA,NA,NA,1
+182,Réunion,0.2,NA,NA,NA,1
+182,Réunion,0.47,NA,NA,NA,1
+182,Réunion,0.53,NA,NA,NA,1
+182,Réunion,0.75,NA,NA,NA,1
+182,Réunion,0.036000000000000004,NA,NA,NA,1
+182,Réunion,0.11,NA,NA,NA,1
+182,Réunion,NA,0.08,NA,NA,0
 183,Romania,NA,0.02,wheat,15,0
 183,Romania,0.78,0.02,flour_wheat,16,1
 183,Romania,0.18,NA,bran_wheat,17,1
@@ -17772,24 +17772,24 @@ fao_country_code,fao_country_name,extraction_rate,waste_of_supply,fao_product,fa
 239,British Virgin Islands,0.015,NA,NA,NA,1
 239,British Virgin Islands,0.1,NA,NA,NA,1
 239,British Virgin Islands,0.096,NA,NA,NA,1
-240,US Virgin Is,0.52,NA,meat_cattle,867,1
-240,US Virgin Is,0.083,NA,offals_edible_cattle,868,1
-240,US Virgin Is,0.012,NA,fat_cattle,869,1
-240,US Virgin Is,NA,NA,milk_whole_fresh_cow,882,0
-240,US Virgin Is,0.054000000000000006,NA,hides_cattle_fresh,919,1
-240,US Virgin Is,0.46,NA,sheep,976,1
-240,US Virgin Is,0.017,NA,meat_sheep,977,1
-240,US Virgin Is,0.11,NA,offals_sheep_edible,978,1
-240,US Virgin Is,0.47,NA,goats,1016,1
-240,US Virgin Is,0.77,NA,pigs,1034,1
-240,US Virgin Is,0.027999999999999997,NA,offals_pigs_edible,1036,1
-240,US Virgin Is,0.044000000000000004,NA,fat_pigs,1037,1
-240,US Virgin Is,0.76,NA,chickens,1057,1
-240,US Virgin Is,0.13,NA,NA,NA,1
-240,US Virgin Is,0.013000000000000001,NA,NA,NA,1
-240,US Virgin Is,0.1,NA,NA,NA,1
-240,US Virgin Is,0.1,NA,NA,NA,1
-240,US Virgin Is,NA,NA,NA,NA,0
+240,United States Virgin Islands,0.52,NA,meat_cattle,867,1
+240,United States Virgin Islands,0.083,NA,offals_edible_cattle,868,1
+240,United States Virgin Islands,0.012,NA,fat_cattle,869,1
+240,United States Virgin Islands,NA,NA,milk_whole_fresh_cow,882,0
+240,United States Virgin Islands,0.054000000000000006,NA,hides_cattle_fresh,919,1
+240,United States Virgin Islands,0.46,NA,sheep,976,1
+240,United States Virgin Islands,0.017,NA,meat_sheep,977,1
+240,United States Virgin Islands,0.11,NA,offals_sheep_edible,978,1
+240,United States Virgin Islands,0.47,NA,goats,1016,1
+240,United States Virgin Islands,0.77,NA,pigs,1034,1
+240,United States Virgin Islands,0.027999999999999997,NA,offals_pigs_edible,1036,1
+240,United States Virgin Islands,0.044000000000000004,NA,fat_pigs,1037,1
+240,United States Virgin Islands,0.76,NA,chickens,1057,1
+240,United States Virgin Islands,0.13,NA,NA,NA,1
+240,United States Virgin Islands,0.013000000000000001,NA,NA,NA,1
+240,United States Virgin Islands,0.1,NA,NA,NA,1
+240,United States Virgin Islands,0.1,NA,NA,NA,1
+240,United States Virgin Islands,NA,NA,NA,NA,0
 244,Samoa,NA,0.01,flour_wheat,16,0
 244,Samoa,0.92,NA,sugar_refined,164,1
 244,Samoa,NA,0.15,coconuts,249,0

@@ -769,22 +769,22 @@ M49_code,Region,Country_name,Item_description,Birth_rate_%,Take_off_rate_%,Avera
 188,Americas,Costa Rica,Cueros Frescos Vacunos,NA,NA,NA,NA,NA,NA,NA,NA,33.0,8.1
 188,Americas,Costa Rica,Pieles Frescas de Oveja,NA,NA,NA,NA,NA,NA,NA,NA,3.0,9.1
 188,Americas,Costa Rica,Pieles Frescas de Cabra,NA,NA,NA,NA,NA,NA,NA,NA,2.5,9.6
-384,Africa,Cote dIvore,Bovins,NA,11.0,274.0,137.0,50.0,NA,NA,NA,NA,NA
-384,Africa,Cote dIvore,Ovins,NA,32.0,20.0,10.0,50.0,NA,NA,NA,NA,NA
-384,Africa,Cote dIvore,Caprins,NA,31.0,20.0,10.0,50.0,NA,NA,NA,NA,NA
-384,Africa,Cote dIvore,Porcins,NA,84.0,62.0,50.0,80.0,NA,NA,NA,NA,NA
-384,Africa,Cote dIvore,Poules,NA,156.0,1300.0,1100.0,84.0,NA,NA,NA,NA,NA
-384,Africa,Cote dIvore,"Abats Comestibles,Bovins",NA,NA,NA,NA,NA,31.0,11.0,NA,NA,NA
-384,Africa,Cote dIvore,Abats Comestibles Ovins,NA,NA,NA,NA,NA,2.5,12.0,NA,NA,NA
-384,Africa,Cote dIvore,Abats Comestib de Chèvre,NA,NA,NA,NA,NA,2.5,12.0,NA,NA,NA
-384,Africa,Cote dIvore,Abats Comestibl. de Porc,NA,NA,NA,NA,NA,2.5,4.0,NA,NA,NA
-384,Africa,Cote dIvore,Graisse de Bovins,NA,NA,NA,NA,NA,4.0,NA,1.5,NA,NA
-384,Africa,Cote dIvore,Graisse d'Ovins,NA,NA,NA,NA,NA,0.3,NA,1.5,NA,NA
-384,Africa,Cote dIvore,Graisse de Caprins,NA,NA,NA,NA,NA,0.3,NA,1.5,NA,NA
-384,Africa,Cote dIvore,Graisse de Porc,NA,NA,NA,NA,NA,3.0,NA,4.8,NA,NA
-384,Africa,Cote dIvore,Peaux Fraîches de Bovins,NA,NA,NA,NA,NA,NA,NA,NA,18.0,6.6
-384,Africa,Cote dIvore,Peaux Fraîches d'Ovins,NA,NA,NA,NA,NA,NA,NA,NA,2.5,12.0
-384,Africa,Cote dIvore,Peaux Fraîches Caprins,NA,NA,NA,NA,NA,NA,NA,NA,2.5,12.0
+384,Africa,Côte d'Ivoire,Bovins,NA,11.0,274.0,137.0,50.0,NA,NA,NA,NA,NA
+384,Africa,Côte d'Ivoire,Ovins,NA,32.0,20.0,10.0,50.0,NA,NA,NA,NA,NA
+384,Africa,Côte d'Ivoire,Caprins,NA,31.0,20.0,10.0,50.0,NA,NA,NA,NA,NA
+384,Africa,Côte d'Ivoire,Porcins,NA,84.0,62.0,50.0,80.0,NA,NA,NA,NA,NA
+384,Africa,Côte d'Ivoire,Poules,NA,156.0,1300.0,1100.0,84.0,NA,NA,NA,NA,NA
+384,Africa,Côte d'Ivoire,"Abats Comestibles,Bovins",NA,NA,NA,NA,NA,31.0,11.0,NA,NA,NA
+384,Africa,Côte d'Ivoire,Abats Comestibles Ovins,NA,NA,NA,NA,NA,2.5,12.0,NA,NA,NA
+384,Africa,Côte d'Ivoire,Abats Comestib de Chèvre,NA,NA,NA,NA,NA,2.5,12.0,NA,NA,NA
+384,Africa,Côte d'Ivoire,Abats Comestibl. de Porc,NA,NA,NA,NA,NA,2.5,4.0,NA,NA,NA
+384,Africa,Côte d'Ivoire,Graisse de Bovins,NA,NA,NA,NA,NA,4.0,NA,1.5,NA,NA
+384,Africa,Côte d'Ivoire,Graisse d'Ovins,NA,NA,NA,NA,NA,0.3,NA,1.5,NA,NA
+384,Africa,Côte d'Ivoire,Graisse de Caprins,NA,NA,NA,NA,NA,0.3,NA,1.5,NA,NA
+384,Africa,Côte d'Ivoire,Graisse de Porc,NA,NA,NA,NA,NA,3.0,NA,4.8,NA,NA
+384,Africa,Côte d'Ivoire,Peaux Fraîches de Bovins,NA,NA,NA,NA,NA,NA,NA,NA,18.0,6.6
+384,Africa,Côte d'Ivoire,Peaux Fraîches d'Ovins,NA,NA,NA,NA,NA,NA,NA,NA,2.5,12.0
+384,Africa,Côte d'Ivoire,Peaux Fraîches Caprins,NA,NA,NA,NA,NA,NA,NA,NA,2.5,12.0
 191,Europe,Croatia,Cattle,NA,24.0,412.0,221.0,53.0,NA,NA,NA,NA,NA
 191,Europe,Croatia,Sheep,NA,30.0,21.0,10.0,50.0,NA,NA,NA,NA,NA
 191,Europe,Croatia,Goats,NA,12.0,36.0,18.0,50.0,NA,NA,NA,NA,NA
@@ -1327,22 +1327,22 @@ M49_code,Region,Country_name,Item_description,Birth_rate_%,Take_off_rate_%,Avera
 304,Americas,Greenland,Sheep,NA,95.0,35.0,19.0,54.0,NA,NA,NA,NA,NA
 304,Americas,Greenland,"Offals of Sheep, Edible",NA,NA,NA,NA,NA,3.0,8.6,NA,NA,NA
 304,Americas,Greenland,Fat of Sheep,NA,NA,NA,NA,NA,0.5,NA,1.4,NA,NA
-208,Americas,Grenada,Cattle,NA,19.0,303.0,151.0,49.0,NA,NA,NA,NA,NA
-208,Americas,Grenada,Sheep,NA,28.0,33.0,16.0,50.0,NA,NA,NA,NA,NA
-208,Americas,Grenada,Goats,NA,29.0,22.0,11.0,51.0,NA,NA,NA,NA,NA
-208,Americas,Grenada,Pigs,NA,53.0,79.0,56.0,71.0,NA,NA,NA,NA,NA
-208,Americas,Grenada,Chickens,NA,120.0,1729.0,1000.0,57.0,NA,NA,NA,NA,NA
-208,Americas,Grenada,"Offals of Cattle, Edible",NA,NA,NA,NA,NA,25.0,8.3,NA,NA,NA
-208,Americas,Grenada,"Offals of Sheep, Edible",NA,NA,NA,NA,NA,3.0,9.0,NA,NA,NA
-208,Americas,Grenada,"Offals of Goats, Edible",NA,NA,NA,NA,NA,2.2,10.0,NA,NA,NA
-208,Americas,Grenada,"Offals of Pigs, Edible",NA,NA,NA,NA,NA,3.0,3.8,NA,NA,NA
-208,Americas,Grenada,Fat of Cattle,NA,NA,NA,NA,NA,4.0,NA,1.3,NA,NA
-208,Americas,Grenada,Fat of Sheep,NA,NA,NA,NA,NA,0.5,NA,1.5,NA,NA
-208,Americas,Grenada,Fat of Goats,NA,NA,NA,NA,NA,0.3,NA,1.4,NA,NA
-208,Americas,Grenada,Fat of Pigs,NA,NA,NA,NA,NA,4.5,NA,5.7,NA,NA
-208,Americas,Grenada,"Cattle Hides, Fresh",NA,NA,NA,NA,NA,NA,NA,NA,22.0,7.3
-208,Americas,Grenada,"Sheepskins, Fresh",NA,NA,NA,NA,NA,NA,NA,NA,2.5,7.5
-208,Americas,Grenada,"Goatskins, Fresh",NA,NA,NA,NA,NA,NA,NA,NA,2.0,9.1
+308,Americas,Grenada,Cattle,NA,19.0,303.0,151.0,49.0,NA,NA,NA,NA,NA
+308,Americas,Grenada,Sheep,NA,28.0,33.0,16.0,50.0,NA,NA,NA,NA,NA
+308,Americas,Grenada,Goats,NA,29.0,22.0,11.0,51.0,NA,NA,NA,NA,NA
+308,Americas,Grenada,Pigs,NA,53.0,79.0,56.0,71.0,NA,NA,NA,NA,NA
+308,Americas,Grenada,Chickens,NA,120.0,1729.0,1000.0,57.0,NA,NA,NA,NA,NA
+308,Americas,Grenada,"Offals of Cattle, Edible",NA,NA,NA,NA,NA,25.0,8.3,NA,NA,NA
+308,Americas,Grenada,"Offals of Sheep, Edible",NA,NA,NA,NA,NA,3.0,9.0,NA,NA,NA
+308,Americas,Grenada,"Offals of Goats, Edible",NA,NA,NA,NA,NA,2.2,10.0,NA,NA,NA
+308,Americas,Grenada,"Offals of Pigs, Edible",NA,NA,NA,NA,NA,3.0,3.8,NA,NA,NA
+308,Americas,Grenada,Fat of Cattle,NA,NA,NA,NA,NA,4.0,NA,1.3,NA,NA
+308,Americas,Grenada,Fat of Sheep,NA,NA,NA,NA,NA,0.5,NA,1.5,NA,NA
+308,Americas,Grenada,Fat of Goats,NA,NA,NA,NA,NA,0.3,NA,1.4,NA,NA
+308,Americas,Grenada,Fat of Pigs,NA,NA,NA,NA,NA,4.5,NA,5.7,NA,NA
+308,Americas,Grenada,"Cattle Hides, Fresh",NA,NA,NA,NA,NA,NA,NA,NA,22.0,7.3
+308,Americas,Grenada,"Sheepskins, Fresh",NA,NA,NA,NA,NA,NA,NA,NA,2.5,7.5
+308,Americas,Grenada,"Goatskins, Fresh",NA,NA,NA,NA,NA,NA,NA,NA,2.0,9.1
 312,Americas,Guadeloupe,Bovins,NA,24.0,418.0,209.0,50.0,NA,NA,NA,NA,NA
 312,Americas,Guadeloupe,Ovins,NA,19.0,24.0,16.0,67.0,NA,NA,NA,NA,NA
 312,Americas,Guadeloupe,Caprins,NA,33.0,26.0,13.0,49.0,NA,NA,NA,NA,NA

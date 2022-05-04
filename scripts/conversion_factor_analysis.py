@@ -38,7 +38,7 @@ df = df[
     [
         "faost_code",
         "Region",
-        "Country_name",
+        "fao_table_name",
         "Item_description",
         "Extraction_rates_%",
         "Waste_of_supply_%",
@@ -156,7 +156,7 @@ df["extraction_rate_country_specific_flag"] = (
 df = df.rename(
     columns={
         "faost_code": "fao_country_code",
-        "Country_name": "fao_country_name",
+        "fao_table_name": "fao_country_name",
         "Extraction_rates_%": "extraction_rate",
         "Waste_of_supply_%": "waste_of_supply",
         "product": "fao_product",
