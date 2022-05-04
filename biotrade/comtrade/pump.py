@@ -130,9 +130,10 @@ class Pump:
         df.rename(columns=mapping, inplace=True)
         # Rename column content to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
-        df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
-        # Remove the plural "s"
-        df["flow"] = df["flow"].str.replace("s", "", regex=True)
+        if "flow" in df.columns:
+            df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+            # Remove the plural "s"
+            df["flow"] = df["flow"].str.replace("s", "", regex=True)
         return df
 
     def download_bulk_csv(self, period, frequency):
