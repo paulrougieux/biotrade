@@ -62,7 +62,7 @@ class CountryGroups(object):
             >>> eu_country_name_list = faostat.country_groups.eu_country_names
         """
         df = self.df
-        return df[df["eu27"] == 1]["short_name"].tolist()
+        return df[df["eu27"] == 1]["fao_table_name"].tolist()
 
     @property
     def continents(self):
