@@ -362,6 +362,9 @@ def segmented_regression(
     for key in df_groups.groups.keys():
         # Select data related to the specific group
         df_key = df_groups.get_group(key).sort_values(by="year")
+        # Skip segmented analysis for groups with nr of data less than minimum required
+        if len(df_key) < min_data_points:
+            continue
         # Create arrays of independent (column "year") and dependent (colum "values") variables
         x = np.array(df_key["year"].values.tolist(), dtype=float)
         y = np.array(df_key[value_column].values.tolist())
@@ -606,3 +609,29 @@ def relative_absolute_change(df, years=5, last_value=True, year_range=[]):
         df_change = pd.concat([df_change, df_key], ignore_index=True)
     # Final dataframe with the new columns
     return df_change
+
+
+def merge_analysis(df_change, df_segmented_regression):
+    join_columns = list(set(df_change.columns) & set(df_segmented_regression.columns))
+    remove_columns = ["value", "net_weight", "year_range_lower", "year_range_upper"]
+    join_columns = list(set(join_columns) - set(remove_columns))
+    df = df_change.merge(
+        df_segmented_regression,
+        on=join_columns,
+        how="outer",
+        suffixes=("_change", "_regression"),
+    )
+    df = df[
+        [
+            *join_columns,
+            "relative_change",
+            "absolute_change",
+            "slope",
+            "pvalue",
+            "mk_slope",
+            "mk_pvalue",
+        ]
+    ]
+
+    return df
+
