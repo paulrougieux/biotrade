@@ -47,6 +47,7 @@ of the monthly data shows that "quantity" is always empty:
 # First party modules
 import logging
 import pandas
+import re
 
 # Third party modules
 from sqlalchemy import Integer, Float, Text, UniqueConstraint
@@ -119,7 +120,9 @@ class DatabaseComtrade(Database):
             Column("product_code", Text),
             Column("product_description", Text),
             Column("parent", Text),
-            UniqueConstraint("product_code",),
+            UniqueConstraint(
+                "product_code",
+            ),
             schema=self.schema,
         )
         return table
@@ -198,7 +201,11 @@ class DatabaseComtrade(Database):
         return pandas.read_sql_query(stmt, self.engine)
 
     def check_data_presence(
-        self, table, start_year, end_year, frequency,
+        self,
+        table,
+        start_year,
+        end_year,
+        frequency,
     ):
         """
         Query db table to check if data are present or not for a certain
@@ -247,7 +254,10 @@ class DatabaseComtrade(Database):
         return check_presence
 
     def delete_data(
-        self, table, start_period, end_period,
+        self,
+        table,
+        start_period,
+        end_period,
     ):
         """
         Database method to delete rows from Comtrade db.
@@ -272,7 +282,10 @@ class DatabaseComtrade(Database):
             if end_period is not None:
                 # Construct delete statement
                 stmt = table.delete().where(
-                    and_(table.c.period >= start_period, table.c.period <= end_period,)
+                    and_(
+                        table.c.period >= start_period,
+                        table.c.period <= end_period,
+                    )
                 )
                 # Execute delete statement
                 stmt.execute()
@@ -356,6 +369,51 @@ class DatabaseComtrade(Database):
         # Query the database and return a data frame
         df = pandas.read_sql_query(stmt, self.engine)
         return df
+
+    def select_long(self, *args, **kwargs):
+        """Same as select but in long format with an element column and where
+        the empty columns have been removed.
+
+        Example:
+
+            >>> from biotrade.comtrade import comtrade
+            >>> swd = comtrade.db.select_long("monthly", product_code="440710")
+
+        """
+        df = self.select(*args, **kwargs)
+        # Remove empty columns
+        not_empty = [col for col in df.columns if not all(df[col].isna())]
+        df = df[not_empty]
+        # This can be removed once this is dealt with in comtrade/pump.py
+        # Rename column content to snake case using a compiled regex
+        regex_pat = re.compile(r"\W+")
+        if "flow" in df.columns:
+            df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+            # Remove the plural "s"
+            df["flow"] = df["flow"].str.replace("s", "", regex=True)
+        # TODO: Change period to a date time object
+        # Reshape to long format
+        value_cols = ["net_weight", "trade_value"]
+        index = set(df.columns) - set(value_cols)
+        df_long = df.melt(
+            id_vars=list(index),
+            value_vars=value_cols,
+            var_name="element",
+            value_name="value",
+        )
+        # Remove NA values for the weight
+        df_long = df_long[~df_long.value.isna()]
+
+        # Fix an issue with element appearing as a list in R
+        # I don't understand why the element column is of sqlalchemy.sql.elements nature?
+        # R> flatten(swd_con$element[1])
+        # Error in `stop_bad_type()`:
+        # ! Element 1 of `.x` must be a vector, not a `sqlalchemy.sql.elements.quoted_name
+        # /sqlalchemy.util.langhelpers.MemoizedSlots/python.builtin.str/python.builtin.obj
+        # ect` object
+        df_long = df_long.reset_index(drop=True)
+        df_long["element"] = df_long["element"].str.strip()
+        return df_long
 
 
 class DatabaseComtradePostgresql(DatabaseComtrade):
