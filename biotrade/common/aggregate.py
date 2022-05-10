@@ -7,7 +7,9 @@ Aggregation functions common to all data sources.
 
 
 def nlargest(df, value_vars, time_vars=None, agg_groups=None, slice_groups=None, n=10):
-    """Return the n largest rows by group sorted by the first value column
+    """Return the n largest rows by group sorted by the first value column. The
+    value is a yearly average by default, this can be changed by passing
+    "period" as the time_vars argument for monthly data for example.
 
     The aggregation is done in two steps: (1) a sum over the grouping variables
     including time, (2) an average over the grouping variables.
@@ -39,9 +41,11 @@ def nlargest(df, value_vars, time_vars=None, agg_groups=None, slice_groups=None,
 
     The 6 largest sawnwood pine world importers
 
-        >>> nlargest(sp2021s1.query("partner=='World' & flow=='Imports'"),
+        >>> spw = comtrade.db.select("monthly", product_code="440711", partner="World")
+        >>> nlargest(spw,
         >>>          value_vars=["trade_value", "net_weight"],
         >>>          agg_groups=["reporter", "partner", "flow"],
+        >>>          slice_groups="flow",
         >>>          n=6)
 
     The 6 largest wheat producers over 2010-2020, by element
@@ -91,4 +95,5 @@ def nlargest(df, value_vars, time_vars=None, agg_groups=None, slice_groups=None,
         )
     else:
         df_slice = df_agg.sort_values([value_vars[0]], ascending=False).head(n)
+    df_slice = df_slice.reset_index()
     return df_slice
