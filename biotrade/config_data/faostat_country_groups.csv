@@ -23,7 +23,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 14,24,BB,BB,BRB,BRB,52,member,Barbados,Barbados,Barbados,Barbados,1966,,World,Americas,5200,Caribbean,5206,Developing,0
 57,26,BY,BY,BLR,BLR,112,member,Belarus,the Republic of Belarus,Belarus,Belarús,1992,,World,Europe,5400,Eastern Europe,5401,Developed,0
 255,27,BE,BE,BEL,BEL,56,member,Belgium,the Kingdom of Belgium,Belgium,Bélgica,1945,,World,Europe,5400,Western Europe,5404,Developed,1
-15,,,,,,,old,Belgium-Luxembourg,Belgium-Luxembourg,Belgium-Luxembourg,Belgium-Luxembourg,,1999,World,Europe,5400,Western Europe,5404,Developed,0
+15,,,,BELLUX,,,old,Belgium-Luxembourg,Belgium-Luxembourg,Belgium-Luxembourg,Belgium-Luxembourg,,1999,World,Europe,5400,Western Europe,5404,Developed,1
 23,28,BZ,BZ,BLZ,BLZ,84,member,Belize,Belize,Belize,Belice,1981,,World,Americas,5200,Central America,5204,Developing,0
 53,29,BJ,BJ,BEN,BEN,204,member,Benin,the Republic of Benin,Benin,Benin,1960,,World,Africa,5100,Western Africa,5105,Developing,0
 17,30,BM,BM,BMU,BMU,60,areas and territories,Bermuda,Bermuda,Bermuda,Bermudas,,,World,Americas,5200,Northern America,5203,Developed,0
