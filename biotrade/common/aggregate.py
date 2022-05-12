@@ -97,3 +97,21 @@ def nlargest(df, value_vars, time_vars=None, agg_groups=None, slice_groups=None,
         df_slice = df_agg.sort_values([value_vars[0]], ascending=False).head(n)
     df_slice = df_slice.reset_index()
     return df_slice
+
+
+def check_aggregate_sum(df, index):
+    """Check that the World aggregate given in this data set corresponds to
+    the sum of its constituents
+
+    :param data frame df
+    :param index list: list of index columns to be used in the group_by
+
+    Example
+
+        >>> from biotrade.comtrade import comtrade
+        >>> from biotrade.common.aggregate import nlargest
+        >>> sp = comtrade.db.select("monthly", product_code="440711")
+        >>> check_aggregate_sum(sp, partner_side = "World")
+
+    """
+    # Extract world aggregate

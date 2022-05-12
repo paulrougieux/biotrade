@@ -25,7 +25,6 @@ The purpose of this notebook is to:
 
 # Definitions
 
-
 ## Area, yield and production
 
 The faostat crop production data provides area, yield and production data, which have their respective units visible in :
@@ -257,7 +256,7 @@ Some datasets have a unit column which defines the unit used in the main variabl
 <!-- #region -->
 # Harmonization
 
-## Automated renamming of column names
+## Automated renaming of column names
 
 Variable name harmonization is performed after the data is downloaded 
 based on a mapping between the column names in different sources in 
@@ -273,6 +272,22 @@ Columns are renamed in the [faostat pump](../biotrade/faostat/pump.py) as such :
 
     mapping = self.column_names.set_index(column_renaming).to_dict()["jrc"]
     df.rename(columns=mapping, inplace=True)
+
+
+# Countries, regions and continents
+
+
+## China, Macao, Hong Kong and Taiwan
+
+The sources report different region groupings for China. FAOSTAT reports data for China 
+mainland, Taiwan, Hong Kong and Maco individually as well as an aggregate of all 4 
+called China (faostat code 351). UN Comtrade reports data for China (UN code 156 which 
+is an aggregate of China and Taiwan), Hong Kong and Macao separately.
+
+To provide comparable data, we can sum the FAOSTAT values from China, mainland (faostat 
+code 41) with china, Taiwan (faostat code 214) into china + taiwan (faostat code 357) 
+which corresponds to the UN Comtrade code 156 and we assign it the ISO code CHN. Hong 
+Kong and Macao remain reported separately.
 
 
 
