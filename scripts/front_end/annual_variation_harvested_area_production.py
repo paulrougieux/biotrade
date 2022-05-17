@@ -23,7 +23,7 @@ key_product_codes = np.unique(parent_codes + child_codes).tolist()
 crop_data = faostat.db.select(
     table="crop_production",
     product_code=key_product_codes,
-    element=["production", "area_harvested", "stocks"],
+    element=["production", "area_harvested"],
 )
 crop_data = crop_data[crop_data["reporter_code"] < 1000]
 # Reporter codes
@@ -51,6 +51,7 @@ production = crop_data[
 ][column_list]
 # Save csv files
 folder_path = data_dir / "front_end"
-folder_path.mkdir(exist_ok=True)
+if not folder_path.exists():
+    folder_path.mkdir()
 harvested_area.to_csv(folder_path / "harvested_area_annual_variation.csv", index=False)
 production.to_csv(folder_path / "production_annual_variation.csv", index=False)
