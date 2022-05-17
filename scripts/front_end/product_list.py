@@ -12,7 +12,7 @@ from biotrade.faostat import faostat
 
 # Name of product file to retrieve
 faostat_key_commodities_file = faostat.config_data_dir / "faostat_commodity_tree.csv"
-# Retrieve dataset
+# Retrieve tree dataset
 product_tree = pd.read_csv(faostat_key_commodities_file)
 # Retrieve parent and child codes
 parent_codes = product_tree["parent_code"].unique().tolist()
@@ -35,28 +35,34 @@ column_rename_dict = {
     "bp": "bp_flag",
 }
 product_tree.rename(columns=column_rename_dict, inplace=True)
-# Select faostat table
-faostat_table = faostat.db.tables["crop_trade"]
-# Select product names and codes from Faostat db
-stmt = (
-    faostat_table.select()
-    .with_only_columns([faostat_table.c.product, faostat_table.c.product_code])
-    .distinct(faostat_table.c.product, faostat_table.c.product_code)
-)
-# Retrieve dataset and replace product keys with names
-faostat_products = pd.read_sql_query(stmt, faostat.db.engine)
+# Select product names and codes from Faostat tables
+table_list = [
+    "crop_production",
+    "crop_trade",
+    "forestry_production",
+    "forestry_trade",
+]
+faostat_products = faostat.db.extract_product_names_codes(table_list)
+# Replace product keys with names
 faostat_products["product"] = (
     faostat_products["product"].str.replace("_", " ").str.capitalize()
 )
 # Rename column
 faostat_products.rename(columns={"product": "product_name"}, inplace=True)
+# Add -1 - Others as product code and product name for average data
+faostat_products = pd.concat(
+    [
+        faostat_products,
+        pd.DataFrame([[-1, "Others"]], columns=faostat_products.columns),
+    ],
+    ignore_index=True,
+)
 # Add key product flag
 faostat_products["key_product_flag"] = faostat_products.product_code.isin(
     key_product_codes
 ).astype(int)
 # Save csv files
 folder_path = data_dir / "front_end"
-if not folder_path.exists():
-    folder_path.mkdir()
+folder_path.mkdir(exist_ok=True)
 product_tree.to_csv(folder_path / "key_product_tree_list.csv", index=False)
 faostat_products.to_csv(folder_path / "product_list.csv", index=False)

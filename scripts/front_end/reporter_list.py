@@ -17,7 +17,7 @@ reporter = pd.read_csv(reporter_file)
 column_dict = {"iso3_code": "reporter_code", "fao_table_name": "reporter_name"}
 # Drop rows where iso3 codes are nan
 reporter = reporter[column_dict.keys()].rename(columns=column_dict).dropna()
-# Add OTH - Others as reporter code and reporter
+# Add OTH - Others as reporter code and reporter for average data
 reporter = pd.concat(
     [reporter, pd.DataFrame([["OTH", "Others"]], columns=reporter.columns)],
     ignore_index=True,
