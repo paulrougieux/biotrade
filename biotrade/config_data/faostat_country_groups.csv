@@ -86,7 +86,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 178,77,ER,ER,ERI,ERI,232,member,Eritrea,the State of Eritrea,Eritrea,Eritrea,1993,,World,Africa,5100,Eastern Africa,5101,Developing,0
 63,78,EE,EE,EST,EST,233,member,Estonia,the Republic of Estonia,Estonia,Estonia,1992,,World,Europe,5400,Northern Europe,5402,Developed,1
 238,79,ET,ET,ETH,ETH,231,member,Ethiopia,the Federal Democratic Republic of Ethiopia,Ethiopia,Etiopía,1993,,World,Africa,5100,Eastern Africa,5101,Developing,0
-62,,,,,,230,old,Ethiopia PDR,Ethiopia PDR,Ethiopia PDR,Ethiopia PDR,,1992,World,Africa,5100,Eastern Africa,5101,Developing,0
+62,,,,ETHPDR,,230,old,Ethiopia PDR,Ethiopia PDR,Ethiopia PDR,Ethiopia PDR,,1992,World,Africa,5100,Eastern Africa,5101,Developing,0
 65,81,FK,FK,FLK,FLK,238,areas and territories,Falkland Islands (Malvinas),the Falkland Islands (Malvinas),Falkland Islands (Malvinas),Islas Malvinas,,,World,Americas,5200,South America,5207,Developing,0
 64,82,FO,FO,FRO,FRO,234,associate member,Faroe Islands,Faroe Islands,Faroe Islands,Islas Feroe,,,World,Europe,5400,Northern Europe,5402,Developed,0
 66,83,FJ,FJ,FJI,FJI,242,member,Fiji,the Republic of Fiji,Fiji,Fiji,1970,,World,Oceania,5500,Melanesia,5502,Developing,0
