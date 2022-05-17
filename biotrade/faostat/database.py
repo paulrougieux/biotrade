@@ -228,12 +228,7 @@ class DatabaseFaostat(Database):
             Column("flag", Text),
             Column("note", Text),
             UniqueConstraint(
-                "period",
-                "reporter_code",
-                "item_code",
-                "element_code",
-                "unit",
-                "flag",
+                "period", "reporter_code", "item_code", "element_code", "unit", "flag",
             ),
             schema=self.schema,
         )
@@ -281,9 +276,7 @@ class DatabaseFaostat(Database):
             Column("eu27", SmallInteger),
             Column("country_code", Integer),
             Column("country_name", Text),
-            UniqueConstraint(
-                "country_code",
-            ),
+            UniqueConstraint("country_code",),
             schema=self.schema,
         )
         return table
@@ -433,9 +426,7 @@ class DatabaseFaostat(Database):
         return df
 
     def agg_reporter_partner_eu_row(
-        self,
-        table,
-        product_code,
+        self, table, product_code,
     ):
         """
         Aggregate EU27 and ROW both on the reporter and eventually partner side
@@ -523,6 +514,49 @@ class DatabaseFaostat(Database):
         # Return the dataframe from the query to db
         df = pandas.read_sql_query(stmt, self.engine)
         return df
+
+    def extract_product_names_codes(self, table_list):
+        """
+        Extract product names and product codes from tables of
+        Faostat db. Duplicates are dropped out.
+
+        :param (table_list) tables, list of Faostat table names
+        :return (DataFrame) faostat_products, containing product names and codes
+
+        For example, obtain product codes and names from crop_trade and crop_production Faostat tables
+        
+        >>> from biotrade.faostat import faostat
+        >>> table_list = ["crop_production", "crop_trade"]
+        >>> faostat_products = faostat.db.extract_product_names_codes(table_list)
+
+        """
+        faostat_products = pandas.DataFrame()
+        # Loop over tables
+        for table in table_list:
+            # Select faostat table
+            faostat_table = self.tables[table]
+            # Select product names and codes from Faostat table
+            try:
+                stmt = (
+                    faostat_table.select()
+                    .with_only_columns(
+                        [faostat_table.c.product, faostat_table.c.product_code]
+                    )
+                    .distinct(faostat_table.c.product, faostat_table.c.product_code)
+                )
+                # Retrieve dataset
+                table_products = pandas.read_sql_query(stmt, self.engine)
+            # Append empty df if query failed
+            except:
+                table_products = pandas.DataFrame()
+            faostat_products = pandas.concat(
+                [faostat_products, table_products], ignore_index=True
+            )
+        # Drop duplicates
+        faostat_products.drop_duplicates(
+            subset="product_code", ignore_index=True, inplace=True
+        )
+        return faostat_products
 
 
 class DatabaseFaostatPostgresql(DatabaseFaostat):
