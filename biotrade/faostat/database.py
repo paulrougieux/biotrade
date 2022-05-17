@@ -540,9 +540,9 @@ class DatabaseFaostat(Database):
                 stmt = (
                     faostat_table.select()
                     .with_only_columns(
-                        [faostat_table.c.product, faostat_table.c.product_code]
+                        [faostat_table.c.product_code, faostat_table.c.product]
                     )
-                    .distinct(faostat_table.c.product, faostat_table.c.product_code)
+                    .distinct(faostat_table.c.product_code, faostat_table.c.product)
                 )
                 # Retrieve dataset
                 table_products = pandas.read_sql_query(stmt, self.engine)
