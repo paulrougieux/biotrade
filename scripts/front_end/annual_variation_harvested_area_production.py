@@ -23,13 +23,23 @@ key_product_codes = np.unique(parent_codes + child_codes).tolist()
 crop_data = faostat.db.select(
     table="crop_production",
     product_code=key_product_codes,
-    element=["production", "area_harvested"],
+    element=["production", "area_harvested", "stocks"],
 )
 crop_data = crop_data[crop_data["reporter_code"] < 1000]
+# Define China data with isocode CHN and Faostat code 357 from China mainland (41) + Taiwan (214) data
+crop_china = crop_data[crop_data["reporter_code"].isin([41, 214])]
+crop_china = (
+    crop_china.groupby(["product_code", "element", "period", "unit"])
+    .agg({"value": "sum"})
+    .reset_index()
+)
+crop_china["reporter_code"] = 357
+# Add China data to crop_data
+crop_data = pd.concat([crop_data, crop_china], ignore_index=True)
 # Reporter codes
 reporter_file = faostat.config_data_dir / "faostat_country_groups.csv"
 reporter = pd.read_csv(reporter_file)
-# Obtain iso3 codes
+# Obtain iso3 codes with the merge
 crop_data = crop_data.merge(
     reporter[["faost_code", "iso3_code"]],
     how="left",
@@ -37,21 +47,16 @@ crop_data = crop_data.merge(
     right_on="faost_code",
 )
 crop_data["reporter_code"] = crop_data["iso3_code"]
-# Faostat codes 15 - 62 - 351 are not mapped into ISO 3 Codes
+# Faostat code 41 (China mainland) and 351 (China mainland + Hong Kong + Macao + Taiwan ) are not mapped into ISO 3 Codes
 crop_data.dropna(subset="reporter_code", inplace=True)
 # Columns to be retained
-column_list = ["reporter_code", "product_code", "period", "value"]
+column_list = ["reporter_code", "product_code", "period", "value", "unit"]
 # Harvested area data
-harvested_area = crop_data[
-    (crop_data["element"] == "area_harvested") & (crop_data["unit"] == "ha")
-][column_list]
+harvested_area = crop_data[crop_data["element"] == "area_harvested"][column_list]
 # Production data
-production = crop_data[
-    (crop_data["element"] == "production") & (crop_data["unit"] == "tonnes")
-][column_list]
+production = crop_data[crop_data["element"].isin(["production", "stocks"])][column_list]
 # Save csv files
 folder_path = data_dir / "front_end"
-if not folder_path.exists():
-    folder_path.mkdir()
+folder_path.mkdir(exist_ok=True)
 harvested_area.to_csv(folder_path / "harvested_area_annual_variation.csv", index=False)
 production.to_csv(folder_path / "production_annual_variation.csv", index=False)
