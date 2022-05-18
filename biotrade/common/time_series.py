@@ -238,11 +238,17 @@ def obj_function(breakpoints, x, y, num_breakpoints, function, min_data_points, 
                 # Calculate the obj function based on coefficient of determination (R2) averaged over the number of breakpoints
                 # Take the opposite value because obj needs to be minimize
                 elif function == "R2":
-                    obj += -(
-                        1
-                        - (np.sum((yi - (f.slope * xi + f.intercept)) ** 2))
-                        / (np.sum((yi - yi.mean()) ** 2))
-                    ) / (num_breakpoints + 1)
+                    if np.sum((yi - yi.mean()) ** 2) > 0:
+                        obj += -(
+                            1
+                            - (np.sum((yi - (f.slope * xi + f.intercept)) ** 2))
+                            / (np.sum((yi - yi.mean()) ** 2))
+                        ) / (num_breakpoints + 1)
+                    # If mean of values is 0, do not divide by it
+                    else:
+                        obj += -(
+                            1 - (np.sum((yi - (f.slope * xi + f.intercept)) ** 2))
+                        ) / (num_breakpoints + 1)
         # Penalize segments with less than min_data_points
         else:
             obj = np.inf
@@ -360,8 +366,10 @@ def segmented_regression(
     df_segmented_regression = pd.DataFrame()
     # Loop on each group
     for key in df_groups.groups.keys():
-        # Select data related to the specific group
-        df_key = df_groups.get_group(key).sort_values(by="year")
+        # Select data related to the specific group dropping nan values
+        df_key = (
+            df_groups.get_group(key).sort_values(by="year").dropna(subset=value_column)
+        )
         # Skip segmented analysis for groups with nr of data less than minimum required
         if len(df_key) < min_data_points:
             continue
@@ -575,12 +583,10 @@ def relative_absolute_change(df, years=5, last_value=True, year_range=[]):
                         (df_key["year"] >= year_range[0])
                         & (df_key["year"] <= year_range[1]),
                         value_column,
-                    ].mean(skipna=False)
+                    ].mean()
                 # The last column is the mean of the previous year values
                 elif years > 0:
-                    df_key[column] = df_key[column_list_calc[:-1]].mean(
-                        axis=1, skipna=False
-                    )
+                    df_key[column] = df_key[column_list_calc[:-1]].mean(axis=1,)
                 break
             # Shift value column up with respect to the number of years considered
             df_key[column] = df_key[value_column].shift(-(idx) - 1)
@@ -612,24 +618,51 @@ def relative_absolute_change(df, years=5, last_value=True, year_range=[]):
 
 
 def merge_analysis(df_change, df_segmented_regression):
+    """
+    Function to merge dataframes related to change and segmented regression analysis, in order to compare results.
+
+    :param (DataFrame) df_change, df obtained from relative_absolute_change function
+    :param (DataFrame) df_change, df obtained from segmented_regression function
+    :return (DataFrame) df, which is a merge of the input dataframes
+
+    For example select soybean trade product with Brazil as reporter, aggregate partners as Europe (eu) and rest of the World (row)
+    and compute the change and segmented analysis. Finally compare results with the merge function
+    
+    >>> from biotrade.faostat import faostat
+    >>> from biotrade.faostat.aggregate import agg_trade_eu_row
+    >>> from biotrade.common.time_series import (relative_absolute_change, segmented_regression, merge_analysis)
+    >>> soybean_trade = faostat.db.select( table="crop_trade", reporter="Brazil", product_code=236)
+    >>> soybean_trade_agg = agg_trade_eu_row(soybean_trade)
+    >>> soybeans_exp_change = relative_absolute_change(soybean_trade_agg, last_value=True)
+    >>> soybean_exp_regression = segmented_regression(soybean_trade_agg, last_value=True, function="R2", alpha=0.05, min_data_points=7)
+    >>> df_merge = merge_analysis(df_change=soybeans_exp_change, df_segmented_regression=soybean_exp_regression)
+
+    """
+    # Columns in common for the two dataframes
     join_columns = list(set(df_change.columns) & set(df_segmented_regression.columns))
-    remove_columns = ["value", "net_weight", "year_range_lower", "year_range_upper"]
+    # Columns not to be considered for the join
+    remove_columns = ["year_range_lower", "year_range_upper"]
+    # Final join columns
     join_columns = list(set(join_columns) - set(remove_columns))
+    # Merge the two dataframes
     df = df_change.merge(
         df_segmented_regression,
         on=join_columns,
         how="outer",
         suffixes=("_change", "_regression"),
     )
+    # Columns to be retained
     df = df[
         [
             *join_columns,
             "relative_change",
             "absolute_change",
-            "slope",
-            "pvalue",
+            "year_range_lower_change",
+            "year_range_upper_change",
             "mk_slope",
-            "mk_pvalue",
+            "mk_ha_test",
+            "year_range_lower_regression",
+            "year_range_upper_regression",
         ]
     ]
 
