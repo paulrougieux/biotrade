@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Written by Paul Rougieux.
+Written by Paul Rougieux and Selene Patani
 
 JRC biomass Project.
 Unit D1 Bioeconomy.
@@ -30,6 +30,7 @@ def agg_trade_eu_row(
     the world, defaults to partner.
     :param drop_index_col list or str: variables to be dropped from the grouping index
     defaults to ["flag"]
+    :param index_side is deprecated; use grouping_side
     :return bilateral trade flows aggregated by eu and row
 
     Aggregate over many products in one country
@@ -73,6 +74,7 @@ def agg_trade_eu_row(
 
 
     """
+    df = df.copy()
     # Deprecate the old name for the argument
     if index_side is not None:
         warnings.warn(
