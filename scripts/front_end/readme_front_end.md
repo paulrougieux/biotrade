@@ -48,9 +48,9 @@ Percentage values are also reported for products and reporters. The percentage o
 - `period`: aggregation period yyyy-yyyy
 - `reporter_code`: ISO3 code of data reporter
 - `product_code`: FAO code of the product
-- `average_value_reporter`: average value of harvested area related to the specific reporter code, across all the associated products
+- `average_value_reporter`: average value of the total annual harvested area related to the specific reporter code, across all the associated products
 - `value_percentage_product`: percentage value of harvested area related to the specific product code, across all products of the reporter code 
-- `average_value_product`: average value of harvested area related to the specific product code, across all the associated reporters
+- `average_value_product`: average value of the total annual harvested area related to the specific product code, across all the associated reporters
 - `value_percentage_reporter`: percentage value of harvested area related to the specific reporter code, across all reporters of the product code
 - `unit`: measurement units of the data
 
@@ -63,9 +63,9 @@ Percentage values are also reported for products and reporters. The percentage o
 - `period`: aggregation period yyyy-yyyy
 - `reporter_code`: ISO3 code of data reporter
 - `product_code`: FAO code of the product
-- `average_value_reporter`: average value of production related to the specific reporter code, across all the associated products
+- `average_value_reporter`: average value of the total annual production related to the specific reporter code, across all the associated products
 - `value_percentage_product`: percentage value of production related to the specific product code, across all products of the reporter code 
-- `average_value_product`: average value of production related to the specific product code, across all the associated reporters
+- `average_value_product`: average value of the total annual production related to the specific product code, across all the associated reporters
 - `value_percentage_reporter`: percentage value of production related to the specific reporter code, across all reporters of the product code
 - `unit`: measurement units of the data
 
