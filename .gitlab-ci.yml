@@ -1,5 +1,8 @@
 image: "python:3.9"
 
+variables:
+  BIOTRADE_SKIP_CONFIRMATION: "True"
+
 before_script:
   - python --version
   - pip install .
@@ -7,9 +10,6 @@ before_script:
 
 pytest:
   stage: test
-  env:
-    global:
-      - BIOTRADE_SKIP_CONFIRMATION=1
   script:
     - pytest --junitxml=report.xml
   artifacts:
