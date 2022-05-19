@@ -33,13 +33,14 @@ if os.environ.get("BIOTRADE_DATA"):
 
 # Create if not existing
 if not data_dir.exists():
-    msg = f"Create {data_dir}?"
-    if input(msg + "Please confirm [y/n]:") == "y" or os.environ.get(
-        "BIOTRADE_SKIP_CONFIRMATION"
-    ):
+    if os.environ.get("BIOTRADE_SKIP_CONFIRMATION"):
         data_dir.mkdir()
     else:
-        print("Directory creation cancelled.")
+        msg = f"Create {data_dir}?"
+        if input(msg + "Please confirm [y/n]:") == "y":
+            data_dir.mkdir()
+        else:
+            print("Directory creation cancelled.")
 
 # Database connection URL, default case
 database_url = None
