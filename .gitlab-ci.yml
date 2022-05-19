@@ -2,7 +2,7 @@ image: "python:3.9"
 
 before_script:
   - python --version
-  - pip install -r requirements.txt
+  - pip install .
   - pip install pytest
 
 pytest:
