@@ -1,0 +1,22 @@
+image: "python:3.9"
+
+variables:
+  BIOTRADE_SKIP_CONFIRMATION: "True"
+  BIOTRADE_DATA: "$CI_PROJECT_DIR/biotrade_data"
+
+before_script:
+  - python --version
+  - pip install .
+  - pip install pytest
+  - echo $CI_PROJECT_DIR 
+  - echo $BIOTRADE_DATA
+  - pwd
+
+pytest:
+  stage: test
+  script:
+    - pytest --junitxml=report.xml
+  artifacts:
+    when: always
+    reports:
+      junit: report.xml
