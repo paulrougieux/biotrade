@@ -170,9 +170,9 @@ class Pump:
         download_successful = False
         # Number of attempts to download zip file
         nr_try = 1
-        # Send the request: if successfull put the zip file into the temporary
-        # folder else if more than 3600 attempts loop stop
-        while not download_successful and nr_try < 3600:
+        # Send the request: if successful put the zip file into the temporary
+        # folder else if more than 1000 attempts loop stop
+        while not download_successful and nr_try <= 1000:
             try:
                 with urllib.request.urlopen(req) as response, open(
                     temp_file, "wb"
@@ -187,11 +187,11 @@ class Pump:
                     download_successful = True
                 else:
                     nr_try += 1
-                    time.sleep(1)
+                    time.sleep(5)
                 response_code = error.code
             except urllib.error.URLError as error:
                 nr_try += 1
-                time.sleep(1)
+                time.sleep(5)
                 response_code = error.reason
             self.logger.info(f"HTTP response code: {response_code}")
         return temp_dir, response_code
