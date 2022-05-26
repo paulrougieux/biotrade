@@ -19,6 +19,7 @@ and country codes have been converted to their equivalent FAOSTAT codes.
 
 import warnings
 import pandas
+import numpy as np
 from biotrade.faostat import faostat
 from biotrade.comtrade import comtrade
 from biotrade.common.products import comtrade_faostat_mapping
@@ -201,43 +202,51 @@ def merge_faostat_comtrade(faostat_table, comtrade_table, faostat_code):
     df_comtrade = transform_comtrade_using_faostat_codes(
         comtrade_table=comtrade_table, faostat_code=faostat_code
     )
-    # 3. Aggregate Comtrade from monthly to yearly. For the last data point
-    #    extrapolate to the current year based on values from the last 12 months
-    # Group by year and compute the sum of values for the 12 month in each year
-    index = [
-        "reporter_code",
-        "reporter",
-        "partner_code",
-        "partner",
-        "product_code",
-        "year",
-        "unit",
-        "element",
-    ]
-    df_comtrade_agg = df_comtrade.groupby(index)["value"].agg(sum)
-    # The last year is not necessarily complete and it might differ by
-    # countries. For any country. Sum the values of the last 12 months instead.
-    # We need to go back a bit further , because in March of 2022, there might
-    # be advanced countries which reported January 2022, but other countries
-    # which still have their last reporting period as June 2021, or even
-    # further back in 2020.
-    df_comtrade = df_comtrade.copy()  # .query("year >= year.max() - 3").copy()
-    df_comtrade["max_period"] = df_comtrade.groupby("reporter")["period"].transform(max)
-    df_comtrade["last_month"] = df_comtrade["max_period"] % 100
-    df_comtrade["previous_year"] = df_comtrade["max_period"] // 100 - 1
-    # For the special case of December, last year stays the same
-    # last month is zero so that 0+1 becomes January
-    is_december = df_comtrade["last_month"] == 12
-    df_comtrade.loc[is_december, "previous_year"] = df_comtrade["max_period"] // 100
-    df_comtrade.loc[is_december, "last_month"] = 0
-    df_comtrade["max_minus_12"] = (
-        df_comtrade["previous_year"] * 100 + df_comtrade["last_month"] + 1
-    )
-    df_recent = df_comtrade.query("period >= max_minus_12").copy()
-    df_recent["year"] = df_recent["previous_year"] + 1
-    df_recent_agg = df_recent.groupby(index)["value"].agg(value_est=sum)
-    # Combine the aggregated yearly values with the estimate for the last year
-    df = pandas.concat([df_comtrade_agg, df_recent_agg], axis=1).reset_index()
+    if comtrade_table == "monthly":
+        # 3. Aggregate Comtrade from monthly to yearly. For the last data point
+        #    extrapolate to the current year based on values from the last 12 months
+        # Group by year and compute the sum of values for the 12 month in each year
+        index = [
+            "reporter_code",
+            "reporter",
+            "partner_code",
+            "partner",
+            "product_code",
+            "year",
+            "unit",
+            "element",
+        ]
+        df_comtrade_agg = df_comtrade.groupby(index)["value"].agg(sum)
+        # The last year is not necessarily complete and it might differ by
+        # countries. For any country. Sum the values of the last 12 months instead.
+        # We need to go back a bit further , because in March of 2022, there might
+        # be advanced countries which reported January 2022, but other countries
+        # which still have their last reporting period as June 2021, or even
+        # further back in 2020.
+        df_comtrade = df_comtrade.copy()  # .query("year >= year.max() - 3").copy()
+        df_comtrade["max_period"] = df_comtrade.groupby("reporter")["period"].transform(
+            max
+        )
+        df_comtrade["last_month"] = df_comtrade["max_period"] % 100
+        df_comtrade["previous_year"] = df_comtrade["max_period"] // 100 - 1
+        # For the special case of December, last year stays the same
+        # last month is zero so that 0+1 becomes January
+        is_december = df_comtrade["last_month"] == 12
+        df_comtrade.loc[is_december, "previous_year"] = df_comtrade["max_period"] // 100
+        df_comtrade.loc[is_december, "last_month"] = 0
+        df_comtrade["max_minus_12"] = (
+            df_comtrade["previous_year"] * 100 + df_comtrade["last_month"] + 1
+        )
+        df_recent = df_comtrade.query("period >= max_minus_12").copy()
+        df_recent["year"] = df_recent["previous_year"] + 1
+        df_recent_agg = df_recent.groupby(index)["value"].agg(value_est=sum)
+        # Combine the aggregated yearly values with the estimate for the last year
+        df = pandas.concat([df_comtrade_agg, df_recent_agg], axis=1).reset_index()
+    else:
+        # Add column value estimation with nan values since yearly data are not estimated and drop column period
+        df = df_comtrade
+        df["value_est"] = np.nan
+        df.drop(columns="period", inplace=True)
     # Replace value by the estimate "value_est" where it is defined
     selector = ~df.value_est.isna()
     df.loc[selector, "value"] = df.loc[selector, "value_est"]
