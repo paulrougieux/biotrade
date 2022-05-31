@@ -22,6 +22,8 @@ Usage:
 from pathlib import Path
 import os
 
+__version__ = "0.0.5"
+
 module_dir = Path(__file__).resolve().parent
 
 # Where is the data, default case
