@@ -72,7 +72,7 @@ trade_china_1 = (
     .reset_index()
 )
 trade_china_1["reporter_code"] = 357
-# Concat with reporter codes not 41 and 214
+# Concat with reporter codes not 41 either 214
 trade_china_1 = pd.concat(
     [trade_china[~trade_china["reporter_code"].isin([41, 214])], trade_china_1],
     ignore_index=True,
@@ -95,7 +95,7 @@ trade_data = pd.concat([trade_data, trade_china_2], ignore_index=True,)
 # Reporter codes
 reporter_file = faostat.config_data_dir / "faostat_country_groups.csv"
 reporter = pd.read_csv(reporter_file)
-# Obtain iso3 codes with the merge
+# Obtain iso3 codes with the merge on reporter and partner side
 trade_data = trade_data.merge(
     reporter[["faost_code", "iso3_code"]],
     how="left",

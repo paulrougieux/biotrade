@@ -31,8 +31,8 @@ df_china = (
     .reset_index()
 )
 df_china["reporter_code"] = 357
-# Add China data to df
-df = pd.concat([df, df_china], ignore_index=True)
+# Add China data to df (exclude Taiwan data, otherwise double counted into percentages and averages calculations with China + Taiwan)
+df = pd.concat([df[~(df["reporter_code"] == 214)], df_china], ignore_index=True)
 # Reporter codes
 reporter_file = faostat.config_data_dir / "faostat_country_groups.csv"
 reporter = pd.read_csv(reporter_file)
