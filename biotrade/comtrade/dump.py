@@ -116,6 +116,20 @@ class Dump:
         :param (str) table, name of the database table
         :param (str or file object) file_path, path to the file from which to save the data
 
+        If data is already present in the database for that product code, the
+        user will be asked to confirm deletion. To avoid this confirmation
+        message when processing many dump files automatically, delete all table
+        content before calling this function.
+
+        For information, in case the data is not deleted and if the new data causes
+        duplications the database unique constraint will raise an error:
+
+            IntegrityError: (psycopg2.errors.UniqueViolation) duplicate key value
+            violates unique constraint
+            "monthly_period_flow_code_reporter_code_partner_code_product_key"
+            DETAIL:  Key (period, flow_code, reporter_code, partner_code,
+            product_code, unit_code, flag)=(201605, 1, 372, 360, 442090, 0, 0)
+
         Usage:
 
             >>> from biotrade.comtrade import comtrade
@@ -123,10 +137,19 @@ class Dump:
             >>> comtrade.dump.load_2d_csv("monthly", file_path)
 
         """
+        # Read the csv file in memory
         df = pandas.read_csv(
             file_path,
             # Force the id column to remain a character column,
             # otherwise str "01" becomes int 1.
             dtype={"product_code": str},
         )
+        # Check that the name of the file contains the unique product code in the data
+
+        # Delete existing data for the corresponding product code
+        # TODO: uptate the db.delete method so that it can deal with product_code.
+        # This should be possible ifthe where statements can be concatenated
+        # Or create the statement here to delete at the HS 2 to level.
+
+        # Write to the database
         self.db.append(df, table)
