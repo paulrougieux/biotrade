@@ -162,7 +162,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 270,161,YT,YT,MYT,MYT,175,areas and territories,Mayotte,Mayotte,Mayotte,Mayotte,,,World,Africa,5100,Eastern Africa,5101,Developing,0
 138,162,MX,MX,MEX,MEX,484,member,Mexico,the United Mexican States,Mexico,México,1945,,World,Americas,5200,Central America,5204,Developing,0
 145,163,FM,FM,FSM,FSM,583,member,Micronesia (Federated States of),the Federated States of Micronesia,Micronesia (Federated States of),Micronesia (Estados Federados de),1991,,World,Oceania,5500,Micronesia,5503,Developing,0
-139,164,,,,,,areas and territories,Midway Island,Midway Island,Midway Island,Islas Midway,,,,,,,,,0
+139,164,,,MID,,,areas and territories,Midway Island,Midway Island,Midway Island,Islas Midway,,,,,,,,,0
 140,166,MC,MC,MCO,MCO,492,member,Monaco,the Principality of Monaco,Monaco,Mónaco,1993,,World,Europe,5400,Western Europe,5404,Developed,0
 141,167,MN,MN,MNG,MNG,496,member,Mongolia,Mongolia,Mongolia,Mongolia,1961,,World,Asia,5300,Eastern Asia,5302,Developing,0
 273,2647,ME,ME,MNE,MNE,499,member,Montenegro,Montenegro,Montenegro,Montenegro,2006,,World,Europe,5400,Southern Europe,5403,Developed,0
