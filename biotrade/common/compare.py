@@ -127,8 +127,8 @@ def transform_comtrade_using_faostat_codes(comtrade_table, faostat_code):
     )
     df["element"] = (
         df["element"]
-        .replace("s_trade", "", regex=True)
-        .replace("s_net_weight", "_quantity", regex=True)
+        .replace("_trade", "", regex=True)
+        .replace("_net_weight", "_quantity", regex=True)
     )
     # The "flag" column is kept out of the index so lines with different flags can be aggregated
     index = [
