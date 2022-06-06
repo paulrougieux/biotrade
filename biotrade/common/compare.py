@@ -165,9 +165,9 @@ def merge_faostat_comtrade(faostat_table, comtrade_table, faostat_code):
     For example load sawwood data from both faostat and comtrade:
 
         >>> from biotrade.common.compare import merge_faostat_comtrade
-        >>> merge_faostat_comtrade(faostat_table="forestry_trade",
-        >>>                        comtrade_table="monthly",
-        >>>                        faostat_code = [1632, 1633])
+        >>> swd = merge_faostat_comtrade(faostat_table="forestry_trade",
+        >>>                              comtrade_table="monthly",
+        >>>                              faostat_code = [1632, 1633])
 
     To investigate the number of periods reported for each country in the most
     recent years, I used:

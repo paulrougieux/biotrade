@@ -20,7 +20,7 @@ Load the complete table into a pandas data frame.
 Select monthly oak trade data using the select method defined here.
 
     >>> from biotrade.comtrade import comtrade
-    >>> comtrade.db.select("monthly", product_code="440791")
+    >>> oak = comtrade.db.select("monthly", product_code="440791")
 
 Select data for the year 2017 using an SQL Alchemy select statement (lower level). Return results
 using an SQL Alchemy cursor or with a pandas data frame:
