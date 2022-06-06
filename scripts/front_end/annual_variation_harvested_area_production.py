@@ -9,6 +9,8 @@ import numpy as np
 import pandas as pd
 from biotrade import data_dir
 from biotrade.faostat import faostat
+import os
+from pathlib import Path
 
 # Name of product file to retrieve
 faostat_key_commodities_file = faostat.config_data_dir / "faostat_commodity_tree.csv"
@@ -55,8 +57,11 @@ column_list = ["reporter_code", "product_code", "period", "value", "unit"]
 harvested_area = crop_data[crop_data["element"] == "area_harvested"][column_list]
 # Production data
 production = crop_data[crop_data["element"].isin(["production", "stocks"])][column_list]
-# Save csv files
-folder_path = data_dir / "front_end"
+# Save csv files to env variable path or into biotrade data folder
+if os.environ.get("FRONT_END_DATA"):
+    folder_path = Path(os.environ["FRONT_END_DATA"])
+else:
+    folder_path = data_dir / "front_end"
 folder_path.mkdir(exist_ok=True)
 harvested_area.to_csv(folder_path / "harvested_area_annual_variation.csv", index=False)
 production.to_csv(folder_path / "production_annual_variation.csv", index=False)

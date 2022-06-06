@@ -14,6 +14,8 @@ from biotrade.common.time_series import (
     segmented_regression,
     merge_analysis,
 )
+import os
+from pathlib import Path
 
 # Name of product file to retrieve
 faostat_key_commodities_file = faostat.config_data_dir / "faostat_commodity_tree.csv"
@@ -107,8 +109,11 @@ harvested_area = df[
 production = df[
     (df["element"].isin(["production", "stocks"])) & (df["year"] == most_recent_year)
 ][column_list]
-# Save csv files
-folder_path = data_dir / "front_end"
+# Save csv files to env variable path or into biotrade data folder
+if os.environ.get("FRONT_END_DATA"):
+    folder_path = Path(os.environ["FRONT_END_DATA"])
+else:
+    folder_path = data_dir / "front_end"
 folder_path.mkdir(exist_ok=True)
 harvested_area.to_csv(folder_path / "harvested_area_trends.csv", index=False)
 production.to_csv(folder_path / "production_trends.csv", index=False)

@@ -10,6 +10,8 @@ import pandas as pd
 from biotrade import data_dir
 from biotrade.faostat import faostat
 from biotrade.common.compare import merge_faostat_comtrade
+import os
+from pathlib import Path
 
 # Name of product file to retrieve
 faostat_key_commodities_file = faostat.config_data_dir / "faostat_commodity_tree.csv"
@@ -47,14 +49,20 @@ trade_data = trade_data_yearly.merge(
 trade_data = trade_data[
     ~(trade_data[["reporter_code", "partner_code"]] == -1).any(axis=1)
 ]
-# Select only importers as repoter' quantities
-trade_data = trade_data[trade_data["element"].isin(["import_value", "import_quantity"])]
+# Select only import and export (exclude re-import and re-export for now)
+trade_data = trade_data[
+    trade_data["element"].isin(
+        ["import_value", "import_quantity", "export_value", "export_quantity"]
+    )
+]
 # Consider monthly aggregations for most recent year of comtrade data and yearly data the the rest
+# Add a flag to distinguish them
 selector = trade_data["flag_monthly"] == "estimate"
 trade_data.loc[selector, "value"] = trade_data.loc[selector, "value_monthly"]
-trade_data.loc[selector, "flag"] = trade_data.loc[selector, "flag_monthly"]
+trade_data.loc[selector, "estimate_flag"] = 1
 trade_data.loc[~selector, "value"] = trade_data.loc[~selector, "value_yearly"]
-trade_data.loc[~selector, "flag"] = ""
+trade_data.loc[~selector, "estimate_flag"] = 0
+# Use period instead of year column
 trade_data["period"] = trade_data["year"]
 trade_data.drop(
     columns=["value_monthly", "value_yearly", "flag_monthly", "flag_yearly"],
@@ -67,7 +75,18 @@ trade_china = trade_data[
 # Aggregation on the reporter side
 trade_china_1 = (
     trade_china[trade_china["reporter_code"].isin([41, 214])]
-    .groupby(["source", "partner_code", "product_code", "element", "period", "unit"])
+    .groupby(
+        [
+            "source",
+            "partner_code",
+            "product_code",
+            "element",
+            "period",
+            "unit",
+            "estimate_flag",
+        ]
+    )
+    # If all null values, do not return 0 but Nan
     .agg({"value": lambda x: x.sum(min_count=1)})
     .reset_index()
 )
@@ -80,7 +99,18 @@ trade_china_1 = pd.concat(
 # Aggregation also on the partner side
 trade_china_2 = (
     trade_china_1[trade_china_1["partner_code"].isin([41, 214])]
-    .groupby(["source", "reporter_code", "product_code", "element", "period", "unit"])
+    .groupby(
+        [
+            "source",
+            "reporter_code",
+            "product_code",
+            "element",
+            "period",
+            "unit",
+            "estimate_flag",
+        ]
+    )
+    # If all null values, do not return 0 but Nan
     .agg({"value": lambda x: x.sum(min_count=1)})
     .reset_index()
 )
@@ -113,29 +143,33 @@ trade_data = trade_data.merge(
 trade_data["partner_code"] = trade_data["iso3_code"]
 # Faostat code 41 (China mainland) and 351 (China mainland + Hong Kong + Macao + Taiwan ) are not mapped into ISO 3 Codes
 trade_data.dropna(subset=["reporter_code", "partner_code"], inplace=True)
+# Define import flag column
+selector = trade_data["element"].str.startswith("import")
+trade_data.loc[selector, "import_flag"] = 1
+trade_data.loc[~selector, "import_flag"] = 0
+# Transform flag columns into int type
+trade_data = trade_data.astype({"import_flag": int, "estimate_flag": int})
 # Columns to be retained
 column_list = [
     "source",
     "reporter_code",
     "partner_code",
     "product_code",
+    "import_flag",
     "period",
     "value",
     "unit",
-    "flag",
+    "estimate_flag",
 ]
-# Trade quantity import data
-trade_quantity_import = trade_data[trade_data["element"] == "import_quantity"][
-    column_list
-]
-# Trade value import data
-trade_value_import = trade_data[trade_data["element"] == "import_value"][column_list]
-# Save csv files
-folder_path = data_dir / "front_end"
+# Trade quantity data
+trade_quantity = trade_data[trade_data["element"].str.endswith("quantity")][column_list]
+# Trade value data
+trade_value = trade_data[trade_data["element"].str.endswith("value")][column_list]
+# Save csv files to env variable path or into biotrade data folder
+if os.environ.get("FRONT_END_DATA"):
+    folder_path = Path(os.environ["FRONT_END_DATA"])
+else:
+    folder_path = data_dir / "front_end"
 folder_path.mkdir(exist_ok=True)
-trade_quantity_import.to_csv(
-    folder_path / "trade_quantity_import_annual_variation.csv", index=False
-)
-trade_value_import.to_csv(
-    folder_path / "trade_value_import_annual_variation.csv", index=False
-)
+trade_quantity.to_csv(folder_path / "trade_quantity_annual_variation.csv", index=False)
+trade_value.to_csv(folder_path / "trade_value_annual_variation.csv", index=False)

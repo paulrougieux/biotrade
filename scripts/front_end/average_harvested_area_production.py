@@ -9,6 +9,8 @@ import numpy as np
 import pandas as pd
 from biotrade import data_dir
 from biotrade.faostat import faostat
+import os
+from pathlib import Path
 
 # Value of the threshold for products/reporters
 threshold = 95
@@ -166,8 +168,11 @@ column_list = [
     "value_percentage_reporter",
     "unit",
 ]
-# Save csv files
-folder_path = data_dir / "front_end"
+# Save csv files to env variable path or into biotrade data folder
+if os.environ.get("FRONT_END_DATA"):
+    folder_path = Path(os.environ["FRONT_END_DATA"])
+else:
+    folder_path = data_dir / "front_end"
 folder_path.mkdir(exist_ok=True)
 harvested_area = df_final[df_final["element"] == "area_harvested"][column_list]
 harvested_area.to_csv(folder_path / "harvested_area_average.csv", index=False)

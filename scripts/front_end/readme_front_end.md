@@ -94,3 +94,29 @@ Csv that contains trends of production associated to the key products. For each 
 - `mk_slope`: annual variation (slope) obtained from the Mann-Kendall test
 - `mk_significance_flag`: 1 means that the statistical test is valid (significance level = 0.05), 0 otherwise
 - `unit`: measurement units of the data
+
+## trade_quantity_annual_variation.csv
+Csv that contains annual data of bilateral trade quantities for each of the key products. The related reporters, partners as well the source of data are reported. Data can be associated to import or export flows.
+As general rule, data taken by the source have year frequency. For Comtrade source if there are more updated data with monthly frequency (generally the most recent years) and a lack of yearly data, an aggregation over the last 12 months is performed instead. There are 9 columns:
+- `source`: source of data which could be "comtrade" or "faostat"
+- `reporter_code`: ISO3 code of data reporter
+- `partner_code`: ISO3 code of data partner
+- `product_code`: FAO code of the product
+- `import_flag`: 1 when the quantity is associated to import, meaning that the reporter is the importer and the partner the exporter, 0 means that the reporter is the exporter and the partner the importer
+- `period`: time of data
+- `value`: data registered
+- `unit`: measurement units of the data
+- `estimate_flag`: 1 when the quantity is the aggregation of the last 12 monthly data, 0 means yearly data not manipulated
+
+## trade_value_annual_variation.csv
+Csv that contains annual data of bilateral trade monetary values for each of the key products. The related reporters, partners as well the source of data are reported. Data can be associated to import or export flows.
+As general rule, data taken by the source have year frequency. For Comtrade source if there are more updated data with monthly frequency (generally the most recent years) and a lack of yearly data, an aggregation over the last 12 months is performed instead. There are 9 columns:
+- `source`: source of data which could be "comtrade" or "faostat"
+- `reporter_code`: ISO3 code of data reporter
+- `partner_code`: ISO3 code of data partner
+- `product_code`: FAO code of the product
+- `import_flag`: 1 when the monetary value is associated to import, meaning that the reporter is the importer and the partner the exporter, 0 means that the reporter is the exporter and the partner the importer
+- `period`: time of data
+- `value`: data registered
+- `unit`: measurement units of the data
+- `estimate_flag`: 1 when the monetary value is the aggregation of the last 12 monthly data, 0 means yearly data not manipulated

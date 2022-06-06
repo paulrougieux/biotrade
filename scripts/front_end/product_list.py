@@ -9,6 +9,8 @@ import numpy as np
 import pandas as pd
 from biotrade import data_dir
 from biotrade.faostat import faostat
+import os
+from pathlib import Path
 
 # Name of product file to retrieve
 faostat_key_commodities_file = faostat.config_data_dir / "faostat_commodity_tree.csv"
@@ -61,8 +63,11 @@ faostat_products = pd.concat(
 faostat_products["key_product_flag"] = faostat_products.product_code.isin(
     key_product_codes
 ).astype(int)
-# Save csv files
-folder_path = data_dir / "front_end"
+# Save csv files to env variable path or into biotrade data folder
+if os.environ.get("FRONT_END_DATA"):
+    folder_path = Path(os.environ["FRONT_END_DATA"])
+else:
+    folder_path = data_dir / "front_end"
 folder_path.mkdir(exist_ok=True)
 product_tree.to_csv(folder_path / "key_product_tree_list.csv", index=False)
 faostat_products.to_csv(folder_path / "product_list.csv", index=False)

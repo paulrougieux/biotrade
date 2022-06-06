@@ -8,6 +8,8 @@ Script made to export data related to countries, for the web platform
 import pandas as pd
 from biotrade import data_dir
 from biotrade.faostat import faostat
+import os
+from pathlib import Path
 
 # Name of reporter file to retrieve
 reporter_file = faostat.config_data_dir / "faostat_country_groups.csv"
@@ -22,7 +24,10 @@ reporter = pd.concat(
     [reporter, pd.DataFrame([["OTH", "Others"]], columns=reporter.columns)],
     ignore_index=True,
 )
-# Save csv files
-folder_path = data_dir / "front_end"
+# Save csv files to env variable path or into biotrade data folder
+if os.environ.get("FRONT_END_DATA"):
+    folder_path = Path(os.environ["FRONT_END_DATA"])
+else:
+    folder_path = data_dir / "front_end"
 folder_path.mkdir(exist_ok=True)
 reporter.to_csv(folder_path / "reporter_list.csv", index=False)
