@@ -29,7 +29,7 @@ def choose_column_renaming(short_name):
     """Choose which column from config_data/column_names.csv to use for
     renaming."""
     output = None
-    for keyword in ["production", "trade", "land", "food_balance"]:
+    for keyword in ["production", "trade", "land", "food_balance", "country"]:
         if keyword in short_name:
             output = "faostat_" + keyword
     if output is None:
@@ -340,6 +340,8 @@ class Pump:
             return
         # Download datasets from FAOSTAT
         for this_dataset in datasets:
+            if this_dataset == "country":
+                continue
             zip_file_name = self.datasets[this_dataset]
             self.download_zip_csv(zip_file_name)
         # Transfer to the database
