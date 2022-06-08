@@ -90,8 +90,8 @@ plot_segmented_regression(soybean_exp_row_regression2)
 palm_oil_data = faostat.db.select(
     table="crop_production", reporter="Malaysia", product_code=257
 )
-# Select production quantity from 1986
-palm_oil_prod = palm_oil_data[(palm_oil_data["element"] == "production") & (palm_oil_data["year"] > 1986)]
+# Select production quantity from 1985
+palm_oil_prod = palm_oil_data[(palm_oil_data["element"] == "production") & (palm_oil_data["year"] > 1985)]
 # Use as objective function the residual sum of squares (RSS) and at least 10 points for the linear regression
 palm_oil_prod_regression1 = segmented_regression(
     palm_oil_prod, last_value=False, function="RSS", alpha = 0.05, min_data_points = 10,
@@ -156,8 +156,8 @@ plot_segmented_regression(cocoabean_exp_row_regression2)
 coffe_green_data = faostat.db.select(
     table="crop_production", reporter="Brazil", product_code=656
 )
-# Select area harvested quantity from 1986
-coffe_green_areah = coffe_green_data[(coffe_green_data["element"] == "area_harvested") & (coffe_green_data["year"] > 1986)]
+# Select area harvested quantity from 1985
+coffe_green_areah = coffe_green_data[(coffe_green_data["element"] == "area_harvested") & (coffe_green_data["year"] > 1985)]
 # Use as objective function the residual sum of squares (RSS) and at least 10 points for the linear regression
 coffe_green_areah_regression1 = segmented_regression(
     coffe_green_areah, last_value=False, function="RSS", alpha = 0.05, min_data_points = 10,
@@ -170,8 +170,4 @@ coffe_green_areah_regression2 = segmented_regression(
 )
 # Plot results
 plot_segmented_regression(coffe_green_areah_regression2)
-```
-
-```python
-
 ```

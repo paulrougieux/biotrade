@@ -72,7 +72,3 @@ Print the dataframe
 ```python
 soybeans_exp_change_range_2000_2010
 ```
-
-```python
-
-```

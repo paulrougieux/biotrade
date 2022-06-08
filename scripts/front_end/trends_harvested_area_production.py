@@ -59,8 +59,8 @@ crop_data = crop_data.merge(
 crop_data["reporter_code"] = crop_data["iso3_code"]
 # Faostat code 41 (China mainland) and 351 (China mainland + Hong Kong + Macao + Taiwan ) are not mapped into ISO 3 Codes
 crop_data.dropna(subset="reporter_code", inplace=True)
-# Consider data after 1986 to calculate trends of last year
-crop_data = crop_data[crop_data["year"] > 1986]
+# Consider data after 1985 to calculate trends of last year
+crop_data = crop_data[crop_data["year"] > 1985]
 # Calculate the absolute and relative change
 crop_data_change = relative_absolute_change(crop_data, last_value=True)
 # Use as objective function the coefficient of determination (R2), significance level of 0.05 and at least 7 points for the linear regression
