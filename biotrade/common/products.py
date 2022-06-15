@@ -44,3 +44,14 @@ comtrade_faostat_mapping = pandas.read_csv(
     # Force Comtrade to be a string
     dtype={"comtrade_code": "str"},
 )
+
+# Check duplicates
+# One comtrade code should always be associated to one and only one faostat code
+# A faostat code can be associated to many comtrade codes
+dup_codes = comtrade_faostat_mapping["comtrade_code"].duplicated(keep=False)
+if any(dup_codes):
+    msg = "Comtrade codes are not unique "
+    msg += "in the comtrade to faostat mapping table.\n"
+    msg += "The following duplicates are present:\n"
+    msg += f"{comtrade_faostat_mapping.loc[dup_codes]}"
+    raise ValueError(msg)
