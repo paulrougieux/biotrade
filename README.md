@@ -46,9 +46,9 @@ Dependencies are listed in the `install_requires` argument of [setup.py](setup.p
 
 # Usage
 
-The biotrade package is able to download data from FAOSTAT and UN Comtrade and to store 
-it inside a database. By default it will use an SQLite database stored locally in the 
-folder defined by the environment variable `BIOTRADE_DATA`. Alternatively, a PostGRESQL 
+The biotrade package can download data from FAOSTAT and UN Comtrade and store it inside 
+a database. By default it will use an SQLite database stored locally in the folder 
+defined by the environment variable `BIOTRADE_DATA`. Alternatively, a PostGRESQL 
 database can be used if a connection string is defined in the environment variable 
 `BIOTRADE_DATABASE_URL`, for example by adding the following to your .bash_aliases or 
 .bash_rc:
@@ -65,7 +65,7 @@ used on servers.
 
 Faostat provides agriculture and forestry data on their website https://www.fao.org/faostat/en/#data/
 
-The biotrade package has a `faostat.pump` object that loads a selection of datasets. The 
+The biotrade package has a `faostat.pump` object that loads a selection of datasets. The
 list of downloaded datasets is visible in `faostat.pump.datasets`. Column names and 
 product descriptions are reformatted to snake case in a way that is convenient for 
 analysis. The data is then stored into an SQLite database (or PostgreSQL). The following 
@@ -151,7 +151,10 @@ FAOSTAT release dates are available at :
 https://fenixservices.fao.org/faostat/static/releasecalendar/Default.aspx
 
 
-# Variable definitions and harmonization
+## Variable definitions and harmonization
+
+Column names and product descriptions are reformatted to snake case in a way that is 
+convenient for analysis. See example below.
 
 - Variables are defined and compared between the data sources in a notebook called 
   [definitions_and_harmonization](notebooks/definitions_and_harmonization.md)
@@ -167,6 +170,18 @@ https://fenixservices.fao.org/faostat/static/releasecalendar/Default.aspx
   names](https://style.tidyverse.org/syntax.html) and the python [PEP 
   8](https://www.python.org/dev/peps/pep-0008/#function-and-variable-names) style guide 
   for function and variable names.
+
+To illustrate the advantage of using snake case for data exploration, compare the use of 
+column names with space which have to be quoted. Python
+
+    >>> df["Product Code"]
+    >>> df.product_code
+
+R
+     
+    R> df["Product Code"]
+    R> df$`Product Code`
+    R> df$product_code
 
 
 # Licence
