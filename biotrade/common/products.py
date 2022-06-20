@@ -42,7 +42,11 @@ config_data_dir = module_dir / "config_data"
 comtrade_faostat_mapping = pandas.read_csv(
     config_data_dir / "comtrade_faostat_product_mapping.csv",
     # Force Comtrade to be a string
-    dtype={"comtrade_code": "str"},
+    dtype={
+        "comtrade_code": "str",
+        # FAOSTAT code remains an integer
+        "faostat_code": "int",
+    },
 )
 
 # Check duplicates
