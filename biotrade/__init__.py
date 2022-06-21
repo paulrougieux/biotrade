@@ -36,7 +36,7 @@ if os.environ.get("BIOTRADE_DATA"):
 # Create if not existing
 if not data_dir.exists():
     if os.environ.get("BIOTRADE_SKIP_CONFIRMATION"):
-        data_dir.mkdir()
+        data_dir.mkdir(parents=True)
     else:
         msg = f"Create {data_dir}?"
         if input(msg + "Please confirm [y/n]:") == "y":
