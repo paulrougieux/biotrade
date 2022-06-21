@@ -317,7 +317,7 @@ class Pump:
             # Transfer the compressed CSV file to the database
             self.transfer_csv_to_db_in_chunks(table_name, self.chunk_size)
 
-    def update(self, datasets):
+    def update(self, datasets, skip_confirmation=False):
         """Update the given datasets by downloading them from FAOSTAT and
         transferring them to the database
 
@@ -336,8 +336,9 @@ class Pump:
         if isinstance(datasets, str):
             datasets = [datasets]
         # Confirmation message
-        if not self.confirm_db_table_deletion(datasets):
-            return
+        if not skip_confirmation:
+            if not self.confirm_db_table_deletion(datasets):
+                return
         # Download datasets from FAOSTAT
         for this_dataset in datasets:
             if this_dataset == "country":
