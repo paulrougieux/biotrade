@@ -2,6 +2,7 @@
 Written by Selene Patani.
 
 Script which contains functions used to produce data for the Web Platform
+
 """
 
 import os
@@ -286,6 +287,7 @@ def consistency_check_china_data(df):
                 [
                     "source",
                     "partner_code",
+                    "partner",
                     "product_code",
                     "element",
                     "year",
@@ -298,6 +300,7 @@ def consistency_check_china_data(df):
             .reset_index()
         )
         df_china_1["reporter_code"] = 357
+        df_china_1["reporter"] = "China mainland and Taiwan"
         # Concat with reporter codes not 41 either 214
         df_china_1 = pd.concat(
             [df_china[~df_china["reporter_code"].isin([41, 214])], df_china_1],
@@ -310,6 +313,7 @@ def consistency_check_china_data(df):
                 [
                     "source",
                     "reporter_code",
+                    "reporter",
                     "product_code",
                     "element",
                     "year",
@@ -322,6 +326,7 @@ def consistency_check_china_data(df):
             .reset_index()
         )
         df_china_2["partner_code"] = 357
+        df_china_2["partner"] = "China mainland and Taiwan"
         # Concat with partner codes not 41 and 214
         df_china_2 = pd.concat(
             [df_china_1[~df_china_1["partner_code"].isin([41, 214])], df_china_2],
@@ -338,4 +343,5 @@ def consistency_check_china_data(df):
             .reset_index()
         )
         df_china["reporter_code"] = 357
+        df_china["reporter"] = "China mainland and Taiwan"
     return df_china
