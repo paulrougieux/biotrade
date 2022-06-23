@@ -11,6 +11,7 @@ Unit D1 Bioeconomy.
 
 import warnings
 from biotrade.faostat import faostat
+from pandas.api.types import is_numeric_dtype
 
 # Import country table selecting continents and sub continents columns
 CONTINENTS = faostat.country_groups.continents[
@@ -94,7 +95,8 @@ def agg_trade_eu_row(
     # Remove "Total FAO" and "World" rows if present
     selector = df["partner"] != "World"
     if "partner_code" in df.columns:
-        selector = selector & (df["partner_code"] < 1000)
+        if is_numeric_dtype(df["partner_code"]):
+            selector = selector & (df["partner_code"] < 1000)
     if any(~selector):
         partner_removed = df.loc[~selector, "partner"].unique()
         warnings.warn(f"Removing {partner_removed} from df")
@@ -194,10 +196,7 @@ def agg_by_country_groups(df, agg_reporter=None, agg_partner=None):
 
     # Merge reporters with the corresponding continent/subcontinent data
     df = df.merge(
-        CONTINENTS,
-        how="left",
-        left_on="reporter_code",
-        right_on="faost_code",
+        CONTINENTS, how="left", left_on="reporter_code", right_on="faost_code",
     )
 
     # Merge partners with the corresponding continent/subcontinent data
