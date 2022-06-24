@@ -151,14 +151,13 @@ def merge_faostat_comtrade_data(product_list):
     return df
 
 
-def average_results(df, threshold, dict_list, index_list_add=[]):
+def average_results(df, threshold, dict_list):
     """
     Script which produce the average and percentage results for the tree maps of the web platform
 
     :param df (DataFrame), database to perform calculations
     :param threshold (int), percentage above which classifying as "Others" the percentages in the tree maps
-    :param dict_list (list), list of dictionaries containing the column names for the aggregation and the percentages, as well the code for the "Others" category
-    :param index_list_add (list), list which contains other columns to be considered in the group by. Default is empty
+    :param dict_list (list), list of dictionaries containing the column names for the aggregation and the percentages, as well the code for the "Others" category and possible columns to be added to the group by aggregation
     :return df_final (DataFrame), where calculations are performed
 
     """
@@ -195,11 +194,11 @@ def average_results(df, threshold, dict_list, index_list_add=[]):
     df = df.merge(df_periods[["year", "period_aggregation"]], on="year", how="left")
     df["period"] = df["period_aggregation"]
     # Default index list for aggregations + the adds from the arguments
-    index_list = ["element", "period", "unit", *index_list_add]
+    index_list = ["element", "period", "unit"]
     df_final = pd.DataFrame()
     # Load for each dict the aggregation column, the percentage column and the code for threshold values in order to compute calculations
     for dict in dict_list:
-        index_list_upd = [dict["average_col"], *index_list]
+        index_list_upd = [dict["average_col"], *index_list, *dict["index_list_add"]]
         average_col_name = "average_value" + "_" + dict["average_col"]
         total_col_name = "total_value" + "_" + dict["average_col"]
         percentage_col_name = "value_percentage" + "_" + dict["percentage_col"]
@@ -260,6 +259,8 @@ def average_results(df, threshold, dict_list, index_list_add=[]):
         else:
             # Merge or concatenate depending on the common columns in merge_col_list
             merge_col_list = [*index_list_upd, dict["percentage_col"]]
+            if average_col_name in df_final.columns:
+                merge_col_list.append(average_col_name)
             # Meaning that dataframes can be merged
             if set(merge_col_list).issubset(df_final.columns):
                 df_final = df_final.merge(df_new, how="outer", on=merge_col_list)

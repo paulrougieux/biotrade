@@ -32,11 +32,13 @@ dict_list = [
         "average_col": "product_code",
         "percentage_col": "reporter_code",
         "threshold_code": "OTH",
+        "index_list_add": [],
     },
     {
         "average_col": "product_code",
         "percentage_col": "partner_code",
         "threshold_code": "OTH",
+        "index_list_add": [],
     },
 ]
 # Consider faostat data
@@ -104,14 +106,16 @@ save_file(trade_data_comtrade_partner, "comtrade_trade_quantity_average_mf.csv")
 # Consider averages for EU and rest of the world partners
 dict_list = [
     {
-        "average_col": "reporter_code",
+        "average_col": "product_code",
         "percentage_col": "partner_code",
         "threshold_code": "OTH",
+        "index_list_add": ["reporter_code"],
     },
     {
-        "average_col": "partner_code",
+        "average_col": "product_code",
         "percentage_col": "reporter_code",
         "threshold_code": "OTH",
+        "index_list_add": ["partner_code"],
     },
 ]
 # Aggregate data with reporters as eu and row
@@ -155,7 +159,8 @@ trade_data_comtrade_avg = average_results(trade_data_comtrade, 95, dict_list,)
 column_list = [
     "period",
     "reporter_code",
-    "average_value_reporter_code",
+    "product_code",
+    "average_value_product_code",
     "unit",
     "partner_code",
     "value_percentage_partner_code",
@@ -165,22 +170,27 @@ trade_data_faostat_reporter = trade_data_faostat_avg[
     (trade_data_faostat_avg["element"] == "import_quantity")
     & (trade_data_faostat_avg["reporter_code"].isin(["EU27", "ROW"]))
 ][column_list].dropna(
-    subset=["average_value_reporter_code", "value_percentage_partner_code"]
+    subset=["average_value_product_code", "value_percentage_partner_code"]
 )
+# Add column describing flow
+trade_data_faostat_reporter["flow"] = "import"
 save_file(trade_data_faostat_reporter, "faostat_trade_quantity_average_eu_row.csv")
 # Consider selected columns of import quantities and save the file (drop nan)
 trade_data_comtrade_reporter = trade_data_comtrade_avg[
     (trade_data_comtrade_avg["element"] == "import_quantity")
     & (trade_data_comtrade_avg["reporter_code"].isin(["EU27", "ROW"]))
 ][column_list].dropna(
-    subset=["average_value_reporter_code", "value_percentage_partner_code"]
+    subset=["average_value_product_code", "value_percentage_partner_code"]
 )
+# Add column describing flow
+trade_data_comtrade_reporter["flow"] = "import"
 save_file(trade_data_comtrade_reporter, "comtrade_trade_quantity_average_eu_row.csv")
 # Substitute value_percentage_partner_code column with value_percentage_reporter_code
 column_list = [
     "period",
     "partner_code",
-    "average_value_partner_code",
+    "product_code",
+    "average_value_product_code",
     "unit",
     "reporter_code",
     "value_percentage_reporter_code",
@@ -190,14 +200,18 @@ trade_data_faostat_partner = trade_data_faostat_avg[
     (trade_data_faostat_avg["element"] == "export_quantity")
     & (trade_data_faostat_avg["partner_code"].isin(["EU27", "ROW"]))
 ][column_list].dropna(
-    subset=["average_value_partner_code", "value_percentage_reporter_code"]
+    subset=["average_value_product_code", "value_percentage_reporter_code"]
 )
+# Add column describing flow
+trade_data_faostat_partner["flow"] = "export"
 save_file(trade_data_faostat_partner, "faostat_trade_quantity_average_mf_eu_row.csv")
 # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
 trade_data_comtrade_partner = trade_data_comtrade_avg[
     (trade_data_comtrade_avg["element"] == "export_quantity")
     & (trade_data_comtrade_avg["partner_code"].isin(["EU27", "ROW"]))
 ][column_list].dropna(
-    subset=["average_value_partner_code", "value_percentage_reporter_code"]
+    subset=["average_value_product_code", "value_percentage_reporter_code"]
 )
+# Add column describing flow
+trade_data_comtrade_partner["flow"] = "export"
 save_file(trade_data_comtrade_partner, "comtrade_trade_quantity_average_mf_eu_row.csv")
