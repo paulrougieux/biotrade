@@ -345,4 +345,6 @@ def consistency_check_china_data(df):
         )
         df_china["reporter_code"] = 357
         df_china["reporter"] = "China mainland and Taiwan"
+    # Fill period column
+    df_china["period"] = df_china["year"]
     return df_china

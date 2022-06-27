@@ -65,6 +65,8 @@ trade_data_faostat_reporter = trade_data_faostat_avg[
 ][column_list].dropna(
     subset=["average_value_product_code", "value_percentage_reporter_code"]
 )
+# Add column describing flow
+trade_data_faostat_reporter["flow"] = "import"
 save_file(trade_data_faostat_reporter, "faostat_trade_quantity_average.csv")
 # Consider selected columns of import quantities and save the file (drop nan)
 trade_data_comtrade_reporter = trade_data_comtrade_avg[
@@ -72,6 +74,8 @@ trade_data_comtrade_reporter = trade_data_comtrade_avg[
 ][column_list].dropna(
     subset=["average_value_product_code", "value_percentage_reporter_code"]
 )
+# Add column describing flow
+trade_data_comtrade_reporter["flow"] = "import"
 save_file(trade_data_comtrade_reporter, "comtrade_trade_quantity_average.csv")
 # Substitute reporter_code column with partner_code
 old_col = "reporter_code"
@@ -95,6 +99,8 @@ trade_data_faostat_partner = trade_data_faostat_avg[
 ][column_list].dropna(
     subset=["average_value_product_code", "value_percentage_partner_code"]
 )
+# Add column describing flow
+trade_data_faostat_partner["flow"] = "export"
 save_file(trade_data_faostat_partner, "faostat_trade_quantity_average_mf.csv")
 # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
 trade_data_comtrade_partner = trade_data_comtrade_avg[
@@ -102,6 +108,8 @@ trade_data_comtrade_partner = trade_data_comtrade_avg[
 ][column_list].dropna(
     subset=["average_value_product_code", "value_percentage_partner_code"]
 )
+# Add column describing flow
+trade_data_comtrade_partner["flow"] = "export"
 save_file(trade_data_comtrade_partner, "comtrade_trade_quantity_average_mf.csv")
 # Consider averages for EU and rest of the world partners
 dict_list = [
