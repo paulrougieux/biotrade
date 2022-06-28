@@ -12,6 +12,11 @@ from pathlib import Path
 from biotrade.faostat import faostat
 from biotrade import data_dir
 from biotrade.common.compare import merge_faostat_comtrade
+from biotrade.common.time_series import (
+    relative_absolute_change,
+    segmented_regression,
+    merge_analysis,
+)
 
 
 def save_file(df, file_name):
@@ -348,3 +353,41 @@ def consistency_check_china_data(df):
     # Fill period column
     df_china["period"] = df_china["year"]
     return df_china
+
+
+def trend_analysis(df_data):
+    """
+    Script which performs the trend analysis
+    
+    :param df_data (DataFrame), data on which perform the analysis
+    :return df (DataFrame), dataframe containing the relative, absolute and segmented regresssion indicators
+    
+    """
+    # Calculate the absolute and relative change
+    df_data_change = relative_absolute_change(df_data, last_value=True)
+    # Use as objective function the coefficient of determination (R2), significance level of 0.05 and at least 7 points for the linear regression
+    df_data_regression = segmented_regression(
+        df_data, last_value=True, function="R2", alpha=0.05, min_data_points=7,
+    )
+    # Merge dataframes to compare results
+    df = merge_analysis(
+        df_change=df_data_change, df_segmented_regression=df_data_regression
+    )
+    # Define the structure yyyy-yyyy for the period change and segmented regression columns
+    df["period_change"] = (
+        df["year_range_lower_change"].astype("Int64").astype(str)
+        + "-"
+        + df["year_range_upper_change"].astype("Int64").astype(str)
+    ).replace("<NA>-<NA>", np.nan)
+    df["period_regression"] = (
+        df["year_range_lower_regression"].astype("Int64").astype(str)
+        + "-"
+        + df["year_range_upper_regression"].astype("Int64").astype(str)
+    ).replace("<NA>-<NA>", np.nan)
+    # Transform from boolean to integers 0 or 1
+    df["mk_significance_flag"] = (
+        df["mk_ha_test"].astype("boolean").astype("Int64")
+    ).replace(pd.NA, np.nan)
+    # Drop nan values
+    df = df.dropna(subset=["relative_change", "absolute_change", "mk_slope"], how="all")
+    return df
