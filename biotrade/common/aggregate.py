@@ -73,7 +73,10 @@ def nlargest(df, value_vars, time_vars=None, agg_groups=None, slice_groups=None,
     if isinstance(value_vars, str):
         value_vars = [value_vars]
     # Make sure slice columns are part of the agg_groups
-    agg_groups = list(set(agg_groups).union(set(slice_groups)))
+    if agg_groups is None:
+        agg_groups = slice_groups
+    else:
+        agg_groups = list(set(agg_groups).union(set(slice_groups)))
     # Compute the sum within each group for each time period (such as each year)
     # Then compute the average for each group over the years
     if agg_groups is not None:
