@@ -2,9 +2,13 @@
 Table names and metadata of the web platform output scripts
 
 ## reporter_list.csv
-Csv that contains the list of all reporters. There are 2 columns:
-- `reporter_code`: ISO3 code of data reporter
+Csv that contains the list of all reporters. Can be used also for partners. There are 3 columns:
+- `reporter_code`: code of data reporter
 - `reporter_name`: name of the reporter
+- `status`: can assume three values
+    - "iso3" which means that the reporter is identified through the iso3 code;
+    - "old" meaning that the reporter does not exist anymore but it was in the past and older data can be associated to it;
+    - "agg" which represents an aggregation of reporters
 
 ## product_list.csv
 Csv that contains the list of all products. There are 3 columns:
@@ -16,7 +20,7 @@ Csv that contains the list of all products. There are 3 columns:
 Csv to create the product tree according to FAO technical report 2011.
 Key products selected in this csv are coffee, cocoa, soybeans, palm oil fruit and cattle.
 There are 6 columns:
-- `primary_product_code`: code of the primary product name (just for sub-setting purposes)
+- `primary_product_code`: code of the primary product name (just for subsetting purposes)
 - `parent_product_name`: parent product name, left side of each branch of the trees
 - `parent_product_code`: FAO code of the parent product
 - `child_product_name`: name of the product derived from the parent, right side of the tree

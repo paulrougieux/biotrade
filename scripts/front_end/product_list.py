@@ -7,20 +7,15 @@ Script made to export data related to all commodities and tree of the key produc
 
 import numpy as np
 import pandas as pd
-from biotrade import data_dir
 from biotrade.faostat import faostat
-import os
-from pathlib import Path
+from functions import save_file, main_product_list
 
 # Name of product file to retrieve
 faostat_key_commodities_file = faostat.config_data_dir / "faostat_commodity_tree.csv"
 # Retrieve tree dataset
 product_tree = pd.read_csv(faostat_key_commodities_file)
-# Retrieve parent and child codes
-parent_codes = product_tree["parent_code"].unique().tolist()
-child_codes = product_tree["child_code"].unique().tolist()
-# Union of the codes without repetitions
-key_product_codes = np.unique(parent_codes + child_codes).tolist()
+# Obtain the main product codes
+main_product_list = main_product_list()
 # Put primary codes instead of keys
 product_dict = dict(zip(product_tree.parent, product_tree.parent_code))
 product_tree.replace({"primary_commodity": product_dict}, inplace=True)
@@ -61,13 +56,8 @@ faostat_products = pd.concat(
 )
 # Add key product flag
 faostat_products["key_product_flag"] = faostat_products.product_code.isin(
-    key_product_codes
+    main_product_list
 ).astype(int)
 # Save csv files to env variable path or into biotrade data folder
-if os.environ.get("FRONT_END_DATA"):
-    folder_path = Path(os.environ["FRONT_END_DATA"])
-else:
-    folder_path = data_dir / "front_end"
-folder_path.mkdir(exist_ok=True)
-product_tree.to_csv(folder_path / "key_product_tree_list.csv", index=False)
-faostat_products.to_csv(folder_path / "product_list.csv", index=False)
+save_file(product_tree, "key_product_tree_list.csv")
+save_file(faostat_products, "product_list.csv")

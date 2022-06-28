@@ -23,7 +23,6 @@ column_dict = {
 reporter = reporter[column_dict.keys()].rename(columns=column_dict).dropna()
 # Define current countries and old ones
 selector = reporter.status == "old"
-reporter.loc[selector, "status"] = "iso3_old"
 reporter.loc[~selector, "status"] = "iso3"
 # Add aggregation reporter code and reporter for average data
 reporter = pd.concat(
