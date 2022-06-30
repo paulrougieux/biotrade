@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Written by Paul Rougieux.
+Written by Paul Rougieux and Selene Patani.
 
 JRC biomass Project.
 Unit D1 Bioeconomy.
@@ -150,7 +150,9 @@ class Pump:
             print(f"HTTP response code: {response.code}")
             shutil.copyfileobj(response, out_file)
 
-    def read_zip_csv_to_df(self, zip_file, column_renaming, encoding="latin1"):
+    def read_zip_csv_to_df(
+        self, zip_file, column_renaming, short_name, encoding="latin1"
+    ):
         """Read a zip file downloaded from the FAOSTAT API rename columns and return a data frame
 
         The zip file contains 2 csv file, a large one with the data and a small one with flags.
@@ -165,7 +167,8 @@ class Pump:
         >>> zip_file = faostat.data_dir / "Forestry_E_All_Data_(Normalized).zip"
         >>> df = faostat.pump.read_zip_csv_to_df(
         >>>     zip_file=zip_file,
-        >>>     column_renaming="faostat_production")
+        >>>     column_renaming="faostat_production",
+        >>>     short_name = "forestry_production")
 
         """
         # Extract the name of the CSV file
@@ -175,14 +178,27 @@ class Pump:
         with ZipFile(zip_file) as zipfile:
             with zipfile.open(csv_file_name) as csvfile:
                 df = pandas.read_csv(csvfile, encoding=encoding)
-        df = self.sanitize_variable_names(df, column_renaming=column_renaming)
+        df = self.sanitize_variable_names(df, column_renaming, short_name)
         return df
 
-    def sanitize_variable_names(self, df, column_renaming):
+    def sanitize_variable_names(self, df, column_renaming, short_name):
         """Sanitize column names using the mapping table.
         Use snake case in product and element names"""
         # Rename columns to snake case
         df.rename(columns=lambda x: re.sub(r"\W+", "_", str(x)).lower(), inplace=True)
+        # Columns of the db table
+        db_table_cols = self.db.tables[short_name].columns.keys()
+        # Original column names
+        cols_to_check = self.column_names[self.column_names["jrc"].isin(db_table_cols)][
+            column_renaming
+        ].tolist()
+        # Check columns which have changed in the input source
+        cols_to_change = set(cols_to_check).difference(df.columns)
+        # If column names have changed raise an error
+        if cols_to_change:
+            raise ValueError(
+                f"The following columns \n{list(cols_to_change)}\nhave changed in the input source {column_renaming}.\nUpdate config_data/column_names.csv before updating table {short_name}"
+            )
         # Map columns using the naming convention defined in self.column_names
         mapping = self.column_names.set_index(column_renaming).to_dict()["jrc"]
         # Discard nan keys of mapping dictionary
@@ -235,6 +251,7 @@ class Pump:
         df = self.read_zip_csv_to_df(
             zip_file=self.data_dir / self.datasets[short_name],
             column_renaming=choose_column_renaming(short_name),
+            short_name=short_name,
         )
         return df
 
@@ -261,7 +278,7 @@ class Pump:
             csv_file_name, chunksize=chunk_size, encoding=encoding_var
         ):
             df_chunk = self.sanitize_variable_names(
-                df_chunk, choose_column_renaming(short_name)
+                df_chunk, choose_column_renaming(short_name), short_name
             )
             print(df_chunk.head(1))
             self.db.append(df=df_chunk, table=short_name)
