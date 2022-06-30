@@ -6,6 +6,14 @@ Written by Paul Rougieux and Selene Patani.
 
 JRC biomass Project.
 Unit D1 Bioeconomy.
+
+Usage: download FAOSTAT datasets and store them in the database defined in
+`faostat.db`:
+
+            >>> from biotrade.faostat import faostat
+            >>> faostat.pump.update(["crop_production", "crop_trade"])
+            >>> faostat.pump.update(["food_balance"])
+            >>> faostat.pump.update(["land_use", "land_cover"])
 """
 
 # Built-in modules
