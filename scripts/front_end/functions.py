@@ -345,8 +345,8 @@ def consistency_check_china_data(df):
         df_china = df[df["reporter_code"].isin([41, 214])]
         df_china = (
             df_china.groupby(["product_code", "element", "year", "unit"])
-            .agg({"value": "sum"})
-            .reset_index()
+            # If all null values, do not return 0 but Nan
+            .agg({"value": lambda x: x.sum(min_count=1)}).reset_index()
         )
         df_china["reporter_code"] = 357
         df_china["reporter"] = "China mainland and Taiwan"
