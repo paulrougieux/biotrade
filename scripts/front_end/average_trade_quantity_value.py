@@ -212,7 +212,7 @@ trade_data_faostat_partner = trade_data_faostat_avg[
 )
 # Add column describing flow
 trade_data_faostat_partner["flow"] = "export"
-save_file(trade_data_faostat_partner, "faostat_trade_quantity_average_mf_eu_row.csv")
+save_file(trade_data_faostat_partner, "faostat_trade_quantity_average_eu_row_mf.csv")
 # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
 trade_data_comtrade_partner = trade_data_comtrade_avg[
     (trade_data_comtrade_avg["element"] == "export_quantity")
@@ -222,4 +222,4 @@ trade_data_comtrade_partner = trade_data_comtrade_avg[
 )
 # Add column describing flow
 trade_data_comtrade_partner["flow"] = "export"
-save_file(trade_data_comtrade_partner, "comtrade_trade_quantity_average_mf_eu_row.csv")
+save_file(trade_data_comtrade_partner, "comtrade_trade_quantity_average_eu_row_mf.csv")
