@@ -212,7 +212,12 @@ def agg_by_country_groups(df, agg_reporter=None, agg_partner=None):
         )
 
     # fixed aggregation column names
-    index = ["period", "product", "product_code", "element", "element_code", "unit"]
+    columns = ["period", "product", "product_code", "element", "element_code", "unit"]
+    # Columns for the aggregation
+    index = []
+    for col in columns:
+        if col in df.columns:
+            index.append(col)
 
     if agg_reporter is None:
         # aggregate by reporter and reporter code (if columns exist) since no
