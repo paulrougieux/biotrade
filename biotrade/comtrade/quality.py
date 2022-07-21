@@ -124,7 +124,6 @@ def compare_world_agg_country(table):
     """
     Function which compares Comtrade data with partner equal to World
     and country partner aggregations. It returns a dataframe containing aggregation values which don't match with World data
-
     
     """
 
