@@ -12,7 +12,7 @@ Get the list of products as stored in the database
     >>> from biotrade.comtrade import comtrade
     >>> hs = comtrade.products.hs
     >>> # Paper related products
-    >>> print(hs[hs.product_description.str.contains("paper")])
+    >>> print(hs[hs.product_description.str.contains("paper", case=False)])
 
 Get the module internal list of products at the HS 2 digit level, with an
 indicator of what products are saved when updating data. Where the column

@@ -351,7 +351,7 @@ def segmented_regression(
     # Define group columns
     groupby_column_list = ["reporter", "product_code", "unit"]
     # Depending on the db tables, different columns can be used to group the dataframe
-    add_columns = ["partner", "element", "flow", "unit_code"]
+    add_columns = ["source", "partner", "element", "flow", "unit_code"]
     # Check if columns are present in the original dataframe
     for column in add_columns:
         if column in df.columns:
@@ -538,6 +538,7 @@ def relative_absolute_change(df, years=5, last_value=True, year_range=[]):
     groupby_column_list = ["reporter", "product_code", "unit"]
     # Depending on the db tables, different columns can be used to group the dataframe
     add_columns = [
+        "source",
         "partner",
         "element",
         "flow",
@@ -571,6 +572,38 @@ def relative_absolute_change(df, years=5, last_value=True, year_range=[]):
     for key in df_groups.groups.keys():
         # Select data related to the specific group
         df_key = df_groups.get_group(key)
+        # Fill nan year values
+        dict_values = {}
+        merge_col_list = []
+        for col in df_key.columns:
+            if col in ["year", "period"]:
+                dict_values.update(
+                    {
+                        col: range(
+                            sorted(df_key.year.unique())[0],
+                            sorted(df_key.year.unique())[-1] + 1,
+                        )
+                    }
+                )
+                merge_col_list.append(col)
+            elif col in [
+                "source",
+                "reporter_code",
+                "reporter",
+                "partner_code",
+                "partner",
+                "product_code",
+                "product",
+                "element_code",
+                "element",
+                "flow",
+                "unit",
+                "unit_code",
+            ]:
+                dict_values.update({col: df_key[col].unique()[0]})
+                merge_col_list.append(col)
+        df_fill_nan = pd.DataFrame(dict_values)
+        df_key = df_key.merge(df_fill_nan, on=merge_col_list, how="outer")
         # Sort data from the most recent year
         df_key = df_key.sort_values(by="year", ascending=False)
         # Add columns to dataframe

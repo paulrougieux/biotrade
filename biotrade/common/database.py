@@ -13,6 +13,7 @@ Parent object to faostat.database.py and comtrade.database.py
 
 from sqlalchemy import select
 from sqlalchemy.sql import func
+from sqlalchemy import UniqueConstraint
 
 
 class Database:
@@ -30,6 +31,42 @@ class Database:
     schema = None
     tables = None
 
+    def check_unique_constraints(self, df, table):
+        """"
+        Method that checks if nan values are present for unique constraint columns and delete the related rows to avoid duplications before appending the dataframe. In fact
+        PostgreSQL does not consider nan values as unique and allows more than 1 insertion, causing duplications without errors.
+        
+        :param df, Dataframe to be uploaded
+        :param table, string name of the table to upload the dataframe
+        :return df, Dataframe without nan values in constraint columns
+
+        """
+        # Loop on the constraints
+        for const in self.tables[table].constraints:
+            # Check unique constraints
+            if isinstance(const, UniqueConstraint):
+                # Get the unique constraints columns
+                unique_list = const.columns.keys()
+                # Check if some of unique columns contains nan values
+                df_nan = df[df[unique_list].isnull().any(axis=1)]
+                # If nan values are present, raise a warning in the log and delete those rows
+                if len(df_nan):
+                    self.logger.warning(
+                        "The following "
+                        + str(len(df_nan))
+                        + " rows will not be uploaded to the database table "
+                        + table
+                        + " due to nan values of unique constraints "
+                        + str(unique_list)
+                        + ":\nColumn names\n"
+                        + str(df_nan.columns.tolist())
+                        + "\nRows\n"
+                        + "\n".join(str(i) for i in df_nan.values.tolist())
+                    )
+                    df.dropna(subset=unique_list, inplace=True)
+                break
+        return df
+
     def append(self, df, table, drop_description=True):
         """Store a data frame inside a given database table
 
@@ -46,6 +83,7 @@ class Database:
         # Raise an error if the table is not defined in the metadata
         if table not in self.tables:
             raise ValueError(f"The table '{table}' is not defined in: \n{self}.")
+        df = self.check_unique_constraints(df, table)
         df.to_sql(
             name=table,
             con=self.engine,

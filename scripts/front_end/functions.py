@@ -2,6 +2,7 @@
 Written by Selene Patani.
 
 Script which contains functions used to produce data for the Web Platform
+
 """
 
 import os
@@ -11,6 +12,11 @@ from pathlib import Path
 from biotrade.faostat import faostat
 from biotrade import data_dir
 from biotrade.common.compare import merge_faostat_comtrade
+from biotrade.common.time_series import (
+    relative_absolute_change,
+    segmented_regression,
+    merge_analysis,
+)
 
 
 def save_file(df, file_name):
@@ -150,14 +156,13 @@ def merge_faostat_comtrade_data(product_list):
     return df
 
 
-def average_results(df, threshold, dict_list, index_list_add=[]):
+def average_results(df, threshold, dict_list):
     """
     Script which produce the average and percentage results for the tree maps of the web platform
 
     :param df (DataFrame), database to perform calculations
     :param threshold (int), percentage above which classifying as "Others" the percentages in the tree maps
-    :param dict_list (list), list of dictionaries containing the column names for the aggregation and the percentages, as well the code for the "Others" category
-    :param index_list_add (list), list which contains other columns to be considered in the group by. Default is empty
+    :param dict_list (list), list of dictionaries containing the column names for the aggregation and the percentages, as well the code for the "Others" category and possible columns to be added to the group by aggregation
     :return df_final (DataFrame), where calculations are performed
 
     """
@@ -194,11 +199,11 @@ def average_results(df, threshold, dict_list, index_list_add=[]):
     df = df.merge(df_periods[["year", "period_aggregation"]], on="year", how="left")
     df["period"] = df["period_aggregation"]
     # Default index list for aggregations + the adds from the arguments
-    index_list = ["element", "period", "unit", *index_list_add]
+    index_list = ["element", "period", "unit"]
     df_final = pd.DataFrame()
     # Load for each dict the aggregation column, the percentage column and the code for threshold values in order to compute calculations
     for dict in dict_list:
-        index_list_upd = [dict["average_col"], *index_list]
+        index_list_upd = [dict["average_col"], *index_list, *dict["index_list_add"]]
         average_col_name = "average_value" + "_" + dict["average_col"]
         total_col_name = "total_value" + "_" + dict["average_col"]
         percentage_col_name = "value_percentage" + "_" + dict["percentage_col"]
@@ -259,6 +264,8 @@ def average_results(df, threshold, dict_list, index_list_add=[]):
         else:
             # Merge or concatenate depending on the common columns in merge_col_list
             merge_col_list = [*index_list_upd, dict["percentage_col"]]
+            if average_col_name in df_final.columns:
+                merge_col_list.append(average_col_name)
             # Meaning that dataframes can be merged
             if set(merge_col_list).issubset(df_final.columns):
                 df_final = df_final.merge(df_new, how="outer", on=merge_col_list)
@@ -286,6 +293,7 @@ def consistency_check_china_data(df):
                 [
                     "source",
                     "partner_code",
+                    "partner",
                     "product_code",
                     "element",
                     "year",
@@ -298,6 +306,7 @@ def consistency_check_china_data(df):
             .reset_index()
         )
         df_china_1["reporter_code"] = 357
+        df_china_1["reporter"] = "China mainland and Taiwan"
         # Concat with reporter codes not 41 either 214
         df_china_1 = pd.concat(
             [df_china[~df_china["reporter_code"].isin([41, 214])], df_china_1],
@@ -310,6 +319,7 @@ def consistency_check_china_data(df):
                 [
                     "source",
                     "reporter_code",
+                    "reporter",
                     "product_code",
                     "element",
                     "year",
@@ -322,6 +332,7 @@ def consistency_check_china_data(df):
             .reset_index()
         )
         df_china_2["partner_code"] = 357
+        df_china_2["partner"] = "China mainland and Taiwan"
         # Concat with partner codes not 41 and 214
         df_china_2 = pd.concat(
             [df_china_1[~df_china_1["partner_code"].isin([41, 214])], df_china_2],
@@ -334,8 +345,49 @@ def consistency_check_china_data(df):
         df_china = df[df["reporter_code"].isin([41, 214])]
         df_china = (
             df_china.groupby(["product_code", "element", "year", "unit"])
-            .agg({"value": "sum"})
-            .reset_index()
+            # If all null values, do not return 0 but Nan
+            .agg({"value": lambda x: x.sum(min_count=1)}).reset_index()
         )
         df_china["reporter_code"] = 357
+        df_china["reporter"] = "China mainland and Taiwan"
+    # Fill period column
+    df_china["period"] = df_china["year"]
     return df_china
+
+
+def trend_analysis(df_data):
+    """
+    Script which performs the trend analysis
+    
+    :param df_data (DataFrame), data on which perform the analysis
+    :return df (DataFrame), dataframe containing the relative, absolute and segmented regresssion indicators
+    
+    """
+    # Calculate the absolute and relative change
+    df_data_change = relative_absolute_change(df_data, last_value=True)
+    # Use as objective function the coefficient of determination (R2), significance level of 0.05 and at least 7 points for the linear regression
+    df_data_regression = segmented_regression(
+        df_data, last_value=True, function="R2", alpha=0.05, min_data_points=7,
+    )
+    # Merge dataframes to compare results
+    df = merge_analysis(
+        df_change=df_data_change, df_segmented_regression=df_data_regression
+    )
+    # Define the structure yyyy-yyyy for the period change and segmented regression columns
+    df["period_change"] = (
+        df["year_range_lower_change"].astype("Int64").astype(str)
+        + "-"
+        + df["year_range_upper_change"].astype("Int64").astype(str)
+    ).replace("<NA>-<NA>", np.nan)
+    df["period_regression"] = (
+        df["year_range_lower_regression"].astype("Int64").astype(str)
+        + "-"
+        + df["year_range_upper_regression"].astype("Int64").astype(str)
+    ).replace("<NA>-<NA>", np.nan)
+    # Transform from boolean to integers 0 or 1
+    df["mk_significance_flag"] = (
+        df["mk_ha_test"].astype("boolean").astype("Int64")
+    ).replace(pd.NA, np.nan)
+    # Drop nan values
+    df = df.dropna(subset=["relative_change", "absolute_change", "mk_slope"], how="all")
+    return df

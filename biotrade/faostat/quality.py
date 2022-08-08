@@ -2,13 +2,95 @@
 # -*- coding: utf-8 -*-
 
 """
-Written by Paul Rougieux.
+Written by Paul Rougieux and Selene Patani.
 
 JRC biomass Project.
 Unit D1 Bioeconomy.
 
-
 """
+
+# Internal modules
+from biotrade.faostat import faostat
+
+# Third party modules
+from sqlalchemy.sql import func
+from sqlalchemy import select
+import pandas as pd
+
+
+def compare_crop_production_harvested_area_world_agg_country():
+    """
+    Function which compares Faostat crop production and harvested area with partner equal to World
+    and country partner aggregations. It returns a dataframe containing aggregation values which don't match with World data
+    
+    """
+
+    # Crop production table to select from raw_faostat schema
+    table = faostat.db.tables["crop_production"]
+    # Columns to be considered before performing the join
+    columns = [
+        table.c.product_code,
+        table.c.product,
+        table.c.element_code,
+        table.c.element,
+        table.c.unit,
+        table.c.period,
+        table.c.year,
+    ]
+    # Add aggregation quantity column
+    table_stmt = table.select().with_only_columns(
+        [*columns, func.sum(table.c.value).label("qnt_agg"),]
+    )
+    # Consider all reporters excluding China, regional, subcontinent and continent aggregations (reporter_code < 300)
+    table_stmt = table_stmt.where(table.c.reporter_code < 300)
+    # Perform aggregation
+    table_stmt = table_stmt.group_by(*columns)
+    # Define the new table name
+    agg_selection = table_stmt.subquery().alias("agg")
+    # Perform the same operations for reporter_code = 5000 (World)
+    table_stmt = table.select().with_only_columns(
+        [*columns, func.sum(table.c.value).label("qnt_world"),]
+    )
+    table_stmt = table_stmt.where(table.c.reporter_code == 5000)
+    table_stmt = table_stmt.group_by(*columns)
+    world_selection = table_stmt.subquery().alias("world")
+    # Full outer join to calculate the difference between results
+    table_join = agg_selection.join(
+        world_selection,
+        (agg_selection.c.product_code == world_selection.c.product_code)
+        & (agg_selection.c.element_code == world_selection.c.element_code)
+        & (agg_selection.c.unit == world_selection.c.unit)
+        & (agg_selection.c.period == world_selection.c.period),
+        isouter=True,
+        full=True,
+    )
+    table = select(table_join).alias("table_join")
+    # Final columns to be retained
+    join_columns = [
+        table.c.product_code,
+        table.c.product,
+        table.c.element_code,
+        table.c.element,
+        table.c.unit,
+        table.c.period,
+        table.c.year,
+        table.c.qnt_agg,
+        table.c.qnt_world,
+        func.abs(table.c.qnt_agg - table.c.qnt_world).label("abs_qnt_diff"),
+    ]
+    table_stmt = select(join_columns)
+    # Return crop production and harvested area data where aggregation quantities don't match with World data provided by Faostat
+    table_stmt = table_stmt.where(
+        (table.c.unit.in_(["1000 No", "tonnes", "ha"]))
+        & (
+            (table.c.qnt_agg != table.c.qnt_world)
+            | ((table.c.qnt_agg == None) & (table.c.qnt_world != None))
+            | ((table.c.qnt_agg != None) & (table.c.qnt_world == None))
+        )
+    )
+    # Return the dataframe from the query to db
+    df = pd.read_sql_query(table_stmt, faostat.db.engine)
+    return df
 
 
 def compare_prod_agg_to_parts(df, prod_aggregate, prod_constituents):

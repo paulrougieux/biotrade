@@ -33,7 +33,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 278,,BQ,BQ,BES,BES,535,areas and territories,"Bonaire, Sint Eustatius and Saba","Bonaire, Sint Eustatius and Saba","Bonaire, Sint Eustatius and Saba","Bonaire, Sint Eustatius y Saba",2010,,World,Americas,5200,Caribbean,5206,Developing,0
 80,34,BA,BA,BIH,BIH,70,member,Bosnia and Herzegovina,Bosnia and Herzegovina,Bosnia and Herzegovina,Bosnia y Herzegovina,1992,,World,Europe,5400,Southern Europe,5403,Developed,0
 20,35,BW,BW,BWA,BWA,72,member,Botswana,the Republic of Botswana,Botswana,Botswana,1966,,World,Africa,5100,Southern Africa,5104,Developing,0
-31,36,BV,BV,BVT,BVT,,areas and territories,Bouvet Island,Bouvet Island,Bouvet Island,Isla Bouvet,,,,,,,,,0
+31,36,BV,BV,BVT,BVT,,areas and territories,Bouvet Island,Bouvet Island,Bouvet Island,Isla Bouvet,,,,Unspecified Area,,Unspecified Area,,,0
 21,37,BR,BR,BRA,BRA,76,member,Brazil,the Federative Republic of Brazil,Brazil,Brasil,1945,,World,Americas,5200,South America,5207,Developing,0
 24,38,IO,IO,IOT,IOT,86,areas and territories,British Indian Ocean Territory,British Indian Ocean Territory,British Indian Ocean Territory,Territorio Británico del Océano Indico,,,,,,,,,0
 239,39,VG,VG,VGB,VGB,92,areas and territories,British Virgin Islands,the British Virgin Islands,British Virgin Islands,Islas Vírgenes Británicas,,,World,Americas,5200,Caribbean,5206,Developing,0
@@ -272,7 +272,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 155,262,VU,VU,VUT,VUT,548,member,Vanuatu,the Republic of Vanuatu,Vanuatu,Vanuatu,1981,,World,Oceania,5500,Melanesia,5502,Developing,0
 236,263,VE,VE,VEN,VEN,862,member,Venezuela (Bolivarian Republic of),the Bolivarian Republic of Venezuela,Venezuela,Venezuela (República Bolivariana de),1945,,World,Americas,5200,South America,5207,Developing,0
 237,264,VN,VN,VNM,VNM,704,member,Viet Nam,the Socialist Republic of Viet Nam,Viet Nam,Viet Nam,1977,,World,Asia,5300,South-Eastern Asia,5304,Developing,0
-242,265,WK,WK,WAK,WAK,,areas and territories,Wake Island,Wake Island,Wake Island,Isla Wake,,,,,,,,,0
+242,265,WK,WK,WAK,WAK,,areas and territories,Wake Island,Wake Island,Wake Island,Isla Wake,,,,Oceania,5500,Micronesia,5503,,0
 243,266,WF,WF,WLF,WLF,876,areas and territories,Wallis and Futuna Islands,Wallis and Futuna Islands,Wallis and Futuna Islands,Islas Wallis y Futuna,,,World,Oceania,5500,Polynesia,5504,Developing,0
 245,267,,,,,,areas and territories,the West Bank,The West Bank,West Bank,the West Bank,,,,,,,,,0
 205,268,EH,EH,ESH,ESH,732,areas and territories,Western Sahara,Western Sahara,Western Sahara,Sáhara occidental,,,World,Africa,5100,Northern Africa,5103,Developing,0

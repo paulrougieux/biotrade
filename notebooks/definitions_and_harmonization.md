@@ -67,9 +67,16 @@ The following Columns names are related to commodities and products names and co
 
 
 <!-- #region tags=[] -->
+
 ## Countries and geographical areas
 
-Bilateral trade describe the physical movement of products between an exporting country and an importing country. The physical movement is described in general by both countries. For example when Brazil exports soyean oil to the Netherlands. The flow is described by Brazil as an export quantity to the Netherlands. And the same physical flow is described by the Netherlands as an import quantity from Brazil. In practice the quantities and values may differ as explained in the section on mirror flows below. 
+Bilateral trade describes the physical movement of products between an exporting country 
+and an importing country. For example, when Brazil exports a commodity to the 
+Netherlands. The flow is reported by Brazil as an export quantity to the Netherlands, 
+and the same physical flow is reported by the Netherlands as an import quantity from 
+Brazil. In theory the quantities would be equal, and the values should differ by 
+shipping and insurance costs. In practice reported quantities may differ as explained in 
+the section on mirror flows below. 
 
 The following column names describe countries and geographical areas :
 
