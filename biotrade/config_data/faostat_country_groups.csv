@@ -7,7 +7,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 6,7,AD,AD,AND,ADO,20,member,Andorra,the Principality of Andorra,Andorra,Andorra,1993,,World,Europe,5400,Southern Europe,5403,Developed,0
 7,8,AO,AO,AGO,AGO,24,member,Angola,the Republic of Angola,Angola,Angola,1976,,World,Africa,5100,Middle Africa,5102,Developing,0
 258,9,AI,AI,AIA,AIA,660,areas and territories,Anguilla,Anguilla,Anguilla,Anguila,,,World,Americas,5200,Caribbean,5206,Developing,0
-30,10,AQ,AQ,ATA,ATA,,areas and territories,Antarctica,Antarctica,Antarctica,Antártida,,,,,,,,,0
+30,10,AQ,AQ,ATA,ATA,10,areas and territories,Antarctica,Antarctica,Antarctica,Antártida,,,,,,,,,0
 8,11,AG,AG,ATG,ATG,28,member,Antigua and Barbuda,Antigua and Barbuda,Antigua and Barbuda,Antigua y Barbuda,1981,,World,Americas,5200,Caribbean,5206,Developing,0
 9,12,AR,AR,ARG,ARG,32,member,Argentina,the Argentine Republic,Argentina,Argentina,1945,,World,Americas,5200,South America,5207,Developing,0
 1,13,AM,AM,ARM,ARM,51,member,Armenia,the Republic of Armenia,Armenia,Armenia,1992,,World,Asia,5300,Western Asia,5305,Developing,0
@@ -33,7 +33,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 278,,BQ,BQ,BES,BES,535,areas and territories,"Bonaire, Sint Eustatius and Saba","Bonaire, Sint Eustatius and Saba","Bonaire, Sint Eustatius and Saba","Bonaire, Sint Eustatius y Saba",2010,,World,Americas,5200,Caribbean,5206,Developing,0
 80,34,BA,BA,BIH,BIH,70,member,Bosnia and Herzegovina,Bosnia and Herzegovina,Bosnia and Herzegovina,Bosnia y Herzegovina,1992,,World,Europe,5400,Southern Europe,5403,Developed,0
 20,35,BW,BW,BWA,BWA,72,member,Botswana,the Republic of Botswana,Botswana,Botswana,1966,,World,Africa,5100,Southern Africa,5104,Developing,0
-31,36,BV,BV,BVT,BVT,,areas and territories,Bouvet Island,Bouvet Island,Bouvet Island,Isla Bouvet,,,,Unspecified Area,,Unspecified Area,,,0
+31,36,BV,BV,BVT,BVT,74,areas and territories,Bouvet Island,Bouvet Island,Bouvet Island,Isla Bouvet,,,,Unspecified Area,,Unspecified Area,,,0
 21,37,BR,BR,BRA,BRA,76,member,Brazil,the Federative Republic of Brazil,Brazil,Brasil,1945,,World,Americas,5200,South America,5207,Developing,0
 24,38,IO,IO,IOT,IOT,86,areas and territories,British Indian Ocean Territory,British Indian Ocean Territory,British Indian Ocean Territory,Territorio Británico del Océano Indico,,,,,,,,,0
 239,39,VG,VG,VGB,VGB,92,areas and territories,British Virgin Islands,the British Virgin Islands,British Virgin Islands,Islas Vírgenes Británicas,,,World,Americas,5200,Caribbean,5206,Developing,0
@@ -53,7 +53,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 40,51,CL,CL,CHL,CHL,152,member,Chile,the Republic of Chile,Chile,Chile,1945,,World,Americas,5200,South America,5207,Developing,0
 351,,,,,,,member,China,"China (China mainland, Hong Kong SAR, Macao SAR, Taiwan)",China,China,1945,,World,Asia,5300,Eastern Asia,5302,Developing,0
 41,53,,,,,1248,areas and territories,"China, mainland",the People's Republic of China,China mainland,China,,,World,Asia,5300,Eastern Asia,5302,Developing,0
-357,,CN,CN,CHN,CHN,156,areas and territories,China,"China (China mainland, Taiwan)",China mainland and Taiwan,China,,,World,Asia,5300,Eastern Asia,5302,Developing,0
+357,,CN,CN,CHN,CHN,156,areas and territories,China mainland and Taiwan,"China (China mainland, Taiwan)",China mainland and Taiwan,China,,,World,Asia,5300,Eastern Asia,5302,Developing,0
 96,33364,HK,HK,HKG,HKG,344,areas and territories,"China, Hong Kong SAR","China, Hong Kong Special Administrative Region",Hong Kong,"China, RAE de Hong Kong",,,World,Asia,5300,Eastern Asia,5302,Developing,0
 128,149,MO,MO,MAC,MAC,446,areas and territories,"China, Macao SAR","China, Macao Special Administrative Region",Macao,"China, RAE de Macao",,,World,Asia,5300,Eastern Asia,5302,Developing,0
 42,54,CX,CX,CXR,CXR,162,areas and territories,Christmas Island,Christmas Island,Christmas Island,Isla Christmas,,,,,,,,,0
@@ -186,7 +186,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 161,184,NF,NF,NFK,NFK,574,areas and territories,Norfolk Island,Territory of Norfolk Island,Norfolk Island,Isla Norfolk,,,World,Oceania,5500,Australia and New Zealand,5501,Developed,0
 163,185,MP,MP,MNP,MNP,580,areas and territories,Northern Mariana Islands,The Commonwealth of the Northern Mariana Islands,Northern Mariana Islands,Islas Marianas septentrionales,1991,,World,Oceania,5500,Micronesia,5503,Developing,0
 162,186,NO,NO,NOR,NOR,579,member,Norway,the Kingdom of Norway,Norway,Noruega,1945,,World,Europe,5400,Northern Europe,5402,Developed,0
-299,,PS,PS,PSE,WBG,275,areas and territories,Occupied Palestinian Territory,Occupied Palestinian Territory,Occupied Palestinian Territory,Territorio Palestino Ocupado,1999,,World,Asia,5300,Western Asia,5305,Developing,0
+299,,PS,PS,PSE,WBG,275,areas and territories,Palestine,Occupied Palestinian Territory,Occupied Palestinian Territory,Territorio Palestino Ocupado,1999,,World,Asia,5300,Western Asia,5305,Developing,0
 221,187,OM,OM,OMN,OMN,512,member,Oman,the Sultanate of Oman,Oman,Omán,1971,,World,Asia,5300,Western Asia,5305,Developing,0
 164,,PC,PC,PCI,PCI,582,old,"Pacific Islands, Trust Territory of","Pacific Islands, Trust Territory of",Pacific Islands,Territorio de las Islas del Pacifico,,1990,World,Oceania,5500,Micronesia,5503,Developing,0
 165,188,PK,PK,PAK,PAK,586,member,Pakistan,the Islamic Republic of Pakistan,Pakistan,Pakistán,1947,,World,Asia,5300,Southern Asia,5303,Developing,0
@@ -231,7 +231,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 25,225,SB,SB,SLB,SLB,90,member,Solomon Islands,Solomon Islands,Solomon Islands,Islas Salomón,1978,,World,Oceania,5500,Melanesia,5502,Developing,0
 201,226,SO,SO,SOM,SOM,706,member,Somalia,Federal Republic of Somalia,Somalia,Somalia,1960,,World,Africa,5100,Eastern Africa,5101,Developing,0
 202,227,ZA,ZA,ZAF,ZAF,710,member,South Africa,the Republic of South Africa,South Africa,Sudáfrica,1945,,World,Africa,5100,Southern Africa,5104,Developing,0
-271,228,GS,GS,SGS,SGS,,areas and territories,South Georgia and Sandwich Islands,South Georgia and Sandwich Islands,South Georgia and Sandwich Islands,Islas Georgias del Sur y Sandwich del Sur,,,,,,,,,0
+271,228,GS,GS,SGS,SGS,239,areas and territories,South Georgia and Sandwich Islands,South Georgia and Sandwich Islands,South Georgia and Sandwich Islands,Islas Georgias del Sur y Sandwich del Sur,,,,,,,,,0
 277,,SS,SS,SSD,SSD,728,member,South Sudan,the Republic of South Sudan,South Sudan,Sudán del Sur,2011,,World,Africa,5100,Eastern Africa,5103,Developing,0
 228,,SU,SU,SUN,MON,810,old,Union of Soviet Socialist Republic,Union of Soviet Socialist Republic,Union of Soviet Socialist Republic,Union of Soviet Socialist Republic,,1991,World,Europe,5400,Eastern Europe,5401,,0
 203,229,ES,ES,ESP,ESP,724,member,Spain,the Kingdom of Spain,Spain,España,1955,,World,Europe,5400,Southern Europe,5403,Developed,1
@@ -267,7 +267,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 231,259,US,US,USA,USA,842,member,United States of America,the United States of America,United States of America,Estados Unidos de América,1945,,World,Americas,5200,Northern America,5203,Developed,0
 240,258,VI,VI,VIR,VIR,850,areas and territories,United States Virgin Islands,the United States Virgin Islands,United States Virgin Islands,Islas Vírgnes (US),,,World,Americas,5200,Caribbean,5206,Developing,0
 234,260,UY,UY,URY,URY,858,member,Uruguay,the Eastern Republic of Uruguay,Uruguay,Uruguay,1945,,World,Americas,5200,South America,5207,Developing,0
-232,-1,PU,PU,PUS,PUS,,areas and territories,US Minor Is.,US Minor Is.,US Minor Is.,Islas Menores Periféricas de los Estados Unidos,,,,,,,,,0
+232,-1,PU,PU,PUS,PUS,581,areas and territories,US Minor Is.,US Minor Is.,US Minor Is.,Islas Menores Periféricas de los Estados Unidos,,,,,,,,,0
 235,261,UZ,UZ,UZB,UZB,860,member,Uzbekistan,the Republic of Uzbekistan,Uzbekistan,Uzbekistán,1992,,World,Asia,5300,Central Asia,5301,Developing,0
 155,262,VU,VU,VUT,VUT,548,member,Vanuatu,the Republic of Vanuatu,Vanuatu,Vanuatu,1981,,World,Oceania,5500,Melanesia,5502,Developing,0
 236,263,VE,VE,VEN,VEN,862,member,Venezuela (Bolivarian Republic of),the Bolivarian Republic of Venezuela,Venezuela,Venezuela (República Bolivariana de),1945,,World,Americas,5200,South America,5207,Developing,0
