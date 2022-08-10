@@ -57,20 +57,21 @@ def replace_exclusively(df, code_column, code_dict, na_value=-1):
 
 
 def transform_comtrade_using_faostat_codes(comtrade_table, faostat_code):
-    """Load and transform a Comtrade data table to use FAOSTAT product and country codes
+    """Load and transform a Comtrade data table to use FAOSTAT product, country codes and names
 
     :param comtrade_table str: name of the comtrade table to select from
     :param list faostat_code: list of faostat codes to be loaded
 
     The function makes Comtrade monthly data available with faostat codes. It
-    should also work on Comtrade yearly data (untested).
+    also works on Comtrade yearly data.
     It does the following:
 
         1. Find the corresponding Comtrade codes using the mapping table
         2. Load Comtrade monthly data for the corresponding codes
-        3. Replace product codes and country codes by the FAOSTAT codes
-        4. Reshape the Comtrade data to a longer format similar to FAOSTAT
-        5. Aggregate Comtrade flows to the FAOSTAT product codes
+        3. Replace comtrade country names by the FAOSTAT names
+        4. Replace product codes and country codes by the FAOSTAT codes
+        5. Reshape the Comtrade data to a longer format similar to FAOSTAT
+        6. Aggregate Comtrade flows to the FAOSTAT product codes
 
     Example use:
 
@@ -94,6 +95,24 @@ def transform_comtrade_using_faostat_codes(comtrade_table, faostat_code):
         df_wide, "reporter_code", country_dict
     )
     df_wide["partner_code"] = replace_exclusively(df_wide, "partner_code", country_dict)
+    # Monthly and Yearly Comtrade data may slightly differ for country names. Use Faostat country names for consistency
+    country_table = faostat.db.select("country")
+    df_wide = df_wide.merge(
+        country_table[["country_code", "country_name"]],
+        how="left",
+        left_on="reporter_code",
+        right_on="country_code",
+    )
+    df_wide["reporter"] = df_wide["country_name"]
+    df_wide.drop(columns=["country_code", "country_name"], inplace=True)
+    df_wide = df_wide.merge(
+        country_table[["country_code", "country_name"]],
+        how="left",
+        left_on="partner_code",
+        right_on="country_code",
+    )
+    df_wide["partner"] = df_wide["country_name"]
+    df_wide.drop(columns=["country_code", "country_name"], inplace=True)
     # Reshape Comtrade to long format
     index = [
         "reporter_code",
@@ -256,7 +275,21 @@ def merge_faostat_comtrade(faostat_table, comtrade_table, faostat_code):
     df.loc[~selector, "flag"] = ""
     # Add FAOSTAT product names
     df = df.merge(product_names, on="product_code")
-
+    # Add faostat element codes to comtrade data for consistency
+    element_code_faostat = df_faostat.drop_duplicates(
+        subset=["element", "element_code", "unit"]
+    )[["element", "element_code", "unit"]]
+    element_comtrade = df.drop_duplicates(subset=["element", "unit"])[
+        ["element", "unit"]
+    ]
+    element_code_comtrade = element_code_faostat.merge(
+        element_comtrade, on=["element", "unit"], how="outer"
+    )
+    # Fill nan with -1 to let potential joins on element_code column too for comtrade data
+    element_code_comtrade["element_code"] = (
+        element_code_comtrade["element_code"].fillna(-1).astype(int)
+    )
+    df = df.merge(element_code_comtrade, how="left", on=["element", "unit"])
     # 4. Concatenate FAOSTAT and Comtrade data
     df_faostat.drop(columns="period", inplace=True)
     df_faostat["source"] = "faostat"
@@ -267,4 +300,16 @@ def merge_faostat_comtrade(faostat_table, comtrade_table, faostat_code):
     cols = df_concat.columns.to_list()
     cols = [cols[-1]] + cols[:-1]
     df_concat = df_concat[cols]
+    # Raise an error if there are duplicates of country names associated to the same country code
+    for col in ["reporter", "partner"]:
+        country_code_unique = df_concat.drop_duplicates(subset=[col, col + "_code"])[
+            [col, col + "_code"]
+        ]
+        duplicates = country_code_unique[
+            country_code_unique.duplicated(subset=col + "_code", keep=False)
+        ]
+        if len(duplicates):
+            raise ValueError(
+                f"There is more than 1 country code match for a country name\n{duplicates.values}"
+            )
     return df_concat
