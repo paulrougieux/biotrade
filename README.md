@@ -190,6 +190,25 @@ This software is dual-licenced under both MIT and EUPL 1.2.
 See the [LICENCE.md](LICENCE.md) file.
 
 
+# Tests
+
+This package uses pytest for unit testing. Run the test suite with
+
+    pytest
+
+Run pytest with code coverage
+
+    cd python_project_dir
+    coverage run --source=. -m pytest
+
+Followed by
+
+    coverage html
+
+To generate a report.
+These tests are run as part of the Continuous Integration.
+
+
 # Acknowledgements
 
 The authors would like to acknowledge ideas and feedback received from the following 
