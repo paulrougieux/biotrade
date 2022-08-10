@@ -18,6 +18,11 @@ from biotrade.common.time_series import (
     merge_analysis,
 )
 
+# Define column name suffixes for average, total and percentage calculations
+COLUMN_AVG_SUFFIX = "_avg_value"
+COLUMN_PERC_SUFFIX = "_percentage"
+COLUMN_TOT_SUFFIX = "_tot_value"
+
 
 def save_file(df, file_name):
     """
@@ -201,12 +206,14 @@ def average_results(df, threshold, dict_list):
     # Default index list for aggregations + the adds from the arguments
     index_list = ["element", "period", "unit"]
     df_final = pd.DataFrame()
+    column_drop = []
     # Load for each dict the aggregation column, the percentage column and the code for threshold values in order to compute calculations
     for dict in dict_list:
         index_list_upd = [dict["average_col"], *index_list, *dict["index_list_add"]]
-        average_col_name = "average_value" + "_" + dict["average_col"]
-        total_col_name = "total_value" + "_" + dict["average_col"]
-        percentage_col_name = "value_percentage" + "_" + dict["percentage_col"]
+        value_col_name = "value"
+        average_col_name = dict["average_col"] + COLUMN_AVG_SUFFIX
+        total_col_name = dict["average_col"] + COLUMN_TOT_SUFFIX
+        percentage_col_name = dict["percentage_col"] + COLUMN_PERC_SUFFIX
         other_code = dict["threshold_code"]
         # For the aggregation column calculate mean and sum of the values in the given period aggregation, related to a specific unit and element
         df_mean = (
@@ -224,12 +231,16 @@ def average_results(df, threshold, dict_list):
             .reset_index()
             .rename(columns={"value": total_col_name})
         )
+        if total_col_name not in column_drop:
+            column_drop.append(total_col_name)
         # Percentage column aggregated with the column list
         df_new = (
             df.groupby([*index_list_upd, dict["percentage_col"]])
             .agg({"value": "sum"})
             .reset_index()
         )
+        if value_col_name not in column_drop:
+            column_drop.append(value_col_name)
         # Merge with mean and total values
         df_new = df_new.merge(df_mean, how="left", on=index_list_upd)
         df_new = df_new.merge(df_total, how="left", on=index_list_upd)
@@ -268,9 +279,17 @@ def average_results(df, threshold, dict_list):
                 merge_col_list.append(average_col_name)
             # Meaning that dataframes can be merged
             if set(merge_col_list).issubset(df_final.columns):
-                df_final = df_final.merge(df_new, how="outer", on=merge_col_list)
+                merge_suffix = "_merge"
+                value_col_name = value_col_name + merge_suffix
+                df_final = df_final.merge(
+                    df_new, how="outer", on=merge_col_list, suffixes=("", merge_suffix)
+                )
+                if value_col_name not in column_drop:
+                    column_drop.append(value_col_name)
             else:
                 df_final = pd.concat([df_final, df_new], ignore_index=True)
+    # Remove columns from df_final
+    df_final.drop(columns=column_drop, inplace=True)
     return df_final
 
 
