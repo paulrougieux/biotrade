@@ -39,26 +39,17 @@ dict_list = [
 # Calculate the averages and percentages
 df_final = average_results(df, 95, dict_list,)
 # Columns to keep
-column_list = [
-    "period",
-    "reporter_code",
-    "product_code",
-    "average_value_reporter_code",
-    "value_percentage_product_code",
-    "average_value_product_code",
-    "value_percentage_reporter_code",
-    "unit",
-]
+drop_column = "element"
+column_list = df_final.columns.tolist()
+column_list.remove(drop_column)
+# Define dropna columns
+dropna_col = [col for col in df_final.columns if col.endswith(COLUMN_PERC_SUFFIX)]
 # Save csv files to env variable path or into biotrade data folder
 harvested_area = df_final[df_final["element"] == "area_harvested"][column_list].dropna(
-    subset=["value_percentage_product_code", "value_percentage_reporter_code"],
-    how="all",
+    subset=dropna_col, how="all",
 )
 save_file(harvested_area, "harvested_area_average.csv")
 production = df_final[df_final["element"].isin(["production", "stocks"])][
     column_list
-].dropna(
-    subset=["value_percentage_product_code", "value_percentage_reporter_code"],
-    how="all",
-)
+].dropna(subset=dropna_col, how="all",)
 save_file(production, "production_average.csv")
