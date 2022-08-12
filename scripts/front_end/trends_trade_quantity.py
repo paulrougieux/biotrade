@@ -46,22 +46,22 @@ trade_data_faostat_reporter = trade_data_faostat[
     (trade_data_faostat["year"] == most_recent_year_faostat)
     & (trade_data_faostat["element"] == "import_quantity")
 ][column_list]
-save_file(trade_data_faostat_reporter, "faostat_trade_quantity_trends.csv")
+save_file(trade_data_faostat_reporter, "faostat_trends.csv")
 # Consider selected columns of import quantities and save the file
 trade_data_comtrade_reporter = trade_data_comtrade[
     (trade_data_comtrade["year"] == most_recent_year_comtrade)
     & (trade_data_comtrade["element"] == "import_quantity")
 ][column_list]
-save_file(trade_data_comtrade_reporter, "comtrade_trade_quantity_trends.csv")
+save_file(trade_data_comtrade_reporter, "comtrade_trends.csv")
 # Consider selected columns of export quantities and save the file --> mirror flows
 trade_data_faostat_partner = trade_data_faostat[
     (trade_data_faostat["year"] == most_recent_year_faostat)
     & (trade_data_faostat["element"] == "export_quantity")
 ][column_list]
-save_file(trade_data_faostat_partner, "faostat_trade_quantity_trends_mf.csv")
+save_file(trade_data_faostat_partner, "faostat_trends_mf.csv")
 # Consider selected columns of export quantities and save the file --> mirror flows
 trade_data_comtrade_partner = trade_data_comtrade[
     (trade_data_comtrade["year"] == most_recent_year_comtrade)
     & (trade_data_comtrade["element"] == "export_quantity")
 ][column_list]
-save_file(trade_data_comtrade_partner, "comtrade_trade_quantity_trends_mf.csv")
+save_file(trade_data_comtrade_partner, "comtrade_trends_mf.csv")

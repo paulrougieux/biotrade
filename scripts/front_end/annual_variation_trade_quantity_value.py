@@ -34,26 +34,26 @@ trade_quantity_faostat = trade_data[
 ][column_list].dropna(subset=["value"])
 # Add column describing flow
 trade_quantity_faostat["flow"] = "import"
-save_file(trade_quantity_faostat, "faostat_trade_quantity_annual_variation.csv")
+save_file(trade_quantity_faostat, "faostat_annual_variation.csv")
 trade_value_faostat = trade_data[
     (trade_data["source"] == "faostat") & (trade_data["element"] == "import_value")
 ][column_list].dropna(subset=["value"])
 # Add column describing flow
 trade_value_faostat["flow"] = "import"
-save_file(trade_value_faostat, "faostat_trade_value_annual_variation.csv")
+save_file(trade_value_faostat, "faostat_value_annual_variation.csv")
 # Consider selected columns of export quantities and values and save the files (drop nan)
 trade_quantity_faostat = trade_data[
     (trade_data["source"] == "faostat") & (trade_data["element"] == "export_quantity")
 ][column_list].dropna(subset=["value"])
 # Add column describing flow
 trade_quantity_faostat["flow"] = "export"
-save_file(trade_quantity_faostat, "faostat_trade_quantity_annual_variation_mf.csv")
+save_file(trade_quantity_faostat, "faostat_annual_variation_mf.csv")
 trade_value_faostat = trade_data[
     (trade_data["source"] == "faostat") & (trade_data["element"] == "export_value")
 ][column_list].dropna(subset=["value"])
 # Add column describing flow
 trade_value_faostat["flow"] = "export"
-save_file(trade_value_faostat, "faostat_trade_value_annual_variation_mf.csv")
+save_file(trade_value_faostat, "faostat_value_annual_variation_mf.csv")
 # Add estimate flag for comtrade data
 column_list.append("estimate_flag")
 # Consider selected columns of import quantities and values and save the files (drop nan)
@@ -62,23 +62,23 @@ trade_quantity_comtrade = trade_data[
 ][column_list].dropna(subset=["value"])
 # Add column describing flow
 trade_quantity_comtrade["flow"] = "import"
-save_file(trade_quantity_comtrade, "comtrade_trade_quantity_annual_variation.csv")
+save_file(trade_quantity_comtrade, "comtrade_annual_variation.csv")
 trade_value_comtrade = trade_data[
     (trade_data["source"] == "comtrade") & (trade_data["element"] == "import_value")
 ][column_list].dropna(subset=["value"])
 # Add column describing flow
 trade_value_comtrade["flow"] = "import"
-save_file(trade_value_comtrade, "comtrade_trade_value_annual_variation.csv")
+save_file(trade_value_comtrade, "comtrade_value_annual_variation.csv")
 # Consider selected columns of export quantities and values and save the files (drop nan)
 trade_quantity_comtrade = trade_data[
     (trade_data["source"] == "comtrade") & (trade_data["element"] == "export_quantity")
 ][column_list].dropna(subset=["value"])
 # Add column describing flow
 trade_quantity_comtrade["flow"] = "export"
-save_file(trade_quantity_comtrade, "comtrade_trade_quantity_annual_variation_mf.csv")
+save_file(trade_quantity_comtrade, "comtrade_annual_variation_mf.csv")
 trade_value_comtrade = trade_data[
     (trade_data["source"] == "comtrade") & (trade_data["element"] == "export_value")
 ][column_list].dropna(subset=["value"])
 # Add column describing flow
 trade_value_comtrade["flow"] = "export"
-save_file(trade_value_comtrade, "comtrade_trade_value_annual_variation_mf.csv")
+save_file(trade_value_comtrade, "comtrade_value_annual_variation_mf.csv")
