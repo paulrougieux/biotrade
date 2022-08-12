@@ -36,6 +36,10 @@ column_list = [
     "mk_significance_flag",
     "unit",
 ]
+# Drop nan values
+dropna_col = ["relative_change", "absolute_change", "mk_slope"]
+df = replace_zero_with_nan_values(df, dropna_col)
+df = df.dropna(subset=dropna_col, how="all")
 # Define most recent year for faostat and comtrade data
 trade_data_faostat = df[df["source"] == "faostat"]
 most_recent_year_faostat = sorted(trade_data_faostat.year.unique(), reverse=True)[0]

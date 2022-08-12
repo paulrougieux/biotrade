@@ -422,6 +422,4 @@ def trend_analysis(df_data):
     df["mk_significance_flag"] = (
         df["mk_ha_test"].astype("boolean").astype("Int64")
     ).replace(pd.NA, np.nan)
-    # Drop nan values
-    df = df.dropna(subset=["relative_change", "absolute_change", "mk_slope"], how="all")
     return df

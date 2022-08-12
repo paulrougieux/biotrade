@@ -25,13 +25,12 @@ crop_data = reporter_iso_codes(crop_data)
 # Columns to be retained
 column_list = ["reporter_code", "product_code", "period", "value", "unit"]
 # Harvested area data
-harvested_area = crop_data[crop_data["element"] == "area_harvested"][
-    column_list
-].dropna(subset=["value"])
+dropna_col = ["value"]
+crop_data = replace_zero_with_nan_values(crop_data, dropna_col)
+crop_data = crop_data.dropna(subset=dropna_col)
+harvested_area = crop_data[crop_data["element"] == "area_harvested"][column_list]
 # Production data
-production = crop_data[crop_data["element"].isin(["production", "stocks"])][
-    column_list
-].dropna(subset=["value"])
+production = crop_data[crop_data["element"].isin(["production", "stocks"])][column_list]
 # Save csv files to env variable path or into biotrade data folder
 save_file(harvested_area, "harvested_area_annual_variation.csv")
 save_file(production, "production_annual_variation.csv")

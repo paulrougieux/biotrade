@@ -64,16 +64,26 @@ dropna_col = [
     col for col in column_list if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
 ]
 # Consider selected columns of import quantities and save the file (drop nan)
-trade_data_faostat_reporter = trade_data_faostat_avg[
-    trade_data_faostat_avg["element"] == "import_quantity"
-][column_list].dropna(subset=dropna_col)
+trade_data_faostat_avg_imp = trade_data_faostat_avg.copy()
+trade_data_faostat_avg_imp = replace_zero_with_nan_values(
+    trade_data_faostat_avg_imp, dropna_col
+)
+trade_data_faostat_avg_imp = trade_data_faostat_avg_imp.dropna(subset=dropna_col)
+trade_data_faostat_reporter = trade_data_faostat_avg_imp[
+    trade_data_faostat_avg_imp["element"] == "import_quantity"
+][column_list]
 # # Add column describing flow
 # trade_data_faostat_reporter["flow"] = "import"
 save_file(trade_data_faostat_reporter, "faostat_average.csv")
 # Consider selected columns of import quantities and save the file (drop nan)
-trade_data_comtrade_reporter = trade_data_comtrade_avg[
-    trade_data_comtrade_avg["element"] == "import_quantity"
-][column_list].dropna(subset=dropna_col)
+trade_data_comtrade_avg_imp = trade_data_comtrade_avg.copy()
+trade_data_comtrade_avg_imp = replace_zero_with_nan_values(
+    trade_data_comtrade_avg_imp, dropna_col
+)
+trade_data_comtrade_avg_imp = trade_data_comtrade_avg_imp.dropna(subset=dropna_col)
+trade_data_comtrade_reporter = trade_data_comtrade_avg_imp[
+    trade_data_comtrade_avg_imp["element"] == "import_quantity"
+][column_list]
 # # Add column describing flow
 # trade_data_comtrade_reporter["flow"] = "import"
 save_file(trade_data_comtrade_reporter, "comtrade_average.csv")
@@ -90,16 +100,26 @@ dropna_col = [
     col for col in column_list if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
 ]
 # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
-trade_data_faostat_partner = trade_data_faostat_avg[
-    trade_data_faostat_avg["element"] == "export_quantity"
-][column_list].dropna(subset=dropna_col)
+trade_data_faostat_avg_exp = trade_data_faostat_avg.copy()
+trade_data_faostat_avg_exp = replace_zero_with_nan_values(
+    trade_data_faostat_avg_exp, dropna_col
+)
+trade_data_faostat_avg_exp = trade_data_faostat_avg_exp.dropna(subset=dropna_col)
+trade_data_faostat_partner = trade_data_faostat_avg_exp[
+    trade_data_faostat_avg_exp["element"] == "export_quantity"
+][column_list]
 # # Add column describing flow
 # trade_data_faostat_partner["flow"] = "export"
 save_file(trade_data_faostat_partner, "faostat_average_mf.csv")
 # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
-trade_data_comtrade_partner = trade_data_comtrade_avg[
-    trade_data_comtrade_avg["element"] == "export_quantity"
-][column_list].dropna(subset=dropna_col)
+trade_data_comtrade_avg_exp = trade_data_comtrade_avg.copy()
+trade_data_comtrade_avg_exp = replace_zero_with_nan_values(
+    trade_data_comtrade_avg_exp, dropna_col
+)
+trade_data_comtrade_avg_exp = trade_data_comtrade_avg_exp.dropna(subset=dropna_col)
+trade_data_comtrade_partner = trade_data_comtrade_avg_exp[
+    trade_data_comtrade_avg_exp["element"] == "export_quantity"
+][column_list]
 # # Add column describing flow
 # trade_data_comtrade_partner["flow"] = "export"
 save_file(trade_data_comtrade_partner, "comtrade_average_mf.csv")
@@ -168,18 +188,28 @@ dropna_col = [
     col for col in column_list if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
 ]
 # Consider selected columns of import quantities and save the file (drop nan)
-trade_data_faostat_reporter = trade_data_faostat_avg[
-    (trade_data_faostat_avg["element"] == "import_quantity")
-    & (trade_data_faostat_avg["reporter_code"].isin(["EU27", "ROW"]))
-][column_list].dropna(subset=dropna_col)
+trade_data_faostat_avg_imp = trade_data_faostat_avg.copy()
+trade_data_faostat_avg_imp = replace_zero_with_nan_values(
+    trade_data_faostat_avg_imp, dropna_col
+)
+trade_data_faostat_avg_imp = trade_data_faostat_avg_imp.dropna(subset=dropna_col)
+trade_data_faostat_reporter = trade_data_faostat_avg_imp[
+    (trade_data_faostat_avg_imp["element"] == "import_quantity")
+    & (trade_data_faostat_avg_imp["reporter_code"].isin(["EU27", "ROW"]))
+][column_list]
 # # Add column describing flow
 # trade_data_faostat_reporter["flow"] = "import"
 save_file(trade_data_faostat_reporter, "faostat_average_eu_row.csv")
 # Consider selected columns of import quantities and save the file (drop nan)
-trade_data_comtrade_reporter = trade_data_comtrade_avg[
-    (trade_data_comtrade_avg["element"] == "import_quantity")
-    & (trade_data_comtrade_avg["reporter_code"].isin(["EU27", "ROW"]))
-][column_list].dropna(subset=dropna_col)
+trade_data_comtrade_avg_imp = trade_data_comtrade_avg.copy()
+trade_data_comtrade_avg_imp = replace_zero_with_nan_values(
+    trade_data_comtrade_avg_imp, dropna_col
+)
+trade_data_comtrade_avg_imp = trade_data_comtrade_avg_imp.dropna(subset=dropna_col)
+trade_data_comtrade_reporter = trade_data_comtrade_avg_imp[
+    (trade_data_comtrade_avg_imp["element"] == "import_quantity")
+    & (trade_data_comtrade_avg_imp["reporter_code"].isin(["EU27", "ROW"]))
+][column_list]
 # # Add column describing flow
 # trade_data_comtrade_reporter["flow"] = "import"
 save_file(trade_data_comtrade_reporter, "comtrade_average_eu_row.csv")
@@ -195,18 +225,28 @@ dropna_col = [
     col for col in column_list if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
 ]
 # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
-trade_data_faostat_partner = trade_data_faostat_avg[
-    (trade_data_faostat_avg["element"] == "export_quantity")
-    & (trade_data_faostat_avg["partner_code"].isin(["EU27", "ROW"]))
-][column_list].dropna(subset=dropna_col)
+trade_data_faostat_avg_exp = trade_data_faostat_avg.copy()
+trade_data_faostat_avg_exp = replace_zero_with_nan_values(
+    trade_data_faostat_avg_exp, dropna_col
+)
+trade_data_faostat_avg_exp = trade_data_faostat_avg_exp.dropna(subset=dropna_col)
+trade_data_faostat_partner = trade_data_faostat_avg_exp[
+    (trade_data_faostat_avg_exp["element"] == "export_quantity")
+    & (trade_data_faostat_avg_exp["partner_code"].isin(["EU27", "ROW"]))
+][column_list]
 # # Add column describing flow
 # trade_data_faostat_partner["flow"] = "export"
 save_file(trade_data_faostat_partner, "faostat_average_eu_row_mf.csv")
 # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
-trade_data_comtrade_partner = trade_data_comtrade_avg[
-    (trade_data_comtrade_avg["element"] == "export_quantity")
-    & (trade_data_comtrade_avg["partner_code"].isin(["EU27", "ROW"]))
-][column_list].dropna(subset=dropna_col)
+trade_data_comtrade_avg_exp = trade_data_comtrade_avg.copy()
+trade_data_comtrade_avg_exp = replace_zero_with_nan_values(
+    trade_data_comtrade_avg_exp, dropna_col
+)
+trade_data_comtrade_avg_exp = trade_data_comtrade_avg_exp.dropna(subset=dropna_col)
+trade_data_comtrade_partner = trade_data_comtrade_avg_exp[
+    (trade_data_comtrade_avg_exp["element"] == "export_quantity")
+    & (trade_data_comtrade_avg_exp["partner_code"].isin(["EU27", "ROW"]))
+][column_list]
 # # Add column describing flow
 # trade_data_comtrade_partner["flow"] = "export"
 save_file(trade_data_comtrade_partner, "comtrade_average_eu_row_mf.csv")

@@ -39,6 +39,10 @@ column_list = [
     "mk_significance_flag",
     "unit",
 ]
+# Drop nan values
+dropna_col = ["relative_change", "absolute_change", "mk_slope"]
+df = replace_zero_with_nan_values(df, dropna_col)
+df = df.dropna(subset=dropna_col, how="all")
 # Harvested area data (only the most recent year of db)
 most_recent_year = sorted(df.year.unique(), reverse=True)[0]
 harvested_area = df[
