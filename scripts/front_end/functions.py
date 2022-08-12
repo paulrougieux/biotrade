@@ -24,6 +24,19 @@ COLUMN_PERC_SUFFIX = "_percentage"
 COLUMN_TOT_SUFFIX = "_tot_value"
 
 
+def replace_zero_with_nan_values(df, column_list):
+    """
+    Replace zero value columns with nan, to let the values be dropped afterwards
+
+    :param df (DataFrame), output to be saved
+    :param column_list (list), name of columns to replace 0 with nan values
+    :return df (DataFrame), with nan replacements
+
+    """
+    df[column_list] = df[column_list].replace(0, np.nan)
+    return df
+
+
 def save_file(df, file_name):
     """
     Function which save output scripts
@@ -38,7 +51,7 @@ def save_file(df, file_name):
     else:
         path = data_dir / "front_end"
     path.mkdir(exist_ok=True)
-    df.to_csv(path / file_name, index=False)
+    df.to_csv(path / file_name, index=False, na_rep="null")
 
 
 def main_product_list():
@@ -280,12 +293,14 @@ def average_results(df, threshold, dict_list):
             # Meaning that dataframes can be merged
             if set(merge_col_list).issubset(df_final.columns):
                 merge_suffix = "_merge"
-                value_col_name = value_col_name + merge_suffix
                 df_final = df_final.merge(
                     df_new, how="outer", on=merge_col_list, suffixes=("", merge_suffix)
                 )
-                if value_col_name not in column_drop:
-                    column_drop.append(value_col_name)
+                # Add merge columns to column drop list
+                for col in df_final.columns:
+                    if col.endswith(merge_suffix):
+                        if col not in column_drop:
+                            column_drop.append(col)
             else:
                 df_final = pd.concat([df_final, df_new], ignore_index=True)
     # Remove columns from df_final
