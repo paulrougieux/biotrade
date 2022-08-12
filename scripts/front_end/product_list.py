@@ -56,7 +56,7 @@ faostat_products = pd.concat(
 )
 # Add key product flag
 faostat_products["key_product_flag"] = faostat_products.product_code.isin(
-    main_product_list
+    product_tree.primary_product_code.unique().tolist()
 ).astype(int)
 # Save csv files to env variable path or into biotrade data folder
 save_file(product_tree, "key_product_tree_list.csv")
