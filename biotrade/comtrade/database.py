@@ -381,6 +381,7 @@ class DatabaseComtrade(Database):
 
         """
         df = self.select(*args, **kwargs)
+        assert len(df) > 0
         # Remove empty columns
         not_empty = [col for col in df.columns if not all(df[col].isna())]
         df = df[not_empty]
