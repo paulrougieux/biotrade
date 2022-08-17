@@ -137,7 +137,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 114,133,KE,KE,KEN,KEN,404,member,Kenya,the Republic of Kenya,Kenya,Kenya,1963,,World,Africa,5100,Eastern Africa,5101,Developing,0
 ,134,,,,,,areas and territories,Kingman Reef,Kingman Reef,Kingman Reef,Kingman Reef,,,,,,,,,0
 83,135,KI,KI,KIR,KIR,296,member,Kiribati,the Republic of Kiribati,Kiribati,Kiribati,1999,,World,Oceania,5500,Micronesia,5503,Developing,0
-275,,,KV,,KSV,,areas and territories,Kosovo,Kosovo,Kosovo,Kosovo,2008,,,,,,,,0
+275,,XK,KV,,KSV,,areas and territories,Kosovo,Kosovo,Kosovo,Kosovo,2008,,,,,,,,0
 118,137,KW,KW,KWT,KWT,414,member,Kuwait,the State of Kuwait,Kuwait,Kuwait,1963,,World,Asia,5300,Western Asia,5305,Developing,0
 113,138,KG,KG,KGZ,KGZ,417,member,Kyrgyzstan,the Kyrgyz Republic,Kyrgyzstan,Kirguistán,1992,,World,Asia,5300,Central Asia,5301,Developing,0
 120,139,LA,LA,LAO,LAO,418,member,Lao People's Democratic Republic,the Lao People's Democratic Republic,Laos,República Democrática Popular Lao,1955,,World,Asia,5300,South-Eastern Asia,5304,Developing,0
@@ -220,7 +220,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 285,,,,,,680,areas and territories,Sark,Sark,Sark,Sark,,,World,Europe,5400,Northern Europe,5402,Developed,0
 194,215,SA,SA,SAU,SAU,682,member,Saudi Arabia,the Kingdom of Saudi Arabia,Saudi Arabia,Arabia Saudita,1945,,World,Asia,5300,Western Asia,5305,Developing,0
 195,217,SN,SN,SEN,SEN,686,member,Senegal,the Republic of Senegal,Senegal,Senegal,1960,,World,Africa,5100,Western Africa,5105,Developing,0
-272,2648,RS,RS,SRB,SRB,688,member,Serbia,the Republic of Serbia,Serbia,Serbia,2006,,World,Europe,5400,Southern Europe,5403,Developed,0
+272,2648,XS,RS,SRB,SRB,688,member,Serbia,the Republic of Serbia,Serbia,Serbia,2006,,World,Europe,5400,Southern Europe,5403,Developed,0
 186,,CS,CS,SCG,SCG,891,old,Serbia and Montenegro,Serbia and Montenegro,Serbia and Montenegro,Serbia y Montenegro,1992,2005,World,Europe,5400,Southern Europe,5403,Developed,0
 196,220,SC,SC,SYC,SYC,690,member,Seychelles,the Republic of Seychelles,Seychelles,Seychelles,1976,,World,Africa,5100,Eastern Africa,5101,Developing,0
 197,221,SL,SL,SLE,SLE,694,member,Sierra Leone,the Republic of Sierra Leone,Sierra Leone,Sierra Leona,1961,,World,Africa,5100,Western Africa,5105,Developing,0
