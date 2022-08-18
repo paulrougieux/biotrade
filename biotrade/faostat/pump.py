@@ -214,7 +214,7 @@ class Pump:
         # Obtain columns for db upload
         columns = list(df.columns.intersection(list(mapping.keys())))
         # Filter df selecting only columns for db
-        df = df[columns]
+        df = df[columns].copy()
         # Rename columns using the naming convention defined in self.column_names
         df.rename(columns=mapping, inplace=True)
         # Rename column contents to snake case using a compiled regex
