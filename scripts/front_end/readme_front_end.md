@@ -2,7 +2,8 @@
 Table names and metadata of the web platform output scripts. Currently 25 csv files are available.
 
 > N.B.
->- Zero values are not reported.
+>- Zero and NaN values are not reported.
+>- Old country values are not reported.
 >- Production, harvest area and trade data related to China are for:
 >    - China mainland + Taiwan which corresponds to UN Comtrade code 156
 >    - Removed FAOSTAT data on China Mainland because it doesn't have a UN country code
