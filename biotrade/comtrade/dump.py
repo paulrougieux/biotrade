@@ -14,6 +14,7 @@ Unit D1 Bioeconomy.
 # Third party modules
 import logging
 import pandas
+from sqlalchemy import distinct, select
 
 # Internal modules
 
@@ -56,7 +57,7 @@ class Dump:
         product_code=None,
         chunk_size=10 ** 6,
     ):
-        """Dump all rows where the product code starts with the given product code at the 2 digit level
+        """Dump rows where the product code starts with the given product code at the 2 digit level
 
         :param table_name, str defining the comtrade table
             ("monthly", "yearly", "yearly_hs2")
@@ -84,7 +85,7 @@ class Dump:
         table = self.db.tables[table]
         # Loop on products
         for this_code in product_code:
-            # Find all products that start with the given code
+            # Find products that start with the given code
             stmt = table.select()
             stmt = stmt.where(table.c.product_code.ilike(f"{this_code}%"))
             df_iter = pandas.read_sql_query(stmt, self.db.engine, chunksize=chunk_size)
@@ -109,6 +110,23 @@ class Dump:
                     compression="gzip",
                 )
             self.logger.info("Stored data to:\n %s", file_path)
+
+    def store_all_2d_csv(self, table):
+        """Dump all bioeconomy related products
+
+        Usage:
+
+            >>> from biotrade.comtrade import comtrade
+            >>> comtrade.dump.store_all_2d_csv("monthly")
+            >>> comtrade.dump.store_all_2d_csv("yearly")
+        """
+        # Select 2 digit codes present in the database table
+        stmt = select(distinct(self.db.tables[table].c.product_code))
+        df = pandas.read_sql_query(stmt, self.db.engine)
+        codes = [x for x in df.product_code.str[:2]]
+        # Create one dump file for each 2 d code
+        for this_code in set(codes):
+            self.store_2d_csv(table, this_code)
 
     def load_2d_csv(self, table, file_path):
         """Load a dump into the given database table
@@ -148,7 +166,7 @@ class Dump:
 
         # Delete existing data for the corresponding product code
         # TODO: uptate the db.delete method so that it can deal with product_code.
-        # This should be possible ifthe where statements can be concatenated
+        # This should be possible if the where statements can be concatenated
         # Or create the statement here to delete at the HS 2 to level.
 
         # Write to the database
