@@ -18,8 +18,10 @@ crop_data = faostat.db.select(
 crop_data = crop_data[crop_data["reporter_code"] < 1000]
 # China Mainland + Taiwan data
 df_china = consistency_check_china_data(crop_data)
-# Add China data to crop_data
-crop_data = pd.concat([crop_data, df_china], ignore_index=True)
+# Add China data to crop_data (exclude Taiwan data)
+crop_data = pd.concat(
+    [crop_data[~(crop_data["reporter_code"] == 214)], df_china], ignore_index=True
+)
 # Substitute faostat codes with iso3 codes
 crop_data = reporter_iso_codes(crop_data)
 # Consider data after 1985 to calculate trends of last year

@@ -14,7 +14,7 @@ main_product_list = main_product_list()
 trade_data = merge_faostat_comtrade_data(main_product_list)
 # China Mainland + Taiwan data
 df_china = consistency_check_china_data(trade_data)
-# Add China data to trade_data (exclude Taiwan data, otherwise double counted into percentages and averages calculations with China + Taiwan)
+# Add China data to trade_data (exclude Taiwan data)
 trade_data = pd.concat(
     [
         trade_data[

@@ -12,8 +12,16 @@ product_list = [236, 257, 657, 661, 867, 919]
 trade_data = merge_faostat_comtrade_data(product_list)
 # China Mainland + Taiwan data
 df_china = consistency_check_china_data(trade_data)
-# Add China data to trade_data
-trade_data = pd.concat([trade_data, df_china,], ignore_index=True,)
+# Add China data to trade_data (exclude Taiwan data)
+trade_data = pd.concat(
+    [
+        trade_data[
+            ~((trade_data[["reporter_code", "partner_code"]] == 214).any(axis=1))
+        ],
+        df_china,
+    ],
+    ignore_index=True,
+)
 # Substitute faostat codes with iso3 codes
 trade_data = reporter_iso_codes(trade_data)
 # Consider data after 1985 to calculate trends of last year (excluded estimated values)

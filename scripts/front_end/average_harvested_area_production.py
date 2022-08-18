@@ -17,7 +17,7 @@ df = df[(df["element"].isin(elements)) & (df["reporter_code"] < 1000)].reset_ind
 )
 # China Mainland + Taiwan data
 df_china = consistency_check_china_data(df)
-# Add China data to df (exclude Taiwan data, otherwise double counted into percentages and averages calculations with China + Taiwan)
+# Add China data to df (exclude Taiwan data)
 df = pd.concat([df[~(df["reporter_code"] == 214)], df_china], ignore_index=True)
 # Substitute faostat codes with iso3 codes
 df = reporter_iso_codes(df)

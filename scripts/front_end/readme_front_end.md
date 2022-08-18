@@ -1,7 +1,13 @@
 # METADATA
 Table names and metadata of the web platform output scripts. Currently 25 csv files are available.
 
-N.B. Zero values are not reported.
+> N.B.
+>- Zero values are not reported.
+>- Production, harvest area and trade data related to China are for:
+>    - China mainland + Taiwan which corresponds to UN Comtrade code 156
+>    - Removed FAOSTAT data on China Mainland because it doesn't have a UN country code
+>    - Removed FAOSTAT data on Taiwan (not reported separately by UN Comtrade) to avoid double counting Taiwan already included in UN code 156
+>    - Hong Kong and Macao are reported separately both in the UN Comtrade and FAOSTAT data.
 
 ## reporter_list.csv
 Csv that contains the list of all reporters. Can be used also for partners. There are 3 columns:

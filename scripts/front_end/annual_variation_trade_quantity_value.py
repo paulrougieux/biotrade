@@ -13,8 +13,16 @@ main_product_list = main_product_list()
 trade_data = merge_faostat_comtrade_data(main_product_list)
 # China Mainland + Taiwan data
 df_china = consistency_check_china_data(trade_data)
-# Add China and Taiwan data to trade_data
-trade_data = pd.concat([trade_data, df_china], ignore_index=True,)
+# Add China data to trade_data (exclude Taiwan data)
+trade_data = pd.concat(
+    [
+        trade_data[
+            ~((trade_data[["reporter_code", "partner_code"]] == 214).any(axis=1))
+        ],
+        df_china,
+    ],
+    ignore_index=True,
+)
 # Substitute faostat codes with iso3 codes
 trade_data = reporter_iso_codes(trade_data)
 # Transform flag column into int type

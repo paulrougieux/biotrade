@@ -96,7 +96,7 @@ def reporter_iso_codes(df):
     df = df[df.fao_status_info != "old"]
     subset_col = ["reporter_code"]
     if "partner_code" in df.columns:
-        df.drop(columns=["faost_code", "iso3_code"], inplace=True)
+        df.drop(columns=["faost_code", "iso3_code", "fao_status_info"], inplace=True)
         df = df.merge(
             reporter[["faost_code", "iso3_code", "fao_status_info"]],
             how="left",
