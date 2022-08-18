@@ -86,22 +86,26 @@ def reporter_iso_codes(df):
     reporter = pd.read_csv(reporter_file)
     # Obtain iso3 codes for reporters and partners
     df = df.merge(
-        reporter[["faost_code", "iso3_code"]],
+        reporter[["faost_code", "iso3_code", "fao_status_info"]],
         how="left",
         left_on="reporter_code",
         right_on="faost_code",
     )
     df["reporter_code"] = df["iso3_code"]
+    # Remove data of old reporters
+    df = df[df.fao_status_info != "old"]
     subset_col = ["reporter_code"]
     if "partner_code" in df.columns:
         df.drop(columns=["faost_code", "iso3_code"], inplace=True)
         df = df.merge(
-            reporter[["faost_code", "iso3_code"]],
+            reporter[["faost_code", "iso3_code", "fao_status_info"]],
             how="left",
             left_on=["partner_code"],
             right_on=["faost_code"],
         )
         df["partner_code"] = df["iso3_code"]
+        # Remove data of old partners
+        df = df[df.fao_status_info != "old"]
         subset_col.append("partner_code")
     # Faostat code 41 (China mainland) and 351 (China mainland + Hong Kong + Macao + Taiwan ) are not mapped into ISO 3 Codes
     df.dropna(subset=subset_col, inplace=True)
