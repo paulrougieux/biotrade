@@ -44,6 +44,13 @@ column_list = [
 # Drop nan values
 dropna_col = ["relative_change", "absolute_change", "mk_slope"]
 df = replace_zero_with_nan_values(df, dropna_col)
+# Put nan to period and significance columns when relative change or slope is 0
+# To avoid inconsistencies during the replace zero with nan
+selector = df.mk_slope.isnull()
+df.loc[selector, "period_regression"] = np.nan
+df.loc[selector, "mk_significance_flag"] = np.nan
+selector = df.relative_change.isnull()
+df.loc[selector, "period_change"] = np.nan
 df = df.dropna(subset=dropna_col, how="all")
 # Harvested area data (only the most recent year of db)
 most_recent_year = sorted(df.year.unique(), reverse=True)[0]
