@@ -278,17 +278,17 @@ class DatabaseComtrade(Database):
         """
         # Table of db
         table = self.tables[table]
-        if start_period is not None:
-            if end_period is not None:
-                # Construct delete statement
-                stmt = table.delete().where(
-                    and_(
-                        table.c.period >= start_period,
-                        table.c.period <= end_period,
-                    )
-                )
-                # Execute delete statement
-                stmt.execute()
+        assert start_period is not None
+        assert end_period is not None
+        # Construct delete statement
+        stmt = table.delete().where(
+            and_(
+                table.c.period >= start_period,
+                table.c.period <= end_period,
+            )
+        )
+        # Execute delete statement
+        stmt.execute()
         self.logger.info(
             "Delete data from database table %s, from %s to %s",
             table,
