@@ -1,8 +1,8 @@
 
-The `biotrade` package harmonizes variable names to analyse biological, physical and 
-economic flows. It focuses on the agriculture and forestry sectors, from primary 
-production to secondary products transformation. It loads bilateral trade and production 
-data from the UN Comtrade and from FAOSTAT.
+The `biotrade` package analyses international trade of bio-based products. It focuses on 
+the agriculture and forestry sectors, from primary production to secondary products 
+transformation. It loads bilateral trade and production data from the UN Comtrade and 
+from FAOSTAT.
 
 Extraction rates and waste of supply are taken from the FAO, technical conversion 
 factors for agricultural commodities available at: 
