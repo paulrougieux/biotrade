@@ -1,30 +1,4 @@
 product_code,product_name
-440121,wood fuel in chips or particles
-440131,wood fuel in pellets
-440290,wood charcoal
-440395,roundwood birch
-440710,sawnwood coniferous
-440711,sawnwood pine
-440712,sawnwood spruce
-440713,sawnwood fir
-440714,sawnwood hem-fir
-440719,sawnwood coniferous other
-440791,sawnwood oak
-440792,sawnwood beech
-440793,sawnwood maple
-440794,sawnwood cherry
-440795,sawnwood ash
-440796,sawnwood birch
-440797,sawnwood poplar
-440799,sawnwood other
-440890,sheets for veneer or plywood
-440910,wood flooring
-441011,particle board
-441233,plywood
-441520,wood pallets and box pallets
-441875,wood assembled flooring panels
-441899,builders joinery - others
-442199,wood frames
 4401,fuel wood in logs
 4402,wood charcoal
 4403,industrial roundwood
@@ -51,3 +25,54 @@ product_code,product_name
 4703,chemical wood pulp soda or sulphate
 4704,Chemical wood pulp sulphite
 4705,wood pulp mechanical and chemical combined
+440121,wood fuel in chips or particles
+440131,wood fuel in pellets
+440290,wood charcoal
+440395,roundwood birch
+440710,sawnwood coniferous
+440711,sawnwood pine
+440712,sawnwood spruce
+440713,sawnwood fir
+440714,sawnwood hem-fir
+440719,sawnwood coniferous other
+440791,sawnwood oak
+440792,sawnwood beech
+440793,sawnwood maple
+440794,sawnwood cherry
+440795,sawnwood ash
+440796,sawnwood birch
+440797,sawnwood poplar
+440799,sawnwood other
+440890,sheets for veneer or plywood
+440910,wood flooring
+441011,particle board
+441210,plywood of bamboo
+441211,plywood of meranti & other tropical
+441212,plywood 12 non coniferous
+441213,plywood 13 tropical
+441214,plywood 14 non coniferous
+441219,plywood 19
+441221,plywood 21 with particle board
+441222,plywood 22 non coniferous and tropical
+441223,plywood 23 with particle board
+441229,plywood 29 
+441231,plywood 31 tropical
+441232,plywood 32 non coniferous
+441233,plywood 33 non coniferous
+441234,plywood 34 non coniferous
+441239,plywood 39 coniferous
+441241,plywood 41 tropical
+441242,lvl 42
+441249,lvl 49
+441251,blockboard tropical
+441252,blockboard non coniferous
+441259,blockboard coniferous
+441291,plywood 91 tropical
+441292,plywood 92 non coniferous
+441293,plywood 93 coniferous with particle board
+441294,blockboard 94
+441299,plywood 99 coniferous
+441520,wood pallets and box pallets
+441875,wood assembled flooring panels
+441899,builders joinery - others
+442199,wood frames
