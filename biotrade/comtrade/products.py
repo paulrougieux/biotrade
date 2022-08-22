@@ -13,6 +13,9 @@ Get the list of products as stored in the database
     >>> hs = comtrade.products.hs
     >>> # Paper related products
     >>> print(hs[hs.product_description.str.contains("paper", case=False)])
+    >>> # The search pattern is a regex by default, so you can search for cocoa or
+    >>> # chocolate related products with
+    >>> print(hs[hs.product_description.str.contains("cocoa|choco", case=False)])
 
 Get the module internal list of products at the HS 2 digit level, with an
 indicator of what products are saved when updating data. Where the column
