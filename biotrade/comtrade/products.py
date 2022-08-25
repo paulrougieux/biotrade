@@ -80,6 +80,12 @@ class Products(object):
             file_name,
             dtype={"product_code": "str"},
         )
+        dup = df.product_code.duplicated(keep=False)
+        if any(dup):
+            raise ValueError(
+                f"Error in \n{file_name}\n"
+                + f"The following codes are duplicated:\n{df[dup]}"
+            )
         return df
 
     @property

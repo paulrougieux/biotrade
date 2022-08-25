@@ -45,7 +45,31 @@ product_code,product_name
 440799,sawnwood other
 440890,sheets for veneer or plywood
 440910,wood flooring
-441011,particle board
+441010,particle board 10
+441011,particle board 11
+441012,osb
+441019,wafer board
+441021,wafer borad and osb unworked
+441029,wafer board and osb unworked
+441031,particle board unworked
+441032,particle board with malamine paper
+441033,particle board with decorative plastic
+441039,particle board other 39
+441090,particle board owb and similar 90
+441111,fibreboard > 0.8g/cm3 not covered
+441112,mdf < 5mm
+441113,mdf 5-9mm
+441114,mdf > 9mm
+441119,fibreboard > 0.8g/cm3 covered
+441121,fibreboard 0.5-0.8 g/cm3 not covered
+441129,fibreboard 0.5-0.8 g/cm3 covered
+441131,fibreboard 0.3-0.5 g/cm3 not covered
+441139,fibreboard 0.3-0.5 g/cm3 covered
+441191,fibreboard 91 other
+441192,fibreboard > 0.8g/cm3 92
+441193,fibreboard 0.5-0.8 g/cm3 93
+441194,fibreboard 0.3-0.5 g/cm3 94
+441199,fibreboard 99 other
 441210,plywood of bamboo
 441211,plywood of meranti & other tropical
 441212,plywood 12 non coniferous
