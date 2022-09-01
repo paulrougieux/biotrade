@@ -284,3 +284,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 3698,,,,EAZ,EAZ,835,areas and territories,Zanzibar,Zanzibar,Zanzibar,Zanzibar,,,,,,,,,0
 181,271,ZW,ZW,ZWE,ZWE,716,member,Zimbabwe,the Republic of Zimbabwe,Zimbabwe,Zimbabwe,1980,,World,Africa,5100,Eastern Africa,5101,Developing,0
 252,,,,,,,,Unspecified Area,,,,,,,Unspecified Area,,Unspecified Area,,,0
+,,,,,,568,,"Other Europe, nes",,,,,,,Europe,,,,,
+,,,,,,490,,"Other Asia, nes",,,,,,,Asia,,,,,
+,,,,,,577,,"Other Africa, nes",,,,,,,Africa,,,,,
+,,,,,,473,,"South America, nes",,,,,,,Americas,,,,,
