@@ -171,6 +171,9 @@ class DatabaseComtrade(Database):
             Column("customs", Text),
             Column("mode_of_transport_code", Text),
             Column("mode_of_transport", Text),
+            # TODO: add an index to the product_code column as specified in
+            # https://docs.sqlalchemy.org/en/14/core/constraints.html#indexes
+            # Column("product_code", Text, index=True),
             Column("product_code", Text),
             Column("unit_code", Integer),
             Column("unit", Text),
