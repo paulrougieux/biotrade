@@ -29,13 +29,13 @@ product_code,product_name
 440131,wood fuel in pellets
 440290,wood charcoal
 440395,roundwood birch
-440710,sawnwood coniferous
+440710,sawnwood coniferous 10
 440711,sawnwood pine
 440712,sawnwood spruce
 440713,sawnwood fir
 440714,sawnwood hem-fir
-440719,sawnwood coniferous other
-440721,sawnwood trop
+440719,sawnwood coniferous other 19
+440721,sawnwood trop 21
 440722,sawnwood trop 22
 440723,sawnwood teak
 440724,sawnwood trop 24 virola
@@ -51,7 +51,7 @@ product_code,product_name
 440795,sawnwood ash
 440796,sawnwood birch
 440797,sawnwood poplar
-440799,sawnwood other
+440799,sawnwood other 99
 440890,sheets for veneer or plywood
 440910,wood flooring
 441010,particle board 10
@@ -64,7 +64,7 @@ product_code,product_name
 441032,particle board with malamine paper
 441033,particle board with decorative plastic
 441039,particle board other 39
-441090,particle board owb and similar 90
+441090,particle board osb and similar 90
 441111,fibreboard > 0.8g/cm3 not covered
 441112,mdf < 5mm
 441113,mdf 5-9mm
