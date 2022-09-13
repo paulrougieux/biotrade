@@ -304,7 +304,6 @@ class DatabaseComtrade(Database):
         table,
         reporter=None,
         partner=None,
-        product=None,
         # TODO: use Comtrade.products.hs to enable a query on a product partial mapping
         reporter_code=None,
         partner_code=None,
@@ -317,7 +316,6 @@ class DatabaseComtrade(Database):
         :param str table: name of the database table to select from
         :param list or str reporter: list of reporter names
         :param list or str partner: list of partner names
-        :param list or str product: list of product names
         :param list or str flow: list of flow directions
             ['Imports', 'Exports', 'Re-imports', 'Re-exports']
         :param list or int reporter_code: list of reporter codes
@@ -341,8 +339,6 @@ class DatabaseComtrade(Database):
             reporter = [reporter]
         if isinstance(partner, str):
             partner = [partner]
-        if isinstance(product, str):
-            product = [product]
         if isinstance(reporter_code, (int, str)):
             reporter_code = [reporter_code]
         if isinstance(partner_code, (int, str)):
@@ -357,8 +353,6 @@ class DatabaseComtrade(Database):
             stmt = stmt.where(table.c.reporter.in_(reporter))
         if partner is not None:
             stmt = stmt.where(table.c.partner.in_(partner))
-        if product is not None:
-            stmt = stmt.where(or_(table.c.product.ilike(f"%{p}%") for p in product))
         if reporter_code is not None:
             stmt = stmt.where(table.c.reporter_code.in_(reporter_code))
         if partner_code is not None:
