@@ -11,11 +11,23 @@ Get the list of products as stored in the database
 
     >>> from biotrade.comtrade import comtrade
     >>> hs = comtrade.products.hs
+    >>> # Refresh the HS product list by downloading it again from the Comtrade API
+    >>> comtrade.pump.update_db_parameter()
+
+Search by product names
+
     >>> # Paper related products
     >>> print(hs[hs.product_description.str.contains("paper", case=False)])
-    >>> # The search pattern is a regex by default, so you can search for cocoa or
-    >>> # chocolate related products with
+    >>> # The search pattern is a regex by default, so you can search
+    >>> # for cocoa or chocolate related products with
     >>> print(hs[hs.product_description.str.contains("cocoa|choco", case=False)])
+
+Search for products starting with a specific code
+
+    >>> print(hs[hs.product_code.str.startswith("4403")])
+    >>> # Write to a csv file
+    >>> hs44 = hs[hs.product_code.str.startswith("44")]
+    >>> hs44.to_csv("/tmp/hs_product_codes.csv", index=False)
 
 Get the module internal list of products at the HS 2 digit level, with an
 indicator of what products are saved when updating data. Where the column
