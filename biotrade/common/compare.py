@@ -181,14 +181,14 @@ def merge_faostat_comtrade(faostat_table, comtrade_table, faostat_code):
             extrapolate to the current year based on values from the last 12 months
         4. Concatenate FAOSTAT and Comtrade data
 
-    For example load palm oil data for both Faostat and Comtrade:
+    For example load palm oil data for both Faostat and Comtrade (yearly):
 
         >>> from biotrade.common.compare import merge_faostat_comtrade
         >>> palm_comp = merge_faostat_comtrade(faostat_table="crop_trade",
         >>>                                    comtrade_table="yearly",
         >>>                                    faostat_code = [257])
 
-    For example load sawnwood data from both Faostat and Comtrade:
+    For example load sawnwood data from both Faostat and Comtrade (monthly):
 
         >>> from biotrade.common.compare import merge_faostat_comtrade
         >>> swd = merge_faostat_comtrade(faostat_table="forestry_trade",
@@ -307,7 +307,7 @@ def merge_faostat_comtrade(faostat_table, comtrade_table, faostat_code):
     cols = df_concat.columns.to_list()
     cols = [cols[-1]] + cols[:-1]
     df_concat = df_concat[cols]
-    # Raise an error if there are duplicates of country names associated to the same country code
+    # Raise a warning if there are duplicates of country names associated to the same country code
     for col in ["reporter", "partner"]:
         country_code_unique = df_concat.drop_duplicates(subset=[col, col + "_code"])[
             [col, col + "_code"]
@@ -316,15 +316,17 @@ def merge_faostat_comtrade(faostat_table, comtrade_table, faostat_code):
             country_code_unique.duplicated(subset=col + "_code", keep=False)
         ]
         if len(duplicates):
-            raise ValueError(
+            msg = (
                 "There is more than 1 country code match for a country name"
                 + f"\n{duplicates.sort_values(col+'_code').values}\n"
-                + "These duplicates are present in the FAOSTAT table:"
-                + f"{set(duplicates.reporter) & set(df_faostat.reporter.unique())}"
-                + "These duplicates are present in the Comtrade table:"
-                + f"{set(duplicates.reporter) & set(df.reporter.unique())}\n\n"
-                + "Try to update the country table with:\n"
+                + "These country names are present in the FAOSTAT data:\n"
+                + f"{set(duplicates[col]) & set(df_faostat[col].unique())}.\n"
+                + "These country names are present in the Comtrade table "
+                + "(using replacement names from the FAOSTAT country table):\n"
+                + f"{set(duplicates[col]) & set(df[col].unique())}\n\n"
+                + "# Try to update the country table with:\n"
                 + "from biotrade.faostat import faostat\n"
                 + "faostat.pump.update('country')"
             )
+            warnings.warn(msg)
     return df_concat
