@@ -22,7 +22,7 @@ Usage:
 from pathlib import Path
 import os
 
-__version__ = "0.0.9"
+__version__ = "0.0.10"
 
 module_dir = Path(__file__).resolve().parent
 
