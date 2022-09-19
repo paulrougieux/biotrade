@@ -14,7 +14,7 @@ from biotrade.faostat import faostat
 
 # Third party modules
 from sqlalchemy.sql import func
-from sqlalchemy import select, and_
+from sqlalchemy import select
 import pandas as pd
 
 
@@ -93,7 +93,7 @@ def compare_crop_production_harvested_area_world_agg_country(
     ]
     table_stmt = select(join_columns)
     # Return all crop production and harvested area data
-    table_stmt = table_stmt.where(table.c.unit.in_(["1000 No", "tonnes", "ha"]))
+    table_stmt = table_stmt.where(table.c.unit.in_(["Head", "1000 No", "tonnes", "ha"]))
     if drop_identical:
         # Return crop production and harvested area data where aggregation quantities don't match with World data provided by Faostat
         # Null values are not counted in comparison with standard sql, added a separately statement
