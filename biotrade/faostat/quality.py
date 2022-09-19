@@ -18,14 +18,17 @@ from sqlalchemy import select, and_
 import pandas as pd
 
 
-def compare_crop_production_harvested_area_world_agg_country(drop_identical=False):
+def compare_crop_production_harvested_area_world_agg_country(
+    drop_identical=False, product_code=None
+):
     """
     Function which compares Faostat crop production and harvested area with partner equal to World
     and country partner aggregations. It returns a dataframe containing the difference between aggregation values and World data reported by Faostat
 
     :param drop_identical (boolean), if True drop rows where the aggregation value match with the Word value reported by Faostat, otherwise it keeps all the rows
     """
-
+    if isinstance(product_code, (int, str)):
+        product_code = [product_code]
     # Crop production table to select from raw_faostat schema
     table = faostat.db.tables["crop_production"]
     # Columns to be considered before performing the join
@@ -44,6 +47,9 @@ def compare_crop_production_harvested_area_world_agg_country(drop_identical=Fals
     )
     # Consider all reporters excluding China, regional, subcontinent and continent aggregations (reporter_code < 300)
     table_stmt = table_stmt.where(table.c.reporter_code < 300)
+    # Consider specific product codes if defined
+    if product_code is not None:
+        table_stmt = table_stmt.where(table.c.product_code.in_(product_code))
     # Perform aggregation
     table_stmt = table_stmt.group_by(*columns)
     # Define the new table name
@@ -56,6 +62,9 @@ def compare_crop_production_harvested_area_world_agg_country(drop_identical=Fals
         ]
     )
     table_stmt = table_stmt.where(table.c.reporter_code == 5000)
+    # Consider specific product codes if defined
+    if product_code is not None:
+        table_stmt = table_stmt.where(table.c.product_code.in_(product_code))
     table_stmt = table_stmt.group_by(*columns)
     world_selection = table_stmt.subquery().alias("world")
     # Full outer join to calculate the difference between results
@@ -84,15 +93,15 @@ def compare_crop_production_harvested_area_world_agg_country(drop_identical=Fals
     ]
     table_stmt = select(join_columns)
     # Return all crop production and harvested area data
-    where_stmt = [table.c.unit.in_(["1000 No", "tonnes", "ha"])]
+    table_stmt = table_stmt.where(table.c.unit.in_(["1000 No", "tonnes", "ha"]))
     if drop_identical:
         # Return crop production and harvested area data where aggregation quantities don't match with World data provided by Faostat
-        where_stmt.append(
+        # Null values are not counted in comparison with standard sql, added a separately statement
+        table_stmt = table_stmt.where(
             (table.c.qnt_agg != table.c.qnt_world)
-            | ((table.c.qnt_agg == None) & (table.c.qnt_world != None))
-            | ((table.c.qnt_agg != None) & (table.c.qnt_world == None))
+            | ((table.c.qnt_agg is None) & (table.c.qnt_world is not None))
+            | ((table.c.qnt_agg is not None) & (table.c.qnt_world is None))
         )
-    table_stmt = table_stmt.where(and_(*where_stmt))
     # Return the dataframe from the query to db
     df = pd.read_sql_query(table_stmt, faostat.db.engine)
     return df
