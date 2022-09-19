@@ -28,7 +28,33 @@ product_code,product_name
 440121,wood fuel in chips or particles
 440131,wood fuel in pellets
 440290,wood charcoal
+440310,roundwood 10
+440311,roundwood coniferous treated 11
+440312,roundwood non coniferous 12
+440320,roundwood coniferous 20
+440321,roundwood pine
+440322,roundwood pine <15cm
+440323,roundwood fir and spruce
+440324,roundwood fir and spruce <15cm
+440325,roundwood coniferous 25
+440326,roundwood coniferous <15cm 26
+440331,roundwoood trop 31 red meranti
+440332,roundwood trop 32 lauan
+440333,roundwood trop 33 keruing
+440334,roundwood trop 34 okume
+440335,roundwood trop 35 tiama
+440341,roundwood trop 41 
+440342,roundwood trop 42 teak
+440349,roundwood trop 49 other
+440391,roundwood oak
+440392,roundwood beech 92
+440393,roundwood beech 93
+440394,roundwood beech <15cm
 440395,roundwood birch
+440396,roundwood birch <15cm
+440397,roundwood poplar
+440398,roundwood eucalyptus
+440399,roundwood other 99
 440710,sawnwood coniferous 10
 440711,sawnwood pine
 440712,sawnwood spruce
