@@ -165,12 +165,13 @@ def transform_comtrade_using_faostat_codes(comtrade_table, faostat_code):
     return df_agg
 
 
-def merge_faostat_comtrade(faostat_table, comtrade_table, faostat_code):
+def merge_faostat_comtrade(faostat_table, comtrade_table, faostat_code, strict=True):
     """ "Merge faostat and comtrade bilateral trade
 
     :param faostat_table str: name of the faostat table to select from
     :param comtrade_table str: name of the comtrade table to select from
     :param list faostat_code: list of faostat codes to be loaded
+    :param boolean strict: whether to raise an error or a warning on duplicated country
 
     The function does the following:
 
@@ -328,5 +329,9 @@ def merge_faostat_comtrade(faostat_table, comtrade_table, faostat_code):
                 + "from biotrade.faostat import faostat\n"
                 + "faostat.pump.update('country')"
             )
-            warnings.warn(msg)
+            if strict:
+                msg += "\nUse the argument strict=False to ignore this error."
+                raise ValueError(msg)
+            if not strict:
+                warnings.warn(msg)
     return df_concat
