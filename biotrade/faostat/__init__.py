@@ -49,9 +49,6 @@ from biotrade.common.logger import create_logger
 
 create_logger()
 
-# Create a faostat subfolder in the data directory if it doesn't exist
-(data_dir / "faostat").mkdir(exist_ok=True)
-
 
 class Faostat:
     """
@@ -60,8 +57,6 @@ class Faostat:
 
     # Location of the data
     data_dir = data_dir / "faostat"
-    if not data_dir.exists():
-        data_dir.create()
 
     # Location of module configuration data
     config_data_dir = module_dir / "config_data"
@@ -73,8 +68,8 @@ class Faostat:
     column_names = df[non_na_values > 0]
 
     def __init__(self):
-        # Location of the data
-        self.data_dir = data_dir / "faostat"
+        # Create a faostat subfolder in the data directory if it doesn't exist
+        (data_dir / "faostat").mkdir(exist_ok=True)
         if not self.data_dir.exists():
             self.data_dir.mkdir()
 
