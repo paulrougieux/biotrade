@@ -90,12 +90,12 @@ class Faostat:
 
     @property
     def coefficients(self):
-        """Load data from FAOSTAT and read it into data frames"""
+        """Coefficients specific to FAOSTAT"""
         return Coefficients(self)
 
     @property
     def db_sqlite(self):
-        """Databaze using the SQLite engine"""
+        """Database using the SQLite engine"""
         return DatabaseFaostatSqlite(self)
 
     @property
