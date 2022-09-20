@@ -61,7 +61,7 @@ class Comtrade:
     # Load a mapping table used to rename columns
     df = pandas.read_csv(config_data_dir / "column_names.csv")
     # Select only relevant columns and remove incomplete mappings
-    df = df[["jrc", "comtrade_machine", "comtrade_human"]]
+    df = df[["biotrade", "comtrade_machine", "comtrade_human"]]
     column_names = df[df.isna().sum(axis=1) == 0]
 
     def __init__(self):

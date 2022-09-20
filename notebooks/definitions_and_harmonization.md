@@ -59,7 +59,7 @@ The meaning of the words "commodity" and "product" change depending on the conte
 The following Columns names are related to commodities and products names and codes in the different data sources, as described in the harmonization table 
 [config_data/column_names.csv](../biotrade/config_data/column_names.csv). 
 
-| jrc                 | comext     | comtrade_human | comtrade_machine | faostat_production | faostat_trade |
+| biotrade                 | comext     | comtrade_human | comtrade_machine | faostat_production | faostat_trade |
 |---------------------|------------|----------------|------------------|--------------------|---------------|
 | product_code        | PRODUCT_NC | commodity_code | cmdcode          | item_code          | item_code     |
 | product             |            |                |                  | item               | item          |
@@ -81,7 +81,7 @@ the section on mirror flows below.
 The following column names describe countries and geographical areas :
 
 
-| jrc           | comext    | comtrade_human | comtrade_machine | faostat_production | faostat_trade         | faostat_land | faostat_country |
+| biotrade           | comext    | comtrade_human | comtrade_machine | faostat_production | faostat_trade         | faostat_land | faostat_country |
 |---------------|-----------|----------------|------------------|--------------------|-----------------------|--------------|-----------------|
 | reporter_code | DECLARANT | reporter_code  | rtcode           | area_code          | reporter_country_code | area_code    |                 |
 | reporter      |           | reporter       | rttitle          | area               | reporter_countries    | area         |                 |
@@ -184,7 +184,7 @@ detection of outliers in the data of the subsequent reporting year."
 
 Trade value, quantity and weight have the following names in the Eurostat Comext and UN Comtrade datasets:
 
-| jrc          | comext        | comtrade_human      | comtrade_machine |
+| biotrade          | comext        | comtrade_human      | comtrade_machine |
 |--------------|---------------|---------------------|------------------|
 | quantity     | SUP_QUANTITY  | qty                 | qtaltcode        |
 | weight       | QUANTITY_TON  |                     |                  |
@@ -201,7 +201,7 @@ Trade value, quantity and weight have the following names in the Eurostat Comext
 
 FAOSTAT data is in long format, and therefore the quantities are simply storred in the "value" column, further defined by the element
 
-| jrc          | faostat_production | faostat_trade | faostat_land |
+| biotrade          | faostat_production | faostat_trade | faostat_land |
 |--------------|--------------------|---------------|--------------|
 | element_code | element_code       | element_code  | element_code |
 | element      | element            | element       | element      |
@@ -255,7 +255,7 @@ The crop production dataset has more elements
 
 Some datasets have a unit column which defines the unit used in the main variable of interest.
 
-| jrc       | comext | comtrade_human | comtrade_machine | faostat_production | faostat_trade | faostat_land | faostat_country |
+| biotrade       | comext | comtrade_human | comtrade_machine | faostat_production | faostat_trade | faostat_land | faostat_country |
 |-----------|--------|----------------|------------------|--------------------|---------------|--------------|-----------------|
 | unit_code |        | qty_unit_code  | qtcode           |                    |               |              |                 |
 | unit      |        | qty_unit       | qtdesc           | unit               | unit          | unit         |                 |
@@ -272,12 +272,12 @@ based on a mapping between the column names in different sources in
 
 Columns are renamed in the [comtrade pump](../biotrade/comtrade/pump.py) as such:
 
-    mapping = self.column_names.set_index("comtrade_machine").to_dict()["jrc"]
+    mapping = self.column_names.set_index("comtrade_machine").to_dict()["biotrade"]
     df.rename(columns=mapping, inplace=True)
 
 Columns are renamed in the [faostat pump](../biotrade/faostat/pump.py) as such :
 
-    mapping = self.column_names.set_index(column_renaming).to_dict()["jrc"]
+    mapping = self.column_names.set_index(column_renaming).to_dict()["biotrade"]
     df.rename(columns=mapping, inplace=True)
 
 

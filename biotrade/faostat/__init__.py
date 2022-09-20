@@ -68,7 +68,7 @@ class Faostat:
 
     # Load a mapping table used to rename columns
     df = pandas.read_csv(config_data_dir / "column_names.csv")
-    df = df.filter(regex="jrc|faostat")
+    df = df.filter(regex="biotrade|faostat")
     non_na_values = (~df.filter(like="faostat").isna()).sum(axis=1)
     column_names = df[non_na_values > 0]
 

@@ -193,6 +193,7 @@ class Pump:
         return df
 
     def sanitize_variable_names(self, df, column_renaming, short_name):
+        # TODO: use the function sanitize_variable_names common/sanitise.py
         """Sanitize column names using the mapping table.
         Use snake case in product and element names"""
         # Rename columns to snake case
@@ -200,9 +201,9 @@ class Pump:
         # Columns of the db table
         db_table_cols = self.db.tables[short_name].columns.keys()
         # Original column names
-        cols_to_check = self.column_names[self.column_names["jrc"].isin(db_table_cols)][
-            column_renaming
-        ].tolist()
+        cols_to_check = self.column_names[
+            self.column_names["biotrade"].isin(db_table_cols)
+        ][column_renaming].tolist()
         # Check columns which have changed in the input source
         cols_to_change = set(cols_to_check).difference(df.columns)
         # If column names have changed raise an error
@@ -211,7 +212,7 @@ class Pump:
                 f"The following columns \n{list(cols_to_change)}\nhave changed in the input source {column_renaming}.\nUpdate config_data/column_names.csv before updating table {short_name}"
             )
         # Map columns using the naming convention defined in self.column_names
-        mapping = self.column_names.set_index(column_renaming).to_dict()["jrc"]
+        mapping = self.column_names.set_index(column_renaming).to_dict()["biotrade"]
         # Discard nan keys of mapping dictionary
         mapping.pop(np.nan, None)
         # Obtain columns for db upload

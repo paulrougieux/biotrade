@@ -271,12 +271,14 @@ class Pump:
         if not df.empty:
             # Call method to rename column names
             df = self.sanitize_variable_names(
-                df, renaming_from="comtrade_human", renaming_to="jrc"
+                df, renaming_from="comtrade_human", renaming_to="biotrade"
             )
             # Delete already existing data
             if check_data_presence:
                 self.db.delete_data(
-                    table_name, api_period, api_period,
+                    table_name,
+                    api_period,
+                    api_period,
                 )
             # Append data to db
             self.db.append(df, table_name)
@@ -285,7 +287,12 @@ class Pump:
         return records_downloaded_csv
 
     def transfer_bulk_csv(
-        self, table_name, start_year, end_year, frequency, check_data_presence,
+        self,
+        table_name,
+        start_year,
+        end_year,
+        frequency,
+        check_data_presence,
     ):
         """
         Pump method to transfer bulk csv file of Comtrade API requests to
@@ -375,7 +382,10 @@ class Pump:
                 # Construct the period to pass to transfer_csv_chunk method
                 api_period = int(str(period) + month)
                 # Store zip data into the temporary directory
-                temp_dir, response_code = self.download_bulk_csv(api_period, frequency,)
+                temp_dir, response_code = self.download_bulk_csv(
+                    api_period,
+                    frequency,
+                )
                 # If data are downloaded (response = 200) copy the csv of
                 # the zip file into a pandas data frame
                 if response_code == 200:
@@ -452,14 +462,21 @@ class Pump:
         current_year = datetime.datetime.now(pytz.timezone("Europe/Rome")).date().year
         # Check if data from the start year are present into the database
         data_present = self.db.check_data_presence(
-            table_name, start_year, current_year, frequency,
+            table_name,
+            start_year,
+            current_year,
+            frequency,
         )
         # If data are already inside DB, update from the year before last only
         if data_present:
             start_year = current_year - 1
         # Transfer from api bulk requests to db
         period_list_failed = self.transfer_bulk_csv(
-            table_name, start_year, current_year, frequency, data_present,
+            table_name,
+            start_year,
+            current_year,
+            frequency,
+            data_present,
         )
         # If some periods failed to be uploaded, raise an error
         if len(period_list_failed):
@@ -546,7 +563,7 @@ class Pump:
                 + "in order to get all requested data from Comtrade."
             )
         df = self.sanitize_variable_names(
-            df, renaming_from="comtrade_machine", renaming_to="jrc"
+            df, renaming_from="comtrade_machine", renaming_to="biotrade"
         )
         return df
 
