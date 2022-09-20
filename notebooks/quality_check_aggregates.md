@@ -6,9 +6,9 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.14.0
+      jupytext_version: 1.13.4
   kernelspec:
-    display_name: Python 3 (ipykernel)
+    display_name: Python 3
     language: python
     name: python3
 ---
@@ -73,4 +73,8 @@ for line, color in zip(list_lines, list_colors):
 fig.update_layout(xaxis_title="Year", yaxis_title="Aggregation - World data", title= "Faostat production data")
 
 fig.show()
+```
+
+```python
+
 ```
