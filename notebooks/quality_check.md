@@ -30,6 +30,8 @@ import seaborn as sns
 import plotly.graph_objects as go
 ```
 
+### Faostat harvested area and production data
+
 ```python
 # Soybean, oil palm fruit, coffee green, cocoa beans, cattle,
 product_code_list = [236, 254, 656, 661, 866]
