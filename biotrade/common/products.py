@@ -31,6 +31,14 @@ non coniferous and sawnwood coniferous should be handled at another level and
 only the lowest level product codes of sawnwood non coniferous and sawnwood
 coniferous should be present in the mapping table.
 
+A Comtrade product code can only have 2,4 or 6 digits, the code blows checks
+that this is the case. For example the code for coffee start with a zero
+"090111" (it should not be "90111").
+
+          09                  09 - Coffee, tea, mate and spices
+        0901  0901 - Coffee, whether or not roasted or decaf...
+      090111      090111 - Coffee; not roasted or decaffeinated
+
 """
 # Third party modules
 import pandas
@@ -48,6 +56,16 @@ comtrade_faostat_mapping = pandas.read_csv(
         "faostat_code": "int",
     },
 )
+# A Comtrade product code can only have 2,4 or 6 digits, check this is the case.
+nchar = comtrade_faostat_mapping["comtrade_code"].str.len().unique()
+if not set(nchar).issubset({2, 4, 6}):
+    comtrade_faostat_mapping["nchar"] = comtrade_faostat_mapping[
+        "comtrade_code"
+    ].str.len()
+    msg = "A Comtrade product code can only have 2,4 or 6 digits. "
+    msg += "The following codes do not comply:\n"
+    msg += f"{comtrade_faostat_mapping.query('not nchar.isin([2,4,6])')}"
+    raise ValueError(msg)
 
 # Check duplicates
 # One comtrade code should always be associated to one and only one faostat code
