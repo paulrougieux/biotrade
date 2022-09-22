@@ -40,10 +40,10 @@ def replace_zero_with_nan_values(df, column_list):
 def save_file(df, file_name):
     """
     Function which save output scripts
-    
+
     :param df (DataFrame), output to be saved
     :param file_name (str), name of the output file
-    
+
     """
     # Save csv files to env variable path or into biotrade data folder alternatively
     if os.environ.get("FRONT_END_DATA"):
@@ -57,9 +57,9 @@ def save_file(df, file_name):
 def main_product_list():
     """
     Return the main list of products (without duplicates) contained into the file biotade/config_data/faostat_commodity_tree.csv
-    
+
     :return product_list (list), list of the main product codes
-    
+
     """
     # Name of product file to retrieve
     main_product_file = faostat.config_data_dir / "faostat_commodity_tree.csv"
@@ -114,7 +114,7 @@ def reporter_iso_codes(df):
 
 def merge_faostat_comtrade_data(product_list):
     """
-    Script which merges faostat yearly trade data with comtrade yearly and monthly trade data. 
+    Script which merges faostat yearly trade data with comtrade yearly and monthly trade data.
     The last 12 monthly comtrade data are aggregated to reconstruct the most recent year.
     Considered only import and export data. Re-import and re-export excluded.
 
@@ -178,7 +178,7 @@ def merge_faostat_comtrade_data(product_list):
     return df
 
 
-def average_results(df, threshold, dict_list):
+def average_results(df, threshold, dict_list, interval=False):
     """
     Script which produce the average and percentage results for the tree maps of the web platform
 
@@ -283,7 +283,13 @@ def average_results(df, threshold, dict_list):
         # Group the percentage column values which are in the 'Others' category and calculate their percentage
         df_new = (
             df_new.groupby([*index_list_upd, dict["percentage_col"]])
-            .agg({"value": "sum", average_col_name: "first", total_col_name: "first",})
+            .agg(
+                {
+                    "value": "sum",
+                    average_col_name: "first",
+                    total_col_name: "first",
+                }
+            )
             .reset_index()
         )
         df_new[percentage_col_name] = df_new["value"] / df_new[total_col_name] * 100
@@ -309,6 +315,32 @@ def average_results(df, threshold, dict_list):
                 df_final = pd.concat([df_final, df_new], ignore_index=True)
     # Remove columns from df_final
     df_final.drop(columns=column_drop, inplace=True)
+    if interval:
+        # Compute avg production for a certain commodity, reporter and period
+        groupby_avg_cols = [
+            "product_code",
+            "element",
+            "unit",
+            "reporter_code",
+            "period",
+        ]
+        df_avg = (
+            df.groupby(groupby_avg_cols)
+            .agg({"value": "mean"})
+            .reset_index()
+            .rename(columns={"value": "avg_value"})
+        )
+        # Extract max value avg production for a commodity across periods and reporters
+        groupby_max_cols = ["product_code", "element", "unit"]
+        df_max = (
+            df_avg.groupby(groupby_max_cols)
+            .agg({"avg_value": "max"})
+            .reset_index()
+            .rename(columns={"avg_value": "max_avg_value"})
+        )
+        df_avg = df_avg.merge(df_max, how="left", on=groupby_max_cols)
+        # Associate the max avg productions to the final dataframe
+        df_final = df_final.merge(df_avg, on=groupby_avg_cols)
     return df_final
 
 
@@ -396,16 +428,20 @@ def consistency_check_china_data(df):
 def trend_analysis(df_data):
     """
     Script which performs the trend analysis
-    
+
     :param df_data (DataFrame), data on which perform the analysis
     :return df (DataFrame), dataframe containing the relative, absolute and segmented regresssion indicators
-    
+
     """
     # Calculate the absolute and relative change
     df_data_change = relative_absolute_change(df_data, last_value=True)
     # Use as objective function the coefficient of determination (R2), significance level of 0.05 and at least 7 points for the linear regression
     df_data_regression = segmented_regression(
-        df_data, last_value=True, function="R2", alpha=0.05, min_data_points=7,
+        df_data,
+        last_value=True,
+        function="R2",
+        alpha=0.05,
+        min_data_points=7,
     )
     # Merge dataframes to compare results
     df = merge_analysis(

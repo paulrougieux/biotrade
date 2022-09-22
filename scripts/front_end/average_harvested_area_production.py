@@ -5,7 +5,17 @@ Script made to export data of products and countries (averaging over periods of 
 
 """
 
-from functions import *
+# Import internal dependencies
+import pandas as pd
+from biotrade.faostat import faostat
+from functions import COLUMN_PERC_SUFFIX
+from functions import (
+    consistency_check_china_data,
+    average_results,
+    reporter_iso_codes,
+    replace_zero_with_nan_values,
+    save_file,
+)
 
 # Query db to obtain data
 df = faostat.db.select(table="crop_production")
@@ -37,7 +47,12 @@ dict_list = [
     },
 ]
 # Calculate the averages and percentages
-df_final = average_results(df, 95, dict_list,)
+df_final = average_results(
+    df,
+    100,
+    dict_list,
+    interval=True,
+)
 # Columns to keep
 drop_column = "element"
 column_list = df_final.columns.tolist()
