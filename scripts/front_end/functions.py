@@ -339,8 +339,54 @@ def average_results(df, threshold, dict_list, interval=False):
             .rename(columns={"avg_value": "max_avg_value"})
         )
         df_avg = df_avg.merge(df_max, how="left", on=groupby_max_cols)
-        # Associate the max avg productions to the final dataframe
-        df_final = df_final.merge(df_avg, on=groupby_avg_cols)
+        # Compute thresholds: [0, 0.05, 0.15, ..., 0.95, 1] * df["max_avg_value"]
+        df_avg["bin"] = (
+            df_avg["max_avg_value"].values.reshape(len(df_avg), 1)
+            * np.array(
+                [
+                    np.concatenate(
+                        (
+                            np.array([0.0]),
+                            np.array(np.linspace(5, 95, 10) / 100),
+                            np.array([1.0]),
+                        )
+                    )
+                ]
+            )
+        ).tolist()
+        # For each group (product, element, unit) define to which interval the average production of the specific country and period belongs
+        df_groups = df_avg.groupby(groupby_max_cols)
+        df_avg = pd.DataFrame()
+        for key in df_groups.groups.keys():
+            df_key = df_groups.get_group(key).reset_index(drop=True)
+            bins = df_key.bin[0]
+            # If no max_avg_production defined, then put nan
+            if df_key.max_avg_value.isnull().all():
+                df_key["interval"] = pd.cut(
+                    df_key["avg_value"],
+                    bins=bins,
+                    duplicates="drop",
+                )
+            # Assign the intervals and ranges
+            elif len(df_key.max_avg_value.unique()) == 1:
+                df_key["interval"] = pd.cut(
+                    df_key["avg_value"],
+                    bins=bins,
+                    labels=list(range(0, 11)),
+                )
+                df_key["interval_range"] = pd.cut(
+                    df_key["avg_value"],
+                    bins=bins,
+                )
+            # Inconsistencies could be detected with the warning
+            else:
+                faostat.db.logger.warning(
+                    f"The dataset represented by {groupby_max_cols} = {key} tuple has not been included into the final csv file due to inconsistencies, please check the data."
+                )
+                continue
+            df_avg = pd.concat([df_avg, df_key], ignore_index=True)
+        # Associate the max avg productions with intervals to the final dataframe
+        df_final = df_final.merge(df_avg, on=groupby_avg_cols, how="left")
     return df_final
 
 
