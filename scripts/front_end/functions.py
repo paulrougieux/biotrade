@@ -189,6 +189,8 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
     :return df_final (DataFrame), where calculations are performed
 
     """
+    # Make a copy of df to avoid overrides
+    df = df.copy()
     # Query df to obtain most recent year of data
     most_recent_year = sorted(df.year.unique(), reverse=True)[0]
     # Consider all the years of the table except the most recent (no aggregation for it)
@@ -348,8 +350,10 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
         # For each group (product, element, unit) define to which interval the average production of the specific country and period belongs
         df_groups = df_avg.groupby(groupby_max_cols)
         df_avg = pd.DataFrame()
+        df_legend = pd.DataFrame()
         for key in df_groups.groups.keys():
             df_key = df_groups.get_group(key).reset_index(drop=True)
+            key_legend = pd.DataFrame()
             bins = df_key.bin[0]
             # If no max_avg_production defined, then put nan
             if df_key.max_avg_value.isnull().all():
@@ -369,15 +373,42 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
                     df_key["avg_value"],
                     bins=bins,
                 )
+                key_legend["interval"] = df_key["interval"].cat.categories.values
+                key_legend["min_value"] = df_key["interval_range"].cat.categories.left
+                key_legend["max_value"] = df_key["interval_range"].cat.categories.right
+                key_legend["product_code"] = key[0]
+                key_legend["element"] = key[1]
+                key_legend["unit"] = key[2]
             # Inconsistencies could be detected with the warning
             else:
                 faostat.db.logger.warning(
                     f"The dataset represented by {groupby_max_cols} = {key} tuple has not been included into the final csv file due to inconsistencies, please check the data."
                 )
                 continue
-            df_avg = pd.concat([df_avg, df_key], ignore_index=True)
+            # Concat to obtain updated dataframes
+            df_legend = pd.concat(
+                [df_legend, key_legend],
+                ignore_index=True,
+            )
+            df_avg = pd.concat(
+                [df_avg, df_key[[*groupby_avg_cols, "avg_value", "interval"]]],
+                ignore_index=True,
+            )
         # Associate the max avg productions with intervals to the final dataframe
         df_final = df_final.merge(df_avg, on=groupby_avg_cols, how="left")
+        # Columns to keep in the legend dataframe
+        drop_column = "element"
+        column_list = df_legend.columns.tolist()
+        column_list.remove(drop_column)
+        # Save interval legends
+        harvested_area_legend = df_legend[df_legend["element"] == "area_harvested"][
+            column_list
+        ]
+        save_file(harvested_area_legend, "harvested_area_average_legend.csv")
+        production_legend = df_legend[
+            df_legend["element"].isin(["production", "stocks"])
+        ][column_list]
+        save_file(production_legend, "production_average_legend.csv")
     return df_final
 
 
