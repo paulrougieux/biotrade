@@ -178,13 +178,14 @@ def merge_faostat_comtrade_data(product_list):
     return df
 
 
-def average_results(df, threshold, dict_list, interval=False):
+def average_results(df, threshold, dict_list, interval_array=np.array([])):
     """
     Script which produce the average and percentage results for the tree maps of the web platform
 
     :param df (DataFrame), database to perform calculations
     :param threshold (int), percentage above which classifying as "Others" the percentages in the tree maps
     :param dict_list (list), list of dictionaries containing the column names for the aggregation and the percentages, as well the code for the "Others" category and possible columns to be added to the group by aggregation
+    :param interval_array (array), array with incremental weights (between 0 and 1) to assign data intervals. If empty (default), intervals are not calculated
     :return df_final (DataFrame), where calculations are performed
 
     """
@@ -315,7 +316,7 @@ def average_results(df, threshold, dict_list, interval=False):
                 df_final = pd.concat([df_final, df_new], ignore_index=True)
     # Remove columns from df_final
     df_final.drop(columns=column_drop, inplace=True)
-    if interval:
+    if len(interval_array):
         # Compute avg production for a certain commodity, reporter and period
         groupby_avg_cols = [
             "product_code",
@@ -330,7 +331,7 @@ def average_results(df, threshold, dict_list, interval=False):
             .reset_index()
             .rename(columns={"value": "avg_value"})
         )
-        # Extract max value avg production for a commodity across periods and reporters
+        # Extract max value avg production for a commodity across periods and countries
         groupby_max_cols = ["product_code", "element", "unit"]
         df_max = (
             df_avg.groupby(groupby_max_cols)
@@ -339,20 +340,10 @@ def average_results(df, threshold, dict_list, interval=False):
             .rename(columns={"avg_value": "max_avg_value"})
         )
         df_avg = df_avg.merge(df_max, how="left", on=groupby_max_cols)
-        # Compute thresholds: [0, 0.05, 0.15, ..., 0.95, 1] * df["max_avg_value"]
+        # Compute thresholds: [interval_array] * df["max_avg_value"]
         df_avg["bin"] = (
             df_avg["max_avg_value"].values.reshape(len(df_avg), 1)
-            * np.array(
-                [
-                    np.concatenate(
-                        (
-                            np.array([0.0]),
-                            np.array(np.linspace(5, 95, 10) / 100),
-                            np.array([1.0]),
-                        )
-                    )
-                ]
-            )
+            * np.array([interval_array])
         ).tolist()
         # For each group (product, element, unit) define to which interval the average production of the specific country and period belongs
         df_groups = df_avg.groupby(groupby_max_cols)
@@ -372,7 +363,7 @@ def average_results(df, threshold, dict_list, interval=False):
                 df_key["interval"] = pd.cut(
                     df_key["avg_value"],
                     bins=bins,
-                    labels=list(range(0, 11)),
+                    labels=list(range(0, len(interval_array) - 1)),
                 )
                 df_key["interval_range"] = pd.cut(
                     df_key["avg_value"],

@@ -7,6 +7,7 @@ Script made to export data of products and countries (averaging over periods of 
 
 # Import internal dependencies
 import pandas as pd
+import numpy as np
 from biotrade.faostat import faostat
 from functions import COLUMN_PERC_SUFFIX
 from functions import (
@@ -46,12 +47,19 @@ dict_list = [
         "index_list_add": [],
     },
 ]
-# Calculate the averages and percentages
+# Calculate the averages and percentages with intervals
+intervals = np.concatenate(
+    (
+        np.array([0.0]),
+        np.array(np.linspace(5, 95, 10) / 100),
+        np.array([1.0]),
+    )
+)
 df_final = average_results(
     df,
     100,
     dict_list,
-    interval=True,
+    intervals,
 )
 # Columns to keep
 drop_column = "element"
