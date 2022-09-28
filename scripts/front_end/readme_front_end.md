@@ -1,5 +1,5 @@
 # METADATA
-Table names and metadata of the web platform output scripts. Currently 25 csv files are available.
+Table names and metadata of the web platform output scripts. Currently 27 csv files are available.
 
 > N.B.
 >- Zero and NaN values are not reported.
@@ -52,12 +52,20 @@ Csv that contains annual data of production for each of the key products and the
 - `value`: data registered
 - `unit`: measurement units of the data
 
+## harvested_area_average_legend.csv
+Csv that contains for each product (not only key products) the minimum and maximum values associated to the interval ranking of the average harvested area across periods and countries, together with the specific units. Each interval is defined with the left boundary (minimum) excluded, while the right extreme (maximum) is included. There are 5 columns:
+- `interval`: value between 0 and 10 which allows to rank the harvested area across periods and countries for a specific product. 0 includes values lower than the 5% of the maximum average of the total annual harvested area reported, while 10 covers values higher than the 95%. The other thresholds, for intervals between 1 and 9, are: 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%
+- `min_value`: minimum value of the average of the total annual harvested area for the associated interval and product code (value not included)
+- `max_value`: maximum value of the average of the total annual harvested area for the associated interval and product code (value included)
+- `product_code`: FAO code of the product
+- `unit`: measurement units of the data
+
 ## harvested_area_average.csv
 Csv that contains for each product (not only key products) the average value of the harvested area across reporters and for each reporter the average value of the harvested area across products. 
 Aggregation is generally performed, except the last year where data are not aggregated.
 The average value is obtained dividing the sum over the time period of harvested area associated to the product (or 
 reporter) by the number of years of the time period.
-Percentage values are also reported for products and reporters. The percentage of a product (or reporter) has to be comprised in the 95% of the descendent cumulative sum of harvested area for a specific reporter (or product). The remaining 5% of percentages is grouped into the generic category "Others", because they have negligible percentages to be further distinguished. There are 8 columns:
+Percentage values are also reported for products and reporters. The average value of the total annual harvested area for the specific reporter and product together the associated interval ranking are specified. There are 10 columns:
 - `reporter_code`: code of data reporter
 - `period`: aggregation period yyyy-yyyy
 - `unit`: measurement units of the data
@@ -66,13 +74,23 @@ Percentage values are also reported for products and reporters. The percentage o
 - `product_code_percentage`: percentage value of harvested area related to the specific product code, across all products of the reporter code 
 - `product_code_avg_value`: average value of the total annual harvested area related to the specific product code, across all the associated reporters
 - `reporter_code_percentage`: percentage value of harvested area related to the specific reporter code, across all reporters of the product code
+- `avg_value`: average value of the total annual harvested area related to the specific reporter and product code
+- `interval`: value between 0 and 10 which allows to rank the harvested area across periods and countries for a specific product. 0 includes values lower than the 5% of the maximum average of the total annual harvested area reported, while 10 covers values higher than the 95%. The other thresholds, for intervals between 1 and 9, are: 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%
+
+## production_average_legend.csv
+Csv that contains for each product (not only key products) the minimum and maximum values associated to the interval ranking of the average production across periods and countries, together with the specific units. Each interval is defined with the left boundary (minimum) excluded, while the right extreme (maximum) is included. There are 5 columns:
+- `interval`: value between 0 and 10 which allows to rank the production across periods and countries for a specific product. 0 includes values lower than the 5% of the maximum average of the total annual production reported, while 10 covers values higher than the 95%. The other thresholds, for intervals between 1 and 9, are: 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%
+- `min_value`: minimum value of the average of the total annual production for the associated interval and product code (value not included)
+- `max_value`: maximum value of the average of the total annual production for the associated interval and product code (value included)
+- `product_code`: FAO code of the product
+- `unit`: measurement units of the data
 
 ## production_average.csv
 Csv that contains for each product (not only key products) the average value of the production across reporters and for each reporter the average value of the production across products. 
 Aggregation is generally performed, except the last year where data are not aggregated.
 The average value is obtained dividing the sum over the time period of production associated to the product (or 
 reporter) by the number of years of the time period.
-Percentage values are also reported for products and reporters. The percentage of a product (or reporter) has to be comprised in the 95% of the descendent cumulative sum of production for a specific reporter (or product). The remaining 5% of percentages is grouped into the generic category "Others", because they have negligible percentages to be further distinguished. There are 8 columns:
+Percentage values are also reported for products and reporters. The average value of the total annual production for the specific reporter and product together the associated interval ranking are specified. There are 10 columns:
 - `reporter_code`: code of data reporter
 - `period`: aggregation period yyyy-yyyy
 - `unit`: measurement units of the data
@@ -81,6 +99,8 @@ Percentage values are also reported for products and reporters. The percentage o
 - `product_code_percentage`: percentage value of production related to the specific product code, across all products of the reporter code
 - `product_code_avg_value`: average value of the total annual production related to the specific product code, across all the associated reporters
 - `reporter_code_percentage`: percentage value of production related to the specific reporter code, across all reporters of the product code
+- `avg_value`: average value of the total annual production related to the specific reporter and product code
+- `interval`: value between 0 and 10 which allows to rank the production across periods and countries for a specific product. 0 includes values lower than the 5% of the maximum average of the total annual production reported, while 10 covers values higher than the 95%. The other thresholds, for intervals between 1 and 9, are: 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%
 
 ## harvested_area_trends.csv
 Csv that contains trends of harvested area associated to the key products. For each reporter and each key product, the time series after 1985 is analyzed to obtain indicators for the most recent year. The indicators are: the absolute and relative changes of harvested area associated to the most recent year with respect to the average value of the 5 previous years and the results of the Mann-Kendall trend test performed on the segmented regression analysis. There are 10 columns:
