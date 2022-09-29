@@ -32,10 +32,10 @@ class Database:
     tables = None
 
     def check_unique_constraints(self, df, table):
-        """"
+        """ "
         Method that checks if nan values are present for unique constraint columns and delete the related rows to avoid duplications before appending the dataframe. In fact
         PostgreSQL does not consider nan values as unique and allows more than 1 insertion, causing duplications without errors.
-        
+
         :param df, Dataframe to be uploaded
         :param table, string name of the table to upload the dataframe
         :return df, Dataframe without nan values in constraint columns
@@ -90,7 +90,7 @@ class Database:
             schema=self.schema,
             if_exists="append",
             index=False,
-            chunksize=10 ** 6,
+            chunksize=10**6,
         )
         self.logger.info("Wrote %s rows to the database table %s", len(df), table)
 
@@ -106,7 +106,8 @@ class Database:
         return table
 
     def most_recent_year(
-        self, table,
+        self,
+        table,
     ):
         """
         Query db table to check which is the most recent year of data.
@@ -129,3 +130,17 @@ class Database:
         most_recent_year = self.read_sql_query(stmt)
         most_recent_year = most_recent_year.values[0][0]
         return most_recent_year
+
+    def confirm_db_table_deletion(self, datasets):
+        """Confirm database table deletion
+
+        Separate method, because it is reused at different places."""
+        msg = f"\nIf the database {self.engine} exists already, "
+        msg += "this command will erase the following tables "
+        msg += "and replace them with new data:\n - "
+        msg += "\n - ".join(datasets)
+        if input(msg + "\nPlease confirm [y/n]:") != "y":
+            print("Cancelled.")
+            return False
+        else:
+            return True
