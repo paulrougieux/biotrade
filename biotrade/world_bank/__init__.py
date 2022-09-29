@@ -11,9 +11,11 @@ Usage:
     from biotrade.world_bank import world_bank
 
 """
+# External dependencies
+import pandas as pd
 
 # Internal modules
-from biotrade import data_dir, database_url
+from biotrade import module_dir, data_dir, database_url
 from biotrade.world_bank.pump import Pump
 from biotrade.world_bank.database import DatabaseWorldBankSqlite
 from biotrade.world_bank.database import DatabaseWorldBankPostgresql
@@ -26,6 +28,15 @@ class WorldBank:
 
     # Location of the data
     data_dir = data_dir / "world_bank"
+
+    # Location of module configuration data
+    config_data_dir = module_dir / "config_data"
+
+    # Load a mapping table used to rename columns
+    df = pd.read_csv(config_data_dir / "column_names.csv")
+    # Select only relevant columns and remove incomplete mappings
+    df = df[["biotrade", "world_bank"]]
+    column_names = df[df.isna().sum(axis=1) == 0]
 
     def __init__(self):
         if not self.data_dir.exists():
