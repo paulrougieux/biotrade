@@ -82,12 +82,12 @@ class DatabaseWorldBank(Database):
             Column("reporter_code", Text),
             Column("reporter", Text),
             Column("indicator_code", Text),
-            Column("period", Integer),
+            Column("year", Integer),
             Column("value", Float),
             UniqueConstraint(
                 "reporter_code",
                 "indicator_code",
-                "period",
+                "year",
             ),
             schema=self.schema,
         )
