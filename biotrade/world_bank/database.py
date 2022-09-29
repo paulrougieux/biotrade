@@ -13,8 +13,8 @@ You can use this object at the ipython console with the following examples.
 import logging
 
 # Third party modules
-# from sqlalchemy import Integer, Float, SmallInteger, Text, UniqueConstraint
-# from sqlalchemy import Table, Column
+from sqlalchemy import Integer, Float, Text, UniqueConstraint
+from sqlalchemy import Table, Column
 from sqlalchemy import MetaData
 from sqlalchemy import create_engine, inspect
 
@@ -66,6 +66,32 @@ class DatabaseWorldBank(Database):
                 self.engine.execute(CreateSchema(self.schema))
 
         # Describe table metadata
+        self.indicator = self.describe_indicator_table(name="indicator")
+        self.tables = {
+            "indicator": self.indicator,
+        }
+        # Create tables if they don't exist
+        for table in self.tables.values():
+            self.create_if_not_existing(table)
+
+    def describe_indicator_table(self, name):
+        """Define the metadata of a table containing indicator data."""
+        table = Table(
+            name,
+            self.metadata,
+            Column("reporter_code", Text),
+            Column("reporter", Text),
+            Column("indicator_code", Text),
+            Column("period", Integer),
+            Column("value", Float),
+            UniqueConstraint(
+                "reporter_code",
+                "indicator_code",
+                "period",
+            ),
+            schema=self.schema,
+        )
+        return table
 
 
 class DatabaseWorldBankPostgresql(DatabaseWorldBank):
