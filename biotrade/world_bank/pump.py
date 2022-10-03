@@ -57,6 +57,7 @@ class Pump:
     zip_file_name = "WDI_csv.zip"
     datasets = {
         "indicator": "WDIData.csv",
+        "indicator_name": "WDIData.csv",
     }
 
     def __init__(self, parent):
@@ -79,7 +80,7 @@ class Pump:
             print(f"HTTP response code: {response.code}")
             shutil.copyfileobj(response, out_file)
 
-    def transfer_csv_to_db_in_chunks(self, short_name, chunk_size):
+    def transfer_csv_to_db_in_chunks(self, short_name, chunk_size, reformatting):
         """Read the World Bank zip csv file and transfer large long format CSV file to the database in chunks
         so that a data frame with millions of rows doesn't overload the memory.
         """
@@ -96,14 +97,23 @@ class Pump:
             "Indicator Name",
             "Indicator Code",
         ]
-        # Read in chunks the csv file, transform years to long format and pass each chunk to the database
+        if reformatting is False:
+            # Do not split the dataframe into chunks (len(df) = 383572)
+            chunk_size = 10**6
+        # Read the csv file, transform the dataframe and upload data to the database
         for df_chunk in pandas.read_csv(csv_file, chunksize=chunk_size):
             # Remove unnamed columns
             df_chunk.drop(df_chunk.filter(regex="Unnamed"), axis=1, inplace=True)
-            # Reformatting year columns in long format
-            df_chunk = df_chunk.melt(
-                id_vars=id_columns, var_name="year", value_name="value"
-            )
+            if reformatting:
+                # Reformatting year columns into long format
+                df_chunk = df_chunk.melt(
+                    id_vars=id_columns, var_name="year", value_name="value"
+                )
+            else:
+                # Get unique indicator names and codes
+                df_chunk = df_chunk.drop_duplicates(
+                    subset=["Indicator Name", "Indicator Code"]
+                )
             # Rename columns and keep only those needed for the db table
             df_chunk = sanitize_variable_names(
                 df_chunk, "world_bank", self.db, short_name
@@ -139,12 +149,17 @@ class Pump:
             if not self.confirm_db_table_deletion(datasets):
                 return
         for table_name in datasets:
+            # Keep as default reformatting csv to long years format
+            reformatting = True
+            if table_name == "indicator_name":
+                # Do not reformat the csv file
+                reformatting = False
             # Drop and recreate the table
             table = self.db.tables[table_name]
             table.drop()
             self.db.create_if_not_existing(table)
             # Transfer the compressed CSV file to the database
-            self.transfer_csv_to_db_in_chunks(table_name, self.chunk_size)
+            self.transfer_csv_to_db_in_chunks(table_name, self.chunk_size, reformatting)
 
     def update(self, datasets, skip_confirmation=False):
         """Update the given datasets by downloading them from World Bank Data and
