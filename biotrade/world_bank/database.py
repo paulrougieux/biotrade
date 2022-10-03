@@ -85,7 +85,9 @@ class DatabaseWorldBank(Database):
             Column("reporter", Text),
             Column("indicator_code", Text, index=True),
             Column("year", Integer),
+            Column("unit", Text),
             Column("value", Float),
+            # Unit not in the unique constraint due to some nan values
             UniqueConstraint(
                 "reporter_code",
                 "indicator_code",

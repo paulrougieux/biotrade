@@ -19,7 +19,7 @@ import tempfile
 import logging
 import urllib.request
 import shutil
-import pandas
+import pandas as pd
 
 # Internal modules
 from biotrade.common.url_request_header import HEADER
@@ -90,24 +90,38 @@ class Pump:
         zip_file.extractall(temp_dir)
         # Obtain the name of csv file to read
         csv_file = temp_dir / self.datasets[short_name]
-        # Name of columns to use
+        # Name of csv file columns to use
         id_columns = [
             "Country Name",
             "Country Code",
             "Indicator Name",
             "Indicator Code",
         ]
-        if reformatting is False:
+        if reformatting:
+            # Retrieve series file to append unit column for indicator table
+            unit_file = temp_dir / "WDISeries.csv"
+            df_unit = pd.read_csv(unit_file)
+            # Rename column same as csv file
+            df_unit.rename(columns={"Series Code": "Indicator Code"}, inplace=True)
+            # Keep only columns needed for the merge
+            df_unit = df_unit[["Indicator Code", "Unit of measure"]]
+        else:
             # Do not split the dataframe into chunks (len(df) = 383572)
             chunk_size = 10**6
         # Read the csv file, transform the dataframe and upload data to the database
-        for df_chunk in pandas.read_csv(csv_file, chunksize=chunk_size):
+        for df_chunk in pd.read_csv(csv_file, chunksize=chunk_size):
             # Remove unnamed columns
             df_chunk.drop(df_chunk.filter(regex="Unnamed"), axis=1, inplace=True)
             if reformatting:
                 # Reformatting year columns into long format
                 df_chunk = df_chunk.melt(
                     id_vars=id_columns, var_name="year", value_name="value"
+                )
+                # Merge with unit column
+                df_chunk = df_chunk.merge(
+                    df_unit,
+                    on=["Indicator Code"],
+                    how="left",
                 )
             else:
                 # Get unique indicator names and codes

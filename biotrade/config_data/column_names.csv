@@ -20,7 +20,7 @@ product_description,commodity,cmddesce,,,,,,,,
 item_code,,,,,,,item_code,,,
 item,,,,,,,item,,,
 unit_code,qty_unit_code,qtcode,,,,,,,,
-unit,qty_unit,qtdesc,,,unit,unit,unit,,unit,
+unit,qty_unit,qtdesc,,,unit,unit,unit,,unit,unit_of_measure
 quantity,qty,qtaltcode,,sup_quantity,,,,,,
 weight,,,,quantity_ton,,,,,,
 net_weight,netweight_kg,netweight,,,,,,,,
