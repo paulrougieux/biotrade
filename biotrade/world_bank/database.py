@@ -67,8 +67,10 @@ class DatabaseWorldBank(Database):
 
         # Describe table metadata
         self.indicator = self.describe_indicator_table(name="indicator")
+        self.indicator_name = self.describe_indicator_name_table(name="indicator_name")
         self.tables = {
             "indicator": self.indicator,
+            "indicator_name": self.indicator_name,
         }
         # Create tables if they don't exist
         for table in self.tables.values():
@@ -88,6 +90,20 @@ class DatabaseWorldBank(Database):
                 "reporter_code",
                 "indicator_code",
                 "year",
+            ),
+            schema=self.schema,
+        )
+        return table
+
+    def describe_indicator_name_table(self, name):
+        """Define the metadata of a table containing indicator name data."""
+        table = Table(
+            name,
+            self.metadata,
+            Column("indicator_code", Text, index=True),
+            Column("indicator_name", Text),
+            UniqueConstraint(
+                "indicator_code",
             ),
             schema=self.schema,
         )
