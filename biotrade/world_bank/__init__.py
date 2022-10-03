@@ -20,6 +20,11 @@ from biotrade.world_bank.pump import Pump
 from biotrade.world_bank.database import DatabaseWorldBankSqlite
 from biotrade.world_bank.database import DatabaseWorldBankPostgresql
 
+# Define a logging mechanism to keep track of errors and debug messages
+from biotrade.common.logger import create_logger
+
+create_logger()
+
 
 class WorldBank:
     """

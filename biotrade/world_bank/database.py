@@ -79,9 +79,9 @@ class DatabaseWorldBank(Database):
         table = Table(
             name,
             self.metadata,
-            Column("reporter_code", Text),
+            Column("reporter_code", Text, index=True),
             Column("reporter", Text),
-            Column("indicator_code", Text),
+            Column("indicator_code", Text, index=True),
             Column("year", Integer),
             Column("value", Float),
             UniqueConstraint(
