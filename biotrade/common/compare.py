@@ -166,7 +166,7 @@ def transform_comtrade_using_faostat_codes(comtrade_table, faostat_code):
 
 
 def merge_faostat_comtrade(faostat_table, comtrade_table, faostat_code, strict=True):
-    """ "Merge faostat and comtrade bilateral trade
+    """Merge faostat and comtrade bilateral trade data.
 
     :param faostat_table str: name of the faostat table to select from
     :param comtrade_table str: name of the comtrade table to select from
