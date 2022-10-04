@@ -81,9 +81,9 @@ class Pump:
             shutil.copyfileobj(response, out_file)
 
     def transfer_csv_to_db_in_chunks(self, short_name, chunk_size, reformatting):
-        """Read the World Bank zip csv file and transfer large long format CSV file to the database in chunks
-        so that a data frame with millions of rows doesn't overload the memory.
-        """
+        """Read the World Bank zip csv file and transfer large long format CSV
+        file to the database in chunks so that a data frame with millions of
+        rows doesn't overload the memory."""
         # Unzip the CSV and write it to a temporary file on disk
         zip_file = ZipFile(self.data_dir / self.zip_file_name)
         temp_dir = Path(tempfile.TemporaryDirectory().name)
@@ -143,10 +143,11 @@ class Pump:
 
         :param list datasets: list of dataset names, whose keys should be in
             the world_bank.pump.datasets and world_bank.db.tables dictionaries
-        :param boolean skip_confirmation: ask confirmation as default (False) before deleting tables
+        :param boolean skip_confirmation: ask confirmation as default (False)
+            before deleting tables
         :return: Nothing
 
-        Usage:
+        Update all world bank indicators from the bulk file into the "indicator" table:
 
             >>> from biotrade.world_bank import world_bank
             >>> world_bank.pump.transfer_to_db("indicator")
