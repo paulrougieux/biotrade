@@ -13,6 +13,7 @@ You can use this object at the ipython console with the following examples.
 import logging
 
 # Third party modules
+import pandas as pd
 from sqlalchemy import Integer, Float, Text, UniqueConstraint
 from sqlalchemy import Table, Column
 from sqlalchemy import MetaData
@@ -110,6 +111,53 @@ class DatabaseWorldBank(Database):
             schema=self.schema,
         )
         return table
+
+    def select(
+        self,
+        table,
+        reporter=None,
+        reporter_code=None,
+        indicator_code=None,
+        year_start=None,
+    ):
+        """
+        Select world bank data for the given arguments
+
+        :param str table: name of the database table to select from
+        :param list or str reporter: list of reporter names
+        :param list or int reporter_code: list of reporter codes
+        :param list or int indicator_code: list of indicator codes
+        :param int year_start: year from which data are retrieved
+        :return: A data frame of world bank indicators
+
+        For example select all the indicator time series for Italy and Germany
+
+            >>> from biotrade.world_bank import world_bank
+            >>> world_bank.db.select("indicator", reporter=["Germany", "Italy"])
+
+        """
+        table = self.tables[table]
+        # Change string arguments to lists suitable for a
+        # column.in_() clause
+        if isinstance(reporter, str):
+            reporter = [reporter]
+        if isinstance(reporter_code, str):
+            reporter_code = [reporter_code]
+        if isinstance(indicator_code, str):
+            indicator_code = [indicator_code]
+        # Build the select statement
+        stmt = table.select()
+        if reporter is not None:
+            stmt = stmt.where(table.c.reporter.in_(reporter))
+        if reporter_code is not None:
+            stmt = stmt.where(table.c.reporter_code.in_(reporter_code))
+        if indicator_code is not None:
+            stmt = stmt.where(table.c.indicator_code.in_(indicator_code))
+        if year_start is not None:
+            stmt = stmt.where(table.c.year >= year_start)
+        # Query the database and return a data frame
+        df = pd.read_sql_query(stmt, self.engine)
+        return df
 
 
 class DatabaseWorldBankPostgresql(DatabaseWorldBank):
