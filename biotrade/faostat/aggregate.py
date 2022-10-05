@@ -193,16 +193,23 @@ def agg_by_country_groups(df, agg_reporter=None, agg_partner=None):
                 reporter = ["Brazil", "Indonesia"], product = "soy")
         >>> soy_agg_continent_r_p = agg_by_country_groups(soy,
                 agg_partner = "continent")
-                
+
     """
 
+    # Consider countries with reporter code < 300, above to this value reporters are aggregations
+    df = df[df.reporter_code < 300]
     # Merge reporters with the corresponding continent/subcontinent data
     df = df.merge(
-        CONTINENTS, how="left", left_on="reporter_code", right_on="faost_code",
+        CONTINENTS,
+        how="left",
+        left_on="reporter_code",
+        right_on="faost_code",
     )
 
     # Merge partners with the corresponding continent/subcontinent data
     if "partner_code" in df.columns:
+        # Consider countries with partner code < 300, above to this value partners are aggregations
+        df = df[df.partner_code < 300]
         df = df.merge(
             CONTINENTS,
             how="left",
