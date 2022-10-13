@@ -309,6 +309,9 @@ class DatabaseComtrade(Database):
         partner_code=None,
         product_code=None,
         product_code_start=None,
+        flow=None,
+        period_start=None,
+        period_end=None,
     ):
         """
         Select comtrade trade data for the given arguments
@@ -324,6 +327,9 @@ class DatabaseComtrade(Database):
             Exact matches of product codes
         :param list or int product_code_start: list of product codes
             Partial matches of all products that start with this code
+        :param list or str flow: list of flow, for example "import", "export"
+        :param int period_start: filter on start period data
+        :param int period_end: filter on end period data
         :return: A data frame of trade flows
 
         For example select monthly time series of Oak sawnwood trade
@@ -347,6 +353,8 @@ class DatabaseComtrade(Database):
             product_code = [product_code]
         if isinstance(product_code_start, (int, str)):
             product_code_start = [product_code_start]
+        if isinstance(flow, str):
+            flow = [flow]
         # Build the select statement
         stmt = table.select()
         if reporter is not None:
@@ -361,8 +369,17 @@ class DatabaseComtrade(Database):
             stmt = stmt.where(table.c.product_code.in_(product_code))
         if product_code_start is not None:
             stmt = stmt.where(
-                or_(table.c.product_code.ilike(f"{c}%") for c in product_code_start)
+                or_(
+                    table.c.product_code.ilike(f"{c}%")
+                    for c in product_code_start
+                )
             )
+        if flow is not None:
+            stmt = stmt.where(table.c.flow.in_(flow))
+        if period_start is not None:
+            stmt = stmt.where(table.c.period >= period_start)
+        if period_end is not None:
+            stmt = stmt.where(table.c.period <= period_end)
         # Query the database and return a data frame
         df = pandas.read_sql_query(stmt, self.engine)
         return df
@@ -386,7 +403,9 @@ class DatabaseComtrade(Database):
         # Rename column content to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
         if "flow" in df.columns:
-            df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+            df["flow"] = (
+                df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+            )
             # Remove the plural "s"
             df["flow"] = df["flow"].str.replace("s", "", regex=True)
         # TODO: Change period to a date time object
