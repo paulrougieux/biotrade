@@ -68,7 +68,9 @@ class DatabaseWorldBank(Database):
 
         # Describe table metadata
         self.indicator = self.describe_indicator_table(name="indicator")
-        self.indicator_name = self.describe_indicator_name_table(name="indicator_name")
+        self.indicator_name = self.describe_indicator_name_table(
+            name="indicator_name"
+        )
         self.tables = {
             "indicator": self.indicator,
             "indicator_name": self.indicator_name,
@@ -119,6 +121,7 @@ class DatabaseWorldBank(Database):
         reporter_code=None,
         indicator_code=None,
         year_start=None,
+        year_stop=None,
     ):
         """
         Select world bank data for the given arguments
@@ -128,6 +131,7 @@ class DatabaseWorldBank(Database):
         :param list or int reporter_code: list of reporter codes
         :param list or int indicator_code: list of indicator codes
         :param int year_start: year from which data are retrieved
+        :param int year_stop: year end data
         :return: A data frame of world bank indicators
 
         For example select all the indicator time series for Italy and Germany
@@ -155,6 +159,8 @@ class DatabaseWorldBank(Database):
             stmt = stmt.where(table.c.indicator_code.in_(indicator_code))
         if year_start is not None:
             stmt = stmt.where(table.c.year >= year_start)
+        if year_stop is not None:
+            stmt = stmt.where(table.c.year <= year_stop)
         # Query the database and return a data frame
         df = pd.read_sql_query(stmt, self.engine)
         return df
