@@ -267,7 +267,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 231,259,US,US,USA,USA,842,member,United States of America,the United States of America,United States of America,Estados Unidos de América,1945,,World,Americas,5200,Northern America,5203,Developed,0,
 240,258,VI,VI,VIR,VIR,850,areas and territories,United States Virgin Islands,the United States Virgin Islands,United States Virgin Islands,Islas Vírgnes (US),,,World,Americas,5200,Caribbean,5206,Developing,0,
 234,260,UY,UY,URY,URY,858,member,Uruguay,the Eastern Republic of Uruguay,Uruguay,Uruguay,1945,,World,Americas,5200,South America,5207,Developing,0,
-232,-1,PU,PU,PUS,PUS,581,areas and territories,United States Minor Outlying Islands,US Minor Is.,US Minor Is.,Islas Menores Periféricas de los Estados Unidos,,,,,,,,,0,
+232,-1,UM,PU,UMI,PUS,581,areas and territories,United States Minor Outlying Islands,US Minor Is.,US Minor Is.,Islas Menores Periféricas de los Estados Unidos,,,,,,,,,0,
 235,261,UZ,UZ,UZB,UZB,860,member,Uzbekistan,the Republic of Uzbekistan,Uzbekistan,Uzbekistán,1992,,World,Asia,5300,Central Asia,5301,Developing,0,
 155,262,VU,VU,VUT,VUT,548,member,Vanuatu,the Republic of Vanuatu,Vanuatu,Vanuatu,1981,,World,Oceania,5500,Melanesia,5502,Developing,0,
 236,263,VE,VE,VEN,VEN,862,member,Venezuela (Bolivarian Republic of),the Bolivarian Republic of Venezuela,Venezuela,Venezuela (República Bolivariana de),1945,,World,Americas,5200,South America,5207,Developing,0,
