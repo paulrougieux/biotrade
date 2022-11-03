@@ -60,6 +60,25 @@ def nlargest(df, value_vars, time_vars=None, agg_groups=None, slice_groups=None,
         >>>          agg_groups="reporter",
         >>>          slice_groups="element")
 
+    The 5 largest cocoa beans exporters to the EU and ROW
+
+        >>> from biotrade.faostat import faostat
+        >>> from biotrade.common.aggregate import nlargest
+        >>> from biotrade.faostat.aggregate import agg_trade_eu_row
+        >>> cocob_raw = faostat.db.select("crop_trade", product_code=661, period_start=2015)
+        >>> cocob_raw = cocob_raw.query("element in ['import_quantity', 'import_value']")
+        >>> cocob = agg_trade_eu_row(cocob_raw, grouping_side="reporter")
+        >>> # Yearly average over the last 5 years
+        >>> nlargest(cocob,
+        >>>          value_vars="value",
+        >>>          agg_groups=["reporter","partner"],
+        >>>          slice_groups="element")
+        >>> # Yearly values
+        >>> nlargest(cocob,
+        >>>          value_vars="value",
+        >>>          agg_groups=["reporter","partner"],
+        >>>          slice_groups=["element", "year"])
+
     """
     if time_vars is None:
         time_vars = ["year"]
