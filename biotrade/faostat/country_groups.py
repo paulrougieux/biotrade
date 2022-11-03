@@ -48,6 +48,7 @@ class CountryGroups(object):
         # Note, we are not using the nullable integer data type Int64 with capital I.
         # https://pandas.pydata.org/pandas-docs/stable/user_guide/integer_na.html
         # Preferring to keep the standard integer type and -1 for missing codes.
+        # TODO: remove this behaviour NA should be kept as NA
         df["faost_code"] = df["faost_code"].fillna(-1).astype("int")
         df["un_code"] = df["un_code"].fillna(-1).astype("int")
         return df
