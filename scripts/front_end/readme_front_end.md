@@ -20,7 +20,7 @@ Csv that contains the list of all reporters. Can be used also for partners. Ther
     - "agg" which represents an aggregation of reporters
 
 ## product_list.csv
-Csv that contains the list of all products. There are 3 columns:
+Csv that contains the list of selected products. There are 3 columns:
 - `product_code`: FAO code of the product
 - `product_name`: name of the product
 - `key_product_flag`: 1 if the product is a key primary product; 0 otherwise
@@ -28,12 +28,10 @@ Csv that contains the list of all products. There are 3 columns:
 ## key_product_tree_list.csv
 Csv to create the product tree according to FAO technical report 2011.
 Key products selected in this csv are coffee, cocoa, soybeans, palm oil fruit and cattle.
-There are 6 columns:
+There are 4 columns:
 - `primary_product_code`: code of the primary product name (just for sub-setting purposes)
-- `parent_product_name`: parent product name, left side of each branch of the trees
-- `parent_product_code`: FAO code of the parent product
-- `child_product_name`: name of the product derived from the parent, right side of the tree
-- `child_product_code`: FAO code of the child
+- `parent_product_code`: FAO code of the parent product, left side of each branch of the trees
+- `child_product_code`: FAO code of the child product derived from the parent, right side of the tree
 - `bp_flag`: 1 indicates co-products or byproducts (e.g., cake and oil); 0 otherwise
 
 ## harvested_area_annual_variation.csv
