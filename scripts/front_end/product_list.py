@@ -5,32 +5,26 @@ Script made to export data related to all commodities and tree of the key produc
 
 """
 
-import numpy as np
 import pandas as pd
 from biotrade.faostat import faostat
 from functions import save_file, main_product_list
 
 # Name of product file to retrieve
-faostat_key_commodities_file = faostat.config_data_dir / "faostat_commodity_tree.csv"
+faostat_key_commodities_file = (
+    faostat.config_data_dir / "faostat_commodity_tree.csv"
+)
 # Retrieve tree dataset
 product_tree = pd.read_csv(faostat_key_commodities_file)
 # Obtain the main product codes
 main_product_list = main_product_list()
-# Put primary codes instead of keys
-product_dict = dict(zip(product_tree.parent, product_tree.parent_code))
-product_tree.replace({"primary_commodity": product_dict}, inplace=True)
-# Replace product keys with names
-product_tree["parent"] = product_tree.parent.str.replace("_", " ").str.capitalize()
-product_tree["child"] = product_tree.child.str.replace("_", " ").str.capitalize()
-# Rename columns
+# Filter and rename columns
 column_rename_dict = {
-    "primary_commodity": "primary_product_code",
-    "parent": "parent_product_name",
+    "primary_commodity_code": "primary_product_code",
     "parent_code": "parent_product_code",
-    "child": "child_product_name",
     "child_code": "child_product_code",
     "bp": "bp_flag",
 }
+product_tree = product_tree[column_rename_dict.keys()]
 product_tree.rename(columns=column_rename_dict, inplace=True)
 # Select product names and codes from Faostat tables
 table_list = [
@@ -58,6 +52,10 @@ faostat_products = pd.concat(
 faostat_products["key_product_flag"] = faostat_products.product_code.isin(
     product_tree.primary_product_code.unique().tolist()
 ).astype(int)
+# Filter only for regulation products (final decision)
+faostat_products = faostat_products[
+    faostat_products.product_code.isin(main_product_list)
+]
 # Save csv files to env variable path or into biotrade data folder
 save_file(product_tree, "key_product_tree_list.csv")
 save_file(faostat_products, "product_list.csv")
