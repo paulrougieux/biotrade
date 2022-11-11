@@ -1,4 +1,3 @@
-
 The `biotrade` package analyses international trade of bio-based products. It focuses on 
 the agriculture and forestry sectors, from primary production to secondary products 
 transformation. It loads bilateral trade and production data from the UN Comtrade and 
@@ -25,7 +24,7 @@ To install a previous version specify the git tag, for example v0.0.1
 
 To install the latest development version, use also the `--upgrade` flag:
 
-    pip install --upgrade git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@dev
+    pip install --upgrade --force-reinstall git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@dev
 
 
 ## Installation for contributors
