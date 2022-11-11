@@ -12,6 +12,7 @@ Unit D1 Bioeconomy.
 import warnings
 from biotrade.faostat import faostat
 from pandas.api.types import is_numeric_dtype
+import numpy as np
 
 # Import country table selecting continents and sub continents columns
 CONTINENTS = faostat.country_groups.continents[
@@ -134,7 +135,9 @@ def agg_trade_eu_row(
         if "partner_code" not in df.columns:
             index.remove("partner_code")
     # Aggregate
-    df_agg = df.groupby(index, dropna=False).agg(value=("value", sum)).reset_index()
+    df_agg = (
+        df.groupby(index, dropna=False).agg(value=("value", sum)).reset_index()
+    )
     # When aggregating over partner groups, rename country_group to partner
     if grouping_side == "partner":
         df_agg = df_agg.rename(columns={country_group: "partner"})
@@ -142,11 +145,12 @@ def agg_trade_eu_row(
     if grouping_side == "reporter":
         df_agg = df_agg.rename(columns={country_group: "reporter"})
     # Check that the total value hasn't changed
-    if not df_agg["value"].sum() == df["value"].sum():
-        raise ValueError(
-            f"The total value sum of the aggregated data {sum(df_agg['value'])}"
-            + f"doesn't match with the sum of the input data frame{sum(df['value'])}"
-        )
+    np.testing.assert_allclose(
+        df_agg["value"].sum(),
+        df["value"].sum(),
+        err_msg=f"The total value sum of the aggregated data {df_agg['value'].sum()}"
+        + f" doesn't match with the sum of the input data frame {df['value'].sum()}",
+    )
     return df_agg
 
 
@@ -219,7 +223,14 @@ def agg_by_country_groups(df, agg_reporter=None, agg_partner=None):
         )
 
     # fixed aggregation column names
-    columns = ["period", "product", "product_code", "element", "element_code", "unit"]
+    columns = [
+        "period",
+        "product",
+        "product_code",
+        "element",
+        "element_code",
+        "unit",
+    ]
     # Columns for the aggregation
     index = []
     for col in columns:
@@ -259,11 +270,14 @@ def agg_by_country_groups(df, agg_reporter=None, agg_partner=None):
             if column == f"{agg_partner}_partner"
         ]
     # Aggregate
-    df_agg = df.groupby(index, dropna=False).agg(value=("value", sum)).reset_index()
+    df_agg = (
+        df.groupby(index, dropna=False).agg(value=("value", sum)).reset_index()
+    )
     # Check that the total value isn't changed
-    if not df_agg["value"].sum() == df["value"].sum():
-        raise ValueError(
-            f"The total value sum of the aggregated data {df_agg['value'].sum()}"
-            + f" doesn't match with the sum of the input data frame {df['value'].sum()}"
-        )
+    np.testing.assert_allclose(
+        df_agg["value"].sum(),
+        df["value"].sum(),
+        err_msg=f"The total value sum of the aggregated data {df_agg['value'].sum()}"
+        + f" doesn't match with the sum of the input data frame {df['value'].sum()}",
+    )
     return df_agg
