@@ -34,7 +34,7 @@ import pytz
 import os
 import re
 import time
-import urllib.request
+import requests
 
 # Third party modules
 import json
@@ -120,18 +120,24 @@ class Pump:
         Use snake case in column names and replace some symbols
         """
         # Rename columns to snake case
-        df.rename(columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True)
+        df.rename(
+            columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True
+        )
         # Remove parenthesis and dots, used only for human readable dataset
         df.rename(columns=lambda x: re.sub(r"[()\.]", "", x), inplace=True)
         # Replace $ sign by d, used only for human readable dataset
         df.rename(columns=lambda x: re.sub(r"\$", "d", x), inplace=True)
         # Rename columns using the naming convention defined in self.column_names
-        mapping = self.column_names.set_index(renaming_from).to_dict()[renaming_to]
+        mapping = self.column_names.set_index(renaming_from).to_dict()[
+            renaming_to
+        ]
         df.rename(columns=mapping, inplace=True)
         # Rename column content to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
         if "flow" in df.columns:
-            df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+            df["flow"] = (
+                df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+            )
             # Remove the plural "s"
             df["flow"] = df["flow"].str.replace("s", "", regex=True)
         return df
@@ -164,8 +170,6 @@ class Pump:
         # Temporary zip file path
         temp_file = temp_dir / "temp.zip"
         self.logger.info("Downloading data from:\n %s", url_api_call)
-        # Create a request
-        req = urllib.request.Request(url=url_api_call, headers=self.header)
         # Variable for checking successfull zip dowload
         download_successful = False
         # Default sleep time before downloading zip file
@@ -176,20 +180,24 @@ class Pump:
         while not download_successful and sleep_time < 3600:
             time.sleep(sleep_time)
             try:
-                with urllib.request.urlopen(req) as response, open(
-                    temp_file, "wb"
-                ) as out_file:
+                # Create a request
+                response = requests.get(
+                    url=url_api_call, headers=self.header, stream=True
+                )
+                # Raise in case of HTTP error
+                response.raise_for_status()
+                with open(temp_file, "wb") as out_file:
                     # Copy the zip file into the output_file
-                    shutil.copyfileobj(response, out_file)
+                    shutil.copyfileobj(response.raw, out_file)
                     download_successful = True
-                    response_code = response.code
-            except urllib.error.HTTPError as error:
+                    response_code = response.status_code
+            except requests.exceptions.HTTPError as error:
+                response_code = error.response.status_code
                 # Error 404 means that no data are present, stop the while loop
-                if error.code == 404:
+                if response_code == 404:
                     download_successful = True
-                response_code = error.code
-            except urllib.error.URLError as error:
-                response_code = error.reason
+            except requests.exceptions.RequestException as error:
+                response_code = error
             sleep_time *= 2
             self.logger.info(f"HTTP response code: {response_code}")
         return temp_dir, response_code
@@ -201,7 +209,7 @@ class Pump:
         bioeconomy_tuple,
         check_data_presence,
         api_period,
-        chunk_size=10 ** 6,
+        chunk_size=10**6,
     ):
         """
         Pump method to transfer large csv file to db using dataframe.
@@ -248,7 +256,9 @@ class Pump:
                         elif table_name == "yearly_hs2":
                             # Store codes with bioeconomy label and 2 digits
                             df_chunk = df_chunk[
-                                df_chunk["Commodity Code"].isin(bioeconomy_tuple)
+                                df_chunk["Commodity Code"].isin(
+                                    bioeconomy_tuple
+                                )
                             ]
                         elif table_name == "yearly":
                             # Store codes with bioeconomy label and 6 digits
@@ -266,7 +276,7 @@ class Pump:
         df = pandas.concat(chunk_list)
         self.logger.info(
             "Memory usage:\n%s GB",
-            round(df.memory_usage(deep=True).sum() / (1024 ** 3), 2),
+            round(df.memory_usage(deep=True).sum() / (1024**3), 2),
         )
         if not df.empty:
             # Call method to rename column names
@@ -367,7 +377,9 @@ class Pump:
                 "12",
             ]
         # Date object of today
-        current_date = datetime.datetime.now(pytz.timezone("Europe/Rome")).date()
+        current_date = datetime.datetime.now(
+            pytz.timezone("Europe/Rome")
+        ).date()
         # Loop on year and eventually month, depending on the frequency
         # parameter
         for period in period_block:
@@ -377,7 +389,10 @@ class Pump:
             for month in month_list:
                 if frequency == "M":
                     # Data not available in the future
-                    if datetime.datetime(period, int(month), 1).date() > current_date:
+                    if (
+                        datetime.datetime(period, int(month), 1).date()
+                        > current_date
+                    ):
                         break
                 # Construct the period to pass to transfer_csv_chunk method
                 api_period = int(str(period) + month)
@@ -459,7 +474,9 @@ class Pump:
             frequency = "A"
         elif table_name == "monthly":
             frequency = "M"
-        current_year = datetime.datetime.now(pytz.timezone("Europe/Rome")).date().year
+        current_year = (
+            datetime.datetime.now(pytz.timezone("Europe/Rome")).date().year
+        )
         # Check if data from the start year are present into the database
         data_present = self.db.check_data_presence(
             table_name,
@@ -543,15 +560,16 @@ class Pump:
 
         # Load the data in json format
         if fmt == "json":
-            req = urllib.request.Request(url=url_api_call, headers=self.header)
-            with urllib.request.urlopen(req) as response:
-                print(f"HTTP response code: {response.code}")
-                json_content = json.load(response)
-                # If the data was downloaded incorrectly, raise an error with the validation status
-                if json_content["validation"]["status"]["value"] != 0:
-                    raise urllib.error.URLError(
-                        f"API message\n{json_content['validation']}"
-                    )
+            response = requests.get(
+                url=url_api_call, headers=self.header, stream=True
+            )
+            print(f"HTTP response code: {response.status_code}")
+            json_content = json.load(response.raw)
+            # If the data was downloaded incorrectly, raise an error with the validation status
+            if json_content["validation"]["status"]["value"] != 0:
+                raise requests.exceptions.RequestException(
+                    f"API message\n{json_content['validation']}"
+                )
                 df = pandas.json_normalize(json_content["dataset"])
 
         # Raise an error if the data frame has the maximum number of rows returned by the query
@@ -586,11 +604,10 @@ class Pump:
         >>> comtrade.pump.get_parameter_list("classificationHS.json")
         """
         url = self.url_metadata_base + file_name
-        req = urllib.request.Request(url=url, headers=self.header)
-        with urllib.request.urlopen(req) as response:
-            print(f"HTTP response code: {response.code}")
-            json_content = json.load(response)
-            df = pandas.json_normalize(json_content["results"])
+        response = requests.get(url=url, headers=self.header, stream=True)
+        print(f"HTTP response code: {response.status_code}")
+        json_content = json.load(response.raw)
+        df = pandas.json_normalize(json_content["results"])
         return df
 
     def update_db_parameter(self):
@@ -605,7 +622,9 @@ class Pump:
         """
         # Reload the data from Comtrade
         hs = self.get_parameter_list("classificationHS.json")
-        hs = hs.rename(columns={"id": "product_code", "text": "product_description"})
+        hs = hs.rename(
+            columns={"id": "product_code", "text": "product_description"}
+        )
         duplicated = hs.duplicated("product_code")
         if any(duplicated):
             self.logger.info(
@@ -729,9 +748,9 @@ class Pump:
         years = [str(i) for i in range(start_year, end_year + 1)]
         for reporter_code in reporters.id:
 
-            reporter_name = reporters.text[reporters.id == reporter_code].to_string(
-                index=False
-            )
+            reporter_name = reporters.text[
+                reporters.id == reporter_code
+            ].to_string(index=False)
             # https://comtrade.un.org/data/doc/api
             # "1 request every second (per IP address or authenticated user)."
             time.sleep(2)
@@ -747,14 +766,18 @@ class Pump:
                 nr_product = 5
             # Select the first 5 products code at a time to avoid row limits to download
             product_block = product_code[
-                product_counter * nr_product : (product_counter + 1) * nr_product
+                product_counter
+                * nr_product : (product_counter + 1)
+                * nr_product
             ]
             # no more products to query
             while product_block != []:
                 # differentiate selection of the period based on the frequency
                 if frequency == "A":
                     # selection of 5 years
-                    period = years[period_counter * 5 : (period_counter + 1) * 5]
+                    period = years[
+                        period_counter * 5 : (period_counter + 1) * 5
+                    ]
                 elif frequency == "M":
                     # selection of 1 year(12 months)
                     period = years[period_counter : period_counter + 1]
@@ -847,7 +870,9 @@ class Pump:
                 )
                 # Trace API parameters and db status into table
                 self.write_log(
-                    timedate=datetime.datetime.now(pytz.timezone("Europe/Rome")),
+                    timedate=datetime.datetime.now(
+                        pytz.timezone("Europe/Rome")
+                    ),
                     table=table_name,
                     max=100000,
                     type="C",
@@ -895,9 +920,9 @@ class Pump:
         years = [str(year - i) for i in range(1, 6)]
         years = ",".join(years)
         for reporter_code in reporters.id:
-            reporter_name = reporters.text[reporters.id == reporter_code].to_string(
-                index=False
-            )
+            reporter_name = reporters.text[
+                reporters.id == reporter_code
+            ].to_string(index=False)
             download_successful = False
             # https://comtrade.un.org/data/doc/api
             # "1 request every second (per IP address or authenticated user)."
@@ -940,7 +965,9 @@ class Pump:
             # check if data are the sames otherwise raise an error
             except Exception as error:
                 self.logger.info(
-                    "Failed to store %s in the database\n %s", reporter_name, error
+                    "Failed to store %s in the database\n %s",
+                    reporter_name,
+                    error,
                 )
             # Keep track of the country name and length of the data in the log file
             records_downloaded += len(df)

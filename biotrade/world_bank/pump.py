@@ -17,7 +17,7 @@ from pathlib import Path
 from zipfile import ZipFile
 import tempfile
 import logging
-import urllib.request
+import requests
 import shutil
 import pandas as pd
 
@@ -73,14 +73,16 @@ class Pump:
         # Load the zip file to the data directory
         output_file = self.data_dir / self.zip_file_name
         self.logger.info("Downloading data from:\n %s", self.url_bulk)
-        req = urllib.request.Request(url=self.url_bulk, headers=self.header)
-        with urllib.request.urlopen(req) as response, open(
-            output_file, "wb"
-        ) as out_file:
-            print(f"HTTP response code: {response.code}")
-            shutil.copyfileobj(response, out_file)
+        response = requests.get(
+            url=self.url_bulk, headers=self.header, stream=True
+        )
+        with open(output_file, "wb") as out_file:
+            print(f"HTTP response code: {response.status_code}")
+            shutil.copyfileobj(response.raw, out_file)
 
-    def transfer_csv_to_db_in_chunks(self, short_name, chunk_size, reformatting):
+    def transfer_csv_to_db_in_chunks(
+        self, short_name, chunk_size, reformatting
+    ):
         """Read the World Bank zip csv file and transfer large long format CSV
         file to the database in chunks so that a data frame with millions of
         rows doesn't overload the memory."""
@@ -102,7 +104,9 @@ class Pump:
             unit_file = temp_dir / "WDISeries.csv"
             df_unit = pd.read_csv(unit_file)
             # Rename column same as csv file
-            df_unit.rename(columns={"Series Code": "Indicator Code"}, inplace=True)
+            df_unit.rename(
+                columns={"Series Code": "Indicator Code"}, inplace=True
+            )
             # Keep only columns needed for the merge
             df_unit = df_unit[["Indicator Code", "Unit of measure"]]
         else:
@@ -111,7 +115,9 @@ class Pump:
         # Read the csv file, transform the dataframe and upload data to the database
         for df_chunk in pd.read_csv(csv_file, chunksize=chunk_size):
             # Remove unnamed columns
-            df_chunk.drop(df_chunk.filter(regex="Unnamed"), axis=1, inplace=True)
+            df_chunk.drop(
+                df_chunk.filter(regex="Unnamed"), axis=1, inplace=True
+            )
             if reformatting:
                 # Reformatting year columns into long format
                 df_chunk = df_chunk.melt(
@@ -174,7 +180,9 @@ class Pump:
             table.drop()
             self.db.create_if_not_existing(table)
             # Transfer the compressed CSV file to the database
-            self.transfer_csv_to_db_in_chunks(table_name, self.chunk_size, reformatting)
+            self.transfer_csv_to_db_in_chunks(
+                table_name, self.chunk_size, reformatting
+            )
 
     def update(self, datasets, skip_confirmation=False):
         """Update the given datasets by downloading them from World Bank Data and
