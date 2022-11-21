@@ -303,6 +303,7 @@ class DatabaseFaostat(Database):
         partner_code=None,
         product_code=None,
         period_start=None,
+        period_end=None,
     ):
         """Select faostat data for the given arguments
 
@@ -314,6 +315,8 @@ class DatabaseFaostat(Database):
         :param list or int or str reporter_code: list of reporter codes
         :param list or int or str partner_code: list of partner codes
         :param list or int or str product_code: list of product codes
+        :param int period_start: integer for filtering data from start year
+        :param int period_end: integer for filtering data up to end year
         :return: A data frame of trade flows
 
         Note that the search for reporter and partner will be based on perfect
@@ -431,6 +434,8 @@ class DatabaseFaostat(Database):
             stmt = stmt.where(table.c.product_code.in_(product_code))
         if period_start is not None:
             stmt = stmt.where(table.c.period >= period_start)
+        if period_end is not None:
+            stmt = stmt.where(table.c.period <= period_end)
         # Query the database and return a data frame
         df = pandas.read_sql_query(stmt, self.engine)
         return df
