@@ -141,7 +141,7 @@ Get the list of reporter and partner countries
 
 
 
-# Metadata
+# Metadata and configuration data
 
 
 ## Release dates
@@ -181,6 +181,23 @@ R
     R> df["Product Code"]
     R> df$`Product Code`
     R> df$product_code
+
+
+## Configuration data
+
+The `biotrade` package stores a small amount of configuration data such as country and 
+product mapping tables and conversion coefficients in the `biotrade/config_data` folder.
+
+- FAOSTAT country and product mapping tables are accessible under the FAO Creative 
+  Commons 3.0 Intergovernmental Organization (IGO) licence mentionned in the FAO open 
+  access policy https://www.fao.org/3/I9461EN/I9461en.pdf  
+
+- The Table "Extraction rates and value shares of major oil crops" comes from a JRC 
+  technical report: Cuypers, Dieter, Theo Geerken, Leen Gorissen, Arnoud Lust, Glen 
+  Peters, Jonas Karstensen, Sylvia Prieler, G. Fischer, Eva Hizsnyik, and Harrij Van 
+  Velthuizen. "The impact of EU consumption on deforestation: Comprehensive analysis of 
+  the impact of EU consumption on deforestation." (2013). 
+  https://ec.europa.eu/environment/forests/pdf/1.%20Report%20analysis%20of%20impact.pdf
 
 
 # Licence
