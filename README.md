@@ -14,17 +14,18 @@ https://www.fao.org/economic/the-statistics-division-ess/methodology/methodology
 
 Install from the main branch of a private repo on gitlab using an
 [authentication
-token](https://docs.gitlab.com/ee/user/project/deploy_tokens/index.html)
+token](https://docs.gitlab.com/ee/user/project/deploy_tokens/index.html). The tokens 
+will not be necessary once biotrade becomes publicly available.
 
-    pip install git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@main
+    pip install git+https://<token>@gitlab.com/bioeconomy/forobs/biotrade.git@main
 
 To install a previous version specify the git tag, for example v0.0.1
 
-    pip install git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@v0.0.1
+    pip install git+https://<token>@gitlab.com/bioeconomy/forobs/biotrade.git@v0.0.1
 
 To install the latest development version, use also the `--upgrade` flag:
 
-    pip install --upgrade --force-reinstall git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@dev
+    pip install --upgrade --force-reinstall git+https://<token>@gitlab.com/bioeconomy/forobs/biotrade.git@dev
 
 
 ## Installation for contributors
