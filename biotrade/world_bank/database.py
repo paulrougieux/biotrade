@@ -8,6 +8,26 @@ JRC biomass Project.
 Unit D1 Bioeconomy.
 
 You can use this object at the ipython console with the following examples.
+Load population data https://data.worldbank.org/indicator/SP.POP.TOTL
+
+    >>> from biotrade.world_bank import world_bank
+    >>> pop = world_bank.db.select("indicator", indicator_code="SP.POP.TOTL")
+
+Select available indicator time series for Italy and Germany and display those
+that contain the word "gdp".
+
+    >>> from biotrade.world_bank import world_bank
+    >>> indicators = world_bank.db.select("indicator", reporter=["Germany", "Italy"])
+    >>> icode = indicators["indicator_code"]
+    >>> icode[icode.str.contains("gdp", case=False)].unique()
+
+Select the GDP in constant USD of 2015 and display the country groups and
+countries with the highest GDP
+https://data.worldbank.org/indicator/NY.GDP.MKTP.KD
+
+    >>> gdpk2015 = world_bank.db.select("indicator", indicator_code="NY.GDP.MKTP.KD")
+    >>> gdpk2015.groupby('reporter')["value"].max().sort_values(ascending=False).head(20)
+
 """
 # First party modules
 import logging
@@ -68,9 +88,7 @@ class DatabaseWorldBank(Database):
 
         # Describe table metadata
         self.indicator = self.describe_indicator_table(name="indicator")
-        self.indicator_name = self.describe_indicator_name_table(
-            name="indicator_name"
-        )
+        self.indicator_name = self.describe_indicator_name_table(name="indicator_name")
         self.tables = {
             "indicator": self.indicator,
             "indicator_name": self.indicator_name,
@@ -134,10 +152,10 @@ class DatabaseWorldBank(Database):
         :param int year_stop: year end data
         :return: A data frame of world bank indicators
 
-        For example select all the indicator time series for Italy and Germany
+        For example select population data https://data.worldbank.org/indicator/SP.POP.TOTL
 
             >>> from biotrade.world_bank import world_bank
-            >>> world_bank.db.select("indicator", reporter=["Germany", "Italy"])
+            >>> pop = world_bank.db.select("indicator", indicator_code="SP.POP.TOTL")
 
         """
         table = self.tables[table]
