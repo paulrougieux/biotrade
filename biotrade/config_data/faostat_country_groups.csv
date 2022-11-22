@@ -236,7 +236,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 228,,SU,SU,SUN,MON,810,old,Union of Soviet Socialist Republic,Union of Soviet Socialist Republic,Union of Soviet Socialist Republic,Union of Soviet Socialist Republic,,1991,World,Europe,5400,Eastern Europe,5401,,0,
 203,229,ES,ES,ESP,ESP,724,member,Spain,the Kingdom of Spain,Spain,España,1955,,World,Europe,5400,Southern Europe,5403,Developed,1,Southern Europe
 38,231,LK,LK,LKA,LKA,144,member,Sri Lanka,the Democratic Socialist Republic of Sri Lanka,Sri Lanka,Sri Lanka,1955,,World,Asia,5300,Southern Asia,5303,Developing,0,
-206,40764,SD,SD,SDNOLD,SDN,736,old,Sudan (former),the Republic of the Sudan,Sudan,Sudán,1956,2010,World,Africa,5100,Northern Africa,5103,Developing,0,
+206,40764,,,SDNOLD,SDNOLD,736,old,Sudan (former),the Republic of the Sudan,Sudan,Sudán,1956,2010,World,Africa,5100,Northern Africa,5103,Developing,0,
 276,,SD,SD,SDN,SDN,729,member,Sudan,the Republic of the Sudan,Sudan,Sudán,2011,,World,Africa,5100,Northern Africa,5103,Developing,0,
 207,233,SR,SR,SUR,SUR,740,member,Suriname,the Republic of Suriname,Suriname,Suriname,1975,,World,Americas,5200,South America,5207,Developing,0,
 260,234,SJ,SJ,SJM,SJM,744,areas and territories,Svalbard and Jan Mayen Islands,Svalbard and Jan Mayen Islands,Svalbard and Jan Mayen Islands,Islas Svalbard y Jan Mayen,,,World,Europe,5400,Northern Europe,5402,Developed,0,
