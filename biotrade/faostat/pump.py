@@ -24,8 +24,14 @@ from pathlib import Path
 from zipfile import ZipFile
 import re
 import shutil
-import requests
 import tempfile
+
+try:
+    import requests
+except Exception as e:
+    msg = "Failed to import requests, you will not be able to load data from FAOSTAT,"
+    msg += "but you can still use other methods.\n"
+    print(msg, str(e))
 
 # Third party modules
 import logging
@@ -154,9 +160,7 @@ class Pump:
         url_api_call = self.url_api_base + zip_file_name
         output_file = self.data_dir / zip_file_name
         self.logger.info("Downloading data from:\n %s", url_api_call)
-        response = requests.get(
-            url=url_api_call, headers=self.header, stream=True
-        )
+        response = requests.get(url=url_api_call, headers=self.header, stream=True)
         with open(output_file, "wb") as out_file:
             print(f"HTTP response code: {response.status_code}")
             shutil.copyfileobj(response.raw, out_file)
@@ -197,9 +201,7 @@ class Pump:
         """Sanitize column names using the mapping table.
         Use snake case in product and element names"""
         # Rename columns to snake case
-        df.rename(
-            columns=lambda x: re.sub(r"\W+", "_", str(x)).lower(), inplace=True
-        )
+        df.rename(columns=lambda x: re.sub(r"\W+", "_", str(x)).lower(), inplace=True)
         # Columns of the db table
         db_table_cols = self.db.tables[short_name].columns.keys()
         # Original column names
@@ -214,9 +216,7 @@ class Pump:
                 f"The following columns \n{list(cols_to_change)}\nhave changed in the input source {column_renaming}.\nUpdate config_data/column_names.csv before updating table {short_name}"
             )
         # Map columns using the naming convention defined in self.column_names
-        mapping = self.column_names.set_index(column_renaming).to_dict()[
-            "biotrade"
-        ]
+        mapping = self.column_names.set_index(column_renaming).to_dict()["biotrade"]
         # Discard nan keys of mapping dictionary
         mapping.pop(np.nan, None)
         # Obtain columns for db upload
@@ -230,9 +230,7 @@ class Pump:
         for column in ["product", "item", "element"]:
             if column in df.columns:
                 df[column] = (
-                    df[column]
-                    .str.replace(regex_pat, "_", regex=True)
-                    .str.lower()
+                    df[column].str.replace(regex_pat, "_", regex=True).str.lower()
                 )
                 # Remove the last underscore if it's at the end of the name
                 df[column] = df[column].str.replace("_$", "", regex=True)
@@ -279,9 +277,7 @@ class Pump:
         """
         # Csv file inside biotrade package config data directory
         if short_name == "country":
-            csv_file_name = (
-                self.parent.config_data_dir / "faostat_country_groups.csv"
-            )
+            csv_file_name = self.parent.config_data_dir / "faostat_country_groups.csv"
             encoding_var = "utf-8"
         # Zip files for table data
         else:
