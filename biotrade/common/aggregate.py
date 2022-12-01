@@ -137,7 +137,7 @@ def agg_trade_eu_row(
     ]
     # Remove the reporter, partner and grouping column from the index
     # Some grouping columns be added back
-    for col in drop_index_col + reporter_and_partner_cols + value_col:
+    for col in set(drop_index_col + reporter_and_partner_cols + value_col):
         if col in df.columns:
             index.remove(col)
     # The aggregation index depends on the grouping_side
