@@ -242,6 +242,18 @@ def nlargest(df, value_vars, time_vars=None, agg_groups=None, slice_groups=None,
         >>>          agg_groups=["reporter","partner"],
         >>>          slice_groups=["element", "year"])
 
+    The 12 largest Polish export destination over the past 5 years (notice the
+    absence of the slice group)
+
+        >>> from biotrade.common.aggregate import nlargest
+        >>> from biotrade.comtrade import comtrade
+        >>> pl = comtrade.db.select("yearly", reporter="Poland", product_code_start="44")
+        >>> nlargest(pl.query("year>=2017 and flow=='export'"),
+        >>>          value_vars=["net_weight", "trade_value"],
+        >>>          agg_groups=["reporter", "partner", "flow"],
+        >>>          n=12
+        >>>         )
+
     """
     if time_vars is None:
         time_vars = ["year"]
@@ -257,7 +269,7 @@ def nlargest(df, value_vars, time_vars=None, agg_groups=None, slice_groups=None,
     # Make sure slice columns are part of the agg_groups
     if agg_groups is None:
         agg_groups = slice_groups
-    else:
+    if agg_groups is not None and slice_groups is not None:
         agg_groups = list(set(agg_groups).union(set(slice_groups)))
     # Compute the sum within each group for each time period (such as each year)
     # Then compute the average for each group over the years
