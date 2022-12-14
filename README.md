@@ -203,8 +203,15 @@ product mapping tables and conversion coefficients in the `biotrade/config_data`
 
 # Licence
 
-This software is dual-licenced under both MIT and EUPL 1.2.
+This software is licenced under the MIT licence.
 See the [LICENCE.md](LICENCE.md) file.
+
+
+# Similar projects
+
+- The python package [pandas-datareader](https://pydata.github.io/pandas-datareader/)
+
+- The R packages FAOSTAT and WDI
 
 
 # Tests
