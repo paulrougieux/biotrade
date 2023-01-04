@@ -96,7 +96,9 @@ def reporter_iso_codes(df):
     df = df[df.fao_status_info != "old"]
     subset_col = ["reporter_code"]
     if "partner_code" in df.columns:
-        df.drop(columns=["faost_code", "iso3_code", "fao_status_info"], inplace=True)
+        df.drop(
+            columns=["faost_code", "iso3_code", "fao_status_info"], inplace=True
+        )
         df = df.merge(
             reporter[["faost_code", "iso3_code", "fao_status_info"]],
             how="left",
@@ -152,7 +154,12 @@ def merge_faostat_comtrade_data(product_list):
     # Select only import and export (exclude re-import and re-export for now)
     df = df[
         df["element"].isin(
-            ["import_value", "import_quantity", "export_value", "export_quantity"]
+            [
+                "import_value",
+                "import_quantity",
+                "export_value",
+                "export_quantity",
+            ]
         )
     ]
     # Consider monthly aggregations where yearly data are missed and yearly data for the rest
@@ -160,7 +167,9 @@ def merge_faostat_comtrade_data(product_list):
     df.loc[selector, "value"] = df.loc[selector, "value_monthly"]
     df.loc[~selector, "value"] = df.loc[~selector, "value_yearly"]
     # Add a flag to distinguish monthly aggregate estimations
-    selector = (df["_merge"] == "right_only") & (df["flag_monthly"] == "estimate")
+    selector = (df["_merge"] == "right_only") & (
+        df["flag_monthly"] == "estimate"
+    )
     df.loc[selector, "estimate_flag"] = 1
     df.loc[~selector, "estimate_flag"] = 0
     # Use period instead of year column
@@ -199,29 +208,46 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
     periods = np.array(range(0, len(years))) // 5 + 1
     # Construct the df_periods containing the periods yyyy-yyyy and merge it with df
     df_periods = pd.DataFrame(
-        {"year": [most_recent_year, *years], "period_aggregation": [0, *periods]}
+        {
+            "year": [most_recent_year, *years],
+            "period_aggregation": [0, *periods],
+        }
     )
     # Define the min year inside each period
     df_periods_min = (
-        df_periods.groupby(["period_aggregation"]).agg({"year": "min"}).reset_index()
+        df_periods.groupby(["period_aggregation"])
+        .agg({"year": "min"})
+        .reset_index()
     )
     # Define the max year inside each period
     df_periods_max = (
-        df_periods.groupby(["period_aggregation"]).agg({"year": "max"}).reset_index()
+        df_periods.groupby(["period_aggregation"])
+        .agg({"year": "max"})
+        .reset_index()
     )
     # Merge on the periods
     df_periods = df_periods.merge(
-        df_periods_min, how="left", on="period_aggregation", suffixes=("", "_min")
+        df_periods_min,
+        how="left",
+        on="period_aggregation",
+        suffixes=("", "_min"),
     )
     df_periods = df_periods.merge(
-        df_periods_max, how="left", on="period_aggregation", suffixes=("", "_max")
+        df_periods_max,
+        how="left",
+        on="period_aggregation",
+        suffixes=("", "_max"),
     )
     # Define the structure yyyy-yyyy for the period aggregation column
     df_periods["period_aggregation"] = (
-        df_periods["year_min"].astype(str) + "-" + df_periods["year_max"].astype(str)
+        df_periods["year_min"].astype(str)
+        + "-"
+        + df_periods["year_max"].astype(str)
     )
     # Assign the associated period to each data
-    df = df.merge(df_periods[["year", "period_aggregation"]], on="year", how="left")
+    df = df.merge(
+        df_periods[["year", "period_aggregation"]], on="year", how="left"
+    )
     df["period"] = df["period_aggregation"]
     # Default index list for aggregations + the adds from the arguments
     index_list = ["element", "period", "unit"]
@@ -229,7 +255,11 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
     column_drop = []
     # Load for each dict the aggregation column, the percentage column and the code for threshold values in order to compute calculations
     for dict in dict_list:
-        index_list_upd = [dict["average_col"], *index_list, *dict["index_list_add"]]
+        index_list_upd = [
+            dict["average_col"],
+            *index_list,
+            *dict["index_list_add"],
+        ]
         value_col_name = "value"
         average_col_name = dict["average_col"] + COLUMN_AVG_SUFFIX
         total_col_name = dict["average_col"] + COLUMN_TOT_SUFFIX
@@ -265,7 +295,9 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
         df_new = df_new.merge(df_mean, how="left", on=index_list_upd)
         df_new = df_new.merge(df_total, how="left", on=index_list_upd)
         # Percentage associated to the percentage column on a given aggregated period
-        df_new[percentage_col_name] = df_new["value"] / df_new[total_col_name] * 100
+        df_new[percentage_col_name] = (
+            df_new["value"] / df_new[total_col_name] * 100
+        )
         # Sort by percentage, compute the cumulative sum and shift it by one
         df_new.sort_values(
             by=[*index_list_upd, percentage_col_name],
@@ -274,10 +306,12 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
             ignore_index=True,
         )
         # Skip nan values is True for cumsum by default
-        df_new["cumsum"] = df_new.groupby(index_list_upd)[percentage_col_name].cumsum()
-        df_new["cumsum_lag"] = df_new.groupby(index_list_upd)["cumsum"].transform(
-            "shift", fill_value=0
-        )
+        df_new["cumsum"] = df_new.groupby(index_list_upd)[
+            percentage_col_name
+        ].cumsum()
+        df_new["cumsum_lag"] = df_new.groupby(index_list_upd)[
+            "cumsum"
+        ].transform("shift", fill_value=0)
         # Create a grouping variable instead of the percentage column, which will be 'Others' for
         # values above the threshold
         df_new[dict["percentage_col"]] = df_new[dict["percentage_col"]].where(
@@ -295,7 +329,9 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
             )
             .reset_index()
         )
-        df_new[percentage_col_name] = df_new["value"] / df_new[total_col_name] * 100
+        df_new[percentage_col_name] = (
+            df_new["value"] / df_new[total_col_name] * 100
+        )
         if df_final.empty:
             df_final = df_new
         else:
@@ -307,7 +343,10 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
             if set(merge_col_list).issubset(df_final.columns):
                 merge_suffix = "_merge"
                 df_final = df_final.merge(
-                    df_new, how="outer", on=merge_col_list, suffixes=("", merge_suffix)
+                    df_new,
+                    how="outer",
+                    on=merge_col_list,
+                    suffixes=("", merge_suffix),
                 )
                 # Add merge columns to column drop list
                 for col in df_final.columns:
@@ -373,9 +412,15 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
                     df_key["avg_value"],
                     bins=bins,
                 )
-                key_legend["interval"] = df_key["interval"].cat.categories.values
-                key_legend["min_value"] = df_key["interval_range"].cat.categories.left
-                key_legend["max_value"] = df_key["interval_range"].cat.categories.right
+                key_legend["interval"] = df_key[
+                    "interval"
+                ].cat.categories.values
+                key_legend["min_value"] = df_key[
+                    "interval_range"
+                ].cat.categories.left
+                key_legend["max_value"] = df_key[
+                    "interval_range"
+                ].cat.categories.right
                 key_legend["product_code"] = key[0]
                 key_legend["element"] = key[1]
                 key_legend["unit"] = key[2]
@@ -401,9 +446,9 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
         column_list = df_legend.columns.tolist()
         column_list.remove(drop_column)
         # Save interval legends
-        harvested_area_legend = df_legend[df_legend["element"] == "area_harvested"][
-            column_list
-        ]
+        harvested_area_legend = df_legend[
+            df_legend["element"] == "area_harvested"
+        ][column_list]
         save_file(harvested_area_legend, "harvested_area_average_legend.csv")
         production_legend = df_legend[
             df_legend["element"].isin(["production", "stocks"])
@@ -423,7 +468,9 @@ def consistency_check_china_data(df):
     # Trade data
     if "partner_code" in df.columns:
         # Define China data with isocode CHN and Faostat code 357 from China mainland (41) + Taiwan (214) data both from reporter and partner
-        df_china = df[df[["reporter_code", "partner_code"]].isin([41, 214]).any(axis=1)]
+        df_china = df[
+            df[["reporter_code", "partner_code"]].isin([41, 214]).any(axis=1)
+        ]
         # Aggregation on the reporter side
         df_china_1 = (
             df_china[df_china["reporter_code"].isin([41, 214])]
@@ -473,7 +520,10 @@ def consistency_check_china_data(df):
         df_china_2["partner"] = "China mainland and Taiwan"
         # Concat with partner codes not 41 and 214
         df_china_2 = pd.concat(
-            [df_china_1[~df_china_1["partner_code"].isin([41, 214])], df_china_2],
+            [
+                df_china_1[~df_china_1["partner_code"].isin([41, 214])],
+                df_china_2,
+            ],
             ignore_index=True,
         )
         df_china = df_china_2

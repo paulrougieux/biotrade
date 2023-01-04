@@ -16,7 +16,11 @@ df_china = consistency_check_china_data(trade_data)
 trade_data = pd.concat(
     [
         trade_data[
-            ~((trade_data[["reporter_code", "partner_code"]] == 214).any(axis=1))
+            ~(
+                (trade_data[["reporter_code", "partner_code"]] == 214).any(
+                    axis=1
+                )
+            )
         ],
         df_china,
     ],
@@ -57,9 +61,13 @@ df.loc[selector, "period_change"] = np.nan
 df = df.dropna(subset=dropna_col, how="all")
 # Define most recent year for faostat and comtrade data
 trade_data_faostat = df[df["source"] == "faostat"]
-most_recent_year_faostat = sorted(trade_data_faostat.year.unique(), reverse=True)[0]
+most_recent_year_faostat = sorted(
+    trade_data_faostat.year.unique(), reverse=True
+)[0]
 trade_data_comtrade = df[df["source"] == "comtrade"]
-most_recent_year_comtrade = sorted(trade_data_comtrade.year.unique(), reverse=True)[0]
+most_recent_year_comtrade = sorted(
+    trade_data_comtrade.year.unique(), reverse=True
+)[0]
 # Consider selected columns of import quantities and save the file
 trade_data_faostat_reporter = trade_data_faostat[
     (trade_data_faostat["year"] == most_recent_year_faostat)

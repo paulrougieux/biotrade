@@ -32,7 +32,7 @@ def plot_relative_absolute_change(df):
         >>> ]
         >>> df_change = relative_absolute_change(palm_oil_prod, last_value=False)
         >>> plot_relative_absolute_change(df_change)
-    
+
     """
     # Group of columns to be considered
     group_data_pivot_table = [
@@ -41,7 +41,13 @@ def plot_relative_absolute_change(df):
         "product_code",
     ]
     # Depending on the df, other columns to be considered in order to group the data
-    add_group_data_column = ["product", "partner", "element", "flow", "unit_code"]
+    add_group_data_column = [
+        "product",
+        "partner",
+        "element",
+        "flow",
+        "unit_code",
+    ]
     # Select for grouping the data only columns contained into the df
     for column in df:
         if column in add_group_data_column:
@@ -57,7 +63,10 @@ def plot_relative_absolute_change(df):
         values=["relative_change", "absolute_change"],
     )
     # Plot relative change values
-    ax = df_reshape["relative_change"].plot.bar(figsize=(20, 10), fontsize=16,)
+    ax = df_reshape["relative_change"].plot.bar(
+        figsize=(20, 10),
+        fontsize=16,
+    )
     ax.set_xlabel("Time [y]", fontsize=20)
     ax.set_ylabel("[%]", fontsize=20)
     if len(df["year_range_lower"].unique()) > 1:
@@ -66,10 +75,15 @@ def plot_relative_absolute_change(df):
         add_title = f" (wrt average of {df['year_range_lower'].unique()[0]}-{df['year_range_upper'].unique()[0]})"
     ax.set_title("Relative change" + add_title, fontsize=20)
     # Plot absolute change values
-    ax = df_reshape["absolute_change"].plot.line(figsize=(20, 10), fontsize=16,)
+    ax = df_reshape["absolute_change"].plot.line(
+        figsize=(20, 10),
+        fontsize=16,
+    )
     ax.set_xlabel("Time [y]", fontsize=20)
     if "unit" in group_data_pivot_table:
-        ax.set_ylabel(f"[{'/'.join(df['unit'].unique().tolist())}]", fontsize=20)
+        ax.set_ylabel(
+            f"[{'/'.join(df['unit'].unique().tolist())}]", fontsize=20
+        )
     ax.set_title("Absolute change" + add_title, fontsize=20)
     # Show plot
     plt.show()
@@ -93,7 +107,7 @@ def plot_segmented_regression(df):
         >>> ]
         >>> df_segment_reg = segmented_regression(palm_oil_prod, last_value=False, function="R2")
         >>> plot_segmented_regression(df_segment_reg)
-    
+
     """
     # Define value column name
     if "value" in df.columns:
@@ -137,7 +151,8 @@ def plot_segmented_regression(df):
         else:
             title = f"Reporter {df_key['reporter'].unique()[0]} ({function})"
         plt.title(
-            title, fontsize=20,
+            title,
+            fontsize=20,
         )
         # Faostat tables
         if "element" in df_key:
@@ -146,15 +161,19 @@ def plot_segmented_regression(df):
         else:
             ylabel = f"Product {df_key['product'].unique()[0]} ({df_key['flow'].unique()[0]})"
         plt.ylabel(
-            ylabel, fontsize=20,
+            ylabel,
+            fontsize=20,
         )
         # Plot segments
         for year_range in (
-            df_key[["year_range_lower", "year_range_upper"]].drop_duplicates().values
+            df_key[["year_range_lower", "year_range_upper"]]
+            .drop_duplicates()
+            .values
         ):
             # Extract segment dataframe
             df_key_segment = df_key[
-                (df_key["year"] >= year_range[0]) & (df_key["year"] <= year_range[1])
+                (df_key["year"] >= year_range[0])
+                & (df_key["year"] <= year_range[1])
             ]
             # Extract information to plot
             pvalue_segment = df_key_segment["pvalue"].unique()[0]
@@ -166,15 +185,21 @@ def plot_segmented_regression(df):
             if pvalue_segment < alpha:
                 x_interval = np.array([lower_year_segment, upper_year_segment])
                 y_interval = slope_segment * x_interval + intercept_segment
-                plt.plot(x_interval, y_interval, "ro-", label="Segmented regression")
+                plt.plot(
+                    x_interval, y_interval, "ro-", label="Segmented regression"
+                )
             # For the last segment the Mann Kendall test has been performed
             if upper_year_segment == x.max():
                 mk_ha_segment = df_key_segment["mk_ha_test"].unique()[0]
                 # If the test succeeded, plot the associated results
                 if mk_ha_segment:
                     mk_slope_segment = df_key_segment["mk_slope"].unique()[0]
-                    mk_intercept_segment = df_key_segment["mk_intercept"].unique()[0]
-                    x_mk_interval = np.array([lower_year_segment, upper_year_segment])
+                    mk_intercept_segment = df_key_segment[
+                        "mk_intercept"
+                    ].unique()[0]
+                    x_mk_interval = np.array(
+                        [lower_year_segment, upper_year_segment]
+                    )
                     y_mk_interval = (
                         mk_slope_segment * x_mk_interval + mk_intercept_segment
                     )
@@ -202,7 +227,9 @@ def plot_segmented_regression(df):
     plt.show()
 
 
-def obj_function(breakpoints, x, y, num_breakpoints, function, min_data_points, fcache):
+def obj_function(
+    breakpoints, x, y, num_breakpoints, function, min_data_points, fcache
+):
     """
     Function which computes the obj of the segmented regressions
     based on the mean of coefficient of determination (R2) with respect to the number of break points or based on the Residual Sum of Squares (RSS),
@@ -225,7 +252,9 @@ def obj_function(breakpoints, x, y, num_breakpoints, function, min_data_points, 
     # Calculate obj function if not already done for the specific breakpoint location
     if breakpoints not in fcache:
         # Calculate the linear regression coefficients for the segments cut by breakpoint locations
-        result = find_best_piecewise_polynomial(breakpoints, x, y, min_data_points)
+        result = find_best_piecewise_polynomial(
+            breakpoints, x, y, min_data_points
+        )
         # Segments with more than 6 point
         if result:
             # Initialization
@@ -247,7 +276,8 @@ def obj_function(breakpoints, x, y, num_breakpoints, function, min_data_points, 
                     # If mean of values is 0, do not divide by it
                     else:
                         obj += -(
-                            1 - (np.sum((yi - (f.slope * xi + f.intercept)) ** 2))
+                            1
+                            - (np.sum((yi - (f.slope * xi + f.intercept)) ** 2))
                         ) / (num_breakpoints + 1)
         # Penalize segments with less than min_data_points
         else:
@@ -257,7 +287,10 @@ def obj_function(breakpoints, x, y, num_breakpoints, function, min_data_points, 
 
 
 def find_best_piecewise_polynomial(
-    breakpoints, x, y, min_data_points,
+    breakpoints,
+    x,
+    y,
+    min_data_points,
 ):
     """
     Function with computes the linear regression statistics for the breakpoint locations
@@ -368,7 +401,9 @@ def segmented_regression(
     for key in df_groups.groups.keys():
         # Select data related to the specific group dropping nan values
         df_key = (
-            df_groups.get_group(key).sort_values(by="year").dropna(subset=value_column)
+            df_groups.get_group(key)
+            .sort_values(by="year")
+            .dropna(subset=value_column)
         )
         # Skip segmented analysis for groups with nr of data less than minimum required
         if len(df_key) < min_data_points:
@@ -429,7 +464,7 @@ def segmented_regression(
             ] = [
                 f.slope,
                 f.intercept,
-                f.rvalue ** 2,
+                f.rvalue**2,
                 f.pvalue,
                 f.stderr,
                 f.intercept_stderr,
@@ -470,7 +505,11 @@ def segmented_regression(
     # Transform year lower and upper columns into int type
     df_segmented_regression[
         ["year_range_lower", "year_range_upper"]
-    ] = df_segmented_regression[["year_range_lower", "year_range_upper"]].astype("int")
+    ] = df_segmented_regression[
+        ["year_range_lower", "year_range_upper"]
+    ].astype(
+        "int"
+    )
     # Add information regarding the obj function used
     df_segmented_regression["obj_function"] = function
     # Add information regarding the significance level
@@ -504,7 +543,7 @@ def relative_absolute_change(df, years=5, last_value=True, year_range=[]):
     As example, compute the relative and absolute change for soy trade products from Brazil as reporter to Europe and
     rest of the world as partners.
     Import dependencies
-    
+
         >>> from biotrade.faostat import faostat
         >>> from biotrade.faostat.aggregate import agg_trade_eu_row
         >>> from biotrade.common.time_series import relative_absolute_change
@@ -519,13 +558,13 @@ def relative_absolute_change(df, years=5, last_value=True, year_range=[]):
         >>> soy_trade_agg = agg_trade_eu_row(soy_trade)
 
     Calculate the relative and absolute change of values in time for the most recent year, considering the last 5 years
-        
+
         >>> soy_trade_change1 = relative_absolute_change(soy_trade_agg, years= 5, last_value = True)
 
     Calculate the relative and absolute change of values in time with respect to the average value between 2000 and 2010
-        
+
         >>> soy_trade_change2 = relative_absolute_change(soy_trade_agg, year_range = [2000, 2010], last_value = False)
-    
+
     """
     # Define value column name
     if "value" in df.columns:
@@ -619,7 +658,9 @@ def relative_absolute_change(df, years=5, last_value=True, year_range=[]):
                     ].mean()
                 # The last column is the mean of the previous year values
                 elif years > 0:
-                    df_key[column] = df_key[column_list_calc[:-1]].mean(axis=1,)
+                    df_key[column] = df_key[column_list_calc[:-1]].mean(
+                        axis=1,
+                    )
                 break
             # Shift value column up with respect to the number of years considered
             df_key[column] = df_key[value_column].shift(-(idx) - 1)
@@ -629,9 +670,13 @@ def relative_absolute_change(df, years=5, last_value=True, year_range=[]):
             / df_key["average_value"]
             * 100
         )
-        df_key["absolute_change"] = df_key[value_column] - df_key["average_value"]
+        df_key["absolute_change"] = (
+            df_key[value_column] - df_key["average_value"]
+        )
         # 0/0 and float/0 treated as NaN
-        df_key["relative_change"].replace([np.inf, -np.inf], np.nan, inplace=True)
+        df_key["relative_change"].replace(
+            [np.inf, -np.inf], np.nan, inplace=True
+        )
         # Define 2 new columns with the lower and upper years of the average value
         if year_range:
             df_key["year_range_lower"] = year_range[0]
@@ -660,7 +705,7 @@ def merge_analysis(df_change, df_segmented_regression):
 
     For example select soybean trade product with Brazil as reporter, aggregate partners as Europe (eu) and rest of the World (row)
     and compute the change and segmented analysis. Finally compare results with the merge function
-    
+
     >>> from biotrade.faostat import faostat
     >>> from biotrade.faostat.aggregate import agg_trade_eu_row
     >>> from biotrade.common.time_series import (relative_absolute_change, segmented_regression, merge_analysis)
@@ -672,7 +717,9 @@ def merge_analysis(df_change, df_segmented_regression):
 
     """
     # Columns in common for the two dataframes
-    join_columns = list(set(df_change.columns) & set(df_segmented_regression.columns))
+    join_columns = list(
+        set(df_change.columns) & set(df_segmented_regression.columns)
+    )
     # Columns not to be considered for the join
     remove_columns = ["year_range_lower", "year_range_upper"]
     # Final join columns
@@ -700,4 +747,3 @@ def merge_analysis(df_change, df_segmented_regression):
     ]
 
     return df
-

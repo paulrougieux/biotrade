@@ -20,7 +20,8 @@ crop_data = crop_data[crop_data["reporter_code"] < 1000]
 df_china = consistency_check_china_data(crop_data)
 # Add China data to crop_data (exclude Taiwan data)
 crop_data = pd.concat(
-    [crop_data[~(crop_data["reporter_code"] == 214)], df_china], ignore_index=True
+    [crop_data[~(crop_data["reporter_code"] == 214)], df_china],
+    ignore_index=True,
 )
 # Substitute faostat codes with iso3 codes
 crop_data = reporter_iso_codes(crop_data)
@@ -59,7 +60,8 @@ harvested_area = df[
 ][column_list]
 # Production data (only the most recent year of db)
 production = df[
-    (df["element"].isin(["production", "stocks"])) & (df["year"] == most_recent_year)
+    (df["element"].isin(["production", "stocks"]))
+    & (df["year"] == most_recent_year)
 ][column_list]
 save_file(harvested_area, "harvested_area_trends.csv")
 save_file(production, "production_trends.csv")
