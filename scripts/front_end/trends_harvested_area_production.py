@@ -4,64 +4,65 @@ Written by Selene Patani.
 Script made to export trends related to harvested area/production of countries associated to the key commodities, for the web platform
 
 """
+# Needed for multiprocessing tool, otherwise Windows spawns multiple threads
+if __name__ == "__main__":
+    from functions import *
 
-from functions import *
-
-# Obtain the main product codes
-main_product_list = main_product_list()
-# Select quantities from Faostat db for crop data for all countries (code < 1000)
-crop_data = faostat.db.select(
-    table="crop_production",
-    product_code=main_product_list,
-    element=["production", "area_harvested", "stocks"],
-)
-crop_data = crop_data[crop_data["reporter_code"] < 1000]
-# China Mainland + Taiwan data
-df_china = consistency_check_china_data(crop_data)
-# Add China data to crop_data (exclude Taiwan data)
-crop_data = pd.concat(
-    [crop_data[~(crop_data["reporter_code"] == 214)], df_china],
-    ignore_index=True,
-)
-# Substitute faostat codes with iso3 codes
-crop_data = reporter_iso_codes(crop_data)
-# Consider data after 1985 to calculate trends of last year
-crop_data = crop_data[crop_data["year"] > 1985]
-# Perform trend analysis
-df = trend_analysis(crop_data)
-# Columns to be retained
-column_list = [
-    "reporter_code",
-    "product_code",
-    "period",
-    "period_change",
-    "period_regression",
-    "relative_change",
-    "absolute_change",
-    "mk_slope",
-    "mk_significance_flag",
-    "unit",
-]
-# Drop nan values
-dropna_col = ["relative_change", "absolute_change", "mk_slope"]
-df = replace_zero_with_nan_values(df, dropna_col)
-# Put nan to period and significance columns when relative change or slope is 0
-# To avoid inconsistencies during the replace zero with nan
-selector = df.mk_slope.isnull()
-df.loc[selector, "period_regression"] = np.nan
-df.loc[selector, "mk_significance_flag"] = np.nan
-selector = df.relative_change.isnull()
-df.loc[selector, "period_change"] = np.nan
-df = df.dropna(subset=dropna_col, how="all")
-# Harvested area data (only the most recent year of db)
-most_recent_year = sorted(df.year.unique(), reverse=True)[0]
-harvested_area = df[
-    (df["element"] == "area_harvested") & (df["year"] == most_recent_year)
-][column_list]
-# Production data (only the most recent year of db)
-production = df[
-    (df["element"].isin(["production", "stocks"]))
-    & (df["year"] == most_recent_year)
-][column_list]
-save_file(harvested_area, "harvested_area_trends.csv")
-save_file(production, "production_trends.csv")
+    # Obtain the main product codes
+    main_product_list = main_product_list()
+    # Select quantities from Faostat db for crop data for all countries (code < 1000)
+    crop_data = faostat.db.select(
+        table="crop_production",
+        product_code=main_product_list,
+        element=["production", "area_harvested", "stocks"],
+    )
+    crop_data = crop_data[crop_data["reporter_code"] < 1000]
+    # China Mainland + Taiwan data
+    df_china = consistency_check_china_data(crop_data)
+    # Add China data to crop_data (exclude Taiwan data)
+    crop_data = pd.concat(
+        [crop_data[~(crop_data["reporter_code"] == 214)], df_china],
+        ignore_index=True,
+    )
+    # Substitute faostat codes with iso3 codes
+    crop_data = reporter_iso_codes(crop_data)
+    # Consider data after 1985 to calculate trends of last year
+    crop_data = crop_data[crop_data["year"] > 1985]
+    # Perform trend analysis
+    df = trend_analysis(crop_data, multi_process=True)
+    # Columns to be retained
+    column_list = [
+        "reporter_code",
+        "product_code",
+        "period",
+        "period_change",
+        "period_regression",
+        "relative_change",
+        "absolute_change",
+        "mk_slope",
+        "mk_significance_flag",
+        "unit",
+    ]
+    # Drop nan values
+    dropna_col = ["relative_change", "absolute_change", "mk_slope"]
+    df = replace_zero_with_nan_values(df, dropna_col)
+    # Put nan to period and significance columns when relative change or slope is 0
+    # To avoid inconsistencies during the replace zero with nan
+    selector = df.mk_slope.isnull()
+    df.loc[selector, "period_regression"] = np.nan
+    df.loc[selector, "mk_significance_flag"] = np.nan
+    selector = df.relative_change.isnull()
+    df.loc[selector, "period_change"] = np.nan
+    df = df.dropna(subset=dropna_col, how="all")
+    # Harvested area data (only the most recent year of db)
+    most_recent_year = sorted(df.year.unique(), reverse=True)[0]
+    harvested_area = df[
+        (df["element"] == "area_harvested") & (df["year"] == most_recent_year)
+    ][column_list]
+    # Production data (only the most recent year of db)
+    production = df[
+        (df["element"].isin(["production", "stocks"]))
+        & (df["year"] == most_recent_year)
+    ][column_list]
+    save_file(harvested_area, "harvested_area_trends.csv")
+    save_file(production, "production_trends.csv")

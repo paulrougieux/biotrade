@@ -543,11 +543,12 @@ def consistency_check_china_data(df):
     return df_china
 
 
-def trend_analysis(df_data):
+def trend_analysis(df_data, multi_process=False):
     """
     Script which performs the trend analysis
 
     :param df_data (DataFrame), data on which perform the analysis
+    :param multi_process (Boolean), if True segmented regression is performed through multiple cores. Default is False
     :return df (DataFrame), dataframe containing the relative, absolute and segmented regresssion indicators
 
     """
@@ -560,6 +561,7 @@ def trend_analysis(df_data):
         function="R2",
         alpha=0.05,
         min_data_points=7,
+        multi_process=multi_process,
     )
     # Merge dataframes to compare results
     df = merge_analysis(

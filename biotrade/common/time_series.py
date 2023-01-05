@@ -11,6 +11,8 @@ from scipy import optimize, stats
 import matplotlib.pyplot as plt
 import pymannkendall as mk
 from collections import OrderedDict
+from functools import partial
+from multiprocessing import Pool
 
 
 def plot_relative_absolute_change(df):
@@ -330,87 +332,31 @@ def find_best_piecewise_polynomial(
     return result
 
 
-def segmented_regression(
-    df, last_value=True, function="RSS", min_data_points=7, alpha=0.05
+def optimize_breakpoints(
+    df, value_column, min_data_points, alpha, last_value, function
 ):
     """
-    Calculate the linear regression statistics of the segmented regression
-    based on the optimization of the objective function built on R2 results
+    It allows to find the best number of breakpoints for a given time series and performs statistical tests
+    on the optimized process
 
-    :param (DataFrame) df, dataframe containing the time series with respect to calculate the segmented regressions
-    :param (boolean) last_value, if True returns only values related to the most recent year (default = True)
-    :param (string) function, the objective to calculate could be "R2" or "RSS", i.e. coefficient of determination based or
-        residual sum of squares based (default = "RSS")
-    :param (int) min_data_points, minimum nr of data for each segment of the linear regression (default = 7)
-    :param (float) alpha, significance level of statistical tests (default = 0.05)
+    :param (DataFrame) df, dataframe containing 1 time series for the optimization process
+    :param (string) value_column, name of the column containing the data
+    :param (int) min_data_points, minimum nr of data for each segment of the linear regression
+    :param (float) alpha, significance level of statistical tests
+    :param (boolean) last_value, if True returns only values related to the most recent year
+    :param (string) function, the objective to calculate could be "R2" or "RSS", i.e. coefficient of determination or
+        residual sum of squares
 
-    :return (DataFrame) df_segmented_regression, dataframe which contains new columns related to
-    linear regression calculations
-
-    As example, compute the segmented regression for soybean exports from Brazil as reporter to Europe and
-    rest of the world as partners.
-    Import dependencies
-
-        >>> from biotrade.faostat import faostat
-        >>> from biotrade.faostat.aggregate import agg_trade_eu_row
-        >>> from biotrade.common.time_series import segmented_regression
-
-    Select soybean trade products with Brazil as reporter
-
-        >>> soybean_trade = faostat.db.select(table="crop_trade",
-        >>>     reporter="Brazil", product_code=236)
-
-    Aggregate partners as Europe (eu) and rest of the World (row)
-
-        >>> soybean_trade_agg = agg_trade_eu_row(soybean_trade)
-
-    Select export quantity
-
-        >>> soybean_exp_agg = soybean_trade_agg[soybean_trade_agg["element"] == "export_quantity"]
-
-    Calculate the segmented regression of values returning the most recent year, first using RSS and then R2 objective function, keeping the minimum number of points and the significance level as default
-
-        >>> soybean_exp_rss = segmented_regression(soybean_exp_agg, last_value = True, function = "RSS")
-        >>> soybean_exp_r2 = segmented_regression(soybean_exp_agg, last_value = True, function = "R2")
-
+    :return (DataFrame) df, dataframe which contains new columns related to
+    linear regression calculations for the given time series
     """
-    # Define value column name
-    if "value" in df.columns:
-        # Value column of faostat db
-        value_column = "value"
-    elif "net_weight" in df.columns:
-        # Value column is called "net_weight" in comtrade db
-        value_column = "net_weight"
-    # Define group columns
-    groupby_column_list = ["reporter", "product_code", "unit"]
-    # Depending on the db tables, different columns can be used to group the dataframe
-    add_columns = ["source", "partner", "element", "flow", "unit_code"]
-    # Check if columns are present in the original dataframe
-    for column in add_columns:
-        if column in df.columns:
-            # For comtrade db, do not consider unit and unit_code columns which are always nan
-            if column == "unit_code":
-                groupby_column_list.remove("unit")
-                continue
-            groupby_column_list.append(column)
-    # Define groups with respect to calculate the segmented regressions
-    df_groups = df.groupby(groupby_column_list)
-    # Allocate df reshaped to return
-    df_segmented_regression = pd.DataFrame()
-    # Loop on each group
-    for key in df_groups.groups.keys():
-        # Select data related to the specific group dropping nan values
-        df_key = (
-            df_groups.get_group(key)
-            .sort_values(by="year")
-            .dropna(subset=value_column)
-        )
-        # Skip segmented analysis for groups with nr of data less than minimum required
-        if len(df_key) < min_data_points:
-            continue
+    # Select data related to the specific group dropping nan values
+    df = df.sort_values(by="year").dropna(subset=value_column)
+    # Skip segmented analysis for groups with nr of data less than minimum required
+    if len(df) >= min_data_points:
         # Create arrays of independent (column "year") and dependent (colum "values") variables
-        x = np.array(df_key["year"].values.tolist(), dtype=float)
-        y = np.array(df_key[value_column].values.tolist())
+        x = np.array(df["year"].values.tolist(), dtype=float)
+        y = np.array(df[value_column].values.tolist())
         # Pre allocation
         best_breakpoints = ()
         # Loop over the number of breakpoints (max number of breakpoints is floor(len(x)/min_data_points) -1)
@@ -449,8 +395,8 @@ def segmented_regression(
         for f, xi, yi in find_best_piecewise_polynomial(
             best_breakpoints[0], x, y, min_data_points
         ):
-            df_key.loc[
-                (df_key["year"] >= xi.min()) & (df_key["year"] <= xi.max()),
+            df.loc[
+                (df["year"] >= xi.min()) & (df["year"] <= xi.max()),
                 [
                     "slope",
                     "intercept",
@@ -479,8 +425,8 @@ def segmented_regression(
                     intercept=np.median(yi) - np.median(xi) * mk_results.slope
                 )
                 # Add the Mann-Kendall test results to the dataframe
-                df_key.loc[
-                    (df_key["year"] >= xi.min()) & (df_key["year"] <= xi.max()),
+                df.loc[
+                    (df["year"] >= xi.min()) & (df["year"] <= xi.max()),
                     [
                         "mk_trend",
                         "mk_ha_test",
@@ -497,11 +443,113 @@ def segmented_regression(
                 ]
         # Return values related to most recent year at disposal
         if last_value:
-            df_key = df_key.sort_values(by="year", ascending=False)[0:1]
-        # Add the group to the final dataframe to return
-        df_segmented_regression = pd.concat(
-            [df_segmented_regression, df_key], ignore_index=True
-        )
+            df = df.sort_values(by="year", ascending=False)[0:1]
+    else:
+        df = pd.DataFrame()
+    return df
+
+
+def segmented_regression(
+    df,
+    last_value=True,
+    function="RSS",
+    min_data_points=7,
+    alpha=0.05,
+    multi_process=False,
+):
+    """
+    Calculate the linear regression statistics of the segmented regression
+    based on the optimization of the objective function
+
+    :param (DataFrame) df, dataframe containing the time series with respect to calculate the segmented regressions
+    :param (boolean) last_value, if True returns only values related to the most recent year (default = True)
+    :param (string) function, the objective to calculate could be "R2" or "RSS", i.e. coefficient of determination based or
+        residual sum of squares based (default = "RSS")
+    :param (int) min_data_points, minimum nr of data for each segment of the linear regression (default = 7)
+    :param (float) alpha, significance level of statistical tests (default = 0.05)
+    :param multi_process (Boolean), if True segmented regression is performed through multiple cores. Default is False
+
+    :return (DataFrame) df_segmented_regression, dataframe which contains new columns related to
+    linear regression calculations
+
+    As example, compute the segmented regression for soybean exports from Brazil as reporter to Europe and
+    rest of the world as partners.
+    Import dependencies
+
+        >>> from biotrade.faostat import faostat
+        >>> from biotrade.faostat.aggregate import agg_trade_eu_row
+        >>> from biotrade.common.time_series import segmented_regression
+
+    Select soybean trade products with Brazil as reporter
+
+        >>> soybean_trade = faostat.db.select(table="crop_trade",
+        >>>     reporter="Brazil", product_code=236)
+
+    Aggregate partners as Europe (eu) and rest of the World (row)
+
+        >>> soybean_trade_agg = agg_trade_eu_row(soybean_trade)
+
+    Select export quantity
+
+        >>> soybean_exp_agg = soybean_trade_agg[soybean_trade_agg["element"] == "export_quantity"]
+
+    Calculate the segmented regression of values returning the most recent year, first using RSS and then R2 objective function, keeping the minimum number of points and the significance level as default
+
+        >>> soybean_exp_rss = segmented_regression(soybean_exp_agg, last_value = True, function = "RSS")
+        >>> soybean_exp_r2 = segmented_regression(soybean_exp_agg, last_value = True, function = "R2")
+
+    """
+
+    # Define value column name
+    if "value" in df.columns:
+        # Value column of faostat db
+        value_column = "value"
+    elif "net_weight" in df.columns:
+        # Value column is called "net_weight" in comtrade db
+        value_column = "net_weight"
+    # Define group columns
+    groupby_column_list = ["reporter", "product_code", "unit"]
+    # Depending on the db tables, different columns can be used to group the dataframe
+    add_columns = ["source", "partner", "element", "flow", "unit_code"]
+    # Check if columns are present in the original dataframe
+    for column in add_columns:
+        if column in df.columns:
+            # For comtrade db, do not consider unit and unit_code columns which are always nan
+            if column == "unit_code":
+                groupby_column_list.remove("unit")
+                continue
+            groupby_column_list.append(column)
+    # Group by df according to columns previously defined
+    groupby = df.groupby(
+        groupby_column_list,
+        as_index=False,
+    )
+    # Define the function and arguments to be applied
+    func = partial(
+        optimize_breakpoints,
+        value_column=value_column,
+        min_data_points=min_data_points,
+        alpha=alpha,
+        last_value=last_value,
+        function=function,
+    )
+    # Perform multiprocessing
+    if multi_process:
+        # Define data groups
+        groups = [groupby.get_group(group) for group in groupby.groups]
+        with Pool() as pool:
+            # Launch parallel jobs using several cores depending on the machine
+            segmented_regression = pool.map(
+                func,
+                groups,
+            )
+            # Concat results of the multi processing
+            df_segmented_regression = pd.concat(
+                segmented_regression, ignore_index=True
+            )
+    else:
+        # Use the pd.apply function
+        df_segmented_regression = groupby.apply(func).reset_index(drop=True)
     # Transform year lower and upper columns into int type
     df_segmented_regression[
         ["year_range_lower", "year_range_upper"]

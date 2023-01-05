@@ -4,7 +4,9 @@ Written by Selene Patani.
 Script made to export trends related to bilateral trades of countries associated to palm oil, soybeans, cocoa beans, coffee roasted, meat cattle, hides cattle fresh
 """
 
-from functions import *
+# Needed for multiprocessing tool, otherwise Windows spawns multiple threads
+if __name__ == "__main__":
+    from functions import *
 
 # Selected product codes
 product_list = [236, 257, 657, 661, 867, 919]
@@ -33,7 +35,7 @@ trade_data = trade_data[
     (trade_data["year"] > 1985) & (trade_data["estimate_flag"] == 0)
 ]
 # Perform trend analysis
-df = trend_analysis(trade_data)
+df = trend_analysis(trade_data, multi_process=True)
 # Columns to be retained
 column_list = [
     "reporter_code",
