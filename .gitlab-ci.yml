@@ -12,6 +12,23 @@ before_script:
   - echo $BIOTRADE_DATA
   - pwd
 
+stages:
+  - convert
+  - test
+
+md-to-pdf:
+  stage: convert
+  tags:
+    - inara
+  image:
+    name: openjournals/inara
+    entrypoint: [""]
+  script:
+    - inara -p -o pdf paper/paper.md
+  artifacts:
+    paths:
+      - paper.pdf
+
 pytest:
   stage: test
   script:

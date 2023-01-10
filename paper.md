@@ -26,6 +26,9 @@ date:
 bibliography: paper.bib
 ---
 
+<!-- Paper submission guidelines
+https://joss.readthedocs.io/en/latest/submitting.html
+-->
 
 # Summary
 
