@@ -350,6 +350,8 @@ def optimize_breakpoints(
     :return (DataFrame) df, dataframe which contains new columns related to
     linear regression calculations for the given time series
     """
+    # Avoid unexpected behavior of pandas apply function on df
+    df = df.copy()
     # Select data related to the specific group dropping nan values
     df = df.sort_values(by="year").dropna(subset=value_column)
     # Skip segmented analysis for groups with nr of data less than minimum required
