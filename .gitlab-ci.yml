@@ -19,8 +19,6 @@ stages:
 
 md-to-pdf:
   stage: convert
-  tags:
-    - inara
   image:
     name: openjournals/inara
     entrypoint: [""]

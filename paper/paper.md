@@ -32,28 +32,30 @@ https://joss.readthedocs.io/en/latest/submitting.html
 
 # Summary
 
+The aim of the `biotrade` package is to enable regular updates of agriculture, fisheries 
+and forest products trade data from international data sources. The software provides 
+methods to compare data across sources as well as methods to aggregate values and 
+present the most important products traded and the most important trade partners.
 
 
 # Statement of need
 
-Similar tools exist in the R and python packaging ecosystems. The R package `FAOSTAT` 
-makes it possible to download FAOSTAT and World Bank data. The python package `eurostat` 
-can download Eurostat data, so does the R package `eurostat` @lahti2017retrieval. 
-
-The aim of the `biotrade` package is to enable regular update of agriculture and forest 
-products trade related data from international data sources.
+Similar download tools exist in the R and python packaging ecosystems. The R package 
+`FAOSTAT` makes it possible to download FAOSTAT and World Bank data. The python package 
+`eurostat` can download Eurostat data, so does the R package `eurostat` 
+@lahti2017retrieval. 
 
 The advantage of the biotrade package is that it harmonises variable names across data 
-sources, so that code that uses this data becomes more readable when moving from one 
-data source to the next.
+sources, so that R or python code depending on our naming convention becomes more 
+readable when moving from one data source to another.
 
 The `biotrade` package is useful as a preparatory step in several use cases in 
 environmental economics and life cycle analysis: (1) to compute the ecological footprint 
-of trade (2) to compute market prices, demand and production in global agricultural and 
-forest markets.
+of trade (2) to compute demand, production and prices in market models of the 
+agriculture or forest sector.
 
-Data conversion between UN Comtrade and FAOSTAT format make it possible to extend 
-FAOSTAT bilateral trade datasets with the latest updated data.
+Data conversion between UN Comtrade codes and FAOSTAT codes make it possible to extend 
+FAOSTAT bilateral trade datasets with the latest updated data from Comtrade.
 
 
 # Package structure and data update
