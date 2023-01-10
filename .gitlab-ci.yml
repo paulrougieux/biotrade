@@ -4,13 +4,14 @@ variables:
   BIOTRADE_SKIP_CONFIRMATION: "True"
   BIOTRADE_DATA: "$CI_PROJECT_DIR/biotrade_data"
 
-before_script:
-  - python --version
-  - pip install .
-  - pip install pytest
-  - echo $CI_PROJECT_DIR 
-  - echo $BIOTRADE_DATA
-  - pwd
+default:
+  before_script:
+    - python --version
+    - pip install .
+    - pip install pytest
+    - echo $CI_PROJECT_DIR 
+    - echo $BIOTRADE_DATA
+    - pwd
 
 stages:
   - convert
@@ -23,11 +24,12 @@ md-to-pdf:
   image:
     name: openjournals/inara
     entrypoint: [""]
+  before_script: []
   script:
     - inara -p -o pdf paper/paper.md
   artifacts:
     paths:
-      - paper.pdf
+      - paper/paper.pdf
 
 pytest:
   stage: test
