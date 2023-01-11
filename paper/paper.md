@@ -34,11 +34,11 @@ https://joss.readthedocs.io/en/latest/submitting.html
 
 The aim of the `biotrade` package is to enable regular updates of agriculture, fisheries 
 and forest products trade data from the following international data sources: FAOSTAT 
-@faostat2023, UN Comtrade @comtrade2023 and the World Bank @worldbank2023. Additional 
-data sources might be added in the future. The software provides methods to compare data 
-across sources as well as methods to aggregate and rank the most important products and 
-the most important countries. It also provides tools to assess the quality of the data, 
-by comparing for example mirror flows or unit prices of trade.
+[-@faostat2023], UN Comtrade [-@comtrade2023] and the World Bank [-@worldbank2023]. 
+Additional data sources might be added in the future. The software provides methods to 
+compare data across sources as well as methods to aggregate and rank the most important 
+products and the most important countries. It also provides tools to assess the quality 
+of the data, by comparing for example mirror flows or unit prices of trade.
 
 
 # Statement of need
@@ -57,12 +57,12 @@ checks or data aggregation. They make it possible to re-run an analysis (plots a
 models) when new data becomes available. Thus, they facilitate reproducible research. 
 
 Such download tools exist already in the R and python packaging ecosystems. The R 
-package `FAOSTAT` @kao2022faostat can download and prepare FAOSTAT data. The R package 
-WDI can download World Bank data. The python package `eurostat` @cazzaniga2022eurostat 
-can download Eurostat data, so does the R package `eurostat` @lahti2017retrieval. There 
-is however no package that can download all these sources under a common naming scheme. 
-Also these packages only load data frames and leave it up to the user to save their 
-data.
+package `FAOSTAT` [@kao2022faostat] can download and prepare FAOSTAT data. The R package 
+WDI can download World Bank data. The python package `eurostat` [@cazzaniga2022eurostat] 
+can download Eurostat data, so does the R package `eurostat` [@lahti2017retrieval]. 
+There is however no package that can download all these sources under a common naming 
+scheme. Also these packages only load data frames and leave it up to the user to save 
+their data.
 
 The advantage of the `biotrade` package is that it creates a local copy of the source 
 database on disk. Thanks to the SQL Alchemy abstraction layer `biotrade` can store the 
@@ -72,7 +72,16 @@ names across data sources. The benefit is that R or python code becomes more rea
 when moving from one data source to another. Table \autoref{tab:colnames} shows the 
 naming convention and some of the variable names used in the different sources.
 
+
 \label{tab:colnames}
+
+| biotrade       | comtrade         | faostat_production   | faostat_trade        | world_bank     |
+| -------------- | ---------------- | -------------------- | -------------------- | -------------- |
+| year           | year             | year                 | year                 | year           |
+| reporter       | reporter         | area                 | reporter_countries   | country_name   |
+| partner        | partner          |                      | partner_countries    |                |
+| product_code   | commodity_code   | item_code            | item_code            |                |
+
 
 One issue when working with UN Comtrade and FAOSTAT, is that country codes are different 
 in the two data sources. The `biotarde` package contains mapping tables between 
