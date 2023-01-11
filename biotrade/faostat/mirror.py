@@ -51,7 +51,7 @@ def put_mirror_beside(df, drop_index_col=None):
         >>> from biotrade.faostat import faostat
         >>> from biotrade.faostat.mirror import put_mirror_beside
         >>> from biotrade.faostat.aggregate import agg_trade_eu_row
-        >>> country = "Russian Federation"
+        >>> country = "Ukraine"
         >>> # Load trade reported by the country and group EU-ROW on the partner side
         >>> dfr = faostat.db.select("crop_trade", reporter=country, product_code="268")
         >>> dfragg = agg_trade_eu_row(dfr, grouping_side="partner")

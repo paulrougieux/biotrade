@@ -34,8 +34,9 @@ https://joss.readthedocs.io/en/latest/submitting.html
 
 The aim of the `biotrade` package is to enable regular updates of agriculture, fisheries 
 and forest products trade data from international data sources. The software provides 
-methods to compare data across sources as well as methods to aggregate values and 
-present the most important products traded and the most important trade partners.
+methods to compare data across sources as well as methods to aggregate and rank the most 
+important products and the most important trade partners. It also provides tools to 
+assess the quality of the data, by comparing for example mirror flows.
 
 
 # Statement of need
@@ -74,11 +75,8 @@ The following code updates the FAOSTAT data on Land use
 
 
 Example use of the `nlargest` function to compute the 3 largest agricultural area of 
-wheat 
+wheat globally.
 
-
-Example use of the `nlargest` function to compute the 5 largest import flows of sawnwood 
-by trade value and weight from the UN Comtrade dataset.
 
 ```
 swdlargep <- swd %>%
@@ -99,4 +97,6 @@ TODO: Illustrade FAOSTAT Bilateral trade Compared to Comtrade bilateral trade
 TODO: Illustrade other aggregation and comparison functions
 
 
+
+# References
 
