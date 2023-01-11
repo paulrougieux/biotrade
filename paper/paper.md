@@ -41,58 +41,48 @@ the quality of the data, by comparing for example mirror flows or unit prices of
 
 # Statement of need
 
-<!--
-It's easy to download and read a csv from a public website, so why create a dedicated 
-tool for this task? To change column names according to a name convention defined within 
-the package. To Download the data from a website, prepare the data, analyse it with 
-plots and with a model. As data gets updated every few months, the process has to be 
-restarted. Data downloading tools help with downloading data from an API Similar -->
+In disciplines such as environmental economics and life cycle analysis, researchers are 
+concerned with the data that enables for example: (1) to compute the ecological 
+footprint of trade or (2) to compute demand, production and prices in market models of 
+the agriculture or forest sector. These models are based on time series of bio-based 
+commodities with data covering many countries and many years in a panel format. Every 
+month, or a few times per year, countries update their data through a mechanism 
+centralised by international organisations such as the UN Food and Agriculture 
+Organisation or the UN Comtrade. This data is made available in the form of files on a 
+public server. There are dedicated tools that facilitate data download into statistical 
+programming software. These tools generally also have methods to perform consistency 
+checks or data aggregation. They make it possible to re-run an analysis (plots and 
+models) when new data becomes available. Thus, they facilitate reproducible research. 
 
-We analyse macroeconomic data on bio-based products. Such data covers many countries and 
-many years in a panel format. Reporting countries update the source data with a monthly 
-or a bi-yearly frequency to various international organisations. Dedicated data download 
-tools facilitate data updates into statistical programming software. They generally have 
-methods to perform consistency checks or data aggregation. They make it possible to 
-re-run an analysis (plots and models) when new data becomes available, this means that 
-they facilitate reproducible research. 
+Such download tools exist already in the R and python packaging ecosystems. The R 
+package `FAOSTAT` @kao2022faostat can download and prepare FAOSTAT data. The R package 
+WDI can download World Bank data. The python package `eurostat` can download Eurostat 
+data, so does the R package `eurostat` @lahti2017retrieval. There is however no package 
+that can download all these sources under a common naming scheme. Also these packages 
+only load data frames and leave it up to the user to save their data.
 
-Such tools exist in the R and python packaging ecosystems. The R package `FAOSTAT` 
-@kao2022faostat can download and prepare FAOSTAT and World Bank data. The python package 
-`eurostat` can download Eurostat data, so does the R package `eurostat` 
-@lahti2017retrieval. 
-
-The role of download tools is to abstract away changes in the source API, to enforce a 
-naming convention and to store intermediate results while providing a convenient select 
-method to select the data.
-
-
-Existing packages do not have mechanisms to save the data, it is up to the user to save 
-intermediate data to disk, using for example RData, pickle or csv files.
-
-The advantage of the biotrade package is that it creates a local copy of the source 
-database on disk. It also harmonises variable names across data sources, so that R or 
-python code depending on our naming convention is more readable when moving from one 
-data source to another. Table \ref
-
+The advantage of the `biotrade` package is that it creates a local copy of the source 
+database on disk. Thanks to the SQL Alchemy abstraction layer `biotrade` can store the 
+data in many different database engines. Currently SQLite is implemented by default, and 
+PostGreSQL can be used when available. The `biotrade` package also harmonises variable 
+names across data sources. The benefit is that R or python code becomes more readable 
+when moving from one data source to another. Table  \autoref{tab:colnames} shows the 
+naming convention and some of the variable names used in the different sources.
 
 \label{tab:colnames}
 
-
-
-The correlation plot in \autoref{fig:corr} illustrates where e.g. negative correlations exist within aggregation groups, which may lead to poor representation of indicators in the           aggregated scores.
-
-
-
-The `biotrade` package is useful as a preparatory step in several use cases in 
-environmental economics and life cycle analysis: (1) to compute the ecological footprint 
-of trade (2) to compute demand, production and prices in market models of the 
-agriculture or forest sector.
+One issue when working with UN Comtrade and FAOSTAT, is that country codes are different 
+in the two data sources. The `biotarde` package contains mapping tables between 
+countries in the 2 coding system, as well as ISO codes and continent and sub-continent 
+aggregates. In addition the UN COmtrade product classification is vastly larger than the 
+FAOSTAT product classification. The `biotrade` package also contains a mapping table 
+between FAOSTAT product codes and the Harmonized System classification. 
 
 Data conversion between UN Comtrade codes and FAOSTAT codes make it possible to extend 
 FAOSTAT bilateral trade datasets with the latest updated data from Comtrade.
 
 
-# Package structure and data update
+# Data update and Package structure
 
 The package is structured by data sources. Each source has a series of methods to 
 download and aggregate data. Some functions that perform comparison and data aggregation 
@@ -128,6 +118,15 @@ TODO: Illustrade the unit price of trade based on Comtrade data
 TODO: Illustrade FAOSTAT Bilateral trade Compared to Comtrade bilateral trade
 
 TODO: Illustrade other aggregation and comparison functions
+
+
+# Conclusion 
+
+
+The role of a download tools is to abstract away changes in the source API, to enforce a 
+naming convention and to store intermediate results while providing convenient methods 
+to select the data. We encourage users to try it out and to provide feedback on the 
+issues page.
 
 
 
