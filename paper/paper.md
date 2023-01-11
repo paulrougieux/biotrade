@@ -33,21 +33,23 @@ https://joss.readthedocs.io/en/latest/submitting.html
 # Summary
 
 The aim of the `biotrade` package is to enable regular updates of agriculture, fisheries 
-and forest products trade data from international data sources. The software provides 
-methods to compare data across sources as well as methods to aggregate and rank the most 
-important products and the most important countries. It also provides tools to assess 
-the quality of the data, by comparing for example mirror flows or unit prices of trade.
+and forest products trade data from the following international data sources: FAOSTAT 
+@faostat2023, UN Comtrade @comtrade2023 and the World Bank @worldbank2023. Additional 
+data sources might be added in the future. The software provides methods to compare data 
+across sources as well as methods to aggregate and rank the most important products and 
+the most important countries. It also provides tools to assess the quality of the data, 
+by comparing for example mirror flows or unit prices of trade.
 
 
 # Statement of need
 
-In disciplines such as environmental economics and life cycle analysis, researchers are 
-concerned with the data that enables for example: (1) to compute the ecological 
-footprint of trade or (2) to compute demand, production and prices in market models of 
-the agriculture or forest sector. These models are based on time series of bio-based 
-commodities with data covering many countries and many years in a panel format. Every 
-month, or a few times per year, countries update their data through a mechanism 
-centralised by international organisations such as the UN Food and Agriculture 
+In disciplines such as environmental economics and Life Cycle Analysis (LCA), 
+researchers are concerned with the following research questions for example: (1) what is 
+the ecological footprint of trade? or (2) how do trade prices react to natural 
+disasters? The models used to answer these questions are based on time series of 
+bio-based commodities with data covering many countries and many years in a panel 
+format. Every month, or a few times per year, countries update their data through a 
+mechanism centralised by international organisations such as the UN Food and Agriculture 
 Organisation or the UN Comtrade. This data is made available in the form of files on a 
 public server. There are dedicated tools that facilitate data download into statistical 
 programming software. These tools generally also have methods to perform consistency 
@@ -56,17 +58,18 @@ models) when new data becomes available. Thus, they facilitate reproducible rese
 
 Such download tools exist already in the R and python packaging ecosystems. The R 
 package `FAOSTAT` @kao2022faostat can download and prepare FAOSTAT data. The R package 
-WDI can download World Bank data. The python package `eurostat` can download Eurostat 
-data, so does the R package `eurostat` @lahti2017retrieval. There is however no package 
-that can download all these sources under a common naming scheme. Also these packages 
-only load data frames and leave it up to the user to save their data.
+WDI can download World Bank data. The python package `eurostat` @cazzaniga2022eurostat 
+can download Eurostat data, so does the R package `eurostat` @lahti2017retrieval. There 
+is however no package that can download all these sources under a common naming scheme. 
+Also these packages only load data frames and leave it up to the user to save their 
+data.
 
 The advantage of the `biotrade` package is that it creates a local copy of the source 
 database on disk. Thanks to the SQL Alchemy abstraction layer `biotrade` can store the 
 data in many different database engines. Currently SQLite is implemented by default, and 
 PostGreSQL can be used when available. The `biotrade` package also harmonises variable 
 names across data sources. The benefit is that R or python code becomes more readable 
-when moving from one data source to another. Table  \autoref{tab:colnames} shows the 
+when moving from one data source to another. Table \autoref{tab:colnames} shows the 
 naming convention and some of the variable names used in the different sources.
 
 \label{tab:colnames}
@@ -125,8 +128,10 @@ TODO: Illustrade other aggregation and comparison functions
 
 The role of a download tools is to abstract away changes in the source API, to enforce a 
 naming convention and to store intermediate results while providing convenient methods 
-to select the data. We encourage users to try it out and to provide feedback on the 
-issues page.
+to select the data. We encourage users to try out the `biotrade` package from python and 
+even from R thanks to the reticulate package. Please provide feedback on the issues 
+page.
+
 
 
 
