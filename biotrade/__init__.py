@@ -40,7 +40,7 @@ if not data_dir.exists():
     else:
         msg = f"Create {data_dir}?"
         if input(msg + "Please confirm [y/n]:") == "y":
-            data_dir.mkdir()
+            data_dir.mkdir(parents=True)
         else:
             print("Directory creation cancelled.")
 
