@@ -1,7 +1,7 @@
 The `biotrade` package analyses international trade of bio-based products. It focuses on 
 the agriculture and forestry sectors, from primary production to secondary products 
-transformation. It loads bilateral trade and production data from the UN Comtrade and 
-from FAOSTAT.
+transformation. It loads bilateral trade data from UN Comtrade, production and trade 
+data from FAOSTAT and socio-economic indicators from the World Bank.
 
 Extraction rates and waste of supply are taken from the FAO, technical conversion 
 factors for agricultural commodities available at: 
