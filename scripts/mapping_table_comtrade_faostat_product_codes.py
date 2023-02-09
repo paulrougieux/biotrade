@@ -26,14 +26,16 @@ faostat_names = (
     .value_counts()
     .reset_index()
     .drop(columns=(0))
-    .rename(columns={"product_code": "faostat_code"})
+    .rename(columns={"product_code": "faostat_code", "product": "faostat_name"})
 )
 
 with pandas.option_context("display.max_rows", 100, "display.max_columns", 10):
     print(faostat_names)
 
 # Comtrade product names
-comtrade_names = comtrade.products.hs.rename(columns={"product_code": "comtrade_code"})
+comtrade_names = comtrade.products.hs.rename(
+    columns={"product_code": "comtrade_code", "product_description": "comtrade_name"}
+)
 
 # Mapping between comtrade and faostat codes
 cf_mapping_wood = comtrade_faostat_mapping.query(
