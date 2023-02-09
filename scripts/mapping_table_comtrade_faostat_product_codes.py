@@ -2,7 +2,7 @@
 
 Usage:
 
-    ipython -i ~/rp/forobs/biotrade/scripts/mapping_table_comtrade_faostat_product_codes.py
+    ipython -i ~/repos/forobs/biotrade/scripts/mapping_table_comtrade_faostat_product_codes.py
 
 This script:
 - Load FAOSTAT product names and codes
