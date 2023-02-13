@@ -7,7 +7,7 @@ Script made to export data related to countries, for the web platform
 
 import pandas as pd
 from biotrade.faostat import faostat
-from functions import *
+from functions import save_file
 
 # Name of reporter file to retrieve
 reporter_file = faostat.config_data_dir / "faostat_country_groups.csv"

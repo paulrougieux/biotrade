@@ -7,7 +7,7 @@ Script made to export data related to all commodities and tree of the key produc
 
 import pandas as pd
 from biotrade.faostat import faostat
-from functions import save_file, main_product_list
+from functions import save_file, main_product_list, comtrade_products
 
 # Name of product file to retrieve
 faostat_key_commodities_file = (
@@ -59,3 +59,10 @@ faostat_products = faostat_products[
 # Save csv files to env variable path or into biotrade data folder
 save_file(product_tree, "key_product_tree_list.csv")
 save_file(faostat_products, "product_list.csv")
+# Retrieve regulation products and save the file
+comtrade_list = comtrade_products()
+columns = ["product_code", "product_name"]
+comtrade_list = comtrade_list.drop_duplicates(subset=columns)[
+    columns
+].reset_index(drop=True)
+save_file(comtrade_list, "comtrade_product_list.csv")

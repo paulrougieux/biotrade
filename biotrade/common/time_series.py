@@ -447,7 +447,24 @@ def optimize_breakpoints(
         if last_value:
             df = df.sort_values(by="year", ascending=False)[0:1]
     else:
-        df = pd.DataFrame()
+        df = pd.DataFrame(
+            columns=[
+                *df.columns,
+                "slope",
+                "intercept",
+                "rsquared",
+                "pvalue",
+                "stderr_slope",
+                "stderr_intercept",
+                "year_range_lower",
+                "year_range_upper",
+                "mk_trend",
+                "mk_ha_test",
+                "mk_pvalue",
+                "mk_slope",
+                "mk_intercept",
+            ]
+        )
     return df
 
 
@@ -458,6 +475,8 @@ def segmented_regression(
     min_data_points=7,
     alpha=0.05,
     multi_process=False,
+    groupby_column_list=[],
+    value_column=None,
 ):
     """
     Calculate the linear regression statistics of the segmented regression
@@ -470,6 +489,8 @@ def segmented_regression(
     :param (int) min_data_points, minimum nr of data for each segment of the linear regression (default = 7)
     :param (float) alpha, significance level of statistical tests (default = 0.05)
     :param multi_process (Boolean), if True segmented regression is performed through multiple cores. Default is False
+    :param groupby_column_list (List), columns to be grouped. Default is empty list
+    :param value_column (string), column which refers to data. Default is None
 
     :return (DataFrame) df_segmented_regression, dataframe which contains new columns related to
     linear regression calculations
@@ -502,25 +523,29 @@ def segmented_regression(
 
     """
 
-    # Define value column name
-    if "value" in df.columns:
-        # Value column of faostat db
-        value_column = "value"
-    elif "net_weight" in df.columns:
-        # Value column is called "net_weight" in comtrade db
-        value_column = "net_weight"
-    # Define group columns
-    groupby_column_list = ["reporter", "product_code", "unit"]
-    # Depending on the db tables, different columns can be used to group the dataframe
-    add_columns = ["source", "partner", "element", "flow", "unit_code"]
-    # Check if columns are present in the original dataframe
-    for column in add_columns:
-        if column in df.columns:
-            # For comtrade db, do not consider unit and unit_code columns which are always nan
-            if column == "unit_code":
-                groupby_column_list.remove("unit")
-                continue
-            groupby_column_list.append(column)
+    # Define value column name if not provided
+    if value_column is None:
+        if "value" in df.columns:
+            # Value column of faostat db
+            value_column = "value"
+        elif "net_weight" in df.columns:
+            # Value column is called "net_weight" in comtrade db
+            value_column = "net_weight"
+        else:
+            raise ValueError("Provide column name containing values")
+    # Define group columns if not provided
+    if len(groupby_column_list) == 0:
+        groupby_column_list = ["reporter", "product_code", "unit"]
+        # Depending on the db tables, different columns can be used to group the dataframe
+        add_columns = ["source", "partner", "element", "flow", "unit_code"]
+        # Check if columns are present in the original dataframe
+        for column in add_columns:
+            if column in df.columns:
+                # For comtrade db, do not consider unit and unit_code columns which are always nan
+                if column == "unit_code":
+                    groupby_column_list.remove("unit")
+                    continue
+                groupby_column_list.append(column)
     # Group by df according to columns previously defined
     groupby = df.groupby(
         groupby_column_list,
@@ -568,7 +593,109 @@ def segmented_regression(
     return df_segmented_regression
 
 
-def relative_absolute_change(df, years=5, last_value=True, year_range=[]):
+def calculate_changes(
+    df, column_list_calc, year_range, value_column, years, last_value
+):
+    """
+    Function to calculate absolute and relative changes
+
+    :param (DataFrame) df, dataframe containing 1 time series for the change calculations
+    :param (list) column_list_calc, column name list on which performing calculations
+    ::param (list) year_range -> [lower year (int), upper year (int)], if values are given the function computes the average value with respect to this range and does not consider the years argument
+    :param (string) value_column, name of the column containing the data
+    :param (int) years, temporal window over calculating the relative and absolute change
+    :param (boolean) last_value, if True returns only values related to the most recent year
+
+    :return (DataFrame) df, dataframe which contains new columns related to
+    change calculations for the given time series
+    """
+    # Avoid unexpected behavior of pandas apply function on df
+    df = df.copy()
+    # Fill nan year values
+    dict_values = {}
+    merge_col_list = []
+    for col in df.columns:
+        if col in ["year", "period"]:
+            dict_values.update(
+                {
+                    col: range(
+                        sorted(df.year.unique())[0],
+                        sorted(df.year.unique())[-1] + 1,
+                    )
+                }
+            )
+            merge_col_list.append(col)
+        elif col in [
+            "source",
+            "reporter_code",
+            "reporter",
+            "partner_code",
+            "partner",
+            "product_code",
+            "product",
+            "element_code",
+            "element",
+            "flow",
+            "unit",
+            "unit_code",
+        ]:
+            dict_values.update({col: df[col].unique()[0]})
+            merge_col_list.append(col)
+    df_fill_nan = pd.DataFrame(dict_values)
+    df = df.merge(df_fill_nan, on=merge_col_list, how="outer")
+    # Sort data from the most recent year
+    df = df.sort_values(by="year", ascending=False)
+    # Add columns to dataframe
+    for idx, column in enumerate(column_list_calc):
+        # The last column of the list corresponds to the average value
+        if column == "average_value":
+            # The last column is the mean of the corresponding values of the year range
+            if year_range:
+                df[column] = df.loc[
+                    (df["year"] >= year_range[0])
+                    & (df["year"] <= year_range[1]),
+                    value_column,
+                ].mean()
+            # The last column is the mean of the previous year values
+            elif years > 0:
+                df[column] = df[column_list_calc[:-1]].mean(
+                    axis=1,
+                )
+            break
+        # Shift value column up with respect to the number of years considered
+        df[column] = df[value_column].shift(-(idx) - 1)
+    # Finally calculate the relative and absolute change columns
+    df["relative_change"] = (
+        (df[value_column] - df["average_value"]) / df["average_value"] * 100
+    )
+    df["absolute_change"] = df[value_column] - df["average_value"]
+    # 0/0 and float/0 treated as NaN
+    df["relative_change"].replace([np.inf, -np.inf], np.nan, inplace=True)
+    # Define 2 new columns with the lower and upper years of the average value
+    if year_range:
+        df["year_range_lower"] = year_range[0]
+        df["year_range_upper"] = year_range[1]
+    elif years > 0:
+        df["year_range_lower"] = df["year"] - years
+        df["year_range_upper"] = df["year"] - 1
+    # Drop columns added for the calculation
+    df = df.drop(column_list_calc[:-1], axis=1)
+    # Return values related to most recent year at disposal
+    if last_value:
+        df = df[0:1]
+
+    return df
+
+
+def relative_absolute_change(
+    df,
+    years=5,
+    last_value=True,
+    multi_process=False,
+    year_range=[],
+    groupby_column_list=[],
+    value_column=None,
+):
     """
     Calculate the relative and absolute change of a quantity with respect to
     values assumed by that quantity in the n previous years or with respect to a year range given, for
@@ -582,6 +709,9 @@ def relative_absolute_change(df, years=5, last_value=True, year_range=[]):
     :param (int) years, temporal window over calculating the relative and absolute change (default = 5)
     :param (boolean) last_value, if True returns only values related to the most recent year (default = True)
     :param (list) year_range -> [lower year (int), upper year (int)], if given the function computes the average value with respect to this range and does not consider the years argument (default = empty)
+    :param multi_process (Boolean), if True changes are performed through multiple cores. Default is False
+    :param groupby_column_list (List), columns to be grouped. Default is empty list
+    :param value_column (string), column which refers to data. Default is None
 
     :return (DataFrame) df_change, dataframe which contains new columns
         "average_value" mean of values of the year range
@@ -616,33 +746,37 @@ def relative_absolute_change(df, years=5, last_value=True, year_range=[]):
         >>> soy_trade_change2 = relative_absolute_change(soy_trade_agg, year_range = [2000, 2010], last_value = False)
 
     """
-    # Define value column name
-    if "value" in df.columns:
-        # Value column of faostat db
-        value_column = "value"
-    elif "net_weight" in df.columns:
-        # Value column is called "net_weight" in comtrade db
-        value_column = "net_weight"
-    # Define group columns
-    groupby_column_list = ["reporter", "product_code", "unit"]
-    # Depending on the db tables, different columns can be used to group the dataframe
-    add_columns = [
-        "source",
-        "partner",
-        "element",
-        "flow",
-        "unit_code",
-    ]
-    # Check if columns are present in the original dataframe
-    for column in add_columns:
-        if column in df.columns:
-            # For comtrade db, do not consider unit and unit_code columns which are always nan
-            if column == "unit_code":
-                groupby_column_list.remove("unit")
-                continue
-            groupby_column_list.append(column)
+    # Define value column name if not provided
+    if value_column is None:
+        if "value" in df.columns:
+            # Value column of faostat db
+            value_column = "value"
+        elif "net_weight" in df.columns:
+            # Value column is called "net_weight" in comtrade db
+            value_column = "net_weight"
+        else:
+            raise ValueError("Provide column name containing values")
+    # Define group columns if not provided
+    if len(groupby_column_list) == 0:
+        groupby_column_list = ["reporter", "product_code", "unit"]
+        # Depending on the db tables, different columns can be used to group the dataframe
+        add_columns = [
+            "source",
+            "partner",
+            "element",
+            "flow",
+            "unit_code",
+        ]
+        # Check if columns are present in the original dataframe
+        for column in add_columns:
+            if column in df.columns:
+                # For comtrade db, do not consider unit and unit_code columns which are always nan
+                if column == "unit_code":
+                    groupby_column_list.remove("unit")
+                    continue
+                groupby_column_list.append(column)
     # Define groups with respect to calculate the relative and absolute change of values in time
-    df_groups = df.groupby(groupby_column_list)
+    groupby = df.groupby(groupby_column_list, as_index=False)
     # Allocate df reshaped to return
     df_change = pd.DataFrame()
     # Column list to perform calculations
@@ -657,90 +791,30 @@ def relative_absolute_change(df, years=5, last_value=True, year_range=[]):
             column_list_calc.append(f"value_{year}_year_before")
     # Colum to perform the average value
     column_list_calc.append("average_value")
-    # Loop on each group
-    for key in df_groups.groups.keys():
-        # Select data related to the specific group
-        df_key = df_groups.get_group(key)
-        # Fill nan year values
-        dict_values = {}
-        merge_col_list = []
-        for col in df_key.columns:
-            if col in ["year", "period"]:
-                dict_values.update(
-                    {
-                        col: range(
-                            sorted(df_key.year.unique())[0],
-                            sorted(df_key.year.unique())[-1] + 1,
-                        )
-                    }
-                )
-                merge_col_list.append(col)
-            elif col in [
-                "source",
-                "reporter_code",
-                "reporter",
-                "partner_code",
-                "partner",
-                "product_code",
-                "product",
-                "element_code",
-                "element",
-                "flow",
-                "unit",
-                "unit_code",
-            ]:
-                dict_values.update({col: df_key[col].unique()[0]})
-                merge_col_list.append(col)
-        df_fill_nan = pd.DataFrame(dict_values)
-        df_key = df_key.merge(df_fill_nan, on=merge_col_list, how="outer")
-        # Sort data from the most recent year
-        df_key = df_key.sort_values(by="year", ascending=False)
-        # Add columns to dataframe
-        for idx, column in enumerate(column_list_calc):
-            # The last column of the list corresponds to the average value
-            if column == "average_value":
-                # The last column is the mean of the corresponding values of the year range
-                if year_range:
-                    df_key[column] = df_key.loc[
-                        (df_key["year"] >= year_range[0])
-                        & (df_key["year"] <= year_range[1]),
-                        value_column,
-                    ].mean()
-                # The last column is the mean of the previous year values
-                elif years > 0:
-                    df_key[column] = df_key[column_list_calc[:-1]].mean(
-                        axis=1,
-                    )
-                break
-            # Shift value column up with respect to the number of years considered
-            df_key[column] = df_key[value_column].shift(-(idx) - 1)
-        # Finally calculate the relative and absolute change columns
-        df_key["relative_change"] = (
-            (df_key[value_column] - df_key["average_value"])
-            / df_key["average_value"]
-            * 100
-        )
-        df_key["absolute_change"] = (
-            df_key[value_column] - df_key["average_value"]
-        )
-        # 0/0 and float/0 treated as NaN
-        df_key["relative_change"].replace(
-            [np.inf, -np.inf], np.nan, inplace=True
-        )
-        # Define 2 new columns with the lower and upper years of the average value
-        if year_range:
-            df_key["year_range_lower"] = year_range[0]
-            df_key["year_range_upper"] = year_range[1]
-        elif years > 0:
-            df_key["year_range_lower"] = df_key["year"] - years
-            df_key["year_range_upper"] = df_key["year"] - 1
-        # Drop columns added for the calculation
-        df_key = df_key.drop(column_list_calc[:-1], axis=1)
-        # Return values related to most recent year at disposal
-        if last_value:
-            df_key = df_key[0:1]
-        # Add the group to the final dataframe to return
-        df_change = pd.concat([df_change, df_key], ignore_index=True)
+    # Define the function and arguments to be applied
+    func = partial(
+        calculate_changes,
+        column_list_calc=column_list_calc,
+        year_range=year_range,
+        value_column=value_column,
+        years=years,
+        last_value=last_value,
+    )
+    # Perform multiprocessing
+    if multi_process:
+        # Define data groups
+        groups = [groupby.get_group(group) for group in groupby.groups]
+        with Pool() as pool:
+            # Launch parallel jobs using several cores depending on the machine
+            relative_absolute = pool.map(
+                func,
+                groups,
+            )
+            # Concat results of the multi processing
+            df_change = pd.concat(relative_absolute, ignore_index=True)
+    else:
+        # Use the pd.apply function
+        df_change = groupby.apply(func).reset_index(drop=True)
     # Final dataframe with the new columns
     return df_change
 

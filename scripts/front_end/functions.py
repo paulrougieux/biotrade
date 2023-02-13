@@ -73,6 +73,33 @@ def main_product_list():
     return product_list
 
 
+def comtrade_products():
+    """
+    Return the regulation product codes and names together with the associated 6 digit codes of Comtrade products contained into the file biotade/config_data/regulation_products.csv
+
+    :return df (Dataframe), containing Comtrade product codes and names
+    """
+    # Name of product file to retrieve
+    main_product_file = faostat.config_data_dir / "regulation_products.csv"
+    # Retrieve dataset
+    df = pd.read_csv(
+        main_product_file,
+        dtype={"regulation_code": str, "hs_4d_code": str, "hs_6d_code": str},
+    )
+    # Retrieve name and codes and return the dataframe
+    columns = ["regulation_code", "regulation_short_name", "hs_6d_code"]
+    df = df[columns]
+    df.rename(
+        columns={
+            "regulation_code": "product_code",
+            "regulation_short_name": "product_name",
+            "hs_6d_code": "comtrade_code",
+        },
+        inplace=True,
+    )
+    return df
+
+
 def reporter_iso_codes(df):
     """
     Script which transforms faostat reporter and partner codes into iso3 codes
@@ -543,17 +570,27 @@ def consistency_check_china_data(df):
     return df_china
 
 
-def trend_analysis(df_data, multi_process=False):
+def trend_analysis(
+    df_data, multi_process=False, groupby_column_list=[], value_column=None
+):
     """
     Script which performs the trend analysis
 
     :param df_data (DataFrame), data on which perform the analysis
     :param multi_process (Boolean), if True segmented regression is performed through multiple cores. Default is False
+    :param groupby_column_list (List), columns to be grouped. Default is empty list
+    :param value_column (string), column which refers to data. Default is None
     :return df (DataFrame), dataframe containing the relative, absolute and segmented regresssion indicators
 
     """
     # Calculate the absolute and relative change
-    df_data_change = relative_absolute_change(df_data, last_value=True)
+    df_data_change = relative_absolute_change(
+        df_data,
+        last_value=True,
+        groupby_column_list=groupby_column_list,
+        value_column=value_column,
+        multi_process=multi_process,
+    )
     # Use as objective function the coefficient of determination (R2), significance level of 0.05 and at least 7 points for the linear regression
     df_data_regression = segmented_regression(
         df_data,
@@ -562,6 +599,8 @@ def trend_analysis(df_data, multi_process=False):
         alpha=0.05,
         min_data_points=7,
         multi_process=multi_process,
+        groupby_column_list=groupby_column_list,
+        value_column=value_column,
     )
     # Merge dataframes to compare results
     df = merge_analysis(
