@@ -39,5 +39,25 @@ reporter = pd.concat(
     ],
     ignore_index=True,
 )
+# Remove autonomous regions of France
+reporter = reporter[
+    ~reporter.reporter_code.isin(
+        [
+            "GUF",
+            "GLP",
+            "PYF",
+            "SPM",
+            "CPT",
+            "NCL",
+            "MTQ",
+            "MYT",
+            "MAF",
+            "BLM",
+            "ATF",
+            "REU",
+            "WLF",
+        ]
+    )
+].reset_index(drop=True)
 # Save csv files to env variable path or into biotrade data folder
 save_file(reporter, "reporter_list.csv")

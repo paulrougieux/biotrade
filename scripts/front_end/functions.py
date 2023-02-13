@@ -149,6 +149,25 @@ def reporter_iso_codes(df):
         subset_col.append("partner_code")
     # Faostat code 41 (China mainland) and 351 (China mainland + Hong Kong + Macao + Taiwan ) are not mapped into ISO 3 Codes
     df.dropna(subset=subset_col, inplace=True)
+    # Remove autonomous regions of France
+    region_codes = [
+        "GUF",
+        "GLP",
+        "PYF",
+        "SPM",
+        "CPT",
+        "NCL",
+        "MTQ",
+        "MYT",
+        "MAF",
+        "BLM",
+        "ATF",
+        "REU",
+        "WLF",
+    ]
+    df = df[~df.reporter_code.isin(region_codes)].reset_index(drop=True)
+    if "partner_code" in df.columns:
+        df = df[~df.partner_code.isin(region_codes)].reset_index(drop=True)
     return df
 
 
