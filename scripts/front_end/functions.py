@@ -54,30 +54,11 @@ def save_file(df, file_name):
     df.to_csv(path / file_name, index=False, na_rep="null")
 
 
-def main_product_list():
-    """
-    Return the main list of products (without duplicates) contained into the file biotade/config_data/faostat_commodity_tree.csv
-
-    :return product_list (list), list of the main product codes
-
-    """
-    # Name of product file to retrieve
-    main_product_file = faostat.config_data_dir / "faostat_commodity_tree.csv"
-    # Retrieve dataset
-    df = pd.read_csv(main_product_file)
-    # Retrieve parent and child codes
-    parent_codes = df["parent_code"].unique().tolist()
-    child_codes = df["child_code"].unique().tolist()
-    # Union of the codes without repetitions
-    product_list = np.unique(parent_codes + child_codes).tolist()
-    return product_list
-
-
 def comtrade_products():
     """
-    Return the regulation product codes and names together with the associated 6 digit codes of Comtrade products contained into the file biotade/config_data/regulation_products.csv
+    Return the regulation product codes and names together with the associated 6 digit codes of Comtrade products and Faostat contained into the file biotade/config_data/regulation_products.csv
 
-    :return df (Dataframe), containing Comtrade product codes and names
+    :return df (Dataframe), containing Comtrade and Faostat product codes and names
     """
     # Name of product file to retrieve
     main_product_file = faostat.config_data_dir / "regulation_products.csv"
@@ -87,7 +68,12 @@ def comtrade_products():
         dtype={"regulation_code": str, "hs_4d_code": str, "hs_6d_code": str},
     )
     # Retrieve name and codes and return the dataframe
-    columns = ["regulation_code", "regulation_short_name", "hs_6d_code"]
+    columns = [
+        "regulation_code",
+        "regulation_short_name",
+        "hs_6d_code",
+        "fao_code",
+    ]
     df = df[columns]
     df.rename(
         columns={
@@ -98,6 +84,31 @@ def comtrade_products():
         inplace=True,
     )
     return df
+
+
+def main_product_list():
+    """
+    Return the main list of Faostat products (without duplicates) contained into the file biotade/config_data/faostat_commodity_tree.csv and biotade/config_data/regulation_products.csv
+
+    :return product_list (list), list of the main Faostat product codes
+
+    """
+    # Name of product file to retrieve
+    main_product_file = faostat.config_data_dir / "faostat_commodity_tree.csv"
+    # Retrieve dataset
+    df = pd.read_csv(main_product_file)
+    # Retrieve parent and child codes
+    parent_codes = df["parent_code"].unique().tolist()
+    child_codes = df["child_code"].unique().tolist()
+    # Retrieve Faostat correspondence of regulation codes
+    regulation_codes = (
+        comtrade_products().fao_code.dropna().unique().astype(int).tolist()
+    )
+    # Union of the codes (with Maize also) without repetitions
+    product_list = np.unique(
+        parent_codes + child_codes + regulation_codes + [56]
+    ).tolist()
+    return product_list
 
 
 def reporter_iso_codes(df):

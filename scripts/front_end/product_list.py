@@ -48,9 +48,9 @@ faostat_products = pd.concat(
     ],
     ignore_index=True,
 )
-# Add key product flag
+# Add key product flag (including maize and rubber)
 faostat_products["key_product_flag"] = faostat_products.product_code.isin(
-    product_tree.primary_product_code.unique().tolist()
+    [*product_tree.primary_product_code.unique().tolist(), 56, 836]
 ).astype(int)
 # Filter only for regulation products (final decision)
 faostat_products = faostat_products[
