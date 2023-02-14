@@ -1,7 +1,7 @@
 """
 Written by Selene Patani.
 
-Script made to export data related to harvested area/production of countries associated to the key commodities, for the web platform
+Script made to export data related to harvested area/production of countries associated to the regulation and commodity tree products, for the web platform
 
 """
 

@@ -1,7 +1,7 @@
 """
 Written by Selene Patani.
 
-Script made to export data of products and countries (averaging over periods of 5 years except last year of db) related to harvested area/production, for the web platform
+Script made to export data of products and countries (averaging over periods of 5 years except last year of db) related to harvested area/production of the regulation and commodity tree products, for the web platform
 
 """
 

@@ -1,12 +1,22 @@
 """
 Written by Selene Patani.
 
-Script made to export trends related to harvested area/production of countries associated to the key commodities, for the web platform
+Script made to export trends related to harvested area/production of countries associated to the regulation and commodity tree products, for the web platform
 
 """
 # Needed for multiprocessing tool, otherwise Windows spawns multiple threads
 if __name__ == "__main__":
-    from functions import *
+    from biotrade.faostat import faostat
+    import pandas as pd
+    import numpy as np
+    from functions import (
+        consistency_check_china_data,
+        main_product_list,
+        reporter_iso_codes,
+        replace_zero_with_nan_values,
+        trend_analysis,
+        save_file,
+    )
 
     # Obtain the main product codes
     main_product_list = main_product_list()
@@ -16,6 +26,14 @@ if __name__ == "__main__":
         product_code=main_product_list,
         element=["production", "area_harvested", "stocks"],
     )
+    # Select wood production data
+    wood_data = faostat.db.select(
+        table="forestry_production",
+        product_code=main_product_list,
+        element=["production"],
+    )
+    # Merge data
+    crop_data = pd.concat([crop_data, wood_data], ignore_index=True)
     crop_data = crop_data[crop_data["reporter_code"] < 1000]
     # China Mainland + Taiwan data
     df_china = consistency_check_china_data(crop_data)
