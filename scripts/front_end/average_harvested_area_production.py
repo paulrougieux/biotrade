@@ -12,20 +12,31 @@ from biotrade.faostat import faostat
 from functions import COLUMN_PERC_SUFFIX
 from functions import (
     consistency_check_china_data,
+    main_product_list,
     average_results,
     reporter_iso_codes,
     replace_zero_with_nan_values,
     save_file,
 )
 
+# Obtain the main product codes
+main_product_list = main_product_list()
 # Query db to obtain data
-df = faostat.db.select(table="crop_production")
-# Select only area harvested/production data and reporter with code lower
-# than 1000
-elements = ["area_harvested", "production", "stocks"]
-df = df[(df["element"].isin(elements)) & (df["reporter_code"] < 1000)].reset_index(
-    drop=True
+crop_df = faostat.db.select(
+    table="crop_production",
+    product_code=main_product_list,
+    element=["production", "area_harvested", "stocks"],
 )
+# Select wood production data
+wood_df = faostat.db.select(
+    table="forestry_production",
+    product_code=main_product_list,
+    element=["production"],
+)
+# Merge data
+df = pd.concat([crop_df, wood_df], ignore_index=True)
+# Select only reporter with code lower than 1000
+df = df[df["reporter_code"] < 1000].reset_index(drop=True)
 # China Mainland + Taiwan data
 df_china = consistency_check_china_data(df)
 # Add China data to df (exclude Taiwan data)
@@ -66,11 +77,15 @@ drop_column = "element"
 column_list = df_final.columns.tolist()
 column_list.remove(drop_column)
 # Define dropna columns
-dropna_col = [col for col in df_final.columns if col.endswith(COLUMN_PERC_SUFFIX)]
+dropna_col = [
+    col for col in df_final.columns if col.endswith(COLUMN_PERC_SUFFIX)
+]
 df_final = replace_zero_with_nan_values(df_final, dropna_col)
 df_final = df_final.dropna(subset=dropna_col, how="all")
 # Save csv files to env variable path or into biotrade data folder
 harvested_area = df_final[df_final["element"] == "area_harvested"][column_list]
 save_file(harvested_area, "harvested_area_average.csv")
-production = df_final[df_final["element"].isin(["production", "stocks"])][column_list]
+production = df_final[df_final["element"].isin(["production", "stocks"])][
+    column_list
+]
 save_file(production, "production_average.csv")
