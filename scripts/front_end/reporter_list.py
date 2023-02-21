@@ -1,7 +1,7 @@
 """
 Written by Selene Patani.
 
-Script made to export data related to countries, for the web platform
+Script made to export data related to countries, for the web platform. DEPRECATED
 
 """
 

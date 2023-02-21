@@ -5,8 +5,18 @@ Script used to compute averages and percentages of trade quantities related to t
 
 """
 
-from functions import *
+from functions import (
+    main_product_list,
+    merge_faostat_comtrade_data,
+    consistency_check_china_data,
+    reporter_iso_codes,
+    average_results,
+    replace_zero_with_nan_values,
+    save_file,
+)
+from functions import COLUMN_PERC_SUFFIX, COLUMN_AVG_SUFFIX
 from biotrade.faostat.aggregate import agg_trade_eu_row
+import pandas as pd
 
 # Obtain the main product codes
 main_product_list = main_product_list()
@@ -18,7 +28,11 @@ df_china = consistency_check_china_data(trade_data)
 trade_data = pd.concat(
     [
         trade_data[
-            ~((trade_data[["reporter_code", "partner_code"]] == 214).any(axis=1))
+            ~(
+                (trade_data[["reporter_code", "partner_code"]] == 214).any(
+                    axis=1
+                )
+            )
         ],
         df_china,
     ],
@@ -44,13 +58,21 @@ dict_list = [
 # Consider faostat data
 trade_data_faostat = trade_data[trade_data["source"] == "faostat"]
 # Calculate the averages and percentages
-trade_data_faostat_avg = average_results(trade_data_faostat, 95, dict_list,)
+trade_data_faostat_avg = average_results(
+    trade_data_faostat,
+    95,
+    dict_list,
+)
 # Consider comtrade data (excluded estimated values)
 trade_data_comtrade = trade_data[
     (trade_data["source"] == "comtrade") & (trade_data["estimate_flag"] == 0)
 ]
 # Calculate the averages and percentages
-trade_data_comtrade_avg = average_results(trade_data_comtrade, 95, dict_list,)
+trade_data_comtrade_avg = average_results(
+    trade_data_comtrade,
+    95,
+    dict_list,
+)
 drop_column_list = [
     "element",
     dict_list[1]["percentage_col"],
@@ -61,14 +83,18 @@ for drop_column in drop_column_list:
     column_list.remove(drop_column)
 # Define dropna columns
 dropna_col = [
-    col for col in column_list if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
+    col
+    for col in column_list
+    if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
 ]
 # Consider selected columns of import quantities and save the file (drop nan)
 trade_data_faostat_avg_imp = trade_data_faostat_avg.copy()
 trade_data_faostat_avg_imp = replace_zero_with_nan_values(
     trade_data_faostat_avg_imp, dropna_col
 )
-trade_data_faostat_avg_imp = trade_data_faostat_avg_imp.dropna(subset=dropna_col)
+trade_data_faostat_avg_imp = trade_data_faostat_avg_imp.dropna(
+    subset=dropna_col
+)
 trade_data_faostat_reporter = trade_data_faostat_avg_imp[
     trade_data_faostat_avg_imp["element"] == "import_quantity"
 ][column_list]
@@ -80,7 +106,9 @@ trade_data_comtrade_avg_imp = trade_data_comtrade_avg.copy()
 trade_data_comtrade_avg_imp = replace_zero_with_nan_values(
     trade_data_comtrade_avg_imp, dropna_col
 )
-trade_data_comtrade_avg_imp = trade_data_comtrade_avg_imp.dropna(subset=dropna_col)
+trade_data_comtrade_avg_imp = trade_data_comtrade_avg_imp.dropna(
+    subset=dropna_col
+)
 trade_data_comtrade_reporter = trade_data_comtrade_avg_imp[
     trade_data_comtrade_avg_imp["element"] == "import_quantity"
 ][column_list]
@@ -97,14 +125,18 @@ for drop_column in drop_column_list:
     column_list.remove(drop_column)
 # Define dropna columns
 dropna_col = [
-    col for col in column_list if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
+    col
+    for col in column_list
+    if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
 ]
 # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
 trade_data_faostat_avg_exp = trade_data_faostat_avg.copy()
 trade_data_faostat_avg_exp = replace_zero_with_nan_values(
     trade_data_faostat_avg_exp, dropna_col
 )
-trade_data_faostat_avg_exp = trade_data_faostat_avg_exp.dropna(subset=dropna_col)
+trade_data_faostat_avg_exp = trade_data_faostat_avg_exp.dropna(
+    subset=dropna_col
+)
 trade_data_faostat_partner = trade_data_faostat_avg_exp[
     trade_data_faostat_avg_exp["element"] == "export_quantity"
 ][column_list]
@@ -116,7 +148,9 @@ trade_data_comtrade_avg_exp = trade_data_comtrade_avg.copy()
 trade_data_comtrade_avg_exp = replace_zero_with_nan_values(
     trade_data_comtrade_avg_exp, dropna_col
 )
-trade_data_comtrade_avg_exp = trade_data_comtrade_avg_exp.dropna(subset=dropna_col)
+trade_data_comtrade_avg_exp = trade_data_comtrade_avg_exp.dropna(
+    subset=dropna_col
+)
 trade_data_comtrade_partner = trade_data_comtrade_avg_exp[
     trade_data_comtrade_avg_exp["element"] == "export_quantity"
 ][column_list]
@@ -152,7 +186,8 @@ trade_data_group_partner = agg_trade_eu_row(
 )
 # Concatenate in a unique df
 trade_data_group = pd.concat(
-    [trade_data_group_reporter, trade_data_group_partner], ignore_index=True,
+    [trade_data_group_reporter, trade_data_group_partner],
+    ignore_index=True,
 )
 # Substitute with name and codes of the aggregations for the web platform
 selector = trade_data_group["reporter"] == "eu"
@@ -171,11 +206,19 @@ trade_data_group["period"] = trade_data_group["year"]
 # Consider faostat data
 trade_data_faostat = trade_data_group[trade_data_group["source"] == "faostat"]
 # Calculate the averages and percentages
-trade_data_faostat_avg = average_results(trade_data_faostat, 95, dict_list,)
+trade_data_faostat_avg = average_results(
+    trade_data_faostat,
+    95,
+    dict_list,
+)
 # Consider comtrade data (excluded estimated values)
 trade_data_comtrade = trade_data_group[trade_data_group["source"] == "comtrade"]
 # Calculate the averages and percentages
-trade_data_comtrade_avg = average_results(trade_data_comtrade, 95, dict_list,)
+trade_data_comtrade_avg = average_results(
+    trade_data_comtrade,
+    95,
+    dict_list,
+)
 drop_column_list = [
     "element",
     dict_list[1]["percentage_col"] + COLUMN_PERC_SUFFIX,
@@ -185,14 +228,18 @@ for drop_column in drop_column_list:
     column_list.remove(drop_column)
 # Define dropna columns
 dropna_col = [
-    col for col in column_list if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
+    col
+    for col in column_list
+    if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
 ]
 # Consider selected columns of import quantities and save the file (drop nan)
 trade_data_faostat_avg_imp = trade_data_faostat_avg.copy()
 trade_data_faostat_avg_imp = replace_zero_with_nan_values(
     trade_data_faostat_avg_imp, dropna_col
 )
-trade_data_faostat_avg_imp = trade_data_faostat_avg_imp.dropna(subset=dropna_col)
+trade_data_faostat_avg_imp = trade_data_faostat_avg_imp.dropna(
+    subset=dropna_col
+)
 trade_data_faostat_reporter = trade_data_faostat_avg_imp[
     (trade_data_faostat_avg_imp["element"] == "import_quantity")
     & (trade_data_faostat_avg_imp["reporter_code"].isin(["EU27", "ROW"]))
@@ -205,7 +252,9 @@ trade_data_comtrade_avg_imp = trade_data_comtrade_avg.copy()
 trade_data_comtrade_avg_imp = replace_zero_with_nan_values(
     trade_data_comtrade_avg_imp, dropna_col
 )
-trade_data_comtrade_avg_imp = trade_data_comtrade_avg_imp.dropna(subset=dropna_col)
+trade_data_comtrade_avg_imp = trade_data_comtrade_avg_imp.dropna(
+    subset=dropna_col
+)
 trade_data_comtrade_reporter = trade_data_comtrade_avg_imp[
     (trade_data_comtrade_avg_imp["element"] == "import_quantity")
     & (trade_data_comtrade_avg_imp["reporter_code"].isin(["EU27", "ROW"]))
@@ -222,14 +271,18 @@ for drop_column in drop_column_list:
     column_list.remove(drop_column)
 # Define dropna columns
 dropna_col = [
-    col for col in column_list if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
+    col
+    for col in column_list
+    if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
 ]
 # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
 trade_data_faostat_avg_exp = trade_data_faostat_avg.copy()
 trade_data_faostat_avg_exp = replace_zero_with_nan_values(
     trade_data_faostat_avg_exp, dropna_col
 )
-trade_data_faostat_avg_exp = trade_data_faostat_avg_exp.dropna(subset=dropna_col)
+trade_data_faostat_avg_exp = trade_data_faostat_avg_exp.dropna(
+    subset=dropna_col
+)
 trade_data_faostat_partner = trade_data_faostat_avg_exp[
     (trade_data_faostat_avg_exp["element"] == "export_quantity")
     & (trade_data_faostat_avg_exp["partner_code"].isin(["EU27", "ROW"]))
@@ -242,7 +295,9 @@ trade_data_comtrade_avg_exp = trade_data_comtrade_avg.copy()
 trade_data_comtrade_avg_exp = replace_zero_with_nan_values(
     trade_data_comtrade_avg_exp, dropna_col
 )
-trade_data_comtrade_avg_exp = trade_data_comtrade_avg_exp.dropna(subset=dropna_col)
+trade_data_comtrade_avg_exp = trade_data_comtrade_avg_exp.dropna(
+    subset=dropna_col
+)
 trade_data_comtrade_partner = trade_data_comtrade_avg_exp[
     (trade_data_comtrade_avg_exp["element"] == "export_quantity")
     & (trade_data_comtrade_avg_exp["partner_code"].isin(["EU27", "ROW"]))
