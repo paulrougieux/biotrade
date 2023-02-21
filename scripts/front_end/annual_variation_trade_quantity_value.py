@@ -108,7 +108,7 @@ eu_row_data = agg_trade_eu_row(
 selector = eu_row_data["reporter"] == "eu"
 eu_row_data.loc[selector, "reporter_code"] = "EU27"
 eu_row_data.loc[~selector, "reporter_code"] = "ROW"
-eu_row_data[["reporter"]].replace(
+eu_row_data["reporter"].replace(
     ["eu", "row"], ["European Union", "Rest Of the World"], inplace=True
 )
 # Save imports
@@ -142,7 +142,7 @@ eu_row_data = agg_trade_eu_row(
 selector = eu_row_data["partner"] == "eu"
 eu_row_data.loc[selector, "partner_code"] = "EU27"
 eu_row_data.loc[~selector, "partner_code"] = "ROW"
-eu_row_data[["partner"]].replace(
+eu_row_data["partner"].replace(
     ["eu", "row"], ["European Union", "Rest Of the World"], inplace=True
 )
 # Save exports
