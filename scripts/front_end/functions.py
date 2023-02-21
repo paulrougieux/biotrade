@@ -427,21 +427,21 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
                 df_final = pd.concat([df_final, df_new], ignore_index=True)
     # Remove columns from df_final
     df_final.drop(columns=column_drop, inplace=True)
+    # Compute avg production for a certain commodity, reporter and period
+    groupby_avg_cols = [
+        "product_code",
+        "element",
+        "unit",
+        "reporter_code",
+        "period",
+    ]
+    df_avg = (
+        df.groupby(groupby_avg_cols)
+        .agg({"value": "mean"})
+        .reset_index()
+        .rename(columns={"value": "avg_value"})
+    )
     if len(interval_array):
-        # Compute avg production for a certain commodity, reporter and period
-        groupby_avg_cols = [
-            "product_code",
-            "element",
-            "unit",
-            "reporter_code",
-            "period",
-        ]
-        df_avg = (
-            df.groupby(groupby_avg_cols)
-            .agg({"value": "mean"})
-            .reset_index()
-            .rename(columns={"value": "avg_value"})
-        )
         # Extract max value avg production for a commodity across periods and countries
         groupby_max_cols = ["product_code", "element", "unit"]
         df_max = (
@@ -509,8 +509,6 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
                 [df_avg, df_key[[*groupby_avg_cols, "avg_value", "interval"]]],
                 ignore_index=True,
             )
-        # Associate the max avg productions with intervals to the final dataframe
-        df_final = df_final.merge(df_avg, on=groupby_avg_cols, how="left")
         # Columns to keep in the legend dataframe
         drop_column = "element"
         column_list = df_legend.columns.tolist()
@@ -524,6 +522,8 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
             df_legend["element"].isin(["production", "stocks"])
         ][column_list]
         save_file(production_legend, "production_average_legend.csv")
+    # Associate the avg productions (eventually with intervals) to the final dataframe
+    df_final = df_final.merge(df_avg, on=groupby_avg_cols, how="left")
     return df_final
 
 
