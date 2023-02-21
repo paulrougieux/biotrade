@@ -171,21 +171,29 @@ def reporter_iso_codes(df):
     return df
 
 
-def merge_faostat_comtrade_data(product_list):
+def merge_faostat_comtrade_data(
+    faostat_code=None,
+    comtrade_regulation=None,
+    aggregate=True,
+    nr_products_chunk=10,
+):
     """
     Script which merges faostat yearly trade data with comtrade yearly and monthly trade data.
     The last 12 monthly comtrade data are aggregated to reconstruct the most recent year.
     Considered only import and export data. Re-import and re-export excluded.
 
-    :param product_list (list), list of product codes to be retrieved
-    :return df (DataFrame), dataframe with merged data
+    :param faostat_code (list), list of product codes to be retrieved
+    :param dataframe comtrade_regulation: comtrade regulation codes to be loaded and aggregated, default is None and in this case they are mapped into faostat codes
+    :param boolean aggregate: data are aggregated or not by product code, default is True
+    :param int nr_products_chunk: split regulation codes into chucks to avoid run out of memory
+    :return df_merge (DataFrame), dataframe with merged data
 
     """
+    # Pre allocate dataframe
+    df_merge = pd.DataFrame()
     # Select quantities from Faostat db and Comtrade for trade data for all countries (code < 1000)
-    df_yearly = merge_faostat_comtrade("crop_trade", "yearly", product_list)
-    df_monthly = merge_faostat_comtrade("crop_trade", "monthly", product_list)
-    # Merge both yearly and aggregated monthly data
-    merge_index_list = [
+    regulation_products = comtrade_regulation.product_code.unique().tolist()
+    index_list = [
         "source",
         "reporter_code",
         "reporter",
@@ -198,50 +206,55 @@ def merge_faostat_comtrade_data(product_list):
         "year",
         "unit",
     ]
-    # Merge with indicator argument which produces a new category column _merge: "left_only", "both", "right_only"
-    df = df_yearly.merge(
-        df_monthly,
-        how="outer",
-        on=merge_index_list,
-        suffixes=("_yearly", "_monthly"),
-        indicator=True,
-    )
-    # Remove nan reporters/partners (=-1)
-    df = df[~(df[["reporter_code", "partner_code"]] == -1).any(axis=1)]
-    # Select only import and export (exclude re-import and re-export for now)
-    df = df[
-        df["element"].isin(
-            [
-                "import_value",
-                "import_quantity",
-                "export_value",
-                "export_quantity",
-            ]
+    # Split product list in chunks to avoid run out of memory
+    for i in range(0, len(regulation_products), nr_products_chunk):
+        regulation_code = regulation_products[i : i + nr_products_chunk]
+        comtrade_code = comtrade_regulation[
+            comtrade_regulation.product_code.isin(regulation_code)
+        ].comtrade_code.to_list()
+        df = merge_faostat_comtrade(
+            "crop_trade",
+            "yearly",
+            faostat_code,
+            comtrade_code,
+            aggregate,
         )
-    ]
-    # Consider monthly aggregations where yearly data are missed and yearly data for the rest
-    selector = df["_merge"] == "right_only"
-    df.loc[selector, "value"] = df.loc[selector, "value_monthly"]
-    df.loc[~selector, "value"] = df.loc[~selector, "value_yearly"]
-    # Add a flag to distinguish monthly aggregate estimations
-    selector = (df["_merge"] == "right_only") & (
-        df["flag_monthly"] == "estimate"
-    )
-    df.loc[selector, "estimate_flag"] = 1
-    df.loc[~selector, "estimate_flag"] = 0
+        # Select only import and export (exclude re-import and re-export for now) and remove nan reporters/partners (=-1)
+        df = df[
+            (
+                df.element.isin(
+                    [
+                        "import_value",
+                        "import_quantity",
+                        "export_value",
+                        "export_quantity",
+                    ]
+                )
+            )
+            & (~(df[["reporter_code", "partner_code"]] == -1).any(axis=1))
+        ].reset_index(drop=True)
+        # Merge to obtain regulation product codes
+        df = df.merge(
+            comtrade_regulation,
+            left_on="product_code",
+            right_on="comtrade_code",
+            how="left",
+            suffixes=("", "_regulation"),
+        )
+        # Replace comtrade products with product code regulations to aggregate
+        selector = df.source == "comtrade"
+        df.loc[selector, "product"] = df.loc[selector, "product_name"]
+        df.loc[selector, "product_code"] = df.loc[
+            selector, "product_code_regulation"
+        ]
+        df = df.groupby(index_list)["value"].agg(sum).reset_index()
+        df_merge = pd.concat([df_merge, df], ignore_index=True)
+        # Avoid to retreive all the cycle the same faostat data
+        if i == 0:
+            faostat_code = None
     # Use period instead of year column
-    df["period"] = df["year"]
-    df.drop(
-        columns=[
-            "value_monthly",
-            "value_yearly",
-            "flag_monthly",
-            "flag_yearly",
-            "_merge",
-        ],
-        inplace=True,
-    )
-    return df
+    df_merge["period"] = df_merge["year"]
+    return df_merge
 
 
 def average_results(df, threshold, dict_list, interval_array=np.array([])):
@@ -540,7 +553,6 @@ def consistency_check_china_data(df):
                     "element",
                     "year",
                     "unit",
-                    "estimate_flag",
                 ]
             )
             # If all null values, do not return 0 but Nan
@@ -566,7 +578,6 @@ def consistency_check_china_data(df):
                     "element",
                     "year",
                     "unit",
-                    "estimate_flag",
                 ]
             )
             # If all null values, do not return 0 but Nan

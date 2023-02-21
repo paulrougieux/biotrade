@@ -199,7 +199,7 @@ def transform_comtrade_using_faostat_codes(
 def merge_faostat_comtrade(
     faostat_table,
     comtrade_table,
-    faostat_code,
+    faostat_code=None,
     comtrade_code=None,
     aggregate=True,
     strict=True,
@@ -255,16 +255,41 @@ def merge_faostat_comtrade(
 
     """
     # 1. Load FAOSTAT bilateral trade data for the given codes
-    df_faostat = faostat.db.select(faostat_table, product_code=faostat_code)
-    product_names = df_faostat[["product_code", "product"]].drop_duplicates()
-    # Convert trade values from 1000 USD to USD
-    selector = df_faostat["unit"] == "1000 US$"
-    df_faostat.loc[selector, "value"] = df_faostat.loc[selector, "value"] * 1e3
-    df_faostat.loc[selector, "unit"] = "usd"
-    # Convert tonnes to kg
-    selector = df_faostat["unit"] == "tonnes"
-    df_faostat.loc[selector, "value"] = df_faostat.loc[selector, "value"] * 1e3
-    df_faostat.loc[selector, "unit"] = "kg"
+    if faostat_code:
+        df_faostat = faostat.db.select(faostat_table, product_code=faostat_code)
+        product_names = df_faostat[
+            ["product_code", "product"]
+        ].drop_duplicates()
+        # Convert trade values from 1000 USD to USD
+        selector = df_faostat["unit"] == "1000 US$"
+        df_faostat.loc[selector, "value"] = (
+            df_faostat.loc[selector, "value"] * 1e3
+        )
+        df_faostat.loc[selector, "unit"] = "usd"
+        # Convert tonnes to kg
+        selector = df_faostat["unit"] == "tonnes"
+        df_faostat.loc[selector, "value"] = (
+            df_faostat.loc[selector, "value"] * 1e3
+        )
+        df_faostat.loc[selector, "unit"] = "kg"
+    else:
+        df_faostat = pandas.DataFrame(
+            columns=[
+                "reporter_code",
+                "reporter",
+                "partner_code",
+                "partner",
+                "product_code",
+                "product",
+                "element_code",
+                "element",
+                "period",
+                "year",
+                "unit",
+                "value",
+                "flag",
+            ]
+        )
     # 2. Load Comtrade bilateral trade data for the given codes
     df_comtrade = transform_comtrade_using_faostat_codes(
         comtrade_table=comtrade_table,
