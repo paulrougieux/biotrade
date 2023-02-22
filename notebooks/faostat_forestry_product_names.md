@@ -28,8 +28,6 @@ The purpose of this notebook is to give an overview of the FAOSTAT forestry prod
 ## Load data
 
 ```python
-# fp = faostat.db.select("forestry_production", product_code = [])
-
 fp = faostat.db.select("forestry_production")
 ```
 
