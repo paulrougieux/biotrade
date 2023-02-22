@@ -69,7 +69,7 @@ if __name__ == "__main__":
     selector = df.mk_slope.isnull()
     df.loc[selector, "period_regression"] = np.nan
     df.loc[selector, "mk_significance_flag"] = np.nan
-    selector = df.relative_change.isnull()
+    selector = df.relative_change.isnull() & df.absolute_change.isnull()
     df.loc[selector, "period_change"] = np.nan
     df = df.dropna(subset=dropna_col, how="all")
     # Harvested area data (only the most recent year of db)
