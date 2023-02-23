@@ -427,7 +427,7 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
                 df_final = pd.concat([df_final, df_new], ignore_index=True)
     # Remove columns from df_final
     df_final.drop(columns=column_drop, inplace=True)
-    # Compute avg production for a certain commodity, reporter and period
+    # Compute avg production for a certain commodity, reporter, (partner) and period
     groupby_avg_cols = [
         "product_code",
         "element",
@@ -435,11 +435,18 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
         "reporter_code",
         "period",
     ]
+    if "partner_code" in df.columns:
+        groupby_avg_cols.append("partner_code")
+    # Calculate the average over time
     df_avg = (
         df.groupby(groupby_avg_cols)
-        .agg({"value": "mean"})
+        .agg({"value": "sum"})
         .reset_index()
         .rename(columns={"value": "avg_value"})
+    )
+    df_avg["avg_value"] = df_avg["avg_value"] / (
+        df_avg.period.str.split("-", expand=True)[1].astype(int)
+        - (df_avg.period.str.split("-", expand=True)[0].astype(int) - 1)
     )
     if len(interval_array):
         # Extract max value avg production for a commodity across periods and countries
