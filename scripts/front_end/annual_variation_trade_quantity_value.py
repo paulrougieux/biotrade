@@ -102,7 +102,13 @@ save_file(df, "comtrade_value_annual_variation_mf.csv")
 eu_row_data = agg_trade_eu_row(
     trade_data,
     grouping_side="reporter",
-    drop_index_col=["year", "faost_code", "iso3_code", "fao_status_info"],
+    drop_index_col=[
+        "year",
+        "flag",
+        "faost_code",
+        "iso3_code",
+        "fao_status_info",
+    ],
 )
 # Substitute with name and codes of the aggregations for the web platform
 selector = eu_row_data["reporter"] == "eu"
@@ -136,7 +142,13 @@ save_file(df, "comtrade_value_annual_variation_eu_row.csv")
 eu_row_data = agg_trade_eu_row(
     trade_data,
     grouping_side="partner",
-    drop_index_col=["year", "faost_code", "iso3_code", "fao_status_info"],
+    drop_index_col=[
+        "year",
+        "flag",
+        "faost_code",
+        "iso3_code",
+        "fao_status_info",
+    ],
 )
 # Substitute with name and codes of the aggregations for the web platform
 selector = eu_row_data["partner"] == "eu"

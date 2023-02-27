@@ -192,7 +192,10 @@ def merge_faostat_comtrade_data(
     # Pre allocate dataframe
     df_merge = pd.DataFrame()
     # Select quantities from Faostat db and Comtrade for trade data for all countries (code < 1000)
-    regulation_products = comtrade_regulation.product_code.unique().tolist()
+    if comtrade_regulation is not None:
+        regulation_products = comtrade_regulation.product_code.unique().tolist()
+    else:
+        regulation_products = [None]
     index_list = [
         "source",
         "reporter_code",
@@ -209,9 +212,12 @@ def merge_faostat_comtrade_data(
     # Split product list in chunks to avoid run out of memory
     for i in range(0, len(regulation_products), nr_products_chunk):
         regulation_code = regulation_products[i : i + nr_products_chunk]
-        comtrade_code = comtrade_regulation[
-            comtrade_regulation.product_code.isin(regulation_code)
-        ].comtrade_code.to_list()
+        if comtrade_regulation is not None:
+            comtrade_code = comtrade_regulation[
+                comtrade_regulation.product_code.isin(regulation_code)
+            ].comtrade_code.to_list()
+        else:
+            comtrade_code = None
         df = merge_faostat_comtrade(
             "crop_trade",
             "yearly",
@@ -233,21 +239,22 @@ def merge_faostat_comtrade_data(
             )
             & (~(df[["reporter_code", "partner_code"]] == -1).any(axis=1))
         ].reset_index(drop=True)
-        # Merge to obtain regulation product codes
-        df = df.merge(
-            comtrade_regulation,
-            left_on="product_code",
-            right_on="comtrade_code",
-            how="left",
-            suffixes=("", "_regulation"),
-        )
-        # Replace comtrade products with product code regulations to aggregate
-        selector = df.source == "comtrade"
-        df.loc[selector, "product"] = df.loc[selector, "product_name"]
-        df.loc[selector, "product_code"] = df.loc[
-            selector, "product_code_regulation"
-        ]
-        df = df.groupby(index_list)["value"].agg(sum).reset_index()
+        if comtrade_regulation is not None:
+            # Merge to obtain regulation product codes
+            df = df.merge(
+                comtrade_regulation,
+                left_on="product_code",
+                right_on="comtrade_code",
+                how="left",
+                suffixes=("", "_regulation"),
+            )
+            # Replace comtrade products with product code regulations to aggregate
+            selector = df.source == "comtrade"
+            df.loc[selector, "product"] = df.loc[selector, "product_name"]
+            df.loc[selector, "product_code"] = df.loc[
+                selector, "product_code_regulation"
+            ]
+            df = df.groupby(index_list)["value"].agg(sum).reset_index()
         df_merge = pd.concat([df_merge, df], ignore_index=True)
         # Avoid to retreive all the cycle the same faostat data
         if i == 0:
@@ -440,13 +447,9 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
     # Calculate the average over time
     df_avg = (
         df.groupby(groupby_avg_cols)
-        .agg({"value": "sum"})
+        .agg({"value": "mean"})
         .reset_index()
         .rename(columns={"value": "avg_value"})
-    )
-    df_avg["avg_value"] = df_avg["avg_value"] / (
-        df_avg.period.str.split("-", expand=True)[1].astype(int)
-        - (df_avg.period.str.split("-", expand=True)[0].astype(int) - 1)
     )
     if len(interval_array):
         # Extract max value avg production for a commodity across periods and countries
@@ -557,6 +560,8 @@ def consistency_check_china_data(df):
                     "partner_code",
                     "partner",
                     "product_code",
+                    "product",
+                    "element_code",
                     "element",
                     "year",
                     "unit",
@@ -582,6 +587,8 @@ def consistency_check_china_data(df):
                     "reporter_code",
                     "reporter",
                     "product_code",
+                    "product",
+                    "element_code",
                     "element",
                     "year",
                     "unit",
@@ -607,7 +614,16 @@ def consistency_check_china_data(df):
         # Produce China data with isocode CHN and Faostat code 357 from China mainland (41) + Taiwan (214) data
         df_china = df[df["reporter_code"].isin([41, 214])]
         df_china = (
-            df_china.groupby(["product_code", "element", "year", "unit"])
+            df_china.groupby(
+                [
+                    "product_code",
+                    "product",
+                    "element_code",
+                    "element",
+                    "year",
+                    "unit",
+                ]
+            )
             # If all null values, do not return 0 but Nan
             .agg({"value": lambda x: x.sum(min_count=1)}).reset_index()
         )

@@ -147,13 +147,13 @@ save_file(df_comtrade_partner, "comtrade_average_mf.csv")
 df_group_reporter = agg_trade_eu_row(
     trade_data,
     grouping_side="reporter",
-    drop_index_col=["faost_code", "iso3_code", "fao_status_info"],
+    drop_index_col=["flag", "faost_code", "iso3_code", "fao_status_info"],
 )
 # Aggregate data with partners as eu and row
 df_group_partner = agg_trade_eu_row(
     trade_data,
     grouping_side="partner",
-    drop_index_col=["faost_code", "iso3_code", "fao_status_info"],
+    drop_index_col=["flag", "faost_code", "iso3_code", "fao_status_info"],
 )
 # Concatenate in a unique df
 df_group = pd.concat(

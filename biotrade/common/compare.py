@@ -352,7 +352,8 @@ def merge_faostat_comtrade(
     selector = ~df.value_est.isna()
     df.loc[selector, "value"] = df.loc[selector, "value_est"]
     df.drop(columns="value_est", inplace=True)
-    # Flag the estimates
+    # Add the column flag for the estimates
+    df["flag"] = np.nan
     df.loc[selector, "flag"] = "estimate"
     df.loc[~selector, "flag"] = ""
     if comtrade_code is None:
