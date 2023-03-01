@@ -48,7 +48,7 @@ faostat_products = pd.concat(
     ],
     ignore_index=True,
 )
-# Add key product flag (including maize, rubber and wood)
+# Add key product flag (including maize)
 faostat_products["key_product_flag"] = faostat_products.product_code.isin(
     [*product_tree.primary_product_code.unique().tolist(), 56, 836, 1864, 1865]
 ).astype(int)
@@ -59,10 +59,28 @@ faostat_products = faostat_products[
 # Save csv files to env variable path or into biotrade data folder
 save_file(product_tree, "key_product_tree_list.csv")
 save_file(faostat_products, "product_list.csv")
+# Name of regulation commodity tree file to retrieve
+comtrade_key_commodities_file = (
+    faostat.config_data_dir / "regulation_front_end_groups.csv"
+)
+# Retrieve tree dataset
+product_tree = pd.read_csv(
+    comtrade_key_commodities_file,
+    dtype={
+        "primary_product_code": str,
+        "parent_product_code": str,
+        "child_product_code": str,
+    },
+)
 # Retrieve regulation products and save the file
 comtrade_list = comtrade_products()
 columns = ["product_code", "product_name"]
 comtrade_list = comtrade_list.drop_duplicates(subset=columns)[
     columns
 ].reset_index(drop=True)
+# Add key product flag (including coffee)
+comtrade_list["key_product_flag"] = comtrade_list.product_code.isin(
+    [*product_tree.primary_product_code.unique().tolist(), "0901"]
+).astype(int)
 save_file(comtrade_list, "comtrade_product_list.csv")
+save_file(product_tree, "comtrade_key_product_tree_list.csv")
