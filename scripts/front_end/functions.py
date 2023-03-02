@@ -71,6 +71,7 @@ def comtrade_products():
     columns = [
         "regulation_code",
         "regulation_short_name",
+        "commodity_short_name",
         "hs_6d_code",
         "fao_code",
     ]
@@ -79,6 +80,7 @@ def comtrade_products():
         columns={
             "regulation_code": "product_code",
             "regulation_short_name": "product_name",
+            "commodity_short_name": "commodity_name",
             "hs_6d_code": "comtrade_code",
         },
         inplace=True,
