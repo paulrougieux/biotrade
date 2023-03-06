@@ -3,8 +3,7 @@ Table names and metadata of the web platform output scripts. Currently 35 csv fi
 
 > N.B.
 >- Zero and NaN values are not reported.
->- Old country values are not reported.
->- France autonomous regions are not reported.
+>- Only official GISCO Estat countries are reported.
 >- Production, harvest area and trade data related to China are for:
 >    - China mainland + Taiwan which corresponds to UN Comtrade code 156
 >    - Removed FAOSTAT data on China Mainland because it doesn't have a UN country code
@@ -12,25 +11,22 @@ Table names and metadata of the web platform output scripts. Currently 35 csv fi
 >    - Hong Kong and Macao are reported separately both in the UN Comtrade and FAOSTAT data.
 
 ## product_list.csv
-Csv that contains the list of faostat selected products. There are 3 columns:
+Csv that contains the list of faostat selected products for production. There are 3 columns:
 - `product_code`: FAO code of the product
 - `product_name`: name of the product
-- `key_product_flag`: 1 if the product is a key primary product; 0 otherwise
+- `commodity_name`: name of the commodity to which the product belongs
+
+## faostat_product_list.csv
+Csv that contains the list of faostat selected products for trade. There are 3 columns:
+- `product_code`: FAO code of the product
+- `product_name`: name of the product
+- `commodity_name`: name of the commodity to which the product belongs
 
 ## comtrade_product_list.csv
 Csv that contains the list of comtrade selected products. There are 3 columns:
 - `product_code`: FAO code of the product
 - `product_name`: name of the product
 - `commodity_name`: name of the commodity to which the product belongs
-
-## key_product_tree_list.csv
-Csv to create the product groups according to FAO technical report 2011.
-Key products selected in this csv are coffee, cocoa, soybeans, palm oil fruit, maize, cattle, rubber, industrial and fuel wood.
-There are 4 columns:
-- `primary_product_code`: code of the primary product name (just for sub-setting purposes)
-- `parent_product_code`: FAO code of the parent product, left side of each branch of the trees
-- `child_product_code`: FAO code of the child product derived from the parent, right side of the tree
-- `bp_flag`: 1 indicates co-products or byproducts (e.g., cake and oil); 0 otherwise
 
 ## harvested_area_annual_variation.csv
 Csv that contains annual data of harvested area for each product and the related reporters. There are 5 columns:

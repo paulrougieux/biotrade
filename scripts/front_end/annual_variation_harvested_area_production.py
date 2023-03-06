@@ -16,7 +16,9 @@ from biotrade.faostat import faostat
 import pandas as pd
 
 # Obtain the main product codes
-main_product_list = main_product_list()
+main_product_list = main_product_list(
+    ["crop_production", "forestry_production"]
+)
 # Select quantities from Faostat db for crop data for all countries (code < 1000)
 crop_data = faostat.db.select(
     table="crop_production",

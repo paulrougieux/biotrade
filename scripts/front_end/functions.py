@@ -164,12 +164,13 @@ def reporter_iso_codes(df):
     # Faostat code 41 (China mainland) and 351 (China mainland + Hong Kong + Macao + Taiwan ) are not mapped into ISO 3 Codes
     df.dropna(subset=subset_col, inplace=True)
     # Consider only data of official country codes by GISCO
+    if os.environ.get("FRONT_END_SCRIPTS"):
+        path = Path(os.environ["FRONT_END_SCRIPTS"])
+    else:
+        path = Path(os.getenv("PYTHONPATH")) / "scripts" / "front_end"
     country_codes = (
         pd.read_csv(
-            Path(os.getenv("PYTHONPATH"))
-            / "scripts"
-            / "front_end"
-            / "GISCO_CNTR_LIST.txt",
+            path / "GISCO_CNTR_LIST.txt",
             sep=";",
         )
         .ISO3_CODE.drop_duplicates()

@@ -20,7 +20,7 @@ from biotrade.faostat.aggregate import agg_trade_eu_row
 import pandas as pd
 
 # Obtain faostat product codes
-faostat_list = main_product_list()
+faostat_list = main_product_list(["crop_trade"])
 # Obtain comtrade regulation codes
 comtrade_regulation = comtrade_products()
 # Trade data related to product code list

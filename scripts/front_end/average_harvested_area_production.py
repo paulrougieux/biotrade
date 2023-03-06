@@ -20,7 +20,9 @@ from functions import (
 )
 
 # Obtain the main product codes
-main_product_list = main_product_list()
+main_product_list = main_product_list(
+    ["crop_production", "forestry_production"]
+)
 # Query db to obtain data
 crop_df = faostat.db.select(
     table="crop_production",
