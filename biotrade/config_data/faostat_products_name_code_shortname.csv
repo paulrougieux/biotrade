@@ -1,39 +1,54 @@
-product_name,code,product_short_name_viz
-soya_beans,236,Soyabeans
-soya_bean_oil,237,Soyabeans Oil
-cake_of_soya_beans,238,Soyabeans Cake
-soya_sauce,239,Soya Sauce
-soya_paste,240,Soya Paste
-oil_palm_fruit,254,Oil Palm Fruit
-palm_kernels,256,Palm Kernel
-palm_oil,257,Palm Oil
-oil_of_palm_kernel,258,Oil Palm Kernel
-cake_of_palm_kernel,259,Cake Pal Kernel
-coffee_green,656,Coffee Green
-coffee_decaffeinated_or_roasted,657,Coffee Roasted
-coffee_substitutes_containing_coffee,658,Coffee Subst
-coffee_extracts,659,Coffee Extracts
-coffee_husks_and_skins,660,Coffee Husks
-cocoa_beans,661,Cocoa Beans
-cocoa_paste_not_defatted,662,Cocoa Paste
-cocoa_butter_fat_and_oil,664,Cocoa Butter
-cocoa_powder_and_cake,665,Cocoa Powder
-chocolate_products_nes,666,Chocolate Products
-cattle,866,Cattle
-meat_of_cattle_with_the_bone_fresh_or_chilled,867,Meat of Cattle
-edible_offal_of_cattle_fresh_chilled_or_frozen,868,Edible Offal
-cattle_fat_unrendered,869,Cattle Fat
-meat_of_cattle_boneless_fresh_or_chilled,870,Meat of Cattle Boneless
-sausages_and_similar_products_of_meat_offal_or_blood_of_beef_and_veal,874,Saudages or Similar
-meat_beef_preparations,875,Meat Beef Preparation
-raw_hides_and_skins_of_cattle,919,Raw Hides and Skins
-hides_wet_salted_of_cattle,920,Hides Wet
-skins_wet_salted_of_calves,928,Skin Wet
-other_meat_and_edible_meat_offal_salted_in_brine_dried_or_smoked_edible_flours_and_meals_of_meat_or_meat_offal,1164,Other Meat
-animal_oils_and_fats_n_e_c,1168,Animal Oils
-tallow,1225,Tallow
-liquid_margarine,1241,Liquid Margarine
-margarine_and_shortening,1242,Margarine and Shortening
-fat_preparations_n_e_c,1243,Fat Preparation
-animal_or_vegetable_fats_and_oils_and_their_fractions_chemically_modified_except_those_hydrogenated_inter_esterified_re_esterified_or_elaidinized_inedible_mixtures_or_preparations_of_animal_or_vegetable_fats_or_oils,1274,Animal or Vegetable Fats
-industrial_monocarboxylic_fatty_acids_acid_oils_from_refining,1276,Fatty Acids
+product_name,code,product_short_name_viz,commodity_name
+soya_beans,236,Soyabeans,Soya
+soya_bean_oil,237,Soyabeans Oil,Soya
+cake_of_soya_beans,238,Soyabeans Cake,Soya
+soya_sauce,239,Soya Sauce,Soya
+soya_paste,240,Soya Paste,Soya
+oil_palm_fruit,254,Oil Palm Fruit,Palm oil fruit
+palm_kernels,256,Palm Kernel,Palm oil fruit
+palm_oil,257,Palm Oil,Palm oil fruit
+oil_of_palm_kernel,258,Oil Palm Kernel,Palm oil fruit
+cake_of_palm_kernel,259,Cake Pal Kernel,Palm oil fruit
+coffee_green,656,Coffee Green,Coffee
+coffee_decaffeinated_or_roasted,657,Coffee Roasted,Coffee
+coffee_substitutes_containing_coffee,658,Coffee Subst,Coffee
+coffee_extracts,659,Coffee Extracts,Coffee
+coffee_husks_and_skins,660,Coffee Husks,Coffee
+cocoa_beans,661,Cocoa Beans,Cocoa
+cocoa_paste_not_defatted,662,Cocoa Paste,Cocoa
+cocoa_butter_fat_and_oil,664,Cocoa Butter,Cocoa
+cocoa_powder_and_cake,665,Cocoa Powder,Cocoa
+chocolate_products_nes,666,Chocolate Products,Cocoa
+cattle,866,Cattle,Cattle
+meat_of_cattle_with_the_bone_fresh_or_chilled,867,Meat of Cattle,Cattle
+edible_offal_of_cattle_fresh_chilled_or_frozen,868,Edible Offal,Cattle
+cattle_fat_unrendered,869,Cattle Fat,Cattle
+meat_of_cattle_boneless_fresh_or_chilled,870,Meat of Cattle Boneless,Cattle
+sausages_and_similar_products_of_meat_offal_or_blood_of_beef_and_veal,874,Sausages or Similar,Cattle
+meat_beef_preparations,875,Meat Beef Preparation,Cattle
+raw_hides_and_skins_of_cattle,919,Raw Hides and Skins,Cattle
+hides_wet_salted_of_cattle,920,Hides Wet,Cattle
+skins_wet_salted_of_calves,928,Skin Wet,Cattle
+other_meat_and_edible_meat_offal_salted_in_brine_dried_or_smoked_edible_flours_and_meals_of_meat_or_meat_offal,1164,Other Meat,Cattle
+animal_oils_and_fats_n_e_c,1168,Animal Oils,Cattle
+tallow,1225,Tallow,Cattle
+liquid_margarine,1241,Liquid Margarine,
+margarine_and_shortening,1242,Margarine and Shortening,
+fat_preparations_n_e_c,1243,Fat Preparation,
+animal_or_vegetable_fats_and_oils_and_their_fractions_chemically_modified_except_those_hydrogenated_inter_esterified_re_esterified_or_elaidinized_inedible_mixtures_or_preparations_of_animal_or_vegetable_fats_or_oils,1274,Animal or Vegetable Fats,Palm oil fruit
+industrial_monocarboxylic_fatty_acids_acid_oils_from_refining,1276,Fatty Acids,Palm oil fruit
+maize_corn,56,Maize (corn),Maize
+natural_rubber_in_primary_forms,836,Natural Rubber primary forms,Rubber
+natural_rubber_in_other_forms,837,Natural Rubber other forms,Rubber
+wood_charcoal,1630,Wood Charcoal,Wood
+veneer_sheets,1634,Veneer Sheets,Wood
+wood_pellets_and_other_agglomerates,1696,Wood pellets,Wood
+wood_fuel,1864,Wood fuel,Wood
+industrial_roundwood,1865,Industrial Roundwood,Wood
+sawnwood,1872,Sawnwood,Wood
+wood_based_panels,1873,Wood based panels,Wood
+wood_pulp,1875,Pulp,Wood
+paper_and_paperboard,1876,Paper,Wood
+balata_gutta_percha_guayule_chicle_and_similar_natural_gums_in_primary_forms_or_in_plates_sheets_or_strip,839,Gutta Percha,Rubber
+flours_and_meals_of_oil_seeds_or_oleaginous_fruits_except_those_of_mustard,343,Flour and Meals of Oil Seeds,Soya
+cocoa_husks_and_shells,663,Cocoa Husks and Shells,Cocoa
