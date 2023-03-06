@@ -40,6 +40,7 @@ that this is the case. For example the code for coffee start with a zero
       090111      090111 - Coffee; not roasted or decaffeinated
 
 """
+
 # Third party modules
 import pandas
 from biotrade import module_dir
@@ -56,6 +57,21 @@ comtrade_faostat_mapping = pandas.read_csv(
         "faostat_code": "int",
     },
 )
+
+regulation_products = pandas.read_csv(
+    config_data_dir / "regulation_products.csv",
+    # Force Comtrade codes to be strings
+    dtype={
+        "regulation_code": "str",
+        "regulation_name": "str",
+        "hs_4d_code": "str",
+        "hs_6d_code": "str",
+    },
+)
+
+##################################
+# Check Comtrade FAOSTAT mapping #
+##################################
 # A Comtrade product code can only have 2,4 or 6 digits, check this is the case.
 nchar = comtrade_faostat_mapping["comtrade_code"].str.len().unique()
 if not set(nchar).issubset({2, 4, 6}):
