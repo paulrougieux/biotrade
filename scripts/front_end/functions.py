@@ -88,28 +88,40 @@ def comtrade_products():
     return df
 
 
-def main_product_list():
+def main_product_list(table_list):
     """
-    Return the main list of Faostat products (without duplicates) contained into the file biotade/config_data/faostat_commodity_tree.csv and biotade/config_data/regulation_products.csv
+    Return the main list of Faostat products (without duplicates) contained into the file biotade/config_data/faostat_products_name_code_shortname.csv
+    depending on the purpose: production or trade
 
+    :parameter table_list (list), list of the tables to retrieve product codes
     :return product_list (list), list of the main Faostat product codes
 
     """
     # Name of product file to retrieve
-    main_product_file = faostat.config_data_dir / "faostat_commodity_tree.csv"
-    # Retrieve dataset
-    df = pd.read_csv(main_product_file)
-    # Retrieve parent and child codes
-    parent_codes = df["parent_code"].unique().tolist()
-    child_codes = df["child_code"].unique().tolist()
-    # Retrieve Faostat correspondence of regulation codes
-    regulation_codes = (
-        comtrade_products().fao_code.dropna().unique().astype(int).tolist()
+    main_product_file = (
+        faostat.config_data_dir / "faostat_products_name_code_shortname.csv"
     )
-    # Union of the codes (with Maize also) without repetitions
-    product_list = np.unique(
-        parent_codes + child_codes + regulation_codes + [56]
-    ).tolist()
+    # Retrieve dataset of regulation products
+    main_products = (
+        pd.read_csv(main_product_file).code.drop_duplicates().to_list()
+    )
+    # Define db and pre allocate dataframe
+    db = faostat.db
+    df = pd.DataFrame(columns=["product_code"])
+    # Define which products are inside the production list
+    for table in table_list:
+        table = db.tables[table]
+        df_table = pd.read_sql_query(
+            table.select()
+            .distinct(table.c.product_code)
+            .with_only_columns([table.c.product_code]),
+            db.engine,
+        )
+        df = pd.concat([df, df_table], ignore_index=True)
+    # Drop db product duplicates
+    product_list = df.product_code.drop_duplicates().to_list()
+    # Obtain the intersection
+    product_list = list(set(main_products).intersection(product_list))
     return product_list
 
 
@@ -151,25 +163,21 @@ def reporter_iso_codes(df):
         subset_col.append("partner_code")
     # Faostat code 41 (China mainland) and 351 (China mainland + Hong Kong + Macao + Taiwan ) are not mapped into ISO 3 Codes
     df.dropna(subset=subset_col, inplace=True)
-    # Remove autonomous regions of France
-    region_codes = [
-        "GUF",
-        "GLP",
-        "PYF",
-        "SPM",
-        "CPT",
-        "NCL",
-        "MTQ",
-        "MYT",
-        "MAF",
-        "BLM",
-        "ATF",
-        "REU",
-        "WLF",
-    ]
-    df = df[~df.reporter_code.isin(region_codes)].reset_index(drop=True)
+    # Consider only data of official country codes by GISCO
+    country_codes = (
+        pd.read_csv(
+            Path(os.getenv("PYTHONPATH"))
+            / "scripts"
+            / "front_end"
+            / "GISCO_CNTR_LIST.txt",
+            sep=";",
+        )
+        .ISO3_CODE.drop_duplicates()
+        .to_list()
+    )
+    df = df[df.reporter_code.isin(country_codes)].reset_index(drop=True)
     if "partner_code" in df.columns:
-        df = df[~df.partner_code.isin(region_codes)].reset_index(drop=True)
+        df = df[df.partner_code.isin(country_codes)].reset_index(drop=True)
     return df
 
 

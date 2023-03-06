@@ -10,55 +10,37 @@ from biotrade.faostat import faostat
 from functions import save_file, main_product_list, comtrade_products
 
 # Name of product file to retrieve
-faostat_key_commodities_file = (
-    faostat.config_data_dir / "faostat_commodity_tree.csv"
+faostat_commodity_file = (
+    faostat.config_data_dir / "faostat_products_name_code_shortname.csv"
 )
-# Retrieve tree dataset
-product_tree = pd.read_csv(faostat_key_commodities_file)
-# Obtain the main product codes
-main_product_list = main_product_list()
+# Retrieve commodity dataset
+df = pd.read_csv(faostat_commodity_file)
+# Obtain the main product codes of production
+main_products = main_product_list(["crop_production", "forestry_production"])
+# Select only production products with an associated commodity from the commodity datataset
+production_products = df[
+    (df.code.isin(main_products)) & ~(df.commodity_name.isnull())
+]
 # Filter and rename columns
 column_rename_dict = {
-    "primary_commodity_code": "primary_product_code",
-    "parent_code": "parent_product_code",
-    "child_code": "child_product_code",
-    "bp": "bp_flag",
+    "code": "product_code",
+    "product_short_name_viz": "product_name",
+    "commodity_name": "commodity_name",
 }
-product_tree = product_tree[column_rename_dict.keys()]
-product_tree.rename(columns=column_rename_dict, inplace=True)
-# Select product names and codes from Faostat tables
-table_list = [
-    "crop_production",
-    "crop_trade",
-    "forestry_production",
-    "forestry_trade",
-]
-faostat_products = faostat.db.extract_product_names_codes(table_list)
-# Replace product keys with names
-faostat_products["product"] = (
-    faostat_products["product"].str.replace("_", " ").str.capitalize()
-)
-# Rename column
-faostat_products.rename(columns={"product": "product_name"}, inplace=True)
-# Add -1 - Others as product code and product name for average data
-faostat_products = pd.concat(
-    [
-        faostat_products,
-        pd.DataFrame([[-1, "Others"]], columns=faostat_products.columns),
-    ],
-    ignore_index=True,
-)
-# Add key product flag (including maize)
-faostat_products["key_product_flag"] = faostat_products.product_code.isin(
-    [*product_tree.primary_product_code.unique().tolist(), 56, 836, 1864, 1865]
-).astype(int)
-# Filter only for regulation products (final decision)
-faostat_products = faostat_products[
-    faostat_products.product_code.isin(main_product_list)
-]
+production_products = production_products[column_rename_dict.keys()]
+production_products = production_products.rename(columns=column_rename_dict)
 # Save csv files to env variable path or into biotrade data folder
-save_file(product_tree, "key_product_tree_list.csv")
-save_file(faostat_products, "product_list.csv")
+save_file(production_products, "product_list.csv")
+# Obtain the main product codes of trade
+main_products = main_product_list(["crop_trade"])
+# Select only trade products with an associated commodity from the commodity datataset
+faostat_products = df[
+    (df.code.isin(main_products)) & ~(df.commodity_name.isnull())
+]
+faostat_products = faostat_products[column_rename_dict.keys()]
+faostat_products = faostat_products.rename(columns=column_rename_dict)
+# Save csv files to env variable path or into biotrade data folder
+save_file(faostat_products, "faostat_product_list.csv")
 # Retrieve regulation products and save the file
 comtrade_products = comtrade_products()
 columns = ["product_code", "product_name", "commodity_name"]
