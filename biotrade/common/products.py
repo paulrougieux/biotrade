@@ -12,6 +12,7 @@ Get the product mapping
 Usage:
 
     >>> from biotrade.common.products import comtrade_faostat_mapping
+    >>> from biotrade.common.products import regulation_products
 
 Source  http://datalab.review.fao.org/datalab/caliper/web/classification-page/41
 FAOSTAT Commodity List (FCL) "Download mappings" with 2 csv tables:
