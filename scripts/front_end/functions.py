@@ -696,4 +696,6 @@ def trend_analysis(
     df["mk_significance_flag"] = (
         df["mk_ha_test"].astype("boolean").astype("Int64")
     ).replace(pd.NA, np.nan)
+    # Transform unit in unit / year
+    df["unit"] = df["unit"] + "/year"
     return df
