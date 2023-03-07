@@ -17,10 +17,8 @@ faostat_commodity_file = (
 df = pd.read_csv(faostat_commodity_file)
 # Obtain the main product codes of production
 main_products = main_product_list(["crop_production", "forestry_production"])
-# Select only production products with an associated commodity from the commodity datataset
-production_products = df[
-    (df.code.isin(main_products)) & ~(df.commodity_name.isnull())
-]
+# Select only production products
+production_products = df[df.code.isin(main_products)]
 # Filter and rename columns
 column_rename_dict = {
     "code": "product_code",
@@ -33,10 +31,8 @@ production_products = production_products.rename(columns=column_rename_dict)
 save_file(production_products, "product_list.csv")
 # Obtain the main product codes of trade
 main_products = main_product_list(["crop_trade"])
-# Select only trade products with an associated commodity from the commodity datataset
-faostat_products = df[
-    (df.code.isin(main_products)) & ~(df.commodity_name.isnull())
-]
+# Select only trade products
+faostat_products = df[df.code.isin(main_products)]
 faostat_products = faostat_products[column_rename_dict.keys()]
 faostat_products = faostat_products.rename(columns=column_rename_dict)
 # Save csv files to env variable path or into biotrade data folder

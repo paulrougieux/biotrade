@@ -102,8 +102,12 @@ def main_product_list(table_list):
         faostat.config_data_dir / "faostat_products_name_code_shortname.csv"
     )
     # Retrieve dataset of regulation products
+    main_products = pd.read_csv(main_product_file)
+    # Select only product codes with an associated commodity from the commodity datataset
     main_products = (
-        pd.read_csv(main_product_file).code.drop_duplicates().to_list()
+        main_products[~main_products.commodity_name.isnull()]
+        .code.drop_duplicates()
+        .to_list()
     )
     # Define db and pre allocate dataframe
     db = faostat.db
