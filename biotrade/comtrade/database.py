@@ -4,6 +4,9 @@
 """
 Written by Paul Rougieux and Selene Patani.
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 JRC biomass Project.
 Unit D1 Bioeconomy.
 
@@ -366,10 +369,7 @@ class DatabaseComtrade(Database):
             stmt = stmt.where(table.c.product_code.in_(product_code))
         if product_code_start is not None:
             stmt = stmt.where(
-                or_(
-                    table.c.product_code.ilike(f"{c}%")
-                    for c in product_code_start
-                )
+                or_(table.c.product_code.ilike(f"{c}%") for c in product_code_start)
             )
         if flow is not None:
             stmt = stmt.where(table.c.flow.in_(flow))
@@ -400,9 +400,7 @@ class DatabaseComtrade(Database):
         # Rename column content to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
         if "flow" in df.columns:
-            df["flow"] = (
-                df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
-            )
+            df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
             # Remove the plural "s"
             df["flow"] = df["flow"].str.replace("s", "", regex=True)
         # TODO: Change period to a date time object

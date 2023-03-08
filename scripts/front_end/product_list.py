@@ -1,6 +1,9 @@
 """
 Written by Selene Patani.
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 Script made to export data related to all commodities and tree of the key products, for the web platform
 
 """

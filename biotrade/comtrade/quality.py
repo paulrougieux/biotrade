@@ -1,6 +1,9 @@
 """
 Written by Selene Patani.
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 JRC biomass Project.
 Unit D1 Bioeconomy.
 
@@ -19,7 +22,7 @@ def compare_yearly_agg_monthly():
     """
     Function which compares Comtrade yearly data with respect to the aggregation of monthly data.
     It returns a dataframe containing aggregation values which don't match
-    
+
     """
 
     # Table with yearly data to select from raw_comtrade schema
@@ -124,7 +127,7 @@ def compare_world_agg_country(table):
     """
     Function which compares Comtrade data with partner equal to World
     and country partner aggregations. It returns a dataframe containing aggregation values which don't match with World data
-    
+
     """
 
     # Table to select from raw_comtrade schema
@@ -204,4 +207,3 @@ def compare_world_agg_country(table):
     # Return the dataframe from the query to db
     df = pd.read_sql_query(table_stmt, comtrade.db.engine)
     return df
-

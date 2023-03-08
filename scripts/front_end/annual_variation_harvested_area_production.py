@@ -1,6 +1,9 @@
 """
 Written by Selene Patani.
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 Script made to export data related to harvested area/production of countries associated to the regulation and commodity tree products, for the web platform
 
 """
@@ -16,9 +19,7 @@ from biotrade.faostat import faostat
 import pandas as pd
 
 # Obtain the main product codes
-main_product_list = main_product_list(
-    ["crop_production", "forestry_production"]
-)
+main_product_list = main_product_list(["crop_production", "forestry_production"])
 # Select quantities from Faostat db for crop data for all countries (code < 1000)
 crop_data = faostat.db.select(
     table="crop_production",
@@ -49,13 +50,9 @@ column_list = ["reporter_code", "product_code", "period", "value", "unit"]
 dropna_col = ["value"]
 crop_data = replace_zero_with_nan_values(crop_data, dropna_col)
 crop_data = crop_data.dropna(subset=dropna_col)
-harvested_area = crop_data[crop_data["element"] == "area_harvested"][
-    column_list
-]
+harvested_area = crop_data[crop_data["element"] == "area_harvested"][column_list]
 # Production data
-production = crop_data[crop_data["element"].isin(["production", "stocks"])][
-    column_list
-]
+production = crop_data[crop_data["element"].isin(["production", "stocks"])][column_list]
 # Save csv files to env variable path or into biotrade data folder
 save_file(harvested_area, "harvested_area_annual_variation.csv")
 save_file(production, "production_annual_variation.csv")

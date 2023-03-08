@@ -1,6 +1,9 @@
 """
 Written by Selene Patani.
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 Script made to export trends related to harvested area/production of countries associated to the regulation and commodity tree products, for the web platform
 
 """
@@ -19,9 +22,7 @@ if __name__ == "__main__":
     )
 
     # Obtain the main product codes
-    main_product_list = main_product_list(
-        ["crop_production", "forestry_production"]
-    )
+    main_product_list = main_product_list(["crop_production", "forestry_production"])
     # Select quantities from Faostat db for crop data for all countries (code < 1000)
     crop_data = faostat.db.select(
         table="crop_production",

@@ -4,6 +4,9 @@
 """
 Written by Paul Rougieux and Selene Patani.
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 JRC biomass Project.
 Unit D1 Bioeconomy.
 
@@ -120,24 +123,18 @@ class Pump:
         Use snake case in column names and replace some symbols
         """
         # Rename columns to snake case
-        df.rename(
-            columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True
-        )
+        df.rename(columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True)
         # Remove parenthesis and dots, used only for human readable dataset
         df.rename(columns=lambda x: re.sub(r"[()\.]", "", x), inplace=True)
         # Replace $ sign by d, used only for human readable dataset
         df.rename(columns=lambda x: re.sub(r"\$", "d", x), inplace=True)
         # Rename columns using the naming convention defined in self.column_names
-        mapping = self.column_names.set_index(renaming_from).to_dict()[
-            renaming_to
-        ]
+        mapping = self.column_names.set_index(renaming_from).to_dict()[renaming_to]
         df.rename(columns=mapping, inplace=True)
         # Rename column content to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
         if "flow" in df.columns:
-            df["flow"] = (
-                df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
-            )
+            df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
             # Remove the plural "s"
             df["flow"] = df["flow"].str.replace("s", "", regex=True)
         return df
@@ -256,9 +253,7 @@ class Pump:
                         elif table_name == "yearly_hs2":
                             # Store codes with bioeconomy label and 2 digits
                             df_chunk = df_chunk[
-                                df_chunk["Commodity Code"].isin(
-                                    bioeconomy_tuple
-                                )
+                                df_chunk["Commodity Code"].isin(bioeconomy_tuple)
                             ]
                         elif table_name == "yearly":
                             # Store codes with bioeconomy label and 6 digits
@@ -377,9 +372,7 @@ class Pump:
                 "12",
             ]
         # Date object of today
-        current_date = datetime.datetime.now(
-            pytz.timezone("Europe/Rome")
-        ).date()
+        current_date = datetime.datetime.now(pytz.timezone("Europe/Rome")).date()
         # Loop on year and eventually month, depending on the frequency
         # parameter
         for period in period_block:
@@ -389,10 +382,7 @@ class Pump:
             for month in month_list:
                 if frequency == "M":
                     # Data not available in the future
-                    if (
-                        datetime.datetime(period, int(month), 1).date()
-                        > current_date
-                    ):
+                    if datetime.datetime(period, int(month), 1).date() > current_date:
                         break
                 # Construct the period to pass to transfer_csv_chunk method
                 api_period = int(str(period) + month)
@@ -474,9 +464,7 @@ class Pump:
             frequency = "A"
         elif table_name == "monthly":
             frequency = "M"
-        current_year = (
-            datetime.datetime.now(pytz.timezone("Europe/Rome")).date().year
-        )
+        current_year = datetime.datetime.now(pytz.timezone("Europe/Rome")).date().year
         # Check if data from the start year are present into the database
         data_present = self.db.check_data_presence(
             table_name,
@@ -560,9 +548,7 @@ class Pump:
 
         # Load the data in json format
         if fmt == "json":
-            response = requests.get(
-                url=url_api_call, headers=self.header, stream=True
-            )
+            response = requests.get(url=url_api_call, headers=self.header, stream=True)
             print(f"HTTP response code: {response.status_code}")
             json_content = json.load(response.raw)
             # If the data was downloaded incorrectly, raise an error with the validation status
@@ -622,9 +608,7 @@ class Pump:
         """
         # Reload the data from Comtrade
         hs = self.get_parameter_list("classificationHS.json")
-        hs = hs.rename(
-            columns={"id": "product_code", "text": "product_description"}
-        )
+        hs = hs.rename(columns={"id": "product_code", "text": "product_description"})
         duplicated = hs.duplicated("product_code")
         if any(duplicated):
             self.logger.info(
@@ -748,9 +732,9 @@ class Pump:
         years = [str(i) for i in range(start_year, end_year + 1)]
         for reporter_code in reporters.id:
 
-            reporter_name = reporters.text[
-                reporters.id == reporter_code
-            ].to_string(index=False)
+            reporter_name = reporters.text[reporters.id == reporter_code].to_string(
+                index=False
+            )
             # https://comtrade.un.org/data/doc/api
             # "1 request every second (per IP address or authenticated user)."
             time.sleep(2)
@@ -766,18 +750,14 @@ class Pump:
                 nr_product = 5
             # Select the first 5 products code at a time to avoid row limits to download
             product_block = product_code[
-                product_counter
-                * nr_product : (product_counter + 1)
-                * nr_product
+                product_counter * nr_product : (product_counter + 1) * nr_product
             ]
             # no more products to query
             while product_block != []:
                 # differentiate selection of the period based on the frequency
                 if frequency == "A":
                     # selection of 5 years
-                    period = years[
-                        period_counter * 5 : (period_counter + 1) * 5
-                    ]
+                    period = years[period_counter * 5 : (period_counter + 1) * 5]
                 elif frequency == "M":
                     # selection of 1 year(12 months)
                     period = years[period_counter : period_counter + 1]
@@ -870,9 +850,7 @@ class Pump:
                 )
                 # Trace API parameters and db status into table
                 self.write_log(
-                    timedate=datetime.datetime.now(
-                        pytz.timezone("Europe/Rome")
-                    ),
+                    timedate=datetime.datetime.now(pytz.timezone("Europe/Rome")),
                     table=table_name,
                     max=100000,
                     type="C",
@@ -920,9 +898,9 @@ class Pump:
         years = [str(year - i) for i in range(1, 6)]
         years = ",".join(years)
         for reporter_code in reporters.id:
-            reporter_name = reporters.text[
-                reporters.id == reporter_code
-            ].to_string(index=False)
+            reporter_name = reporters.text[reporters.id == reporter_code].to_string(
+                index=False
+            )
             download_successful = False
             # https://comtrade.un.org/data/doc/api
             # "1 request every second (per IP address or authenticated user)."

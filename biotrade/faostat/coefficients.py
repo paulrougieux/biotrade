@@ -4,6 +4,9 @@
 """
 Written by Paul Rougieux and Selene Patani.
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 JRC biomass Project.
 Unit D1 Bioeconomy.
 """

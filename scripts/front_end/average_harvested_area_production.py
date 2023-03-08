@@ -1,6 +1,9 @@
 """
 Written by Selene Patani.
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 Script made to export data of products and countries (averaging over periods of 5 years except last year of db) related to harvested area/production of the regulation and commodity tree products, for the web platform
 
 """
@@ -20,9 +23,7 @@ from functions import (
 )
 
 # Obtain the main product codes
-main_product_list = main_product_list(
-    ["crop_production", "forestry_production"]
-)
+main_product_list = main_product_list(["crop_production", "forestry_production"])
 # Query db to obtain data
 crop_df = faostat.db.select(
     table="crop_production",
@@ -79,15 +80,11 @@ drop_column = "element"
 column_list = df_final.columns.tolist()
 column_list.remove(drop_column)
 # Define dropna columns
-dropna_col = [
-    col for col in df_final.columns if col.endswith(COLUMN_PERC_SUFFIX)
-]
+dropna_col = [col for col in df_final.columns if col.endswith(COLUMN_PERC_SUFFIX)]
 df_final = replace_zero_with_nan_values(df_final, dropna_col)
 df_final = df_final.dropna(subset=dropna_col, how="all")
 # Save csv files to env variable path or into biotrade data folder
 harvested_area = df_final[df_final["element"] == "area_harvested"][column_list]
 save_file(harvested_area, "harvested_area_average.csv")
-production = df_final[df_final["element"].isin(["production", "stocks"])][
-    column_list
-]
+production = df_final[df_final["element"].isin(["production", "stocks"])][column_list]
 save_file(production, "production_average.csv")

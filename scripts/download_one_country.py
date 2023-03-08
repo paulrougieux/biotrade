@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 r"""
-Written by Paul Rougieux.
+Written by Paul Rougieux and Selene Patani.
+
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
 
 JRC biomass Project.
 Unit D1 Bioeconomy.

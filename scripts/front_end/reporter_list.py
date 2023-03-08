@@ -1,6 +1,9 @@
 """
 Written by Selene Patani.
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 Script made to export data related to countries, for the web platform. DEPRECATED
 
 """

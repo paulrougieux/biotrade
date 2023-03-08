@@ -1,6 +1,9 @@
 """
 Written by Selene Patani.
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 Script made to export trends related to bilateral trades of countries associated to palm oil, soybeans, cocoa beans, coffee roasted, meat cattle, hides cattle fresh
 """
 
@@ -18,11 +21,7 @@ if __name__ == "__main__":
     trade_data = pd.concat(
         [
             trade_data[
-                ~(
-                    (trade_data[["reporter_code", "partner_code"]] == 214).any(
-                        axis=1
-                    )
-                )
+                ~((trade_data[["reporter_code", "partner_code"]] == 214).any(axis=1))
             ],
             df_china,
         ],
@@ -65,13 +64,11 @@ if __name__ == "__main__":
     df = df.dropna(subset=dropna_col, how="all")
     # Define most recent year for faostat and comtrade data
     trade_data_faostat = df[df["source"] == "faostat"]
-    most_recent_year_faostat = sorted(
-        trade_data_faostat.year.unique(), reverse=True
-    )[0]
+    most_recent_year_faostat = sorted(trade_data_faostat.year.unique(), reverse=True)[0]
     trade_data_comtrade = df[df["source"] == "comtrade"]
-    most_recent_year_comtrade = sorted(
-        trade_data_comtrade.year.unique(), reverse=True
-    )[0]
+    most_recent_year_comtrade = sorted(trade_data_comtrade.year.unique(), reverse=True)[
+        0
+    ]
     # Consider selected columns of import quantities and save the file
     trade_data_faostat_reporter = trade_data_faostat[
         (trade_data_faostat["year"] == most_recent_year_faostat)

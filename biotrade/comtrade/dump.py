@@ -4,6 +4,9 @@
 """
 Written by Paul Rougieux and Selene Patani.
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 JRC biomass Project.
 Unit D1 Bioeconomy.
 
@@ -55,7 +58,7 @@ class Dump:
         self,
         table,
         product_code=None,
-        chunk_size=10 ** 6,
+        chunk_size=10**6,
     ):
         """Dump rows where the product code starts with the given product code at the 2 digit level
 

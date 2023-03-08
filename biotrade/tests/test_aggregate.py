@@ -7,6 +7,9 @@ Test data aggregation functions from:
     - faostat/aggregate.py
 
 Written by Paul Rougieux and Selene Patani.
+
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
 """
 
 import pandas
@@ -80,7 +83,11 @@ def test_agg_by_country_groups():
 
 def test_agg_trade_eu_row_with_letters():
     df = pandas.DataFrame(
-        {"reporter": ["A", "A", "B"], "partner": ["Y", "Z", "Z"], "value": [1, 2, 1],}
+        {
+            "reporter": ["A", "A", "B"],
+            "partner": ["Y", "Z", "Z"],
+            "value": [1, 2, 1],
+        }
     )
     dfp_expected = pandas.DataFrame(
         {"reporter": ["A", "B"], "partner": ["row", "row"], "value": [3, 1]}

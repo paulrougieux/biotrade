@@ -1,6 +1,9 @@
 """
 Written by Selene Patani.
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 Script made to export data related to trade quantities of countries associated to the regulation and commodity tree products, for the web platform
 
 """
@@ -30,11 +33,7 @@ df_china = consistency_check_china_data(trade_data)
 trade_data = pd.concat(
     [
         trade_data[
-            ~(
-                (trade_data[["reporter_code", "partner_code"]] == 214).any(
-                    axis=1
-                )
-            )
+            ~((trade_data[["reporter_code", "partner_code"]] == 214).any(axis=1))
         ],
         df_china,
     ],
@@ -56,46 +55,38 @@ dropna_col = ["value"]
 trade_data = replace_zero_with_nan_values(trade_data, dropna_col)
 trade_data = trade_data.dropna(subset=dropna_col)
 df = trade_data[
-    (trade_data["source"] == "faostat")
-    & (trade_data["element"] == "import_quantity")
+    (trade_data["source"] == "faostat") & (trade_data["element"] == "import_quantity")
 ][column_list]
 save_file(df, "faostat_annual_variation.csv")
 df = trade_data[
-    (trade_data["source"] == "faostat")
-    & (trade_data["element"] == "import_value")
+    (trade_data["source"] == "faostat") & (trade_data["element"] == "import_value")
 ][column_list]
 save_file(df, "faostat_value_annual_variation.csv")
 # Consider selected columns of export quantities and values and save the files (drop nan)
 df = trade_data[
-    (trade_data["source"] == "faostat")
-    & (trade_data["element"] == "export_quantity")
+    (trade_data["source"] == "faostat") & (trade_data["element"] == "export_quantity")
 ][column_list]
 save_file(df, "faostat_annual_variation_mf.csv")
 df = trade_data[
-    (trade_data["source"] == "faostat")
-    & (trade_data["element"] == "export_value")
+    (trade_data["source"] == "faostat") & (trade_data["element"] == "export_value")
 ][column_list]
 save_file(df, "faostat_value_annual_variation_mf.csv")
 # Consider selected columns of import quantities and values and save the files (drop nan)
 df = trade_data[
-    (trade_data["source"] == "comtrade")
-    & (trade_data["element"] == "import_quantity")
+    (trade_data["source"] == "comtrade") & (trade_data["element"] == "import_quantity")
 ][column_list]
 save_file(df, "comtrade_annual_variation.csv")
 df = trade_data[
-    (trade_data["source"] == "comtrade")
-    & (trade_data["element"] == "import_value")
+    (trade_data["source"] == "comtrade") & (trade_data["element"] == "import_value")
 ][column_list]
 save_file(df, "comtrade_value_annual_variation.csv")
 # Consider selected columns of export quantities and values and save the files (drop nan)
 df = trade_data[
-    (trade_data["source"] == "comtrade")
-    & (trade_data["element"] == "export_quantity")
+    (trade_data["source"] == "comtrade") & (trade_data["element"] == "export_quantity")
 ][column_list]
 save_file(df, "comtrade_annual_variation_mf.csv")
 df = trade_data[
-    (trade_data["source"] == "comtrade")
-    & (trade_data["element"] == "export_value")
+    (trade_data["source"] == "comtrade") & (trade_data["element"] == "export_value")
 ][column_list]
 save_file(df, "comtrade_value_annual_variation_mf.csv")
 # Aggregate to EU and ROW for reporters
@@ -119,13 +110,11 @@ eu_row_data["reporter"].replace(
 )
 # Save imports
 df = eu_row_data[
-    (eu_row_data["source"] == "faostat")
-    & (eu_row_data["element"] == "import_quantity")
+    (eu_row_data["source"] == "faostat") & (eu_row_data["element"] == "import_quantity")
 ][column_list]
 save_file(df, "faostat_annual_variation_eu_row.csv")
 df = eu_row_data[
-    (eu_row_data["source"] == "faostat")
-    & (eu_row_data["element"] == "import_value")
+    (eu_row_data["source"] == "faostat") & (eu_row_data["element"] == "import_value")
 ][column_list]
 save_file(df, "faostat_value_annual_variation_eu_row.csv")
 df = eu_row_data[
@@ -134,8 +123,7 @@ df = eu_row_data[
 ][column_list]
 save_file(df, "comtrade_annual_variation_eu_row.csv")
 df = eu_row_data[
-    (eu_row_data["source"] == "comtrade")
-    & (eu_row_data["element"] == "import_value")
+    (eu_row_data["source"] == "comtrade") & (eu_row_data["element"] == "import_value")
 ][column_list]
 save_file(df, "comtrade_value_annual_variation_eu_row.csv")
 # Aggregate to EU and ROW for partners
@@ -159,13 +147,11 @@ eu_row_data["partner"].replace(
 )
 # Save exports
 df = eu_row_data[
-    (eu_row_data["source"] == "faostat")
-    & (eu_row_data["element"] == "export_quantity")
+    (eu_row_data["source"] == "faostat") & (eu_row_data["element"] == "export_quantity")
 ][column_list]
 save_file(df, "faostat_annual_variation_eu_row_mf.csv")
 df = eu_row_data[
-    (eu_row_data["source"] == "faostat")
-    & (eu_row_data["element"] == "export_value")
+    (eu_row_data["source"] == "faostat") & (eu_row_data["element"] == "export_value")
 ][column_list]
 save_file(df, "faostat_value_annual_variation_eu_row_mf.csv")
 df = eu_row_data[
@@ -174,7 +160,6 @@ df = eu_row_data[
 ][column_list]
 save_file(df, "comtrade_annual_variation_eu_row_mf.csv")
 df = eu_row_data[
-    (eu_row_data["source"] == "comtrade")
-    & (eu_row_data["element"] == "export_value")
+    (eu_row_data["source"] == "comtrade") & (eu_row_data["element"] == "export_value")
 ][column_list]
 save_file(df, "comtrade_value_annual_variation_eu_row_mf.csv")
