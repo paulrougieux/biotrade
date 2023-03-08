@@ -1,6 +1,9 @@
 """
 Written by Selene Patani
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 Script used to compute for each country the relative and absolute change values related to production and harvested area of the last reported year.
 Deforestation products traded with EU and ROW (Faostat and Comtrade db) changes are computer also reporting mirror flows.
 Csv files are stored into obs3df_methods / scripts folder

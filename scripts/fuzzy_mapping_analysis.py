@@ -1,6 +1,9 @@
 """
 Written by Selene Patani
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 Script used to match data from file "TCF_Conversion Factors_fao.xlsx" (coming from
 https://www.fao.org/food-agriculture-statistics/en/). Product descriptions
 in english, spanish and french have to be match with product code of

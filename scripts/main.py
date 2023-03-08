@@ -3,6 +3,9 @@
 r"""
 Written by Eylül Kilsedar, Selene Patani and Paul Rougieux.
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 Start the API server point:
 
    ipython ~/repos/forobs/biotrade/scripts/main.py

@@ -1,6 +1,9 @@
 """
 Written by Selene Patani
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 Script used to get extraction rates, waste of supplies and related statistics from file "TCF_Conversion Factors_fao.xlsx" (coming from
 https://www.fao.org/food-agriculture-statistics/en/)
 """

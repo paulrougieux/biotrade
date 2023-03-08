@@ -1,6 +1,9 @@
 """
 Written by Selene Patani
 
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
+
 Script used to compute averages and percentages of trade quantities related to the main commodities, europe and rest of the world imports
 
 """

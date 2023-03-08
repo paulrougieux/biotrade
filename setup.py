@@ -3,7 +3,9 @@
 
 """
 Written by Paul Rougieux and Selene Patani
-MIT Licensed.
+
+Copyright (c) 2023 European Union
+Licenced under the MIT licence
 """
 
 # Imports #
