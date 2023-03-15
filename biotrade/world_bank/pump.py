@@ -13,7 +13,7 @@ Unit D1 Bioeconomy.
 Usage update the World Bank data :
 
     >>> from biotrade.world_bank import world_bank
-    >>> world_bank.pump.update()
+    >>> world_bank.pump.update(["indicator", "indicator_name"])
 
 """
 from pathlib import Path
