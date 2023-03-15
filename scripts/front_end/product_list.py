@@ -10,7 +10,11 @@ Script made to export data related to all commodities and tree of the key produc
 
 import pandas as pd
 from biotrade.faostat import faostat
-from functions import save_file, main_product_list, comtrade_products
+from scripts.front_end.functions import (
+    save_file,
+    main_product_list,
+    comtrade_products,
+)
 
 # Name of product file to retrieve
 faostat_commodity_file = (

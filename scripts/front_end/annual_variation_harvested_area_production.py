@@ -8,7 +8,7 @@ Script made to export data related to harvested area/production of countries ass
 
 """
 
-from functions import (
+from scripts.front_end.functions import (
     main_product_list,
     consistency_check_china_data,
     reporter_iso_codes,

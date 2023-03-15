@@ -8,7 +8,7 @@ Script used to compute averages and percentages of trade quantities related to t
 
 """
 
-from functions import (
+from scripts.front_end.functions import (
     main_product_list,
     comtrade_products,
     merge_faostat_comtrade_data,
@@ -18,7 +18,7 @@ from functions import (
     replace_zero_with_nan_values,
     save_file,
 )
-from functions import COLUMN_PERC_SUFFIX, COLUMN_AVG_SUFFIX
+from scripts.front_end.functions import COLUMN_PERC_SUFFIX, COLUMN_AVG_SUFFIX
 from biotrade.faostat.aggregate import agg_trade_eu_row
 import pandas as pd
 

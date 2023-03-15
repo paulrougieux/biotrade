@@ -12,7 +12,7 @@ if __name__ == "__main__":
     from biotrade.faostat import faostat
     import pandas as pd
     import numpy as np
-    from functions import (
+    from scripts.front_end.functions import (
         consistency_check_china_data,
         main_product_list,
         reporter_iso_codes,

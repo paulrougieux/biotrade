@@ -8,7 +8,7 @@ Script made to export data related to trade quantities of countries associated t
 
 """
 import pandas as pd
-from functions import (
+from scripts.front_end.functions import (
     main_product_list,
     comtrade_products,
     merge_faostat_comtrade_data,

@@ -12,8 +12,8 @@ Script made to export data of products and countries (averaging over periods of 
 import pandas as pd
 import numpy as np
 from biotrade.faostat import faostat
-from functions import COLUMN_PERC_SUFFIX
-from functions import (
+from scripts.front_end.functions import COLUMN_PERC_SUFFIX
+from scripts.front_end.functions import (
     consistency_check_china_data,
     main_product_list,
     average_results,
