@@ -55,6 +55,7 @@ def save_file(df, file_name):
         path = data_dir / "front_end"
     path.mkdir(exist_ok=True)
     df.to_csv(path / file_name, index=False, na_rep="null")
+    print(f"Saved file {file_name} to {path}")
 
 
 def comtrade_products():

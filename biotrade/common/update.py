@@ -37,3 +37,10 @@ def cron_front_end():
     from scripts.front_end import trends_harvested_area_production
     from scripts.front_end import annual_variation_trade_quantity_value
     from scripts.front_end import average_trade_quantity
+
+    product_list.main()
+    annual_variation_harvested_area_production.main()
+    average_harvested_area_production.main()
+    trends_harvested_area_production.main()
+    annual_variation_trade_quantity_value.main()
+    average_trade_quantity.main()

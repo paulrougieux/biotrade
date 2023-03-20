@@ -10,13 +10,7 @@ Script made to export trends related to harvested area/production of countries a
 
 
 def main():
-    multi_process = True
-    # If module imported avoid spawning in Windows
-    if __name__ != "__main__":
-        import sys
-
-        if sys.platform.startswith("win"):
-            multi_process = False
+    import sys
     from biotrade.faostat import faostat
     import pandas as pd
     import numpy as np
@@ -29,6 +23,12 @@ def main():
         save_file,
     )
 
+    # Default is using multi process
+    multi_process = True
+    # If module imported, avoid spawning in Windows
+    if __name__ != "__main__":
+        if sys.platform.startswith("win"):
+            multi_process = False
     # Obtain the main product codes
     main_product_list = main_product_list(
         ["crop_production", "forestry_production"]
@@ -99,6 +99,6 @@ def main():
     save_file(production, "production_trends.csv")
 
 
-# Needed for multiprocessing tool, otherwise Windows spawns multiple threads
+# Needed to avoid running module when imported
 if __name__ == "__main__":
     main()
