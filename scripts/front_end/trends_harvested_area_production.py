@@ -7,8 +7,16 @@ Licenced under the MIT licence
 Script made to export trends related to harvested area/production of countries associated to the regulation and commodity tree products, for the web platform
 
 """
-# Needed for multiprocessing tool, otherwise Windows spawns multiple threads
-if __name__ == "__main__":
+
+
+def main():
+    multi_process = True
+    # If module imported avoid spawning in Windows
+    if __name__ != "__main__":
+        import sys
+
+        if sys.platform.startswith("win"):
+            multi_process = False
     from biotrade.faostat import faostat
     import pandas as pd
     import numpy as np
@@ -22,7 +30,9 @@ if __name__ == "__main__":
     )
 
     # Obtain the main product codes
-    main_product_list = main_product_list(["crop_production", "forestry_production"])
+    main_product_list = main_product_list(
+        ["crop_production", "forestry_production"]
+    )
     # Select quantities from Faostat db for crop data for all countries (code < 1000)
     crop_data = faostat.db.select(
         table="crop_production",
@@ -50,7 +60,7 @@ if __name__ == "__main__":
     # Consider data after 1985 to calculate trends of last year
     crop_data = crop_data[crop_data["year"] > 1985]
     # Perform trend analysis
-    df = trend_analysis(crop_data, multi_process=True)
+    df = trend_analysis(crop_data, multi_process=multi_process)
     # Columns to be retained
     column_list = [
         "reporter_code",
@@ -87,3 +97,8 @@ if __name__ == "__main__":
     ][column_list]
     save_file(harvested_area, "harvested_area_trends.csv")
     save_file(production, "production_trends.csv")
+
+
+# Needed for multiprocessing tool, otherwise Windows spawns multiple threads
+if __name__ == "__main__":
+    main()
