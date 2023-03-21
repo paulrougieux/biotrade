@@ -401,6 +401,11 @@ class DatabaseFaostat(Database):
             >>>     print(e)
             >>>     print(veg_oil[veg_oil.element == e]["product"].unique())
 
+        Select crop trade where products contain the words in the list
+
+            >>> veg_oil = db.select(table="crop_trade",
+            >>>                     product = products_of_interest)
+
         """
         table = self.tables[table]
         # Change character or integer arguments to lists suitable for a
