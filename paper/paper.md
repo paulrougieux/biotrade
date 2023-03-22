@@ -53,10 +53,10 @@ trade.
 
 # Statement of need
 
-In disciplines such as environmental economics or Life Cycle Analysis (LCA), researchers
+Disciplines such as environmental economics or Life Cycle Analysis (LCA)
 are concerned with research questions such as: (1) what is the ecological footprint of
 trade? or (2) how do agricultural market prices react to natural disasters? To analyse
-these questions on a global scale, they use use models based on time series of
+these questions on a global scale, researchers use use models based on time series of
 commodities production and trade with data covering many countries and many years in a
 panel format. Every month, or a few times per year, countries update their data in a
 centralised way through international organisations such as the UN Food and Agriculture
