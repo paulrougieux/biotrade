@@ -116,32 +116,12 @@ The package is structured by data sources. Each source has a series of methods t
 download and aggregate data. Some functions that perform comparison and data aggregation
 are common to all data sources.
 
-The following code updates the FAOSTAT data on crop production
+The following python code updates crop production data by downloading it from the
+FAOSTAT API:
 
 ```{python}
-
-```
-
-The `biotrade` package can also be used from R, thanks to the reticulate package.
-Example loading FAOSTAT crop production data from within R and ranking countries with
-the `nlargest` function. Rows are aggregated by `agg_groups`, sorted by the first of the
-`value_vars` and slicing takes the first 5 rows in each slice group:
-
-```{r}
-library(reticulate)
-library(dplyr)
-py_run_string("from biotrade.faostat import faostat")
-py_run_string("from biotrade.common.aggregate import nlargest")
-wheat = py$faostat$db$select("crop_production", product="wheat")
-wheat_large_prod <- wheat %>%
-    # Remove aggregates (continents) and keep only recent years
-    filter(reporter_code < 1000 & year > max(wheat$year) - 10) %>%
-    py$nlargest(value_vars="value",
-                agg_groups=c("reporter", "product"),
-                slice_groups=c("element"),
-                n=5) %>%
-    arrange(desc(sum(value))) %>%
-    mutate(value_million = round(value /1e6))
+from biotrade.faostat import faostat
+faostat.pump.update(["crop_production"])
 ```
 
 
@@ -151,9 +131,56 @@ Example use of the `nlargest` function to display the 3 largest wheat producers
 globally:
 
 ```
+from biotrade.faostat import faostat
+from biotrade.common.aggregate import nlargest
+wheat = faostat.db.select("crop_production", product="wheat")
+wheat_largest = (
+    nlargest(
+        wheat.query("reporter_code < 1000 and year > max(year) - 10),
+        value_vars="value",
+        agg_groups=c("reporter", "product"),
+        slice_groups=c("element"),
+        n=5)
+    .sort_values(
+
+)
+
+
+    ,
+wheat.query( %>%
+    # Remove aggregates (continents) and keep only recent years
+    filter(reporter_code < 1000 & year > max(wheat$year) - 10) %>%
+    py$nlargest(value_vars="value",
+                agg_groups=c("reporter", "product"),
+                slice_groups=c("element"),
+                n=5) %>%
+    arrange(desc(sum(value))) %>%
+    mutate(value_million = round(value /1e6))
 
 ```
 
+The `biotrade` package can also be used from the R statistical software, thanks to an
+interface with python called reticulate. Example loading FAOSTAT crop production data
+from within R and ranking countries with the `nlargest` function. Rows are aggregated by
+`agg_groups`, sorted by the first of the `value_vars` and slicing takes the first 5 rows
+in each slice group:
+
+```{r}
+# This is the only R code example in this document
+library(reticulate)
+library(dplyr)
+py_run_string("from biotrade.faostat import faostat")
+py_run_string("from biotrade.common.aggregate import nlargest")
+wheat <- py$faostat$db$select("crop_production", product="wheat")
+wheat_largest <- wheat %>%
+    # Remove aggregates (continents) and keep only recent years
+    filter(reporter_code < 1000 & year > max(wheat$year) - 10) %>%
+    py$nlargest(value_vars="value",
+                agg_groups=c("reporter", "product"),
+                slice_groups=c("element"),
+                n=5) %>%
+    mutate(value_million = round(value /1e6))
+```
 
 ```{python}
 
