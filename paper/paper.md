@@ -103,7 +103,7 @@ the FAOSTAT format, so that it can be analysed in the same way. Aggregation func
 are also based on these country and product mapping tables.
 
 
-# Data update and Package structure
+# Data update and package structure
 
 Thanks to the SQL Alchemy [@sqlalchey] abstraction layer `biotrade` can use different
 database engines. The data is cached in a local database which can be either an SQLite
@@ -119,15 +119,15 @@ are common to all data sources.
 The following python code updates crop production data by downloading it from the
 FAOSTAT API:
 
-```{python}
+```
 from biotrade.faostat import faostat
 faostat.pump.update(["crop_production"])
 ```
 
-Load sawnwood other (HS code 440799) and soya beans (HS code 120190) trade reported by
-Italy (reporter code 381) in 2020 from the Comtrade API:
+The following code loads sawnwood other (HS code 440799) and soya beans (HS code 120190)
+trade reported by Italy (reporter code 381) in 2020 from the Comtrade API:
 
-```{python}
+```
 from biotrade.comtrade import comtrade
 sawnwood99_it = comtrade.pump.download_df(cc = "440799", r="381", ps="2020")
 soya_beans_it = comtrade.pump.download_df(cc = "120190", r="381", ps="2020")
@@ -153,22 +153,22 @@ wheat_largest =  nlargest(
 )
 wheat_largest
 
-#    product         element                                           reporter    unit        value
-# 0    wheat  area_harvested                                              India      ha   30205021.0
-# 1    wheat  area_harvested                                 Russian Federation      ha   25698803.1
-# 2    wheat  area_harvested                                              China      ha   24189501.9
-# 3    wheat  area_harvested                                    China, mainland      ha   24187166.0
-# 4    wheat  area_harvested                           United States of America      ha   17344652.9
-# 5    wheat      production                                              China  tonnes  128605992.0
-# 6    wheat      production                                    China, mainland  tonnes  128600610.0
-# 7    wheat      production                                              India  tonnes   95949997.0
-# 8    wheat      production                                 Russian Federation  tonnes   65938100.0
-# 9    wheat      production                           United States of America  tonnes   54897588.9
-# 10   wheat           yield                                            Ireland   hg/ha      91991.6
-# 11   wheat           yield                                        New Zealand   hg/ha      89421.0
-# 12   wheat           yield                                            Belgium   hg/ha      87399.3
-# 13   wheat           yield                                        Netherlands   hg/ha      87030.2
-# 14   wheat           yield  United Kingdom of Great Britain and Northern I...   hg/ha      79164.2
+#    product         element                                reporter    unit        value
+# 0    wheat  area_harvested                                   India      ha   30205021.0
+# 1    wheat  area_harvested                      Russian Federation      ha   25698803.1
+# 2    wheat  area_harvested                                   China      ha   24189501.9
+# 3    wheat  area_harvested                         China, mainland      ha   24187166.0
+# 4    wheat  area_harvested                United States of America      ha   17344652.9
+# 5    wheat      production                                   China  tonnes  128605992.0
+# 6    wheat      production                         China, mainland  tonnes  128600610.0
+# 7    wheat      production                                   India  tonnes   95949997.0
+# 8    wheat      production                      Russian Federation  tonnes   65938100.0
+# 9    wheat      production                United States of America  tonnes   54897588.9
+# 10   wheat           yield                                 Ireland   hg/ha      91991.6
+# 11   wheat           yield                             New Zealand   hg/ha      89421.0
+# 12   wheat           yield                                 Belgium   hg/ha      87399.3
+# 13   wheat           yield                             Netherlands   hg/ha      87030.2
+# 14   wheat           yield United Kingdom of Great Britain and ...   hg/ha      79164.2
 ```
 
 The `biotrade` package can also be used from the R statistical software, thanks to an
@@ -177,7 +177,7 @@ from within R and ranking countries with the `nlargest` function. Rows are aggre
 `agg_groups`, sorted by the first of the `value_vars` and slicing takes the first 5 rows
 in each slice group:
 
-```{r}
+```
 # This is the only R code example in this document
 library(reticulate)
 library(dplyr)
@@ -201,17 +201,10 @@ str(wheat_largest)
 #  - attr(*, "pandas.index")=RangeIndex(start=0, stop=15, step=1)
 ```
 
-```{python}
 
-# Place the source code for the figures inside a script
-```
-
-TODO: Illustrade the unit price of trade based on Comtrade data
-
-
-TODO: Illustrade FAOSTAT Bilateral trade Compared to Comtrade bilateral trade
-
-TODO: Illustrade other aggregation and comparison functions
+- TODO: Illustrate the unit price of trade based on Comtrade data
+- TODO: Illustrate FAOSTAT Bilateral trade Compared to Comtrade bilateral trade
+- TODO: Illustrate other aggregation and comparison functions
 
 
 # Conclusion
