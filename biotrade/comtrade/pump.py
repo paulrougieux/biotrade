@@ -64,9 +64,9 @@ class Pump:
 
         >>> from biotrade.comtrade import comtrade
         >>> # Other sawnwood
-        >>> swd99 = comtrade.pump.download_df(cc = "440799", r="381", ps="2020")
+        >>> sawnwood99 = comtrade.pump.download_df(cc = "440799", r="381", ps="2020")
         >>> # Soy
-        >>> soy = comtrade.pump.download_df(cc = "120190", r="381", ps="2020")
+        >>> soya_beans = comtrade.pump.download_df(cc = "120190", r="381", ps="2020")
 
     The public API can also be used to get the list of products and product
     codes:
