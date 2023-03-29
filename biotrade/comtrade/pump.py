@@ -59,8 +59,9 @@ class Pump:
     The public API is accessible to every one and is suitable to download small
     amounts of data for a few products in a few countries. For example, the
     following calls download trade data for the selected product code `cc`,
-    reporter `r` and time period `ps` from the Comtrade API and return data
-    frames:
+    reporter `r` and time period `ps` from the Comtrade API and returns data
+    frames that contain sawnwood other (HS code 440799) and soya beans (HS
+    code 120190) trade reported by Italy in 2020:
 
         >>> from biotrade.comtrade import comtrade
         >>> # Other sawnwood
