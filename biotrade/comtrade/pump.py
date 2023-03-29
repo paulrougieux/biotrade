@@ -543,10 +543,11 @@ class Pump:
             print(f"HTTP response code: {response.status_code}")
             json_content = json.load(response.raw)
             # If the data was downloaded incorrectly, raise an error with the validation status
-            if json_content["validation"]["status"]["value"] != 0:
+            if json_content["validation"]["status"]["name"] != "Ok":
                 raise requests.exceptions.RequestException(
                     f"API message\n{json_content['validation']}"
                 )
+            else:
                 df = pandas.json_normalize(json_content["dataset"])
 
         # Raise an error if the data frame has the maximum number of rows returned by the query
