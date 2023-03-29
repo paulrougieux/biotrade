@@ -40,6 +40,7 @@ site_libs/
 # Python package building artefacts
 build
 *.egg-info
+dist
 
 # Other automatically generated files
 *.pyc
