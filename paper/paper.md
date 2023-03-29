@@ -29,11 +29,12 @@ bibliography: paper.bib
 <!--
 The following comments will not appear in the paper.
 
-- Paper submission guidelines https://joss.readthedocs.io/en/latest/submitting.html
+- Journal of Open Source Software (JOSS)- Paper submission guidelines
+  https://joss.readthedocs.io/en/latest/submitting.html
 
-- Compile this paper to a pdf document with the script specified in .gitlab-ci.yml. The
-  Journal of Open Source Software uses the openjournals/inara docker image and compiles
-  the document with the following script:
+- Compile this paper to a pdf document with the script specified in .gitlab-ci.yml. JOSS
+  uses the openjournals/inara docker image and compiles the document with the following
+  script:
 
       inara -p -o pdf paper/paper.md
 
@@ -53,14 +54,14 @@ trade.
 
 # Statement of need
 
-Disciplines such as environmental economics or Life Cycle Analysis (LCA) are concerned
-with research questions such as: (1) what is the ecological footprint of trade? or (2)
-how do agricultural market prices react to natural disasters? To analyse these questions
-on a global scale, researchers use models based on time series of commodities production
-and trade with data covering many countries and many years in a panel format. Every
-month, or a few times per year, countries update their data in a centralised way through
-international organisations such as the UN Food and Agriculture Organisation or the UN
-Comtrade. This data is made available in the form of files on a public website.
+Disciplines such as environmental economics or Life Cycle Analysis are concerned with
+research questions such as: (1) what is the ecological footprint of trade? or (2) how do
+agricultural market prices react to natural disasters? To analyse these questions on a
+global scale, researchers use models based on time series of commodities production and
+trade with data covering many countries and many years in a panel format. Every month,
+or a few times per year, countries update their data in a centralised way through
+international organisations such as the UN Food and Agriculture Organisation (FAO) or
+the UN Comtrade. This data is made available in the form of files on a public website.
 Dedicated tools can help download data into statistical programming software such as
 Julia, Matlab, Python, R or SAS. These tools generally also have methods to perform
 consistency checks or data aggregation. They make it possible to re-run an analysis,
@@ -105,7 +106,7 @@ are also based on these country and product mapping tables.
 
 # Data update and package structure
 
-Thanks to the SQL Alchemy [@sqlalchey] abstraction layer `biotrade` can use different
+Thanks to the SQL Alchemy [@bayer2012] abstraction layer `biotrade` can use different
 database engines. The data is cached in a local database which can be either an SQLite
 database (the default) or a PostGreSQL database (user defined through an environment
 variable). Database tables are structured with unique constraints to ensure that there
@@ -153,22 +154,22 @@ wheat_largest =  nlargest(
 )
 wheat_largest
 
-#    product         element                                reporter    unit        value
-# 0    wheat  area_harvested                                   India      ha   30205021.0
-# 1    wheat  area_harvested                      Russian Federation      ha   25698803.1
-# 2    wheat  area_harvested                                   China      ha   24189501.9
-# 3    wheat  area_harvested                         China, mainland      ha   24187166.0
-# 4    wheat  area_harvested                United States of America      ha   17344652.9
-# 5    wheat      production                                   China  tonnes  128605992.0
-# 6    wheat      production                         China, mainland  tonnes  128600610.0
-# 7    wheat      production                                   India  tonnes   95949997.0
-# 8    wheat      production                      Russian Federation  tonnes   65938100.0
-# 9    wheat      production                United States of America  tonnes   54897588.9
-# 10   wheat           yield                                 Ireland   hg/ha      91991.6
-# 11   wheat           yield                             New Zealand   hg/ha      89421.0
-# 12   wheat           yield                                 Belgium   hg/ha      87399.3
-# 13   wheat           yield                             Netherlands   hg/ha      87030.2
-# 14   wheat           yield United Kingdom of Great Britain and ...   hg/ha      79164.2
+#    product         element                   reporter    unit        value
+# 0    wheat  area_harvested                      India      ha   30205021.0
+# 1    wheat  area_harvested         Russian Federation      ha   25698803.1
+# 2    wheat  area_harvested                      China      ha   24189501.9
+# 3    wheat  area_harvested            China, mainland      ha   24187166.0
+# 4    wheat  area_harvested   United States of America      ha   17344652.9
+# 5    wheat      production                      China  tonnes  128605992.0
+# 6    wheat      production            China, mainland  tonnes  128600610.0
+# 7    wheat      production                      India  tonnes   95949997.0
+# 8    wheat      production         Russian Federation  tonnes   65938100.0
+# 9    wheat      production   United States of America  tonnes   54897588.9
+# 10   wheat           yield                    Ireland   hg/ha      91991.6
+# 11   wheat           yield                New Zealand   hg/ha      89421.0
+# 12   wheat           yield                    Belgium   hg/ha      87399.3
+# 13   wheat           yield                Netherlands   hg/ha      87030.2
+# 14   wheat           yield United Kingdom of Great...   hg/ha      79164.2
 ```
 
 The `biotrade` package can also be used from the R statistical software, thanks to an
@@ -209,14 +210,14 @@ str(wheat_largest)
 
 # Conclusion
 
-The biotrade package is a download and data preparation tool for agriculture and
-forestry production and trade data. It enforces a naming convention on variables to make
-sure comparable variable names are used across sources. As the source APIs regularly
-change their access mechanisms every few years, the goal of the package maintainers is
-to abstract away those changes and provide a unified method to update data, that should
-as much as possible continue to work with future updates. The package provides
-convenient methods to store intermediate results and to select data. We encourage users
-to install the `biotrade` package, to test it and to send feedback through the [issues
+The `biotrade` package is a download and preparation tool for agriculture and forestry
+production and trade data. It enforces a naming convention on variables to make sure
+comparable variable names are used across data sources. As source APIs tend to change
+their access mechanisms every few years; the goal of the package maintainers is to
+abstract away those changes and provide a unified method to update data, that should
+continue to work with future updates. The package provides convenient methods to store
+intermediate results and to select data. We encourage users to install the `biotrade`
+package, to test it and to send feedback through the [issues
 page](https://gitlab.com/bioeconomy/forobs/biotrade/-/issues).
 
 
