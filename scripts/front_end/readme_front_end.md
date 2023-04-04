@@ -1,5 +1,5 @@
 # METADATA
-Table names and metadata of the web platform output scripts. Currently 35 csv files are available.
+Table names and metadata of the web platform output scripts. Currently 36 csv files are available.
 
 > N.B.
 >- Zero and NaN values are not reported.
@@ -24,9 +24,14 @@ Csv that contains the list of faostat selected products for trade. There are 3 c
 
 ## comtrade_product_list.csv
 Csv that contains the list of comtrade selected products. There are 3 columns:
-- `product_code`: FAO code of the product
+- `product_code`: Comtrade code of the product
 - `product_name`: name of the product
 - `commodity_name`: name of the commodity to which the product belongs
+
+## mapping_faostat_comtrade_product.csv
+Csv that contains the list of mapping matches between FAOSTAT and Comtrade product codes. There are 2 columns:
+- `faostat_code`: FAO code of the product
+- `comtrade_code`: Comtrade code of the product
 
 ## harvested_area_annual_variation.csv
 Csv that contains annual data of harvested area for each product and the related reporters. There are 5 columns:

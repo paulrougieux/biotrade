@@ -78,6 +78,7 @@ def comtrade_products():
         "commodity_short_name",
         "hs_6d_code",
         "fao_code",
+        "match",
     ]
     df = df[columns]
     df.rename(
