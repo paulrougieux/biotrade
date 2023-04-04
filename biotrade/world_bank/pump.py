@@ -77,19 +77,23 @@ class Pump:
         # Load the zip file to the data directory
         output_file = self.data_dir / self.zip_file_name
         self.logger.info("Downloading data from:\n %s", self.url_bulk)
-        response = requests.get(url=self.url_bulk, headers=self.header, stream=True)
+        response = requests.get(
+            url=self.url_bulk, headers=self.header, stream=True
+        )
         with open(output_file, "wb") as out_file:
             print(f"HTTP response code: {response.status_code}")
             shutil.copyfileobj(response.raw, out_file)
 
-    def transfer_csv_to_db_in_chunks(self, short_name, chunk_size, reformatting):
+    def transfer_csv_to_db_in_chunks(
+        self, short_name, chunk_size, reformatting
+    ):
         """Read the World Bank zip csv file and transfer large long format CSV
         file to the database in chunks so that a data frame with millions of
         rows doesn't overload the memory."""
         try:
             # Unzip the CSV and write it to a temporary file on disk
-            zip_file = ZipFile(self.data_dir / self.zip_file_name)
             temp_dir = Path(tempfile.TemporaryDirectory().name)
+            zip_file = ZipFile(self.data_dir / self.zip_file_name)
             zip_file.extractall(temp_dir)
             # Obtain the name of csv file to read
             csv_file = temp_dir / self.datasets[short_name]
@@ -105,16 +109,16 @@ class Pump:
                 unit_file = temp_dir / "WDISeries.csv"
                 df_unit = pd.read_csv(unit_file)
                 # Rename column same as csv file
-                df_unit.rename(columns={"Series Code": "Indicator Code"}, inplace=True)
+                df_unit.rename(
+                    columns={"Series Code": "Indicator Code"}, inplace=True
+                )
                 # Keep only columns needed for the merge
                 df_unit = df_unit[["Indicator Code", "Unit of measure"]]
             else:
                 # Do not split the dataframe into chunks (len(df) = 383572)
                 chunk_size = 10**6
             # Test if the file is corrupted
-            with open(
-                csv_file, "r"
-            ) as csvfile:
+            with open(csv_file, "r") as csvfile:
                 # Detect the delimiter
                 dialect = csv.Sniffer().sniff(csvfile.read(1024))
                 # Place the reader at the beginning
@@ -129,6 +133,9 @@ class Pump:
             self.db.logger.warning(
                 f"File for {short_name} table is not available due to {e}.\n Unable to pump {short_name} data."
             )
+            if temp_dir.exists():
+                # Remove temporary directory
+                shutil.rmtree(temp_dir)
             return
         # Drop and recreate the table
         table = self.db.tables[short_name]
@@ -137,7 +144,9 @@ class Pump:
         # Read the csv file, transform the dataframe and upload data to the database
         for df_chunk in pd.read_csv(csv_file, chunksize=chunk_size):
             # Remove unnamed columns
-            df_chunk.drop(df_chunk.filter(regex="Unnamed"), axis=1, inplace=True)
+            df_chunk.drop(
+                df_chunk.filter(regex="Unnamed"), axis=1, inplace=True
+            )
             if reformatting:
                 # Reformatting year columns into long format
                 df_chunk = df_chunk.melt(
@@ -161,6 +170,8 @@ class Pump:
             print(df_chunk.head(1))
             # Append chunk to the db
             self.db.append(df=df_chunk, table=short_name)
+        # Remove temporary directory
+        shutil.rmtree(temp_dir)
 
     def transfer_to_db(self, datasets, skip_confirmation=False):
         """Transfer from a csv file to the database by replacing the table
@@ -196,7 +207,9 @@ class Pump:
                 # Do not reformat the csv file
                 reformatting = False
             # Transfer the compressed CSV file to the database
-            self.transfer_csv_to_db_in_chunks(table_name, self.chunk_size, reformatting)
+            self.transfer_csv_to_db_in_chunks(
+                table_name, self.chunk_size, reformatting
+            )
 
     def update(self, datasets, skip_confirmation=False):
         """Update the given datasets by downloading them from World Bank Data and

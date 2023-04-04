@@ -297,17 +297,15 @@ class Pump:
         else:
             # Unzip the CSV and write it to a temporary file on disk
             try:
-                zip_file = ZipFile(self.data_dir / self.datasets[short_name])
                 temp_dir = Path(tempfile.TemporaryDirectory().name)
+                zip_file = ZipFile(self.data_dir / self.datasets[short_name])
                 zip_file.extractall(temp_dir)
                 csv_file_name = temp_dir / re.sub(
                     ".zip$", ".csv", self.datasets[short_name]
                 )
                 encoding_var = "latin1"
                 # Test if the file is corrupted
-                with open(
-                    csv_file_name, "r", encoding=encoding_var
-                ) as csvfile:
+                with open(csv_file_name, "r", encoding=encoding_var) as csvfile:
                     # Detect the delimiter
                     dialect = csv.Sniffer().sniff(csvfile.read(1024))
                     # Place the reader at the beginning
@@ -322,6 +320,9 @@ class Pump:
                 self.db.logger.warning(
                     f"File for {short_name} table is not available due to {e}.\n Unable to pump {short_name} data."
                 )
+                if temp_dir.exists():
+                    # Remove temporary directory
+                    shutil.rmtree(temp_dir)
                 return
         # Drop and recreate the table
         table = self.db.tables[short_name]
@@ -336,6 +337,8 @@ class Pump:
             )
             print(df_chunk.head(1))
             self.db.append(df=df_chunk, table=short_name)
+        # Remove temporary directory
+        shutil.rmtree(temp_dir)
 
     def confirm_db_table_deletion(self, datasets):
         """Confirm database table deletion
