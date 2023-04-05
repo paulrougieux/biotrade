@@ -90,9 +90,9 @@ class Pump:
         """Read the World Bank zip csv file and transfer large long format CSV
         file to the database in chunks so that a data frame with millions of
         rows doesn't overload the memory."""
+        temp_dir = Path(tempfile.TemporaryDirectory().name)
         try:
             # Unzip the CSV and write it to a temporary file on disk
-            temp_dir = Path(tempfile.TemporaryDirectory().name)
             zip_file = ZipFile(self.data_dir / self.zip_file_name)
             zip_file.extractall(temp_dir)
             # Obtain the name of csv file to read
@@ -170,8 +170,9 @@ class Pump:
             print(df_chunk.head(1))
             # Append chunk to the db
             self.db.append(df=df_chunk, table=short_name)
-        # Remove temporary directory
-        shutil.rmtree(temp_dir)
+        if temp_dir.exists():
+            # Remove temporary directory
+            shutil.rmtree(temp_dir)
 
     def transfer_to_db(self, datasets, skip_confirmation=False):
         """Transfer from a csv file to the database by replacing the table

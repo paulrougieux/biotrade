@@ -287,6 +287,7 @@ class Pump:
         """Transfer large CSV files to the database in chunks
         so that a data frame with 40 million rows doesn't overload the memory.
         """
+        temp_dir = Path(tempfile.TemporaryDirectory().name)
         # Csv file inside biotrade package config data directory
         if short_name == "country":
             csv_file_name = (
@@ -297,7 +298,6 @@ class Pump:
         else:
             # Unzip the CSV and write it to a temporary file on disk
             try:
-                temp_dir = Path(tempfile.TemporaryDirectory().name)
                 zip_file = ZipFile(self.data_dir / self.datasets[short_name])
                 zip_file.extractall(temp_dir)
                 csv_file_name = temp_dir / re.sub(
@@ -337,8 +337,9 @@ class Pump:
             )
             print(df_chunk.head(1))
             self.db.append(df=df_chunk, table=short_name)
-        # Remove temporary directory
-        shutil.rmtree(temp_dir)
+        if temp_dir.exists():
+            # Remove temporary directory
+            shutil.rmtree(temp_dir)
 
     def confirm_db_table_deletion(self, datasets):
         """Confirm database table deletion
