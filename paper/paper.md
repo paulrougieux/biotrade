@@ -44,12 +44,12 @@ End comments.
 # Summary
 
 The aim of the `biotrade` package is to enable regular updates of agriculture, fisheries
-and forest products trade data from the following international data sources: FAOSTAT
-[-@faostat2023], UN Comtrade [-@comtrade2023] and the World Bank [-@worldbank2023]. The
+and forest products trade data from the international data sources of FAOSTAT
+[-@faostat2023] and UN Comtrade [-@comtrade2023]. The
 software provides methods to join data across sources as well as to aggregate and rank
 the most important products and the most important countries. It also provides tools to
 assess the quality of the data, by comparing for example mirror flows or unit prices of
-trade.
+trade. The package allows to store and update as well the collection of time series of the World Bank Group [-@worldbank2023].
 
 
 # Statement of need
@@ -205,7 +205,90 @@ str(wheat_largest)
 
 - TODO: Illustrate the unit price of trade based on Comtrade data
 - TODO: Illustrate FAOSTAT Bilateral trade Compared to Comtrade bilateral trade
+
+```diff
++ Mapping Comtrade to Faostat product codes with the function `merge_faostat_comtrade` to compare trades of the two data sources.
+
+from biotrade.common.compare import merge_faostat_comtrade
+import matplotlib.pyplot as plt
+
+df = merge_faostat_comtrade(
+    faostat_table="crop_trade", comtrade_table="yearly", faostat_code=[656]
+)
+df = df[
+    (df.reporter == "Colombia")
+    & (df.partner == "Italy")
+    & (df.element == "export_quantity")
+    & (df.year > 2010)
+]
+df_pivot = df.pivot(index=["reporter", "year", "partner"], columns="source", values="value")
+fig, ax = plt.subplots()
+ax.axline([ax.get_xlim()[0], ax.get_ylim()[0]], [ax.get_xlim()[1], ax.get_ylim()[1]], color='r')
+ax.scatter(df_pivot.faostat / 1000, df_pivot.comtrade / 1000)
+plt.xlabel("Faostat [tonnes]")
+plt.ylabel("Comtrade [tonnes]")
+plt.title("Export quantity of coffee green from Colombia to Italy")
+plt.show()
+```
+![Figure 1](Figure_1.png "Comparison between Faostat and Comtrade data")
+
 - TODO: Illustrate other aggregation and comparison functions
+
+```diff
++Aggregate bilateral trade data to 27 european Member States and rest of the World as reporter or partners through `agg_trade_eu_row` function.
+
+from biotrade.faostat import faostat
+
+palm_oil = faostat.db.select(
+    table="crop_trade",
+    product="palm_oil",
+    reporter="Indonesia",
+    element="export_quantity",
+    period_start=2018,
+)
+
+palm_oil_agg = agg_trade_eu_row(palm_oil, grouping_side="partner")
+print(palm_oil_agg)
+
+   reporter_code   reporter partner  product_code   product  element_code          element  period  year    unit        value
+0            101  Indonesia      eu           257  palm_oil          5910  export_quantity    2018  2018  tonnes   3707358.77
+1            101  Indonesia      eu           257  palm_oil          5910  export_quantity    2019  2019  tonnes   3402457.71
+2            101  Indonesia      eu           257  palm_oil          5910  export_quantity    2020  2020  tonnes   3326492.32
+3            101  Indonesia      eu           257  palm_oil          5910  export_quantity    2021  2021  tonnes   2815188.47
+4            101  Indonesia     row           257  palm_oil          5910  export_quantity    2018  2018  tonnes  24186229.87
+5            101  Indonesia     row           257  palm_oil          5910  export_quantity    2019  2019  tonnes  24086164.86
+6            101  Indonesia     row           257  palm_oil          5910  export_quantity    2020  2020  tonnes  22610175.02
+7            101  Indonesia     row           257  palm_oil          5910  export_quantity    2021  2021  tonnes  22716583.50
+
++Compare flows through `put_mirror_beside` function, which adds a column to the dataframe with the corresponding mirror flows.
+
+from biotrade.common.compare import merge_faostat_comtrade
+from biotrade.faostat.mirror import put_mirror_beside
+
+df = merge_faostat_comtrade(
+    faostat_table="crop_trade", comtrade_table="yearly", faostat_code=[236]
+)
+df = df[
+    (df.reporter.isin(["Brazil", "Argentina"]))
+    & (df.partner.isin(["Brazil", "Argentina"]))
+    & (df.year > 2020)
+    & (df.element.isin(["import_quantity", "export_quantity"]))
+]
+df = put_mirror_beside(df)
+print(df)
+      source  reporter_code   reporter  partner_code    partner  product_code     product  element_code          element  year unit        value flag  value_mirror flag_mirror
+0    faostat             21     Brazil             9  Argentina           236  soya_beans          5610  import_quantity  2021   kg    4840840.0    A     2499580.0           A
+1    faostat             21     Brazil             9  Argentina           236  soya_beans          5910  export_quantity  2021   kg  218176100.0    A   218176890.0           A
+2    faostat              9  Argentina            21     Brazil           236  soya_beans          5610  import_quantity  2021   kg  218176890.0    A   218176100.0           A
+3    faostat              9  Argentina            21     Brazil           236  soya_beans          5910  export_quantity  2021   kg    2499580.0    A     4840840.0           A
+4   comtrade              9  Argentina             9  Argentina           236  soya_beans          5610  import_quantity  2021   kg     689204.0                NaN         NaN
+5   comtrade              9  Argentina            21     Brazil           236  soya_beans          5910  export_quantity  2021   kg    2499580.0          4840836.0
+6   comtrade              9  Argentina            21     Brazil           236  soya_beans          5610  import_quantity  2021   kg  218176890.0        218176103.0
+7   comtrade             21     Brazil             9  Argentina           236  soya_beans          5910  export_quantity  2021   kg  218176103.0        218176890.0
+8   comtrade             21     Brazil             9  Argentina           236  soya_beans          5610  import_quantity  2021   kg    4840836.0          2499580.0
+9   comtrade             21     Brazil             9  Argentina           236  soya_beans          5910  export_quantity  2022   kg  289472763.0                NaN         NaN
+10  comtrade             21     Brazil             9  Argentina           236  soya_beans          5610  import_quantity  2022   kg     675419.0                NaN         NaN
+```
 
 
 # Conclusion
