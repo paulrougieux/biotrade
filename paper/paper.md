@@ -293,9 +293,10 @@ print(df)
 
 # Conclusion
 
-The `biotrade` package is a download and preparation tool for agriculture and forestry
-production and trade data. It enforces a naming convention on variables to make sure
-comparable variable names are used across data sources. As source APIs tend to change
+The `biotrade` package is a preparation tool that updates agriculture and forestry
+production and trade data based on global sources. It enforces a naming convention on
+variables to make sure
+similar variable names are used across data sources. As source APIs tend to change
 their access mechanisms every few years; the goal of the package maintainers is to
 abstract away those changes and provide a unified method to update data, that should
 continue to work with future updates. The package provides convenient methods to store
