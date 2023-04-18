@@ -78,6 +78,7 @@ def comtrade_products():
         "commodity_short_name",
         "hs_6d_code",
         "fao_code",
+        "match",
     ]
     df = df[columns]
     df.rename(
@@ -546,6 +547,9 @@ def consistency_check_china_data(df):
     if "partner_code" in df.columns:
         # Define China data with isocode CHN and Faostat code 357 from China mainland (41) + Taiwan (214) data both from reporter and partner
         df_china = df[df[["reporter_code", "partner_code"]].isin([41, 214]).any(axis=1)]
+        # Avoid counting internal trades
+        mask = (df_china.reporter_code.isin([41, 214])) & (df_china.partner_code.isin([41, 214]))
+        df_china = df_china[~mask]
         # Aggregation on the reporter side
         df_china_1 = (
             df_china[df_china["reporter_code"].isin([41, 214])]

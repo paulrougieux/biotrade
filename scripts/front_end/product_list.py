@@ -50,6 +50,13 @@ def main():
     save_file(faostat_products, "faostat_product_list.csv")
     # Retrieve regulation products and save the file
     comtrade_products = comtrade_products()
+    # Obtain total matches
+    rename_col_dict = {"fao_code": "faostat_code", "product_code": "comtrade_code"}
+    fao_match = comtrade_products.drop_duplicates(subset="product_code", keep=False)
+    fao_match = fao_match[fao_match.match == "total"]
+    fao_match = fao_match[rename_col_dict.keys()].rename(columns=rename_col_dict)
+    fao_match["faostat_code"] = fao_match.faostat_code.astype(int)
+    save_file(fao_match, "mapping_faostat_comtrade_product.csv")
     columns = ["product_code", "product_name", "commodity_name"]
     comtrade_products = comtrade_products.drop_duplicates(subset=columns)[
         columns

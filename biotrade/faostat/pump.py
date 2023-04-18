@@ -28,6 +28,7 @@ from zipfile import ZipFile
 import re
 import shutil
 import tempfile
+import csv
 
 try:
     import requests
@@ -163,7 +164,9 @@ class Pump:
         url_api_call = self.url_api_base + zip_file_name
         output_file = self.data_dir / zip_file_name
         self.logger.info("Downloading data from:\n %s", url_api_call)
-        response = requests.get(url=url_api_call, headers=self.header, stream=True)
+        response = requests.get(
+            url=url_api_call, headers=self.header, stream=True
+        )
         with open(output_file, "wb") as out_file:
             print(f"HTTP response code: {response.status_code}")
             shutil.copyfileobj(response.raw, out_file)
@@ -204,7 +207,9 @@ class Pump:
         """Sanitize column names using the mapping table.
         Use snake case in product and element names"""
         # Rename columns to snake case
-        df.rename(columns=lambda x: re.sub(r"\W+", "_", str(x)).lower(), inplace=True)
+        df.rename(
+            columns=lambda x: re.sub(r"\W+", "_", str(x)).lower(), inplace=True
+        )
         # Columns of the db table
         db_table_cols = self.db.tables[short_name].columns.keys()
         # Original column names
@@ -219,7 +224,9 @@ class Pump:
                 f"The following columns \n{list(cols_to_change)}\nhave changed in the input source {column_renaming}.\nUpdate config_data/column_names.csv before updating table {short_name}"
             )
         # Map columns using the naming convention defined in self.column_names
-        mapping = self.column_names.set_index(column_renaming).to_dict()["biotrade"]
+        mapping = self.column_names.set_index(column_renaming).to_dict()[
+            "biotrade"
+        ]
         # Discard nan keys of mapping dictionary
         mapping.pop(np.nan, None)
         # Obtain columns for db upload
@@ -233,7 +240,9 @@ class Pump:
         for column in ["product", "item", "element"]:
             if column in df.columns:
                 df[column] = (
-                    df[column].str.replace(regex_pat, "_", regex=True).str.lower()
+                    df[column]
+                    .str.replace(regex_pat, "_", regex=True)
+                    .str.lower()
                 )
                 # Remove the last underscore if it's at the end of the name
                 df[column] = df[column].str.replace("_$", "", regex=True)
@@ -278,21 +287,48 @@ class Pump:
         """Transfer large CSV files to the database in chunks
         so that a data frame with 40 million rows doesn't overload the memory.
         """
+        temp_dir = Path(tempfile.TemporaryDirectory().name)
         # Csv file inside biotrade package config data directory
         if short_name == "country":
-            csv_file_name = self.parent.config_data_dir / "faostat_country_groups.csv"
+            csv_file_name = (
+                self.parent.config_data_dir / "faostat_country_groups.csv"
+            )
             encoding_var = "utf-8"
         # Zip files for table data
         else:
             # Unzip the CSV and write it to a temporary file on disk
-            zip_file = ZipFile(self.data_dir / self.datasets[short_name])
-            temp_dir = Path(tempfile.TemporaryDirectory().name)
-            zip_file.extractall(temp_dir)
-            # Read in chunk and pass each chunk to the database
-            csv_file_name = temp_dir / re.sub(
-                ".zip$", ".csv", self.datasets[short_name]
-            )
-            encoding_var = "latin1"
+            try:
+                zip_file = ZipFile(self.data_dir / self.datasets[short_name])
+                zip_file.extractall(temp_dir)
+                csv_file_name = temp_dir / re.sub(
+                    ".zip$", ".csv", self.datasets[short_name]
+                )
+                encoding_var = "latin1"
+                # Test if the file is corrupted
+                with open(csv_file_name, "r", encoding=encoding_var) as csvfile:
+                    # Detect the delimiter
+                    dialect = csv.Sniffer().sniff(csvfile.read(1024))
+                    # Place the reader at the beginning
+                    csvfile.seek(0)
+                    # Read the file
+                    reader = csv.reader(csvfile, dialect)
+                    header = next(reader)
+                    for row in reader:
+                        pass
+            # Zip file corrupted
+            except Exception as e:
+                self.db.logger.warning(
+                    f"File for {short_name} table is not available due to {e}.\n Unable to pump {short_name} data."
+                )
+                if temp_dir.exists():
+                    # Remove temporary directory
+                    shutil.rmtree(temp_dir)
+                return
+        # Drop and recreate the table
+        table = self.db.tables[short_name]
+        table.drop()
+        self.db.create_if_not_existing(table)
+        # Read in chunk and pass each chunk to the database
         for df_chunk in pandas.read_csv(
             csv_file_name, chunksize=chunk_size, encoding=encoding_var
         ):
@@ -301,6 +337,9 @@ class Pump:
             )
             print(df_chunk.head(1))
             self.db.append(df=df_chunk, table=short_name)
+        if temp_dir.exists():
+            # Remove temporary directory
+            shutil.rmtree(temp_dir)
 
     def confirm_db_table_deletion(self, datasets):
         """Confirm database table deletion
@@ -346,10 +385,6 @@ class Pump:
             if not self.confirm_db_table_deletion(datasets):
                 return
         for table_name in datasets:
-            # Drop and recreate the table
-            table = self.db.tables[table_name]
-            table.drop()
-            self.db.create_if_not_existing(table)
             # Transfer the compressed CSV file to the database
             self.transfer_csv_to_db_in_chunks(table_name, self.chunk_size)
 
