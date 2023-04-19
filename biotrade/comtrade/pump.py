@@ -38,6 +38,7 @@ import os
 import re
 import time
 import requests
+import gzip
 
 # Third party modules
 import json
@@ -207,7 +208,7 @@ class Pump:
             self.logger.info(f"HTTP response code: {response_code}")
         return temp_dir, response_code
 
-    def new_transfer_csv(
+    def gz_transfer_db(
         self,
         temp_dir,
         table_name,
@@ -234,31 +235,34 @@ class Pump:
         # List of chunk rows
         chunk_list = []
         # Open the zip file
-        for temp_file in temp_dir / os.listdir(temp_dir):
-            # Open the zip file
-            with ZipFile(temp_file) as zipfile:
-                with zipfile.open(zipfile.namelist()[0]) as csv_file:
-                    # Loop on csv files and upload them
-                    df = pandas.read_csv(
-                        csv_file,
-                    )
-                    # If length is > 0 select rows
-                    # TODO filter customCode and motCode
-                    if not df.empty:
-                        if table_name in ("monthly", "yearly"):
-                            # Store codes with bioeconomy label and 6 digits
-                            df = df[
-                                (df["cmdCode"].str.startswith(bioeconomy_tuple))
-                                & (df["cmdCode"].str.len() == 6)
-                            ]
-                        elif table_name == "yearly_hs2":
-                            # Store codes with bioeconomy label and 2 digits
-                            df = df[df["cmdCode"].isin(bioeconomy_tuple)]
-                        # Append rows
-                        chunk_list.append(df)
+        for temp_file in os.listdir(temp_dir):
+            # Loop on csv files and upload them
+            df = pandas.read_csv(
+                temp_dir / temp_file,
+                sep="\t",
+                dtype={"cmdCode": str},
+            )
+            # If length is > 0 select rows
+            if not df.empty:
+                if table_name in ("monthly", "yearly"):
+                    # Store codes with bioeconomy label and 6 digits, not differentiating modality of transport and procedures
+                    df = df[
+                        (df["cmdCode"].str.startswith(bioeconomy_tuple))
+                        & (df["cmdCode"].str.len() == 6)
+                        & (df["customsCode"] == "C00")
+                        & (df["motCode"] == 0)
+                    ]
+                elif table_name == "yearly_hs2":
+                    # Store codes with bioeconomy label and 2 digits, not differentiating modality of transport and procedures
+                    df = df[
+                        (df["cmdCode"].isin(bioeconomy_tuple))
+                        & (df["customsCode"] == "C00")
+                        & (df["motCode"] == 0)
+                    ]
+                # Append rows
+                chunk_list.append(df)
         # Construct the final df to upload to db
         df = pandas.concat(chunk_list)
-        # TODO add reporter, partner, flow description
         self.logger.info(
             "Memory usage:\n%s GB",
             round(df.memory_usage(deep=True).sum() / (1024**3), 2),
@@ -269,6 +273,7 @@ class Pump:
             df = self.sanitize_variable_names(
                 df, renaming_from="comtrade_human", renaming_to="biotrade"
             )
+            # TODO uncomment delete and upload of data
             # # Delete already existing data
             # if check_data_presence:
             #     self.db.delete_data(
@@ -383,7 +388,7 @@ class Pump:
         end_year,
         frequency,
         check_data_presence,
-        new_api=False,
+        use_package=False,
     ):
         """
         Pump method to transfer bulk csv file of Comtrade API requests to
@@ -476,10 +481,10 @@ class Pump:
                 # Construct the period to pass to transfer_csv_chunk method
                 api_period = int(str(period) + month)
                 # Use the new Comtrade API package
-                if new_api:
+                if use_package:
                     temp_dir = Path(tempfile.mkdtemp())
                     try:
-                        # TODO add a function for download
+                        # TODO add a recursive function for download and remove hard coded parts to the download function
                         # Save csv files for each reporter in the temp folder
                         comtradeapicall.bulkDownloadFinalFile(
                             self.token,
@@ -491,7 +496,7 @@ class Pump:
                             decompress=False,
                         )
                         # Upload data into the database
-                        records_downloaded = self.new_transfer_csv(
+                        records_downloaded = self.gz_transfer_db(
                             temp_dir,
                             table_name,
                             bioeconomy_tuple,
@@ -557,7 +562,9 @@ class Pump:
                 + f" {table_name}: {period_list_failed}"
             )
 
-    def update_db(self, table_name, frequency, start_year=None, new_api=False):
+    def update_db(
+        self, table_name, frequency, start_year=None, use_package=False
+    ):
         """
         Pump method to update db. If data from 2016 are already present,
         it updates data of the last and current year, otherwise it uploads
@@ -603,7 +610,7 @@ class Pump:
             current_year,
             frequency,
             data_present,
-            new_api,
+            use_package,
         )
 
     def download_df(
