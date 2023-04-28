@@ -93,8 +93,9 @@ series of methods to assess the quality of the data, and for the calculations of
 statistics and temporal and geographical aggregation of the data, ranking the countries
 with more production or trades of a specific products, among others.
 
-In the following sections we describe: 1) the structure of the database and
-package structure 2)
+In the following sections we describe: 1) the structure of the package and associated
+database 2) methods for calculations, aggregation and comparison of production and trade
+data.
 
 
 
@@ -155,7 +156,7 @@ the FAOSTAT format, so that it can be analysed in the same way. Aggregation func
 are also based on these country and product mapping tables.
 
 
-# Aggregation and comparison
+# Methods for calculations, aggregation and comparison of production and trade data
 
 Example use of the `nlargest` function to display the 3 largest wheat producers
 globally:
