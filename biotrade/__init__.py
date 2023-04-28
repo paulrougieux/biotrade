@@ -25,7 +25,7 @@ Usage:
 from pathlib import Path
 import os
 
-__version__ = "0.0.27"
+__version__ = "0.1.0"
 
 module_dir = Path(__file__).resolve().parent
 
