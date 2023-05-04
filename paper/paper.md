@@ -45,12 +45,12 @@ End comments.
 
 The aim of the `biotrade` package is to enable regular updates of agriculture, fisheries
 and forest products trade data from the international data sources of FAOSTAT
-[-@faostat2023] and UN Comtrade [-@comtrade2023]. The
-software provides methods to join data across sources as well as to aggregate and rank
-the most important products and the most important countries, as well as geographical
-areas (e.g. continents). It also provides tools to
-assess the quality of the data, by comparing for example mirror flows or unit prices of
-trade. The package allows to store and update as well the collection of time series of the World Bank Group [-@worldbank2023].
+[-@faostat2023] and UN Comtrade [-@comtrade2023]. The software provides methods to join
+data across sources as well as to aggregate and rank the most important products and the
+most important countries, as well as geographical areas (e.g. continents). It also
+provides tools to assess the quality of the data, by comparing for example mirror flows
+or unit prices of trade. The package allows to store and update the collection of
+macroeconomic time series from the World Bank [-@worldbank2023].
 
 
 # Statement of need
