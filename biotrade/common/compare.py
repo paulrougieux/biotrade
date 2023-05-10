@@ -69,6 +69,7 @@ Use monthly Comtrade data:
 import warnings
 import pandas
 import numpy as np
+import math
 from biotrade.faostat import faostat
 from biotrade.comtrade import comtrade
 from biotrade.common.products import comtrade_faostat_mapping
@@ -223,9 +224,9 @@ def transform_comtrade_using_faostat_codes(
             "unit",
             "element",
         ]
-        df_agg = df.groupby(index)["value"].agg(sum).reset_index()
-        # TODO: use np.testing.assert_allclose
-        # To check that the Comtrade data didn't change after aggregation
+        df_agg = df.groupby(index, dropna=False)["value"].agg(sum).reset_index()
+        # Check that the Comtrade data didn't change after aggregation
+        assert math.isclose(df.value.sum(), df_agg.value.sum())
         df = df_agg
     return df
 
