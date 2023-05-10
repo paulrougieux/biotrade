@@ -8,28 +8,27 @@ data from FAOSTAT and socio-economic indicators from the World Bank.
 
 ## Base installation
 
-Install from the main branch of a private repo on gitlab using an
-[authentication
-token](https://docs.gitlab.com/ee/user/project/deploy_tokens/index.html). The tokens
-will not be necessary once biotrade becomes publicly available.
+Install the biotrade package from the python package index with pip:
 
-    pip install git+https://<token>@gitlab.com/bioeconomy/forobs/biotrade.git@main
+    python -m pip install biotrade
 
-To install a previous version specify the git tag, for example v0.0.1
+Upgrade the package to the latest version with:
 
-    pip install git+https://<token>@gitlab.com/bioeconomy/forobs/biotrade.git@v0.0.1
+    python -m pip install --upgrade biotrade
 
-To install the latest development version, use also the `--upgrade` flag:
+To install the latest development version, use the `--upgrade` parameter and install
+from the main branch of the gitlab repository:
 
-    pip install --upgrade --force-reinstall git+https://<token>@gitlab.com/bioeconomy/forobs/biotrade.git@dev
+    python -m pip install --upgrade --force-reinstall https://gitlab.com/bioeconomy/forobs/biotrade/-/archive/main/biotrade-main.tar.gz
 
 
 ## Installation for contributors
 
-If you plan to contribute to the development of the biotrade package, clone the
-repository and tell python where it is located by adding it to your PYTHONPATH. You can
-do this by changing the environment variables or by adding the following line to your
-shell configuration file such as `.bash_aliases`:
+If you plan to contribute to the development of the biotrade package, clone the biotrade
+repository at https://gitlab.com/bioeconomy/forobs/biotrade/. You need to tell python
+where the package is located by adding it to your PYTHONPATH. You can do this by
+changing the environment variables or by adding the following line to your shell
+configuration file such as `.bash_aliases`:
 
     export PYTHONPATH="$HOME/repos/biotrade/":$PYTHONPATH
 
