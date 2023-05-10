@@ -445,8 +445,10 @@ def merge_faostat_comtrade(
                 + "    >>> from biotrade.faostat import faostat\n"
                 + f"    >>> faostat.pump.update(['{faostat_table}'])\n"
                 + "3) If the issue persist after performing the above two points,\n"
-                + "The following file needs to be changed:\n"
-                + "   biotrade/biotrade/config_data/faostat_country_groups.csv"
+                + "   The following file needs to be changed:\n"
+                + "   biotrade/biotrade/config_data/faostat_country_groups.csv\n"
+                + "   followed by\n"
+                + "    >>> faostat.pump.update('country')\n"
             )
             if strict:
                 msg += "\nUse the argument strict=False to ignore this error."
