@@ -1,20 +1,16 @@
-The `biotrade` package analyses international trade of bio-based products. It focuses on 
-the agriculture and forestry sectors, from primary production to secondary products 
-transformation. It loads bilateral trade data from UN Comtrade, production and trade 
+The `biotrade` package analyses international trade of bio-based products. It focuses on
+the agriculture and forestry sectors, from primary production to secondary products
+transformation. It loads bilateral trade data from UN Comtrade, production and trade
 data from FAOSTAT and socio-economic indicators from the World Bank.
-
-Extraction rates and waste of supply are taken from the FAO, technical conversion 
-factors for agricultural commodities available at: 
-https://www.fao.org/economic/the-statistics-division-ess/methodology/methodology-systems/technical-conversion-factors-for-agricultural-commodities/ar/
 
 
 # Installation
 
-## Base installation 
+## Base installation
 
 Install from the main branch of a private repo on gitlab using an
 [authentication
-token](https://docs.gitlab.com/ee/user/project/deploy_tokens/index.html). The tokens 
+token](https://docs.gitlab.com/ee/user/project/deploy_tokens/index.html). The tokens
 will not be necessary once biotrade becomes publicly available.
 
     pip install git+https://<token>@gitlab.com/bioeconomy/forobs/biotrade.git@main
@@ -30,9 +26,9 @@ To install the latest development version, use also the `--upgrade` flag:
 
 ## Installation for contributors
 
-If you plan to contribute to the development of the biotrade package, clone the 
-repository and tell python where it is located by adding it to your PYTHONPATH. You can 
-do this by changing the environment variables or by adding the following line to your 
+If you plan to contribute to the development of the biotrade package, clone the
+repository and tell python where it is located by adding it to your PYTHONPATH. You can
+do this by changing the environment variables or by adding the following line to your
 shell configuration file such as `.bash_aliases`:
 
     export PYTHONPATH="$HOME/repos/biotrade/":$PYTHONPATH
@@ -46,18 +42,18 @@ Dependencies are listed in the `install_requires` argument of [setup.py](setup.p
 
 # Usage
 
-The biotrade package can download data from FAOSTAT and UN Comtrade and store it inside 
-a database. By default it will use an SQLite database stored locally in the folder 
-defined by the environment variable `BIOTRADE_DATA`. Alternatively, a PostGRESQL 
-database can be used if a connection string is defined in the environment variable 
-`BIOTRADE_DATABASE_URL`, for example by adding the following to your .bash_aliases or 
+The biotrade package can download data from FAOSTAT and UN Comtrade and store it inside
+a database. By default it will use an SQLite database stored locally in the folder
+defined by the environment variable `BIOTRADE_DATA`. Alternatively, a PostGRESQL
+database can be used if a connection string is defined in the environment variable
+`BIOTRADE_DATABASE_URL`, for example by adding the following to your .bash_aliases or
 .bash_rc:
 
     export BIOTRADE_DATABASE_URL="postgresql://user@localhost/biotrade"
 
-Note that database queries are abstracted with [SQL 
-Alchemy](https://www.sqlalchemy.org/) which is what makes it possible to use different 
-database engines. SQLite is convenient for data analysis on laptops. PostGreSQL can be 
+Note that database queries are abstracted with [SQL
+Alchemy](https://www.sqlalchemy.org/) which is what makes it possible to use different
+database engines. SQLite is convenient for data analysis on laptops. PostGreSQL can be
 used on servers.
 
 
@@ -66,9 +62,9 @@ used on servers.
 Faostat provides agriculture and forestry data on their website https://www.fao.org/faostat/en/#data/
 
 The biotrade package has a `faostat.pump` object that loads a selection of datasets. The
-list of downloaded datasets is visible in `faostat.pump.datasets`. Column names and 
-product descriptions are reformatted to snake case in a way that is convenient for 
-analysis. The data is then stored into an SQLite database (or PostgreSQL). The following 
+list of downloaded datasets is visible in `faostat.pump.datasets`. Column names and
+product descriptions are reformatted to snake case in a way that is convenient for
+analysis. The data is then stored into an SQLite database (or PostgreSQL). The following
 commands download and transfer the given datasets to the database:
 
     >>> from biotrade.faostat import faostat
@@ -82,7 +78,7 @@ List available datasets and metadata links:
     >>> faostat.pump.datasets
     >>> faostat.pump.metadata_link
 
-Once the data has been loaded into the database, you can query it. For example select 
+Once the data has been loaded into the database, you can query it. For example select
 crop production data for 2 countries
 
     >>> from biotrade.faostat import faostat
@@ -117,7 +113,7 @@ Select land use and land cover data
 
 ## Comtrade
 
-See the documentation of the various methods. As an example  here is how to download 
+See the documentation of the various methods. As an example  here is how to download
 trade data from the Comtrade API and return a data frame, for debugging purposes:
 
     >>> from biotrade.comtrade import comtrade
@@ -153,32 +149,32 @@ https://fenixservices.fao.org/faostat/static/releasecalendar/Default.aspx
 
 ## Variable definitions and harmonization
 
-Column names and product descriptions are reformatted to snake case in a way that is 
+Column names and product descriptions are reformatted to snake case in a way that is
 convenient for analysis. See example below.
 
-- Variables are defined and compared between the data sources in a notebook called 
+- Variables are defined and compared between the data sources in a notebook called
   [definitions_and_harmonization](notebooks/definitions_and_harmonization.md)
 
-- Variable names are harmonized between the different sources using a mapping table 
+- Variable names are harmonized between the different sources using a mapping table
   defined in
   [biotrade/config_data/column_names.csv](https://gitlab.com/bioeconomy/biotrade/-/blob/main/biotrade/config_data/column_names.csv)
   See for example how the `product_code` column is called  `PRODUCT_NC` in Eurostat Comext,
   `commodity_code` or `cmdcode` in UN Comtrade and `item_code` in FAOSTAT.
 
-- `snake_case` is the preferred way of naming files and variables in the code. This 
-  follows the R [tidyverse style guide for object 
-  names](https://style.tidyverse.org/syntax.html) and the python [PEP 
-  8](https://www.python.org/dev/peps/pep-0008/#function-and-variable-names) style guide 
+- `snake_case` is the preferred way of naming files and variables in the code. This
+  follows the R [tidyverse style guide for object
+  names](https://style.tidyverse.org/syntax.html) and the python [PEP
+  8](https://www.python.org/dev/peps/pep-0008/#function-and-variable-names) style guide
   for function and variable names.
 
-To illustrate the advantage of using snake case for data exploration, compare the use of 
+To illustrate the advantage of using snake case for data exploration, compare the use of
 column names with space which have to be quoted. Python
 
     >>> df["Product Code"]
     >>> df.product_code
 
 R
-     
+
     R> df["Product Code"]
     R> df$`Product Code`
     R> df$product_code
@@ -186,19 +182,9 @@ R
 
 ## Configuration data
 
-The `biotrade` package stores a small amount of configuration data such as country and 
+The `biotrade` package stores a small amount of configuration data such as country and
 product mapping tables and conversion coefficients in the `biotrade/config_data` folder.
 
-- FAOSTAT country and product mapping tables are accessible under the FAO Creative 
-  Commons 3.0 Intergovernmental Organization (IGO) licence mentionned in the FAO open 
-  access policy https://www.fao.org/3/I9461EN/I9461en.pdf  
-
-- The Table "Extraction rates and value shares of major oil crops" comes from a JRC 
-  technical report: Cuypers, Dieter, Theo Geerken, Leen Gorissen, Arnoud Lust, Glen 
-  Peters, Jonas Karstensen, Sylvia Prieler, G. Fischer, Eva Hizsnyik, and Harrij Van 
-  Velthuizen. "The impact of EU consumption on deforestation: Comprehensive analysis of 
-  the impact of EU consumption on deforestation." (2013). 
-  https://ec.europa.eu/environment/forests/pdf/1.%20Report%20analysis%20of%20impact.pdf
 
 
 # Licence
@@ -235,8 +221,8 @@ These tests are run as part of the Continuous Integration.
 
 # Acknowledgements
 
-The authors would like to acknowledge ideas and feedback received from the following 
+The authors would like to acknowledge ideas and feedback received from the following
 persons: Lucas Sinclair, Roberto Pilli, Mirco Migliavacca, Giovanni Bausano.
 
-Noemi Cazzaniga's package [eurostat](https://pypi.org/project/eurostat/) was taken as an 
+Noemi Cazzaniga's package [eurostat](https://pypi.org/project/eurostat/) was taken as an
 inspiration to load Eurostat data from the bulk download repository.
