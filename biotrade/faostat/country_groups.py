@@ -10,14 +10,6 @@ Licenced under the MIT licence
 JRC biomass Project.
 Unit D1 Bioeconomy.
 
-Usage:
-
-    >>> from biotrade.faostat import faostat
-    >>> print("List of EU countries:")
-    >>> print(faostat.country_groups.eu_country_names)
-    >>> print("\n\nData frame of country groups:")
-    >>> print(faostat.country_groups.df)
-
 """
 
 # Third party modules
@@ -27,6 +19,20 @@ import pandas
 class CountryGroups(object):
     """
     Comtrade product list, with additional information.
+
+    Usage:
+
+        >>> from biotrade.faostat import faostat
+        >>> print("List of EU countries:")
+        >>> print(faostat.country_groups.eu_country_names)
+        >>> print("\n\nData frame of country groups:")
+        >>> print(faostat.country_groups.df)
+
+    Find the country codes for a given country using string matching:
+
+        >>> country_codes = faostat.country_groups.search_name(["Brazil", "Indonesia"])
+        >>> country_codes[["faost_code", "iso3_code", "un_code", "short_name"]]
+
     """
 
     def __init__(self, parent):
@@ -87,3 +93,10 @@ class CountryGroups(object):
                 suffixes=('_reporter','_partner'))
         """
         return self.df[["faost_code", "continent", "sub_continent"]]
+
+    def search_name(self, pattern: str) -> pandas.DataFrame:
+        """Search for a country name in the country groups table"""
+        if isinstance(pattern, str):
+            pattern = [pattern]
+        selector = self.df["short_name"].str.contains("|".join(pattern), case=False)
+        return self.df.loc[selector.fillna(False)]
