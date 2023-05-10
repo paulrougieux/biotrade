@@ -10,12 +10,58 @@ Licenced under the MIT licence
 JRC biomass Project.
 Unit D1 Bioeconomy.
 
-Get a data frame with both FAOSTAT and Comtrade data, where Comtrade product
-and country codes have been converted to their equivalent FAOSTAT codes.
+Get data frames containing both FAOSTAT and Comtrade data for sawnwood and
+soybean related products. In these data frames, the Comtrade product and
+country codes have been converted to their equivalent FAOSTAT codes.
 
     >>> from biotrade.common.compare import merge_faostat_comtrade
     >>> swd = merge_faostat_comtrade(faostat_table="forestry_trade",
-    >>>                              comtrade_table="monthly",
+    >>>                              comtrade_table="yearly",
+    >>>                              faostat_code = [1632, 1633])
+    >>> soy = merge_faostat_comtrade(faostat_table="crop_trade",
+    >>>                              comtrade_table="yearly",
+    >>>                              faostat_code = [236, 237, 238])
+
+Select the same data from Comtrade and compare to check that the
+merge_faostat_comtrade() method doesn't modify the Comtrade data.
+
+    >>> from biotrade.common.products import comtrade_faostat_mapping
+    >>> from biotrade.comtrade import comtrade
+    >>> import numpy as np
+    >>> faostat_product = [236, 237, 238]
+    >>> code_map = comtrade_faostat_mapping.query("faostat_code.isin(@faostat_product)")
+    >>> soy_comtrade = (
+    >>>     comtrade.db.select("yearly", product_code = code_map["comtrade_code"])
+    >>>     .merge(comtrade_faostat_mapping.rename(columns={"comtrade_code":"product_code"}),
+    >>>            on="product_code")
+    >>> )
+    >>> index = ["year"]
+    >>> index = ["year", "reporter", "partner"]
+    >>> # TODO: make it work also for country codes, requires a merge with FAOSTAT codes
+    >>> # index = ["year", "reporter_code", "partner_code"]
+    >>> soy_agg = (soy
+    >>>     .query("source =='comtrade' and element.str.contains('quantity')")
+    >>>     .groupby(["product_code", "element"] + index)["value"].sum()
+    >>>     .reset_index()
+    >>>     .assign(flow = lambda x: x["element"].str.replace("_quantity",""))
+    >>>     .rename(columns={"product_code":"faostat_code"})
+    >>> )
+    >>> soy_comtrade_agg = (
+    >>>     soy_comtrade.groupby(["faostat_code", "flow"] + index)["net_weight"].sum()
+    >>>     .reset_index()
+    >>>     .merge(soy_agg, on=["faostat_code", "flow"] + index, how="outer", indicator=True)
+    >>> )
+    >>> np.testing.assert_allclose(soy_comtrade_agg.query("_merge=='both'")["net_weight"],
+    >>>                            soy_comtrade_agg.query("_merge=='both'")["value"])
+    >>> # Reporter and partner which are in the Comtrade data frame but not in
+    >>> # the data returned by merge_faostat_comtrade()
+    >>> soy_comtrade_agg.query("_merge=='left_only'")
+    >>> soy_comtrade_agg.query("_merge=='right_only'")
+
+Use monthly Comtrade data:
+
+    >>> swd = merge_faostat_comtrade(faostat_table="forestry_trade",
+    >>>                              comtrade_table="monthly",monthly
     >>>                              faostat_code = [1632, 1633])
 
 """
@@ -70,7 +116,7 @@ def transform_comtrade_using_faostat_codes(
     :param boolean aggregate: data are aggregagted or not by product code, default is True
     into faostat codes, default is True
 
-    The function makes Comtrade monthly data available with faostat codes. It
+    The function makes Comtrade monthly data available with FAOSTAT codes. It
     also works on Comtrade yearly data.
     It does the following:
 
@@ -177,7 +223,10 @@ def transform_comtrade_using_faostat_codes(
             "unit",
             "element",
         ]
-        df = df.groupby(index)["value"].agg(sum).reset_index()
+        df_agg = df.groupby(index)["value"].agg(sum).reset_index()
+        # TODO: use np.testing.assert_allclose
+        # To check that the Comtrade data didn't change after aggregation
+        df = df_agg
     return df
 
 
@@ -387,9 +436,16 @@ def merge_faostat_comtrade(
                 + "These country names are present in the Comtrade table "
                 + "(using replacement names from the FAOSTAT country table):\n"
                 + f"{set(duplicates[col]) & set(df[col].unique())}\n\n"
-                + "# Try to update the country table with:\n"
-                + "from biotrade.faostat import faostat\n"
-                + "faostat.pump.update('country')"
+                + "To fix this issue:\n"
+                + "1) Update the FAOSTAT country table with:\n"
+                + "    >>> from biotrade.faostat import faostat\n"
+                + "    >>> faostat.pump.update('country')\n"
+                + "2) Update the FAOSTAT trade data with:\n"
+                + "    >>> from biotrade.faostat import faostat\n"
+                + f"    >>> faostat.pump.update(['{faostat_table}'])\n"
+                + "3) If the issue persist after performing the above two points,\n"
+                + "The following file needs to be changed:\n"
+                + "   biotrade/biotrade/config_data/faostat_country_groups.csv"
             )
             if strict:
                 msg += "\nUse the argument strict=False to ignore this error."
