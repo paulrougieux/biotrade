@@ -32,7 +32,7 @@ def compute_prod_imp_share(df_prod, df_trade):
             index.remove(col)
             print(f"{col} not in the column names")
     df_trade_agg = df_trade.groupby(index).agg(imp=("value", sum)).reset_index()
-    df = df_prod.merge(df_trade_agg, on=index)
+    df = df_prod.merge(df_trade_agg, on=index, how="left")
     df["share_prod_imp"] = df["primary_crop_eq"] / (df["imp"] + df["primary_crop_eq"])
     return df
 
