@@ -13,14 +13,12 @@ according to the share of trade coming from those countries into B. Quantities
 are expressed in weight equivalent of the primary commodity. The conversion to
 a footprint in terms of area occurs at a later stage.
 
-Example: see `if __name__ == "__main__":` below.
+Example: see obs3df_methods trade_share_reallocation.py
+
+TODO: hard code the conversion factors and value share for a small list of
+      selected products and paste the example here.
 
 """
-
-
-# Conditional import for example code
-if __name__ == "__main__":
-    from biotrade.faostat import faostat
 
 
 def compute_prod_imp_share(df_prod, df_trade):
@@ -53,9 +51,3 @@ def reallocate_one_step():
 
 def reallocate():
     """Perform all steps of the reallocation"""
-
-
-if __name__ == "__main__":
-    crop_list = [270, 236, 267]
-    oil_list = [271, 237, 268]
-    prod = faostat.db.select(table="crop_production", product_code=oil_list + crop_list)
