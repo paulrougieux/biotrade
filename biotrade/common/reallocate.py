@@ -20,9 +20,20 @@ TODO: hard code the conversion factors and value share for a small list of
 
 """
 
+import pandas
+from typing import Tuple
 
-def compute_prod_imp_share(df_prod, df_trade):
-    """Compute the production and import share for the given list of products"""
+
+def compute_prod_imp_share(
+    df_prod: pandas.DataFrame, df_trade: pandas.DataFrame
+) -> pandas.Series:
+    """Compute the production and import share for the given list of products.
+    This function performs the following steps:
+
+        1. Aggregate the trade data frame by reporters
+        2. Merge with the production data frame
+        3. Compute the share
+    """
     index = ["reporter", "product"]
     optional_cols = ["reporter_code", "product_code"]
     index = index + optional_cols
@@ -33,12 +44,16 @@ def compute_prod_imp_share(df_prod, df_trade):
             print(f"{col} not in the column names")
     df_trade_agg = df_trade.groupby(index).agg(imp=("value", sum)).reset_index()
     df = df_prod.merge(df_trade_agg, on=index, how="left")
-    df["share_prod_imp"] = df["primary_crop_eq"] / (df["imp"] + df["primary_crop_eq"])
-    return df
+    df["share_prod_imp"] = df["primary_eq"] / (df["imp"] + df["primary_eq"])
+    return df["share_prod_imp"]
 
 
-def split_prod_imp():
-    """Split a quantity between what is produced domestically and what is imported"""
+def split_prod_imp(df: pandas.DataFrame) -> Tuple[pandas.Series, pandas.Series]:
+    """Split a quantity between what is produced domestically and what is imported
+    The input data frame must contain the share used for splitting."""
+    df["primary_eq_prod"] = df["primary_eq"] * df["share_prod_imp"]
+    df["primary_eq_imp"] = df["primary_eq"] * (1 - df["share_prod_imp"])
+    return df["primary_eq_prod"], df["primary_eq_imp"]
 
 
 def split_by_partners():
