@@ -3,7 +3,9 @@
 """
 Functions to analyse mirror flows.
 """
-import warnings
+import logging
+
+logger = logging.getLogger("biotrade.faostat")
 
 
 def put_mirror_beside(df, drop_index_col=None):
@@ -88,6 +90,6 @@ def put_mirror_beside(df, drop_index_col=None):
     for col in drop_index_col + ["value"]:
         if col in df.columns:
             index.remove(col)
-    warnings.warn(f"\nMerging mirror flows on the following index:\n {index}")
+    logger.info("\nMerging mirror flows on the following index:\n %s", index)
     # Merge with the original data frame
-    return df.merge(df_m, on=index, how="left", suffixes=("", "_mirror"))
+    return df.merge(df_m, on=index, how="outer", suffixes=("", "_mirror"))
