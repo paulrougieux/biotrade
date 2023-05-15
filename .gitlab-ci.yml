@@ -9,6 +9,7 @@ default:
     - python --version
     - pip install .
     - pip install pytest
+    - pip install pdoc
     - echo $CI_PROJECT_DIR 
     - echo $BIOTRADE_DATA
     - pwd
