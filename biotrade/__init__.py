@@ -61,9 +61,9 @@ Some paths are defined at the top level:
  the environment variable BIOTRADE_DATA.
 
  - `database_url` is equal to `None` by default and then a local on-disk SQLite
- database is used. It can be changed through the environment variable
- BIOTRADE_DATABASE_URL that specifies the location of the database connection
- URL.
+ database is used. It can be changed to a PostGreSQL database through the
+ environment variable BIOTRADE_DATABASE_URL that specifies the location of the
+ database connection URL.
 
  You can display these values with :
 
