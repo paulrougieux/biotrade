@@ -3,6 +3,9 @@ the agriculture and forestry sectors, from primary production to secondary produ
 transformation. It loads bilateral trade data from UN Comtrade, production and trade
 data from FAOSTAT and socio-economic indicators from the World Bank.
 
+The documentation is available at:
+https://bioeconomy.gitlab.io/forobs/biotrade/
+
 
 # Installation
 
