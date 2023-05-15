@@ -7,8 +7,10 @@ Test the import reallocation functions
 
 import pandas
 from pandas.testing import assert_series_equal
+from pandas.testing import assert_frame_equal
 from biotrade.common.reallocate import compute_share_prod_imp
 from biotrade.common.reallocate import split_prod_imp
+from biotrade.common.reallocate import split_by_partners
 
 
 def test_compute_share_prod_imp():
@@ -60,6 +62,7 @@ def test_split_prod_imp():
 def test_split_by_partners():
     df_prod = pandas.DataFrame(
         {
+            "year": 1,
             "reporter": ["a", "b"],
             "reporter_code": [1, 2],
             "product": ["p", "p"],
@@ -68,6 +71,7 @@ def test_split_by_partners():
     )
     df_trade = pandas.DataFrame(
         {
+            "year": 1,
             "reporter": ["a", "a", "b", "b"],
             "reporter_code": [1, 1, 2, 2],
             "partner": ["x", "y", "x", "z"],
@@ -76,9 +80,11 @@ def test_split_by_partners():
             "value": [1, 2, 3, 4],
         }
     )
-    # output = split_by_partners(df_prod, df_trade, 1)
+    output = split_by_partners(df_prod, df_trade, 1)
     expected = df_trade.copy()
-    expected["primary_eq_imp_1"]
+    # Use float in the expected series
+    expected["primary_eq_imp_1"] = [2, 4, 6, 8.0]
+    assert_frame_equal(output[expected.columns], expected)
 
 
 # In [31]: oil production columns

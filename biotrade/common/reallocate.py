@@ -38,11 +38,12 @@ def compute_share_prod_imp(
     for col in index:
         if col not in df_trade.columns:
             raise KeyError(f"{col} not found in the DataFrame columns")
-    optional_cols = ["reporter_code", "product_code"]
     # Add optional code columns only if they are present in df
+    optional_cols = ["reporter_code", "product_code"]
     index += [col for col in optional_cols if col in df_trade.columns]
     df_trade_agg = df_trade.groupby(index).agg(imp=("value", sum)).reset_index()
     df = df_prod.merge(df_trade_agg, on=index, how="left")
+    df["imp"].fillna(0, inplace=True)
     return df["primary_eq"] / (df["imp"] + df["primary_eq"])
 
 
@@ -60,9 +61,15 @@ def split_by_partners(
     allocation_round: int,
 ) -> pandas.DataFrame:
     """Reallocate a quantity, by splitting it between different trade partners"""
-    print(allocation_round)
-    print(df_prod)
-    print(df_trade)
+    index = ["reporter", "product", "year"]
+    # Add optional code columns only if they are present in df
+    optional_cols = ["reporter_code", "product_code"]
+    index += [col for col in optional_cols if col in df_trade.columns]
+    df = df_prod.merge(df_trade, on=index, how="left")
+    df["prop"] = df.groupby(index)["value"].transform(lambda x: x / x.sum())
+    var_name = f"primary_eq_imp_{allocation_round}"
+    df[var_name] = df["primary_eq_imp"] * df["prop"]
+    return df
 
 
 def reallocate_one_step():
