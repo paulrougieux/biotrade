@@ -7,14 +7,14 @@ Test the import reallocation functions
 
 import pandas
 from pandas.testing import assert_series_equal
-
-from biotrade.common.reallocate import compute_prod_imp_share
+from biotrade.common.reallocate import compute_share_prod_imp
 from biotrade.common.reallocate import split_prod_imp
 
 
-def test_compute_prod_imp_share():
+def test_compute_share_prod_imp():
     df_prod = pandas.DataFrame(
         {
+            "year": 1,
             "reporter": ["a", "b"],
             "reporter_code": [1, 2],
             "product": ["p", "p"],
@@ -23,6 +23,7 @@ def test_compute_prod_imp_share():
     )
     df_trade = pandas.DataFrame(
         {
+            "year": 1,
             "reporter": ["a", "a", "b", "b"],
             "reporter_code": [1, 1, 2, 2],
             "partner": ["x", "y", "x", "z"],
@@ -31,8 +32,8 @@ def test_compute_prod_imp_share():
             "value": [1, 2, 3, 4],
         }
     )
-    output = compute_prod_imp_share(df_prod, df_trade)
-    expected = pandas.Series([0.25, 2 / 9], name="share_prod_imp")
+    output = compute_share_prod_imp(df_prod, df_trade)
+    expected = pandas.Series([0.25, 2 / 9])
     assert_series_equal(output, expected)
 
 
@@ -50,10 +51,34 @@ def test_split_prod_imp():
     # Use float in the expected series to avoid AssertionError: Attributes of
     # Series are different Attribute "dtype" are different [left]:  float64
     # [right]: int64
-    expected_pri_cro_prod = pandas.Series([0, 2, 2.0], name="primary_eq_prod")
-    expected_pri_cro_imp = pandas.Series([1, 0, 2.0], name="primary_eq_imp")
-    assert_series_equal(output_prod, expected_pri_cro_prod)
-    assert_series_equal(output_imp, expected_pri_cro_imp)
+    expected_prod = pandas.Series([0, 2, 2.0])
+    expected_imp = pandas.Series([1, 0, 2.0])
+    assert_series_equal(output_prod, expected_prod)
+    assert_series_equal(output_imp, expected_imp)
+
+
+def test_split_by_partners():
+    df_prod = pandas.DataFrame(
+        {
+            "reporter": ["a", "b"],
+            "reporter_code": [1, 2],
+            "product": ["p", "p"],
+            "primary_eq_imp": [6, 14],
+        }
+    )
+    df_trade = pandas.DataFrame(
+        {
+            "reporter": ["a", "a", "b", "b"],
+            "reporter_code": [1, 1, 2, 2],
+            "partner": ["x", "y", "x", "z"],
+            "partner_code": [24, 25, 24, 26],
+            "product": ["p", "p", "p", "p"],
+            "value": [1, 2, 3, 4],
+        }
+    )
+    # output = split_by_partners(df_prod, df_trade, 1)
+    expected = df_trade.copy()
+    expected["primary_eq_imp_1"]
 
 
 # In [31]: oil production columns

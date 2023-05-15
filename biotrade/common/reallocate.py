@@ -20,44 +20,49 @@ TODO: hard code the conversion factors and value share for a small list of
 
 """
 
-import pandas
 from typing import Tuple
+import pandas
 
 
-def compute_prod_imp_share(
+def compute_share_prod_imp(
     df_prod: pandas.DataFrame, df_trade: pandas.DataFrame
 ) -> pandas.Series:
-    """Compute the production and import share for the given list of products.
+    """Compute the share between production and import for the given list of products.
     This function performs the following steps:
 
-        1. Aggregate the trade data frame by reporters
+        1. Aggregate the trade data frame by reporters, year and product
         2. Merge with the production data frame
         3. Compute the share
     """
-    index = ["reporter", "product"]
-    optional_cols = ["reporter_code", "product_code"]
-    index = index + optional_cols
-    # Code columns are optional
-    for col in optional_cols:
+    index = ["reporter", "product", "year"]
+    for col in index:
         if col not in df_trade.columns:
-            index.remove(col)
-            print(f"{col} not in the column names")
+            raise KeyError(f"{col} not found in the DataFrame columns")
+    optional_cols = ["reporter_code", "product_code"]
+    # Add optional code columns only if they are present in df
+    index += [col for col in optional_cols if col in df_trade.columns]
     df_trade_agg = df_trade.groupby(index).agg(imp=("value", sum)).reset_index()
     df = df_prod.merge(df_trade_agg, on=index, how="left")
-    df["share_prod_imp"] = df["primary_eq"] / (df["imp"] + df["primary_eq"])
-    return df["share_prod_imp"]
+    return df["primary_eq"] / (df["imp"] + df["primary_eq"])
 
 
 def split_prod_imp(df: pandas.DataFrame) -> Tuple[pandas.Series, pandas.Series]:
     """Split a quantity between what is produced domestically and what is imported
     The input data frame must contain the share used for splitting."""
-    df["primary_eq_prod"] = df["primary_eq"] * df["share_prod_imp"]
-    df["primary_eq_imp"] = df["primary_eq"] * (1 - df["share_prod_imp"])
-    return df["primary_eq_prod"], df["primary_eq_imp"]
+    prod = df["primary_eq"] * df["share_prod_imp"]
+    imp = df["primary_eq"] * (1 - df["share_prod_imp"])
+    return prod, imp
 
 
-def split_by_partners():
+def split_by_partners(
+    df_prod: pandas.DataFrame,
+    df_trade: pandas.DataFrame,
+    allocation_round: int,
+) -> pandas.DataFrame:
     """Reallocate a quantity, by splitting it between different trade partners"""
+    print(allocation_round)
+    print(df_prod)
+    print(df_trade)
 
 
 def reallocate_one_step():
