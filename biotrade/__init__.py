@@ -48,7 +48,7 @@ the under the sub-module for that data source such as for example:
 `biotrade.faostat.aggregate` or `biotrade.faostat.country_groups`
 
 
-# Paths defined at the top level
+# Paths defined for biotrade data
 
 Some paths are defined at the top level:
 
