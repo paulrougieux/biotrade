@@ -37,14 +37,26 @@ import pytz
 import os
 import re
 import time
-import requests
+
+try:
+    import requests
+except Exception as e:
+    msg = "Failed to import requests, you will not be able to load data from Comtrade,"
+    msg += "but you can still use other methods.\n"
+    print(msg, str(e))
 import gzip
 
 # Third party modules
 import json
 import logging
 import pandas
-import comtradeapicall
+
+try:
+    import comtradeapicall
+except Exception as e:
+    msg = "Failed to import comtradeapicall package, you will not be able to load data from there,"
+    msg += "but you can still use other methods.\n"
+    print(msg, str(e))
 
 # Internal modules
 from biotrade.common.url_request_header import HEADER
@@ -148,6 +160,61 @@ class Pump:
             df["flow"] = df["flow"].str.replace("s", "", regex=True)
         return df
 
+    def download_bulk_gz(self, period, frequency):
+        """
+        Method of Pump class to download bulk data from comtradeapicall package, which returns country gz files
+        stored into a temporary directory
+
+        :param (int) period, as year or year+month
+        :param (str) frequency, as "A" yearly or "M" monthly
+        :output (path) temp_dir, directory path which contains the gz files
+        :output (int) response_code, response status of the comtradeapicall
+
+        For example monthly bilateral trade gz files for all products in November
+        2021 can be downloaded into a temporary directory as:
+
+            >>> from biotrade.comtrade import comtrade
+            >>> temp_dir, resp_code = comtrade.pump.download_bulk_gz(202111, "M")
+        """
+
+        # Temporary folder creation
+        temp_dir = Path(tempfile.mkdtemp())
+        self.logger.info(
+            "Downloading data from:\n %s.%s",
+            comtradeapicall.__name__,
+            comtradeapicall.bulkDownloadFinalFile.__name__,
+        )
+        # Variable for checking successful gz download
+        download_successful = False
+        # Default sleep time before downloading gz files
+        sleep_time = 5
+        # Send the request: if successful put the gz files into the temporary
+        # folder else retry and double the wait time at each try
+        # If the wait raises to more than 1 hour the loop stops.
+        while not download_successful and sleep_time < 3600:
+            time.sleep(sleep_time)
+            try:
+                # Create a request
+                comtradeapicall.bulkDownloadFinalFile(
+                    self.token,
+                    temp_dir,
+                    typeCode="C",
+                    freqCode=frequency,
+                    clCode="HS",
+                    period=period,
+                    decompress=False,
+                )
+                response_code = 200
+                download_successful = True
+                # No data available
+                if len(os.listdir(temp_dir)) == 0:
+                    response_code = 404
+            except Exception as error:
+                response_code = error
+            sleep_time *= 2
+            self.logger.info(f"HTTP response code: {response_code}")
+        return temp_dir, response_code
+
     def download_bulk_csv(self, period, frequency):
         """
         Method of Pump class to download bulk data from API
@@ -208,7 +275,7 @@ class Pump:
             self.logger.info(f"HTTP response code: {response_code}")
         return temp_dir, response_code
 
-    def gz_transfer_db(
+    def transfer_gz_files(
         self,
         temp_dir,
         table_name,
@@ -217,26 +284,26 @@ class Pump:
         api_period,
     ):
         """
-        Pump method to transfer large csv file to db using dataframe.
+        Pump method to transfer gz files to db using dataframe.
+        # TODO check values below
         500k data frame rows ~ 500 MB of memory usage
         2 millions data frame rows ~ 2 GB of memory usage
 
-        :param (path) temp_file, path of the zip file containing the csv file
+        :param (path) temp_dir, path of the folder containing the gz files
             to copy into db
         :param (str) table_name, table name of the db
         :param (tuple) bioeconomy_tuple, commodity codes to store data
         :param (bool) check_data_presence, to delete data in case of existing
             rows into db
         :param (int) api_period, period to delete existing data
-        :param (int) chunk_size, splitting csv to transfer to df default is 10**6
         """
         # Number of records transferred from csv file
         records_downloaded_csv = 0
         # List of chunk rows
         chunk_list = []
-        # Open the zip file
+        # Read the gz files
         for temp_file in os.listdir(temp_dir):
-            # Loop on csv files and upload them
+            # Loop on gz files and upload them
             df = pandas.read_csv(
                 temp_dir / temp_file,
                 sep="\t",
@@ -245,7 +312,7 @@ class Pump:
             # If length is > 0 select rows
             if not df.empty:
                 if table_name in ("monthly", "yearly"):
-                    # Store codes with bioeconomy label and 6 digits, not differentiating modality of transport and procedures
+                    # Store codes with bioeconomy label and 6 digits, not differentiating modality of transport (0) and procedures ("C00")
                     df = df[
                         (df["cmdCode"].str.startswith(bioeconomy_tuple))
                         & (df["cmdCode"].str.len() == 6)
@@ -253,7 +320,7 @@ class Pump:
                         & (df["motCode"] == 0)
                     ]
                 elif table_name == "yearly_hs2":
-                    # Store codes with bioeconomy label and 2 digits, not differentiating modality of transport and procedures
+                    # Store codes with bioeconomy label and 2 digits, not differentiating modality of transport (0) and procedures ("C00")
                     df = df[
                         (df["cmdCode"].isin(bioeconomy_tuple))
                         & (df["customsCode"] == "C00")
@@ -267,22 +334,22 @@ class Pump:
             "Memory usage:\n%s GB",
             round(df.memory_usage(deep=True).sum() / (1024**3), 2),
         )
-        if not df.empty:
-            # TODO add new sanitized columns
-            # Call method to rename column names
-            df = self.sanitize_variable_names(
-                df, renaming_from="comtrade_human", renaming_to="biotrade"
-            )
-            # TODO uncomment delete and upload of data
-            # # Delete already existing data
-            # if check_data_presence:
-            #     self.db.delete_data(
-            #         table_name,
-            #         api_period,
-            #         api_period,
-            #     )
-            # # Append data to db
-            # self.db.append(df, table_name)
+        # if not df.empty:
+        # TODO add new sanitized columns
+        # Call method to rename column names
+        # df = self.sanitize_variable_names(
+        #     df, renaming_from="comtrade_human", renaming_to="biotrade"
+        # )
+        # TODO uncomment delete and upload of data
+        # # Delete already existing data
+        # if check_data_presence:
+        #     self.db.delete_data(
+        #         table_name,
+        #         api_period,
+        #         api_period,
+        #     )
+        # # Append data to db
+        # self.db.append(df, table_name)
         # Keep track of the the length of the data in the log file
         records_downloaded_csv += len(df)
         return records_downloaded_csv
@@ -391,7 +458,7 @@ class Pump:
         use_package=False,
     ):
         """
-        Pump method to transfer bulk csv file of Comtrade API requests to
+        Pump method to transfer bulk files of Comtrade API requests/package to
         Comtrade db.
         Performance with Intel(R) Core(TM) i7-1065G7 CPU @ 1.30GHz:
         ~ 1.5 hours to upload db monthly data for 1 year
@@ -402,6 +469,7 @@ class Pump:
         :param (int) start_year, year from the download should end
         :param (str) frequency, as "A" yearly or "M" monthly
         :param (bool) check_data_presence, if data already exists into db
+        :param (bool) use_package: if True use the python package comtradeapicall, if False Comtrade API requests from https://comtrade.un.org/data/doc/api/bulk/
 
         Example for uploading data from 2016 to 2017 with monthly data into
         "monthly" comtrade table:
@@ -482,47 +550,36 @@ class Pump:
                 api_period = int(str(period) + month)
                 # Use the new Comtrade API package
                 if use_package:
-                    temp_dir = Path(tempfile.mkdtemp())
-                    try:
-                        # TODO add a recursive function for download and remove hard coded parts to the download function
-                        # Save csv files for each reporter in the temp folder
-                        comtradeapicall.bulkDownloadFinalFile(
-                            self.token,
-                            temp_dir,
-                            typeCode="C",
-                            freqCode="M",
-                            clCode="HS",
-                            period="202302",
-                            decompress=False,
-                        )
-                        # Upload data into the database
-                        records_downloaded = self.gz_transfer_db(
-                            temp_dir,
-                            table_name,
-                            bioeconomy_tuple,
-                            check_data_presence,
-                            api_period,
-                        )
-                    except Exception as e:
-                        self.logger.warning(
-                            "Failed to upload data from API request for"
-                            + f" period {api_period} due to {e}"
-                        )
-                        period_list_failed.append(api_period)
-                # Use the old Comtrade APIs
+                    # Store gz data into the temporary directory
+                    temp_dir, response_code = self.download_bulk_gz(
+                        api_period,
+                        frequency,
+                    )
+                # Use the dismissed Comtrade APIs
                 else:
                     # Store zip data into the temporary directory
                     temp_dir, response_code = self.download_bulk_csv(
                         api_period,
                         frequency,
                     )
-                    # If data are downloaded (response = 200) copy the csv of
-                    # the zip file into a pandas data frame
-                    if response_code == 200:
-                        # Temporary zip file path
-                        temp_file = temp_dir / os.listdir(temp_dir)[0]
-                        # Store into the database
-                        try:
+                # If data are downloaded (response = 200) copy data into a pandas data frame and upload it to the db
+                if response_code == 200:
+                    # Store into the database
+                    try:
+                        # Transfer gz files to db
+                        if use_package:
+                            records_downloaded = self.transfer_gz_files(
+                                temp_dir,
+                                table_name,
+                                bioeconomy_tuple,
+                                check_data_presence,
+                                api_period,
+                            )
+                        # If data are downloaded (response = 200) copy the csv of
+                        # the zip file into a pandas data frame
+                        else:
+                            # Temporary zip file path
+                            temp_file = temp_dir / os.listdir(temp_dir)[0]
                             # Transfer large csv files into chunks
                             records_downloaded = self.transfer_csv_chunk(
                                 temp_file,
@@ -531,28 +588,28 @@ class Pump:
                                 check_data_presence,
                                 api_period,
                             )
-                            # Total number of records
-                            total_records += records_downloaded
-                            self.logger.info(
-                                f"Update database table {table_name} for period"
-                                + f" {api_period}\n"
-                                + f"{total_records} records uploaded in total."
-                            )
-                        # Failed to store data into db
-                        except Exception as error_db:
-                            self.logger.info(
-                                "Failed to store data into the database for table"
-                                + f" {table_name} and period {api_period}\n"
-                                + f"{error_db}"
-                            )
-                            period_list_failed.append(api_period)
-                    # Data not downloaded from API requests
-                    else:
+                        # Total number of records
+                        total_records += records_downloaded
                         self.logger.info(
-                            "Failed to dowload from API request for"
-                            + f" period {api_period} due to HTTP/URL error"
+                            f"Update database table {table_name} for period"
+                            + f" {api_period}\n"
+                            + f"{total_records} records uploaded in total."
+                        )
+                    # Failed to store data into db
+                    except Exception as error_db:
+                        self.logger.info(
+                            "Failed to store data into the database for table"
+                            + f" {table_name} and period {api_period}\n"
+                            + f"{error_db}"
                         )
                         period_list_failed.append(api_period)
+                # Data not downloaded from API requests/package
+                else:
+                    self.logger.info(
+                        "Failed to download from API request for"
+                        + f" period {api_period} due to HTTP/URL error"
+                    )
+                    period_list_failed.append(api_period)
                 # Remove temporary directory
                 shutil.rmtree(temp_dir)
         # Log info if some periods failed to be uploaded into db
@@ -574,6 +631,7 @@ class Pump:
         :param (string) frequency, "M" for monthly data or "A" for annual
         :param (int) start_year, year to start the download from, defaults to
             2016 if not specified
+        :param (bool) use_package: if True use the python package comtradeapicall, if False Comtrade API requests from https://comtrade.un.org/data/doc/api/bulk/
 
         Return an error if some periods are not uploaded to the database.
 
@@ -859,7 +917,6 @@ class Pump:
         # list of years
         years = [str(i) for i in range(start_year, end_year + 1)]
         for reporter_code in reporters.id:
-
             reporter_name = reporters.text[
                 reporters.id == reporter_code
             ].to_string(index=False)

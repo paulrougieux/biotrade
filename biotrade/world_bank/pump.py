@@ -20,7 +20,13 @@ from pathlib import Path
 from zipfile import ZipFile
 import tempfile
 import logging
-import requests
+
+try:
+    import requests
+except Exception as e:
+    msg = "Failed to import requests, you will not be able to load data from World Bank,"
+    msg += "but you can still use other methods.\n"
+    print(msg, str(e))
 import shutil
 import pandas as pd
 import csv
