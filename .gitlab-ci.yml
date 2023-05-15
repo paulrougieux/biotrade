@@ -29,6 +29,19 @@ md-to-pdf:
     paths:
       - paper/paper.pdf
 
+pages:
+  stage: document
+  script:
+  # GitLab Pages will only publish files in the public directory
+  - pdoc -o public ./biotrade
+  artifacts:
+    paths:
+    - public
+  only:
+  - main
+  interruptible: true
+
+
 pytest:
   stage: test
   script:

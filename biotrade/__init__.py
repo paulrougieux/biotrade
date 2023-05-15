@@ -10,15 +10,67 @@ Licenced under the MIT licence
 JRC biomass Project.
 Unit D1 Bioeconomy.
 
-Specify the module dir to make it possible to access config data. Specify the
-location of biotrade_data folder and the database connection URL for all
-components of the system.
+The `biotrade` package analyses international trade of bio-based products. It focuses on
+the agriculture and forestry sectors, from primary production to secondary products
+transformation. It loads bilateral trade data from UN Comtrade, production and trade
+data from FAOSTAT and socio-economic indicators from the World Bank.
 
-Usage:
+- For installation instructions see the
+[README](https://pypi.org/project/biotrade/) on pypi.org or on the project git
+repository.
 
-    >>> from biotrade import module_dir
-    >>> from biotrade import data_dir
-    >>> from biotrade import database_url
+The `biotrade` package is structured into sub-packages, one for each data
+source: `biotrade.faostat`, `biotrade.comtrade` and `biotrade.world_bank`. In
+addition, there is a `biotrade.common` sub-package.
+
+
+# Update data from sources
+
+Each data source has a "pump" and a "database" object. The "pump" loads data
+from the source and the database stores data locally. The documentation of the
+pump and database of each source provide information on how to update and
+select data. Start with the FAOSTAT database which is the most light weight and
+which will work correctly also without an API access token.
+
+- `biotrade.faostat.pump` and `biotrade.faostat.database`
+
+- `biotrade.comtrade.pump` and `biotrade.comtrade.database`
+
+- `biotrade.world_bank.pump` and `biotrade.world_bank.database`
+
+
+# Transform data
+
+- Common data transformation functions are located in `biotrade.common`.
+
+- Some transformation functions are specific to a data sources, you will find
+the under the sub-module for that data source such as for example:
+`biotrade.faostat.aggregate` or `biotrade.faostat.country_groups`
+
+
+# Paths defined at the top level
+
+Some paths are defined at the top level:
+
+ - `module dir` makes it possible to access configuration data such as product
+ codes and country codes mapping tables in `biotrade/config data`.
+
+ - `data_dir` contains the location of the directory where data is stored (if
+ SQLite databases are used, they will be stored there as well). By default
+ it is located in the user's home directory, but this can be changed with
+ the environment variable BIOTRADE_DATA.
+
+ - `database_url` is equal to `None` by default and then a local on-disk SQLite
+ database is used. It can be changed through the environment variable
+ BIOTRADE_DATABASE_URL that specifies the location of the database connection
+ URL.
+
+ You can display these values with :
+
+    >>> import biotrade
+    >>> print("module_dir:", biotrade.module_dir)
+    >>> print("data_dir:", biotrade.data_dir)
+    >>> print("database_url:", biotrade.database_url)
 
 """
 
