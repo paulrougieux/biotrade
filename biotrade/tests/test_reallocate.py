@@ -19,7 +19,7 @@ def test_compute_share_prod_imp():
             "year": 1,
             "reporter": ["a", "b"],
             "reporter_code": [1, 2],
-            "product": ["p", "p"],
+            "primary_product": ["p", "p"],
             "primary_eq": [1, 2],
         }
     )
@@ -30,7 +30,7 @@ def test_compute_share_prod_imp():
             "reporter_code": [1, 1, 2, 2],
             "partner": ["x", "y", "x", "z"],
             "partner_code": [24, 25, 24, 26],
-            "product": ["p", "p", "p", "p"],
+            "primary_product": ["p", "p", "p", "p"],
             "value": [1, 2, 3, 4],
         }
     )
@@ -44,7 +44,7 @@ def test_split_prod_imp():
         {
             "reporter": ["a", "b", "c"],
             "reporter_code": [1, 2, 3],
-            "product": ["p", "p", "q"],
+            "primary_product": ["p", "p", "q"],
             "primary_eq": [1, 2, 4],
             "share_prod_imp": [0, 1, 0.5],
         }
@@ -65,7 +65,7 @@ def test_split_by_partners():
             "year": 1,
             "reporter": ["a", "b"],
             "reporter_code": [1, 2],
-            "product": ["p", "p"],
+            "primary_product": ["p", "p"],
             "primary_eq_imp": [6, 14],
         }
     )
@@ -76,7 +76,7 @@ def test_split_by_partners():
             "reporter_code": [1, 1, 2, 2],
             "partner": ["x", "y", "x", "z"],
             "partner_code": [24, 25, 24, 26],
-            "product": ["p", "p", "p", "p"],
+            "primary_product": ["p", "p", "p", "p"],
             "value": [1, 2, 3, 4],
         }
     )
