@@ -34,13 +34,19 @@ def compute_share_prod_imp(
         2. Merge with the production data frame
         3. Compute the share
     """
-    index = ["reporter", "product", "year"]
-    for col in index:
-        if col not in df_trade.columns:
-            raise KeyError(f"{col} not found in the DataFrame columns")
-    # Add optional code columns only if they are present in df
-    optional_cols = ["reporter_code", "product_code"]
-    index += [col for col in optional_cols if col in df_trade.columns]
+    index = ["reporter", "primary_product", "year"]
+    for name, this_df in {"df_prod": df_prod, "df_trade": df_trade}.items():
+        for col in index:
+            if col not in this_df:
+                msg = f"{col} column not found in DataFrame {name}: {this_df.columns}"
+                raise KeyError(msg)
+    # Add optional code columns only if they are present in both df
+    optional_cols = ["reporter_code", "primary_product_code"]
+    index += [
+        col
+        for col in optional_cols
+        if col in df_trade.columns and col in df_prod.columns
+    ]
     df_trade_agg = df_trade.groupby(index).agg(imp=("value", sum)).reset_index()
     df = df_prod.merge(df_trade_agg, on=index, how="left")
     df["imp"].fillna(0, inplace=True)
@@ -61,9 +67,9 @@ def split_by_partners(
     allocation_round: int,
 ) -> pandas.DataFrame:
     """Reallocate a quantity, by splitting it between different trade partners"""
-    index = ["reporter", "product", "year"]
+    index = ["reporter", "primary_product", "year"]
     # Add optional code columns only if they are present in df
-    optional_cols = ["reporter_code", "product_code"]
+    optional_cols = ["reporter_code", "primary_product_code"]
     index += [col for col in optional_cols if col in df_trade.columns]
     df = df_prod.merge(df_trade, on=index, how="left")
     df["prop"] = df.groupby(index)["value"].transform(lambda x: x / x.sum())
