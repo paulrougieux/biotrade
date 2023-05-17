@@ -87,10 +87,10 @@ class CountryGroups(object):
         >>> df_soy = db.select(table="crop_trade", product = "soy")
         >>> df_continents = faostat.country_groups.continents
         >>> df_soy_merge = df_soy.merge(df_continents, how='left',
-                left_on = 'reporter_code', right_on = 'faost_code')
+        >>>     left_on = 'reporter_code', right_on = 'faost_code')
         >>> df_soy_merge = df_soy_merge.merge(df_continents, how='left',
-                left_on = 'partner_code', right_on = 'faost_code',
-                suffixes=('_reporter','_partner'))
+        >>>     left_on = 'partner_code', right_on = 'faost_code',
+        >>>     suffixes=('_reporter','_partner'))
         """
         return self.df[["faost_code", "continent", "sub_continent"]]
 
