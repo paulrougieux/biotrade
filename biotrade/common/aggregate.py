@@ -86,6 +86,19 @@ def agg_trade_eu_row(
         >>> swdoak_agg = agg_trade_eu_row(swdoak, drop_index_col=["flag"],
         >>>                               value_col=['quantity', 'net_weight','trade_value'])
 
+    Select Yearly soy trade from Comtrade then aggregate over EU and Rest of the World
+
+        >>> from biotrade.comtrade import comtrade
+        >>> from biotrade.common.aggregate import agg_trade_eu_row
+        >>> df = comtrade.db.select("yearly", product_code_start="1507", partner="Brazil")
+        >>> cols_of_interest = ['classification', 'year',
+        >>>        'flow_code', 'flow', 'reporter_code',
+        >>>        'reporter', 'partner_code', 'partner', 'partner_iso',
+        >>>        'product_code', 'unit_code', 'unit', 'quantity', 'net_weight', 'trade_value' ]
+        >>> dfeurow = agg_trade_eu_row(df[cols_of_interest],
+        >>>                         grouping_side = "reporter",
+        >>>                         value_col=['quantity', 'net_weight','trade_value'])
+
     """
     # Make a copy of the data frame so that it will not be modified in place
     df = df.copy()
