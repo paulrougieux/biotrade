@@ -34,14 +34,14 @@ def compute_share_prod_imp(
         2. Merge with the production data frame
         3. Compute the share
     """
-    index = ["reporter", "primary_product", "year"]
+    index = ["reporter", "product", "year"]
     for name, this_df in {"df_prod": df_prod, "df_trade": df_trade}.items():
         for col in index:
             if col not in this_df:
                 msg = f"{col} column not found in DataFrame {name}: {this_df.columns}"
                 raise KeyError(msg)
     # Add optional code columns only if they are present in both df
-    optional_cols = ["reporter_code", "primary_product_code"]
+    optional_cols = ["reporter_code", "product_code"]
     index += [
         col
         for col in optional_cols
@@ -50,7 +50,7 @@ def compute_share_prod_imp(
     df_trade_agg = df_trade.groupby(index).agg(imp=("value", sum)).reset_index()
     df = df_prod.merge(df_trade_agg, on=index, how="left")
     df["imp"].fillna(0, inplace=True)
-    return df["primary_eq"] / (df["imp"] + df["primary_eq"])
+    return df["production"] / (df["imp"] + df["production"])
 
 
 def split_prod_imp(df: pandas.DataFrame) -> Tuple[pandas.Series, pandas.Series]:

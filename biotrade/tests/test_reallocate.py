@@ -19,8 +19,8 @@ def test_compute_share_prod_imp():
             "year": 1,
             "reporter": ["a", "b"],
             "reporter_code": [1, 2],
-            "primary_product": ["p", "p"],
-            "primary_eq": [1, 2],
+            "product": ["p", "p"],
+            "production": [1, 2],
         }
     )
     df_trade = pandas.DataFrame(
@@ -30,7 +30,7 @@ def test_compute_share_prod_imp():
             "reporter_code": [1, 1, 2, 2],
             "partner": ["x", "y", "x", "z"],
             "partner_code": [24, 25, 24, 26],
-            "primary_product": ["p", "p", "p", "p"],
+            "product": ["p", "p", "p", "p"],
             "value": [1, 2, 3, 4],
         }
     )
