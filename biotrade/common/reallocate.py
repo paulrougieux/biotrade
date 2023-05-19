@@ -28,11 +28,14 @@ def compute_share_prod_imp(
     df_prod: pandas.DataFrame, df_trade: pandas.DataFrame
 ) -> pandas.Series:
     """Compute the share between production and import for the given list of products.
-    This function performs the following steps:
+    This function works on input data frames in wide format.
+    It performs the following steps:
 
         1. Aggregate the trade data frame by reporters, year and product
         2. Merge with the production data frame
         3. Compute the share
+
+    Returns a copy of the df_prod data frame with import and share_prod_imp columns.
     """
     index = ["reporter", "product", "year"]
     for name, this_df in {"df_prod": df_prod, "df_trade": df_trade}.items():
@@ -47,10 +50,11 @@ def compute_share_prod_imp(
         for col in optional_cols
         if col in df_trade.columns and col in df_prod.columns
     ]
-    df_trade_agg = df_trade.groupby(index).agg(imp=("value", sum)).reset_index()
-    df = df_prod.merge(df_trade_agg, on=index, how="left")
-    df["imp"].fillna(0, inplace=True)
-    return df["production"] / (df["imp"] + df["production"])
+    df_trade_agg = df_trade.groupby(index)["import_quantity"].agg(sum).reset_index()
+    df = df_prod.merge(df_trade_agg, on=index, how="outer")
+    df.fillna({"import_quantity": 0, "production": 0}, inplace=True)
+    df["share_prod_imp"] = df["production"] / (df["import_quantity"] + df["production"])
+    return df
 
 
 def split_prod_imp(df: pandas.DataFrame) -> Tuple[pandas.Series, pandas.Series]:

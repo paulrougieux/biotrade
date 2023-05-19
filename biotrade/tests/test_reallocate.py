@@ -31,12 +31,12 @@ def test_compute_share_prod_imp():
             "partner": ["x", "y", "x", "z"],
             "partner_code": [24, 25, 24, 26],
             "product": ["p", "p", "p", "p"],
-            "value": [1, 2, 3, 4],
+            "import_quantity": [1, 2, 3, 4],
         }
     )
     output = compute_share_prod_imp(df_prod, df_trade)
-    expected = pandas.Series([0.25, 2 / 9])
-    assert_series_equal(output, expected)
+    expected = pandas.Series([0.25, 2 / 9], name="share_prod_imp")
+    assert_series_equal(output["share_prod_imp"], expected)
 
 
 def test_split_prod_imp():
