@@ -197,8 +197,6 @@ See the [LICENCE.md](LICENCE.md) file.
 
 # Similar projects
 
-- The python package [pandas-datareader](https://pydata.github.io/pandas-datareader/)
-
 - The R packages FAOSTAT and WDI
 
 
