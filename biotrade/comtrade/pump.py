@@ -44,12 +44,12 @@ except Exception as e:
     msg = "Failed to import requests, you will not be able to load data from Comtrade,"
     msg += "but you can still use other methods.\n"
     print(msg, str(e))
-import gzip
 
 # Third party modules
 import json
 import logging
 import pandas
+import numpy as np
 
 try:
     import comtradeapicall
@@ -149,6 +149,8 @@ class Pump:
         mapping = self.column_names.set_index(renaming_from).to_dict()[
             renaming_to
         ]
+        # Discard nan keys of mapping dictionary
+        mapping.pop(np.nan, None)
         df.rename(columns=mapping, inplace=True)
         # Rename column content to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
@@ -180,7 +182,9 @@ class Pump:
         # Temporary folder creation
         temp_dir = Path(tempfile.mkdtemp())
         self.logger.info(
-            "Downloading data from:\n %s.%s",
+            "Downloading %s data for period %s from:\n %s.%s",
+            "yearly" if frequency == "A" else "monthly",
+            period,
             comtradeapicall.__name__,
             comtradeapicall.bulkDownloadFinalFile.__name__,
         )
@@ -312,19 +316,27 @@ class Pump:
             # If length is > 0 select rows
             if not df.empty:
                 if table_name in ("monthly", "yearly"):
-                    # Store codes with bioeconomy label and 6 digits, not differentiating modality of transport (0) and procedures ("C00")
+                    # Store codes with bioeconomy label and 6 digits, not differentiating modality of transport (0), supply (0), 2nd partner (0)  and procedures ("C00")
+                    # only (re)exported and (re)imported data
                     df = df[
                         (df["cmdCode"].str.startswith(bioeconomy_tuple))
                         & (df["cmdCode"].str.len() == 6)
                         & (df["customsCode"] == "C00")
                         & (df["motCode"] == 0)
+                        & (df["mosCode"] == 0)
+                        & (df["partner2Code"] == 0)
+                        & (df["flowCode"].isin(["M", "X", "RM", "RX"]))
                     ]
                 elif table_name == "yearly_hs2":
-                    # Store codes with bioeconomy label and 2 digits, not differentiating modality of transport (0) and procedures ("C00")
+                    # Store codes with bioeconomy label and 2 digits, not differentiating modality of transport (0), supply (0), 2nd partner (0)  and procedures ("C00")
+                    # only (re)exported and (re)imported data
                     df = df[
                         (df["cmdCode"].isin(bioeconomy_tuple))
                         & (df["customsCode"] == "C00")
                         & (df["motCode"] == 0)
+                        & (df["mosCode"] == 0)
+                        & (df["partner2Code"] == 0)
+                        & (df["flowCode"].isin(["M", "X", "RM", "RX"]))
                     ]
                 # Append rows
                 chunk_list.append(df)
@@ -334,12 +346,11 @@ class Pump:
             "Memory usage:\n%s GB",
             round(df.memory_usage(deep=True).sum() / (1024**3), 2),
         )
-        # if not df.empty:
-        # TODO add new sanitized columns
-        # Call method to rename column names
-        # df = self.sanitize_variable_names(
-        #     df, renaming_from="comtrade_human", renaming_to="biotrade"
-        # )
+        if not df.empty:
+            # Call method to rename column names
+            df = self.sanitize_variable_names(
+                df, renaming_from="comtrade_apicall", renaming_to="biotrade"
+            )
         # TODO uncomment delete and upload of data
         # # Delete already existing data
         # if check_data_presence:
@@ -591,7 +602,7 @@ class Pump:
                         # Total number of records
                         total_records += records_downloaded
                         self.logger.info(
-                            f"Update database table {table_name} for period"
+                            f"Updated database table {table_name} for period"
                             + f" {api_period}\n"
                             + f"{total_records} records uploaded in total."
                         )
