@@ -53,7 +53,7 @@ import pandas
 import re
 
 # Third party modules
-from sqlalchemy import Integer, Float, Text, UniqueConstraint
+from sqlalchemy import Integer, Float, Text, UniqueConstraint, Boolean
 from sqlalchemy import Table, Column, MetaData, and_, or_
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.schema import CreateSchema
@@ -153,36 +153,36 @@ class DatabaseComtrade(Database):
         table = Table(
             name,
             self.metadata,
+            Column("dataset_code", Integer),
+            Column("classification_search_code", Text),
             Column("classification", Text),
+            Column("is_original_classification", Boolean),
+            Column("frequency", Text),
+            Column("ref_date", Integer),
             Column("year", Integer),
+            Column("month", Integer),
             Column("period", Integer),
-            Column("period_description", Text),
-            Column("aggregate_level", Integer),
-            Column("is_leaf", Integer),
-            Column("flow_code", Integer),
-            Column("flow", Text),
+            Column("is_reported", Boolean),
+            Column("is_aggregated", Boolean),
+            Column("flow_code", Text),
             Column("reporter_code", Integer, index=True),
-            Column("reporter", Text),
-            Column("reporter_iso", Text),
             Column("partner_code", Integer, index=True),
-            Column("partner", Text),
-            Column("partner_iso", Text),
-            Column("partner_2_code", Text),
-            Column("partner_2", Text),
-            Column("partner_2_iso", Text),
+            Column("partner_2_code", Integer),
             Column("customs_proc_code", Text),
-            Column("customs", Text),
-            Column("mode_of_transport_code", Text),
-            Column("mode_of_transport", Text),
+            Column("mode_of_supply_code", Text),
+            Column("mode_of_transport_code", Integer),
             Column("product_code", Text, index=True),
+            Column("product_type", Text),
             Column("unit_code", Integer),
-            Column("unit", Text),
             Column("quantity", Float),
-            Column("alt_qty_unit_code", Text),
-            Column("alt_qty_unit", Text),
+            Column("is_quantity_estimated", Boolean),
+            Column("alt_qty_unit_code", Integer),
             Column("alt_qty", Float),
+            Column("is_alt_quantity_estimated", Boolean),
             Column("net_weight", Float),
+            Column("is_net_weight_estimated", Boolean),
             Column("gross_weight", Float),
+            Column("is_gross_weight_estimated", Boolean),
             Column("trade_value", Float),
             Column("cif_value", Float),
             Column("fob_value", Float),
@@ -369,7 +369,10 @@ class DatabaseComtrade(Database):
             stmt = stmt.where(table.c.product_code.in_(product_code))
         if product_code_start is not None:
             stmt = stmt.where(
-                or_(table.c.product_code.ilike(f"{c}%") for c in product_code_start)
+                or_(
+                    table.c.product_code.ilike(f"{c}%")
+                    for c in product_code_start
+                )
             )
         if flow is not None:
             stmt = stmt.where(table.c.flow.in_(flow))
@@ -400,7 +403,9 @@ class DatabaseComtrade(Database):
         # Rename column content to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
         if "flow" in df.columns:
-            df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+            df["flow"] = (
+                df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+            )
             # Remove the plural "s"
             df["flow"] = df["flow"].str.replace("s", "", regex=True)
         # TODO: Change period to a date time object
