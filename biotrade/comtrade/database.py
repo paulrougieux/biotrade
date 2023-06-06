@@ -366,7 +366,7 @@ class DatabaseComtrade(Database):
             "PartnerCode": "partner_code",
             "PartnerDesc": "partner",
             "PartnerCodeIsoAlpha3": "partner_iso",
-            "qntyCode": "unit_code",
+            "qtyCode": "unit_code",
             "qtyDescription": "unit",
         }
         # reporter data
@@ -376,6 +376,10 @@ class DatabaseComtrade(Database):
         # partner data
         partner_data = comtradeapicall.getReference("partner")[
             ["PartnerCode", "PartnerDesc", "PartnerCodeIsoAlpha3"]
+        ].rename(columns=column_dict)
+        # quantity data
+        quantity_data = comtradeapicall.getReference("qtyunit")[
+            ["qtyCode", "qtyDescription"]
         ].rename(columns=column_dict)
         # define a compiled regex
         regex_pat = re.compile(r"\W+")
@@ -454,6 +458,7 @@ class DatabaseComtrade(Database):
         df = (
             df.merge(reporter_data, on="reporter_code", how="left")
             .merge(partner_data, on="partner_code", how="left")
+            .merge(quantity_data, on="unit_code", how="left")
             .merge(flow_data, on="flow_code", how="left")
             .merge(mot_data, on="mode_of_transport_code", how="left")
             .merge(customs_data, on="customs_proc_code", how="left")
