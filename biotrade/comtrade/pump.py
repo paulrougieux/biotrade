@@ -289,9 +289,8 @@ class Pump:
     ):
         """
         Pump method to transfer gz files to db using dataframe.
-        # TODO check values below
-        500k data frame rows ~ 500 MB of memory usage
-        2 millions data frame rows ~ 2 GB of memory usage
+        500k data frame rows ~ 350 MB of memory usage
+        4 millions data frame rows ~ 2.8 GB of memory usage
 
         :param (path) temp_dir, path of the folder containing the gz files
             to copy into db
@@ -311,30 +310,30 @@ class Pump:
             df = pandas.read_csv(
                 temp_dir / temp_file,
                 sep="\t",
-                dtype={"cmdCode": str},
+                dtype={"datasetCode": str, "cmdCode": str, "mosCode": str},
             )
             # If length is > 0 select rows
             if not df.empty:
                 if table_name in ("monthly", "yearly"):
-                    # Store codes with bioeconomy label and 6 digits, not differentiating modality of transport (0), supply (0), 2nd partner (0)  and procedures ("C00")
+                    # Store codes with bioeconomy label and 6 digits, not differentiating modality of transport (0), supply ("0"), 2nd partner (0)  and procedures ("C00")
                     # only (re)exported and (re)imported data
                     df = df[
                         (df["cmdCode"].str.startswith(bioeconomy_tuple))
                         & (df["cmdCode"].str.len() == 6)
                         & (df["customsCode"] == "C00")
                         & (df["motCode"] == 0)
-                        & (df["mosCode"] == 0)
+                        & (df["mosCode"] == "0")
                         & (df["partner2Code"] == 0)
                         & (df["flowCode"].isin(["M", "X", "RM", "RX"]))
                     ]
                 elif table_name == "yearly_hs2":
-                    # Store codes with bioeconomy label and 2 digits, not differentiating modality of transport (0), supply (0), 2nd partner (0)  and procedures ("C00")
+                    # Store codes with bioeconomy label and 2 digits, not differentiating modality of transport (0), supply ("0"), 2nd partner (0)  and procedures ("C00")
                     # only (re)exported and (re)imported data
                     df = df[
                         (df["cmdCode"].isin(bioeconomy_tuple))
                         & (df["customsCode"] == "C00")
                         & (df["motCode"] == 0)
-                        & (df["mosCode"] == 0)
+                        & (df["mosCode"] == "0")
                         & (df["partner2Code"] == 0)
                         & (df["flowCode"].isin(["M", "X", "RM", "RX"]))
                     ]
@@ -351,16 +350,15 @@ class Pump:
             df = self.sanitize_variable_names(
                 df, renaming_from="comtrade_apicall", renaming_to="biotrade"
             )
-        # TODO uncomment delete and upload of data
-        # # Delete already existing data
-        # if check_data_presence:
-        #     self.db.delete_data(
-        #         table_name,
-        #         api_period,
-        #         api_period,
-        #     )
-        # # Append data to db
-        # self.db.append(df, table_name)
+        # Delete already existing data
+        if check_data_presence:
+            self.db.delete_data(
+                table_name,
+                api_period,
+                api_period,
+            )
+        # Append data to db
+        self.db.append(df, table_name)
         # Keep track of the the length of the data in the log file
         records_downloaded_csv += len(df)
         return records_downloaded_csv
