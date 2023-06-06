@@ -800,9 +800,14 @@ class Pump:
 
         """
         # Reload the data from Comtrade
-        hs = self.get_parameter_list("classificationHS.json")
+        hs = comtradeapicall.getReference("cmd:HS")
         hs = hs.rename(
-            columns={"id": "product_code", "text": "product_description"}
+            columns={
+                "id": "product_code",
+                "text": "product_description",
+                "isLeaf": "is_leaf",
+                "aggrLevel": "aggregate_level",
+            }
         )
         duplicated = hs.duplicated("product_code")
         if any(duplicated):
