@@ -72,7 +72,7 @@ class Dump:
         For example save monthly "Animal Or Vegetable Fats And Oil" data which starts with 15:
 
             >>> from biotrade.comtrade import comtrade
-            >>> comtrade.dump.store_2d_csv("monthly", 15, chunk_size=10**4)
+            >>> comtrade.dump.store_2d_csv("monthly", 15)
 
         Dump all bioeconomy related products
 
