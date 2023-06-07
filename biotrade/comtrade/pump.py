@@ -215,6 +215,9 @@ class Pump:
                     response_code = 404
             except Exception as error:
                 response_code = error
+            # To avoid system exit exception
+            except BaseException as error:
+                response_code = error
             sleep_time *= 2
             self.logger.info(f"HTTP response code: {response_code}")
         return temp_dir, response_code
