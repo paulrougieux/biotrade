@@ -394,11 +394,15 @@ class DatabaseComtrade(Database):
             .str.lower()
         )
         # mode of transport data
-        mot_data = comtradeapicall.getReference("mot")[["id", "text"]].rename(
-            columns={
-                "id": "mode_of_transport_code",
-                "text": "mode_of_transport",
-            }
+        mot_data = (
+            comtradeapicall.getReference("mot")[["id", "text"]]
+            .astype({"id": int})
+            .rename(
+                columns={
+                    "id": "mode_of_transport_code",
+                    "text": "mode_of_transport",
+                }
+            )
         )
         # custom procedure data
         customs_data = comtradeapicall.getReference("customs")[
