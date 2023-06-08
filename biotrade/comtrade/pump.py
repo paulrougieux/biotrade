@@ -317,6 +317,9 @@ class Pump:
             )
             # If length is > 0 select rows
             if not df.empty:
+                # Remove potential white spaces between tab delimiter in string columns
+                strip_cols = df.select_dtypes(["object"]).columns
+                df[strip_cols] = df[strip_cols].apply(lambda x: x.str.strip())
                 if table_name in ("monthly", "yearly"):
                     # Store codes with bioeconomy label and 6 digits, not differentiating modality of transport (0), supply ("0"), 2nd partner (0)  and procedures ("C00")
                     # only (re)exported and (re)imported data
