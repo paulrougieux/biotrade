@@ -137,6 +137,12 @@ class Dump:
         :param (str) table, name of the database table
         :param (str or file object) file_path, path to the file from which to save the data
 
+        TODO: current version requires the user to manually delete the data
+        from the database before an update
+
+                psql $BIOTRADE_DATABASE_URL
+                DELETE FROM raw_comtrade.monthly WHERE product_code like '44%';
+
         If data is already present in the database for that product code, the
         user will be asked to confirm deletion. To avoid this confirmation
         message when processing many dump files automatically, delete all table
@@ -171,6 +177,7 @@ class Dump:
         # TODO: uptate the db.delete method so that it can deal with product_code.
         # This should be possible if the where statements can be concatenated
         # Or create the statement here to delete at the HS 2 to level.
+        self.logger.info("Reading into a data frame:\n %s", file_path)
 
         # Write to the database
         self.db.append(df, table)
