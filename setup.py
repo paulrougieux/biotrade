@@ -36,6 +36,7 @@ setup(
         "requests",
         "scipy",
         "pymannkendall",
+        "matplotlib",
         "comtradeapicall",
     ],
     extras_require={"api": ["fastapi", "uvicorn"]},
