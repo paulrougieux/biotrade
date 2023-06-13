@@ -147,31 +147,22 @@ def reporter_iso_codes(df):
     reporter = pd.read_csv(reporter_file)
     # Obtain iso3 codes for reporters and partners
     df = df.merge(
-        reporter[["faost_code", "iso3_code", "fao_status_info"]],
+        reporter[["faost_code", "iso3_code"]],
         how="left",
         left_on="reporter_code",
         right_on="faost_code",
     )
     df["reporter_code"] = df["iso3_code"]
-    # Remove data of old reporters
-    df = df[df.fao_status_info != "old"]
-    subset_col = ["reporter_code"]
     if "partner_code" in df.columns:
-        df.drop(
-            columns=["faost_code", "iso3_code", "fao_status_info"], inplace=True
-        )
+        df.drop(columns=["faost_code", "iso3_code"], inplace=True)
         df = df.merge(
-            reporter[["faost_code", "iso3_code", "fao_status_info"]],
+            reporter[["faost_code", "iso3_code"]],
             how="left",
             left_on=["partner_code"],
             right_on=["faost_code"],
         )
         df["partner_code"] = df["iso3_code"]
-        # Remove data of old partners
-        df = df[df.fao_status_info != "old"]
-        subset_col.append("partner_code")
-    # Faostat code 41 (China mainland) and 351 (China mainland + Hong Kong + Macao + Taiwan ) are not mapped into ISO 3 Codes
-    df.dropna(subset=subset_col, inplace=True)
+    df.drop(columns=["faost_code", "iso3_code"], inplace=True)
     # Consider only data of official country codes by GISCO
     if os.environ.get("FRONT_END_SCRIPTS"):
         path = Path(os.environ["FRONT_END_SCRIPTS"])
@@ -188,8 +179,10 @@ def reporter_iso_codes(df):
     df = df[df.reporter_code.isin(country_codes)].reset_index(drop=True)
     if "partner_code" in df.columns:
         df = df[df.partner_code.isin(country_codes)].reset_index(drop=True)
-        # # TODO: check if it works remove data where reporter = partner
-        # df = df[df['reporter_code'] != df['partner_code']]
+        # Remove free zones internal trade data
+        df = df[df["reporter_code"] != df["partner_code"]].reset_index(
+            drop=True
+        )
     return df
 
 
