@@ -34,6 +34,7 @@ setup(
         "sqlalchemy_utils",
         "psycopg2",
         "requests",
+        "comtradeapicall",
     ],
     extras_require={"api": ["fastapi", "uvicorn"]},
     python_requires=">=3.7",
