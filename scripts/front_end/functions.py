@@ -157,7 +157,9 @@ def reporter_iso_codes(df):
     df = df[df.fao_status_info != "old"]
     subset_col = ["reporter_code"]
     if "partner_code" in df.columns:
-        df.drop(columns=["faost_code", "iso3_code", "fao_status_info"], inplace=True)
+        df.drop(
+            columns=["faost_code", "iso3_code", "fao_status_info"], inplace=True
+        )
         df = df.merge(
             reporter[["faost_code", "iso3_code", "fao_status_info"]],
             how="left",
@@ -186,6 +188,8 @@ def reporter_iso_codes(df):
     df = df[df.reporter_code.isin(country_codes)].reset_index(drop=True)
     if "partner_code" in df.columns:
         df = df[df.partner_code.isin(country_codes)].reset_index(drop=True)
+        # # TODO: check if it works remove data where reporter = partner
+        # df = df[df['reporter_code'] != df['partner_code']]
     return df
 
 
@@ -310,11 +314,15 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
     )
     # Define the min year inside each period
     df_periods_min = (
-        df_periods.groupby(["period_aggregation"]).agg({"year": "min"}).reset_index()
+        df_periods.groupby(["period_aggregation"])
+        .agg({"year": "min"})
+        .reset_index()
     )
     # Define the max year inside each period
     df_periods_max = (
-        df_periods.groupby(["period_aggregation"]).agg({"year": "max"}).reset_index()
+        df_periods.groupby(["period_aggregation"])
+        .agg({"year": "max"})
+        .reset_index()
     )
     # Merge on the periods
     df_periods = df_periods.merge(
@@ -331,10 +339,14 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
     )
     # Define the structure yyyy-yyyy for the period aggregation column
     df_periods["period_aggregation"] = (
-        df_periods["year_min"].astype(str) + "-" + df_periods["year_max"].astype(str)
+        df_periods["year_min"].astype(str)
+        + "-"
+        + df_periods["year_max"].astype(str)
     )
     # Assign the associated period to each data
-    df = df.merge(df_periods[["year", "period_aggregation"]], on="year", how="left")
+    df = df.merge(
+        df_periods[["year", "period_aggregation"]], on="year", how="left"
+    )
     df["period"] = df["period_aggregation"]
     # Default index list for aggregations + the adds from the arguments
     index_list = ["element", "period", "unit"]
@@ -382,7 +394,9 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
         df_new = df_new.merge(df_mean, how="left", on=index_list_upd)
         df_new = df_new.merge(df_total, how="left", on=index_list_upd)
         # Percentage associated to the percentage column on a given aggregated period
-        df_new[percentage_col_name] = df_new["value"] / df_new[total_col_name] * 100
+        df_new[percentage_col_name] = (
+            df_new["value"] / df_new[total_col_name] * 100
+        )
         # Sort by percentage, compute the cumulative sum and shift it by one
         df_new.sort_values(
             by=[*index_list_upd, percentage_col_name],
@@ -391,10 +405,12 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
             ignore_index=True,
         )
         # Skip nan values is True for cumsum by default
-        df_new["cumsum"] = df_new.groupby(index_list_upd)[percentage_col_name].cumsum()
-        df_new["cumsum_lag"] = df_new.groupby(index_list_upd)["cumsum"].transform(
-            "shift", fill_value=0
-        )
+        df_new["cumsum"] = df_new.groupby(index_list_upd)[
+            percentage_col_name
+        ].cumsum()
+        df_new["cumsum_lag"] = df_new.groupby(index_list_upd)[
+            "cumsum"
+        ].transform("shift", fill_value=0)
         # Create a grouping variable instead of the percentage column, which will be 'Others' for
         # values above the threshold
         df_new[dict["percentage_col"]] = df_new[dict["percentage_col"]].where(
@@ -412,7 +428,9 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
             )
             .reset_index()
         )
-        df_new[percentage_col_name] = df_new["value"] / df_new[total_col_name] * 100
+        df_new[percentage_col_name] = (
+            df_new["value"] / df_new[total_col_name] * 100
+        )
         if df_final.empty:
             df_final = df_new
         else:
@@ -496,9 +514,15 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
                     df_key["avg_value"],
                     bins=bins,
                 )
-                key_legend["interval"] = df_key["interval"].cat.categories.values
-                key_legend["min_value"] = df_key["interval_range"].cat.categories.left
-                key_legend["max_value"] = df_key["interval_range"].cat.categories.right
+                key_legend["interval"] = df_key[
+                    "interval"
+                ].cat.categories.values
+                key_legend["min_value"] = df_key[
+                    "interval_range"
+                ].cat.categories.left
+                key_legend["max_value"] = df_key[
+                    "interval_range"
+                ].cat.categories.right
                 key_legend["product_code"] = key[0]
                 key_legend["element"] = key[1]
                 key_legend["unit"] = key[2]
@@ -522,9 +546,9 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
         column_list = df_legend.columns.tolist()
         column_list.remove(drop_column)
         # Save interval legends
-        harvested_area_legend = df_legend[df_legend["element"] == "area_harvested"][
-            column_list
-        ]
+        harvested_area_legend = df_legend[
+            df_legend["element"] == "area_harvested"
+        ][column_list]
         save_file(harvested_area_legend, "harvested_area_average_legend.csv")
         production_legend = df_legend[
             df_legend["element"].isin(["production", "stocks"])
@@ -535,24 +559,35 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
     return df_final
 
 
-def consistency_check_china_data(df):
+def aggregated_data(df, code_list, agg_country_code, agg_country_name):
     """
-    Script that aggregate China Mainland + Tawain data in order to overcome inconsistencies
+    Script that aggregates country data in order to overcome inconsistencies
 
-    :param df (DataFrame), which contains China data
-    :return df_china (DataFrame), with aggregate data for China Mainland + Taiwan
+    :param df (DataFrame), which contains production or trade data
+    :param code_list (list), country codes to be aggregated
+    :param agg_country_code (int), country code to be assigned for the aggregation
+    :param agg_country_name (string), country name to be assigned for the aggregation
+    :return df (DataFrame), with aggregated data
 
     """
     # Trade data
     if "partner_code" in df.columns:
-        # Define China data with isocode CHN and Faostat code 357 from China mainland (41) + Taiwan (214) data both from reporter and partner
-        df_china = df[df[["reporter_code", "partner_code"]].isin([41, 214]).any(axis=1)]
+        # Define aggregated data both for reporter and parnter
+        df_agg = df[
+            df[["reporter_code", "partner_code"]].isin(code_list).any(axis=1)
+        ]
         # Avoid counting internal trades
-        mask = (df_china.reporter_code.isin([41, 214])) & (df_china.partner_code.isin([41, 214]))
-        df_china = df_china[~mask]
+        mask = (df_agg.reporter_code.isin(code_list)) & (
+            df_agg.partner_code.isin(code_list)
+        )
+        df_agg = df_agg[~mask]
+        # Remove country code list data from df dataset
+        df = df[
+            ~(df[["reporter_code", "partner_code"]].isin(code_list)).any(axis=1)
+        ]
         # Aggregation on the reporter side
-        df_china_1 = (
-            df_china[df_china["reporter_code"].isin([41, 214])]
+        df_agg_1 = (
+            df_agg[df_agg["reporter_code"].isin(code_list)]
             .groupby(
                 [
                     "source",
@@ -570,16 +605,16 @@ def consistency_check_china_data(df):
             .agg({"value": lambda x: x.sum(min_count=1)})
             .reset_index()
         )
-        df_china_1["reporter_code"] = 357
-        df_china_1["reporter"] = "China mainland and Taiwan"
-        # Concat with reporter codes not 41 either 214
-        df_china_1 = pd.concat(
-            [df_china[~df_china["reporter_code"].isin([41, 214])], df_china_1],
+        df_agg_1["reporter_code"] = agg_country_code
+        df_agg_1["reporter"] = agg_country_name
+        # Concat with reporter codes not in country code list
+        df_agg_1 = pd.concat(
+            [df_agg[~df_agg["reporter_code"].isin(code_list)], df_agg_1],
             ignore_index=True,
         )
         # Aggregation also on the partner side
-        df_china_2 = (
-            df_china_1[df_china_1["partner_code"].isin([41, 214])]
+        df_agg_2 = (
+            df_agg_1[df_agg_1["partner_code"].isin(code_list)]
             .groupby(
                 [
                     "source",
@@ -597,23 +632,25 @@ def consistency_check_china_data(df):
             .agg({"value": lambda x: x.sum(min_count=1)})
             .reset_index()
         )
-        df_china_2["partner_code"] = 357
-        df_china_2["partner"] = "China mainland and Taiwan"
-        # Concat with partner codes not 41 and 214
-        df_china_2 = pd.concat(
+        df_agg_2["partner_code"] = agg_country_code
+        df_agg_2["partner"] = agg_country_name
+        # Concat with partner codes not in country code list
+        df_agg_2 = pd.concat(
             [
-                df_china_1[~df_china_1["partner_code"].isin([41, 214])],
-                df_china_2,
+                df_agg_1[~df_agg_1["partner_code"].isin(code_list)],
+                df_agg_2,
             ],
             ignore_index=True,
         )
-        df_china = df_china_2
+        df_agg = df_agg_2
     # Production data
     else:
-        # Produce China data with isocode CHN and Faostat code 357 from China mainland (41) + Taiwan (214) data
-        df_china = df[df["reporter_code"].isin([41, 214])]
-        df_china = (
-            df_china.groupby(
+        # Produce reporter aggregated data
+        df_agg = df[df["reporter_code"].isin(code_list)]
+        # Remove country code list data from df dataset
+        df = df[~(df["reporter_code"].isin(code_list))]
+        df_agg = (
+            df_agg.groupby(
                 [
                     "product_code",
                     "product",
@@ -626,11 +663,16 @@ def consistency_check_china_data(df):
             # If all null values, do not return 0 but Nan
             .agg({"value": lambda x: x.sum(min_count=1)}).reset_index()
         )
-        df_china["reporter_code"] = 357
-        df_china["reporter"] = "China mainland and Taiwan"
+        df_agg["reporter_code"] = agg_country_code
+        df_agg["reporter"] = agg_country_name
     # Fill period column
-    df_china["period"] = df_china["year"]
-    return df_china
+    df_agg["period"] = df_agg["year"]
+    # Build the final dataset to return
+    df = pd.concat(
+        [df, df_agg],
+        ignore_index=True,
+    )
+    return df
 
 
 def trend_analysis(

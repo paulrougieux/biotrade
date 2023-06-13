@@ -822,6 +822,7 @@ class Pump:
             )
             hs = hs[~duplicated]
         # Delete existing data in the database
+        self.logger.info("Dropping existing product table rows.")
         self.db.tables["product"].delete().execute()
         # Store the data in the database
         self.db.append(hs, "product", drop_description=False)
