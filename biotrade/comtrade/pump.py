@@ -216,8 +216,8 @@ class Pump:
             except Exception as error:
                 response_code = error
             # To avoid system exit exception
-            except BaseException as error:
-                response_code = error
+            except BaseException as base_error:
+                response_code = base_error
             sleep_time *= 2
             self.logger.info(f"HTTP response code: {response_code}")
         return temp_dir, response_code
@@ -302,19 +302,27 @@ class Pump:
         :param (bool) check_data_presence, to delete data in case of existing
             rows into db
         :param (int) api_period, period to delete existing data
+        :return (int) records_transferred, rows uploaded to db
         """
-        # Number of records transferred from csv file
-        records_downloaded_csv = 0
         # List of chunk rows
         chunk_list = []
+        # Preallocate a dataframe
+        df = pandas.DataFrame()
         # Read the gz files
         for temp_file in os.listdir(temp_dir):
             # Loop on gz files and upload them
-            df = pandas.read_csv(
-                temp_dir / temp_file,
-                sep="\t",
-                dtype={"datasetCode": str, "cmdCode": str, "mosCode": str},
-            )
+            try:
+                df = pandas.read_csv(
+                    temp_dir / temp_file,
+                    sep="\t",
+                    dtype={"datasetCode": str, "cmdCode": str, "mosCode": str},
+                )
+            # Continue with the next file
+            except Exception as error_gz:
+                self.logger.warning(
+                    f"Unable to load data from {temp_file} for period {api_period} due to\n {error_gz}"
+                )
+                continue
             # If length is > 0 select rows
             if not df.empty:
                 # Remove potential white spaces between tab delimiter in string columns
@@ -346,28 +354,33 @@ class Pump:
                 # Append rows
                 chunk_list.append(df)
         # Construct the final df to upload to db
-        df = pandas.concat(chunk_list)
-        self.logger.info(
-            "Memory usage:\n%s GB",
-            round(df.memory_usage(deep=True).sum() / (1024**3), 2),
-        )
+        if chunk_list:
+            df = pandas.concat(chunk_list)
+            self.logger.info(
+                "Memory usage:\n%s GB",
+                round(df.memory_usage(deep=True).sum() / (1024**3), 2),
+            )
         if not df.empty:
             # Call method to rename column names
             df = self.sanitize_variable_names(
                 df, renaming_from="comtrade_apicall", renaming_to="biotrade"
             )
-        # Delete already existing data
-        if check_data_presence:
-            self.db.delete_data(
-                table_name,
-                api_period,
-                api_period,
+            # Delete already existing data
+            if check_data_presence:
+                self.db.delete_data(
+                    table_name,
+                    api_period,
+                    api_period,
+                )
+            # Append data to db
+            self.db.append(df, table_name)
+        else:
+            self.logger.warning(
+                f"Dataframe for period {api_period} is empty. Previous data in the db are not deleted."
             )
-        # Append data to db
-        self.db.append(df, table_name)
-        # Keep track of the the length of the data in the log file
-        records_downloaded_csv += len(df)
-        return records_downloaded_csv
+        # Keep track of the length of the transferred data in the log file
+        records_transferred = len(df)
+        return records_transferred
 
     def transfer_csv_chunk(
         self,
@@ -620,7 +633,7 @@ class Pump:
                         period_list_failed.append(api_period)
                 # Data not downloaded from API requests/package
                 else:
-                    self.logger.info(
+                    self.logger.warning(
                         "Failed to download from API request for"
                         + f" period {api_period} due to HTTP/URL error"
                     )
