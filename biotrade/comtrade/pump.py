@@ -625,7 +625,7 @@ class Pump:
                         )
                     # Failed to store data into db
                     except Exception as error_db:
-                        self.logger.info(
+                        self.logger.warning(
                             "Failed to store data into the database for table"
                             + f" {table_name} and period {api_period}\n"
                             + f"{error_db}"
