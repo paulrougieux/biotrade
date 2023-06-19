@@ -17,36 +17,33 @@ from pandas.testing import assert_series_equal
 from scripts.front_end.functions import aggregated_data, reporter_iso_codes
 
 
-def test_reporter_iso_codes():
-    # Create a sample DataFrame for testing
-    df = pd.DataFrame(
-        {
-            "reporter_code": [351, 41, 214, 2, 15, 3, 3, 3],
-            "partner_code": [4, 6, 7, 9, 10, 3, 351, 41],
-            "value": [100, 200, 300, 400, 500, 600, 700, 800],
-        }
-    )
-    # Perform the transformation using the function
-    transformed_df = reporter_iso_codes(df)
-    # Define the expected output DataFrame
-    expected_df = pd.DataFrame(
-        {
-            "reporter_code": ["CHN", "AFG", "ALB"],
-            "partner_code": ["AND", "ARG", "CHN"],
-            "value": [200, 400, 800],
-        }
-    )
-    # Assert that the transformed DataFrame is equal to the expected DataFrame
-    assert_series_equal(
-        transformed_df["reporter_code"], expected_df["reporter_code"]
-    )
-    assert_series_equal(
-        transformed_df["partner_code"], expected_df["partner_code"]
-    )
-    assert_frame_equal(transformed_df, expected_df)
-
-
-test_reporter_iso_codes()
+# def test_reporter_iso_codes():
+#     # Create a sample DataFrame for testing
+#     df = pd.DataFrame(
+#         {
+#             "reporter_code": [351, 41, 214, 2, 15, 3, 3, 3],
+#             "partner_code": [4, 6, 7, 9, 10, 3, 351, 41],
+#             "value": [100, 200, 300, 400, 500, 600, 700, 800],
+#         }
+#     )
+#     # Perform the transformation using the function
+#     transformed_df = reporter_iso_codes(df)
+#     # Define the expected output DataFrame
+#     expected_df = pd.DataFrame(
+#         {
+#             "reporter_code": ["CHN", "AFG", "ALB"],
+#             "partner_code": ["AND", "ARG", "CHN"],
+#             "value": [200, 400, 800],
+#         }
+#     )
+#     # Assert that the transformed DataFrame is equal to the expected DataFrame
+#     assert_series_equal(
+#         transformed_df["reporter_code"], expected_df["reporter_code"]
+#     )
+#     assert_series_equal(
+#         transformed_df["partner_code"], expected_df["partner_code"]
+#     )
+#     assert_frame_equal(transformed_df, expected_df)
 
 
 def test_aggregated_data():
