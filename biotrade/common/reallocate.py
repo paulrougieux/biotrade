@@ -68,7 +68,7 @@ def split_prod_imp(df: pandas.DataFrame) -> Tuple[pandas.Series, pandas.Series]:
 def split_by_partners(
     df_prod: pandas.DataFrame,
     df_trade: pandas.DataFrame,
-    allocation_round: int,
+    allocation_step: int,
 ) -> pandas.DataFrame:
     """Reallocate a quantity, by splitting it between different trade partners"""
     index = ["reporter", "primary_product", "year"]
@@ -76,9 +76,13 @@ def split_by_partners(
     optional_cols = ["reporter_code", "primary_product_code"]
     index += [col for col in optional_cols if col in df_trade.columns]
     df = df_prod.merge(df_trade, on=index, how="left")
-    df["prop"] = df.groupby(index)["value"].transform(lambda x: x / x.sum())
-    var_name = f"primary_eq_imp_{allocation_round}"
-    df[var_name] = df["primary_eq_imp"] * df["prop"]
+    # Compute the proportion among all trade partners
+    index = ["primary_product", "year"]
+    df["prop"] = df.groupby(index)["import_quantity"].transform(lambda x: x / x.sum())
+    var_this_step = f"primary_eq_imp_{allocation_step}"
+    var_previous_step = f"primary_eq_imp_{allocation_step - 1}"
+    # Reallocate the import to partners according to the proportion
+    df[var_this_step] = df[var_previous_step] * df["prop"]
     return df
 
 
