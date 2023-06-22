@@ -138,26 +138,20 @@ class Pump:
         Use snake case in column names and replace some symbols
         """
         # Rename columns to snake case
-        df.rename(
-            columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True
-        )
+        df.rename(columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True)
         # Remove parenthesis and dots, used only for human readable dataset
         df.rename(columns=lambda x: re.sub(r"[()\.]", "", x), inplace=True)
         # Replace $ sign by d, used only for human readable dataset
         df.rename(columns=lambda x: re.sub(r"\$", "d", x), inplace=True)
         # Rename columns using the naming convention defined in self.column_names
-        mapping = self.column_names.set_index(renaming_from).to_dict()[
-            renaming_to
-        ]
+        mapping = self.column_names.set_index(renaming_from).to_dict()[renaming_to]
         # Discard nan keys of mapping dictionary
         mapping.pop(np.nan, None)
         df.rename(columns=mapping, inplace=True)
         # Rename column content to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
         if "flow" in df.columns:
-            df["flow"] = (
-                df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
-            )
+            df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
             # Remove the plural "s"
             df["flow"] = df["flow"].str.replace("s", "", regex=True)
         return df
@@ -328,29 +322,30 @@ class Pump:
                 # Remove potential white spaces between tab delimiter in string columns
                 strip_cols = df.select_dtypes(["object"]).columns
                 df[strip_cols] = df[strip_cols].apply(lambda x: x.str.strip())
+                nrow_before = len(df)
+                selector = (
+                    (df["customsCode"] == "C00")
+                    & (df["motCode"] == 0)
+                    & (df["mosCode"] == "0")
+                    & (df["partner2Code"] == 0)
+                    & (df["flowCode"].isin(["M", "X", "RM", "RX"]))
+                )
                 if table_name in ("monthly", "yearly"):
                     # Store codes with bioeconomy label and 6 digits, not differentiating modality of transport (0), supply ("0"), 2nd partner (0)  and procedures ("C00")
                     # only (re)exported and (re)imported data
-                    df = df[
-                        (df["cmdCode"].str.startswith(bioeconomy_tuple))
+                    selector_6d = (
+                        selector
+                        & df["cmdCode"].str.startswith(bioeconomy_tuple)
                         & (df["cmdCode"].str.len() == 6)
-                        & (df["customsCode"] == "C00")
-                        & (df["motCode"] == 0)
-                        & (df["mosCode"] == "0")
-                        & (df["partner2Code"] == 0)
-                        & (df["flowCode"].isin(["M", "X", "RM", "RX"]))
-                    ]
+                    )
+                    df = df[selector_6d]
                 elif table_name == "yearly_hs2":
                     # Store codes with bioeconomy label and 2 digits, not differentiating modality of transport (0), supply ("0"), 2nd partner (0)  and procedures ("C00")
                     # only (re)exported and (re)imported data
-                    df = df[
-                        (df["cmdCode"].isin(bioeconomy_tuple))
-                        & (df["customsCode"] == "C00")
-                        & (df["motCode"] == 0)
-                        & (df["mosCode"] == "0")
-                        & (df["partner2Code"] == 0)
-                        & (df["flowCode"].isin(["M", "X", "RM", "RX"]))
-                    ]
+                    selector_2d = selector & df["cmdCode"].isin(bioeconomy_tuple)
+                    df = df[selector_2d]
+                msg = f"Number of rows before filtering {nrow_before:,} after {len(df)}"
+                self.logger.info(msg)
                 # Append rows
                 chunk_list.append(df)
         # Construct the final df to upload to db
@@ -436,9 +431,7 @@ class Pump:
                         elif table_name == "yearly_hs2":
                             # Store codes with bioeconomy label and 2 digits
                             df_chunk = df_chunk[
-                                df_chunk["Commodity Code"].isin(
-                                    bioeconomy_tuple
-                                )
+                                df_chunk["Commodity Code"].isin(bioeconomy_tuple)
                             ]
                         elif table_name == "yearly":
                             # Store codes with bioeconomy label and 6 digits
@@ -557,9 +550,7 @@ class Pump:
                 "12",
             ]
         # Date object of today
-        current_date = datetime.datetime.now(
-            pytz.timezone("Europe/Rome")
-        ).date()
+        current_date = datetime.datetime.now(pytz.timezone("Europe/Rome")).date()
         # Loop on year and eventually month, depending on the frequency
         # parameter
         for period in period_block:
@@ -569,10 +560,7 @@ class Pump:
             for month in month_list:
                 if frequency == "M":
                     # Data not available in the future
-                    if (
-                        datetime.datetime(period, int(month), 1).date()
-                        > current_date
-                    ):
+                    if datetime.datetime(period, int(month), 1).date() > current_date:
                         break
                 # Construct the period to pass to transfer_csv_chunk method
                 api_period = int(str(period) + month)
@@ -647,9 +635,7 @@ class Pump:
                 + f" {table_name}: {period_list_failed}"
             )
 
-    def update_db(
-        self, table_name, frequency, start_year=None, use_package=False
-    ):
+    def update_db(self, table_name, frequency, start_year=None, use_package=False):
         """
         Pump method to update db. If data from 2016 are already present,
         it updates data of the last and current year, otherwise it uploads
@@ -676,9 +662,7 @@ class Pump:
             frequency = "A"
         elif table_name == "monthly":
             frequency = "M"
-        current_year = (
-            datetime.datetime.now(pytz.timezone("Europe/Rome")).date().year
-        )
+        current_year = datetime.datetime.now(pytz.timezone("Europe/Rome")).date().year
         # Check if data from the start year are present into the database
         data_present = self.db.check_data_presence(
             table_name,
@@ -757,9 +741,7 @@ class Pump:
 
         # Load the data in json format
         if fmt == "json":
-            response = requests.get(
-                url=url_api_call, headers=self.header, stream=True
-            )
+            response = requests.get(url=url_api_call, headers=self.header, stream=True)
             print(f"HTTP response code: {response.status_code}")
             json_content = json.load(response.raw)
             # If the data was downloaded incorrectly, raise an error with the validation status
@@ -951,9 +933,9 @@ class Pump:
         # list of years
         years = [str(i) for i in range(start_year, end_year + 1)]
         for reporter_code in reporters.id:
-            reporter_name = reporters.text[
-                reporters.id == reporter_code
-            ].to_string(index=False)
+            reporter_name = reporters.text[reporters.id == reporter_code].to_string(
+                index=False
+            )
             # https://comtrade.un.org/data/doc/api
             # "1 request every second (per IP address or authenticated user)."
             time.sleep(2)
@@ -969,18 +951,14 @@ class Pump:
                 nr_product = 5
             # Select the first 5 products code at a time to avoid row limits to download
             product_block = product_code[
-                product_counter
-                * nr_product : (product_counter + 1)
-                * nr_product
+                product_counter * nr_product : (product_counter + 1) * nr_product
             ]
             # no more products to query
             while product_block != []:
                 # differentiate selection of the period based on the frequency
                 if frequency == "A":
                     # selection of 5 years
-                    period = years[
-                        period_counter * 5 : (period_counter + 1) * 5
-                    ]
+                    period = years[period_counter * 5 : (period_counter + 1) * 5]
                 elif frequency == "M":
                     # selection of 1 year(12 months)
                     period = years[period_counter : period_counter + 1]
@@ -1073,9 +1051,7 @@ class Pump:
                 )
                 # Trace API parameters and db status into table
                 self.write_log(
-                    timedate=datetime.datetime.now(
-                        pytz.timezone("Europe/Rome")
-                    ),
+                    timedate=datetime.datetime.now(pytz.timezone("Europe/Rome")),
                     table=table_name,
                     max=100000,
                     type="C",
@@ -1123,9 +1099,9 @@ class Pump:
         years = [str(year - i) for i in range(1, 6)]
         years = ",".join(years)
         for reporter_code in reporters.id:
-            reporter_name = reporters.text[
-                reporters.id == reporter_code
-            ].to_string(index=False)
+            reporter_name = reporters.text[reporters.id == reporter_code].to_string(
+                index=False
+            )
             download_successful = False
             # https://comtrade.un.org/data/doc/api
             # "1 request every second (per IP address or authenticated user)."
