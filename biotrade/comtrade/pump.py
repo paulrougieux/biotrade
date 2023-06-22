@@ -495,22 +495,26 @@ class Pump:
         Example for uploading data from 2016 to 2017 with monthly data into
         "monthly" comtrade table:
 
-        First check if data already exists into db.
+        First check if data already exists into db
+
             >>> from biotrade.comtrade import comtrade
             >>> data_check = comtrade.db.check_data_presence(
-                    table = "monthly"
-                    start_year = 2016,
-                    end_year = 2017,
-                    frequency = "M",
-                )
+            >>>     table = "monthly",
+            >>>     start_year = 2016,
+            >>>     end_year = 2017,
+            >>>     frequency = "M",
+            >>> )
+
         Upload data to db
+
             >>> comtrade.pump.transfer_bulk_csv(
-                    table_name = "monthly",
-                    start_year = 2016,
-                    end_year = 2017,
-                    frequency = "M",
-                    check_data_presence = data_check,
-                )
+            >>>     table_name = "monthly",
+            >>>     start_year = 2016,
+            >>>     end_year = 2017,
+            >>>     frequency = "M",
+            >>>     check_data_presence = data_check,
+            >>> )
+
         """
         # Adjust frequency parameter in case it is wrong provided
         if table_name in ("yearly", "yearly_hs2"):
