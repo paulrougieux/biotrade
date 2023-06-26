@@ -32,7 +32,7 @@ setup(
         "pandas",
         "sqlalchemy",
         "sqlalchemy_utils",
-        "psycopg2",
+        "psycopg2-binary",
         "requests",
         "scipy",
         "pymannkendall",
