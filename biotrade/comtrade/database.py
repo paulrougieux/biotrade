@@ -53,6 +53,7 @@ import pandas
 import re
 
 # Third party modules
+import comtradeapicall
 from sqlalchemy import Integer, Float, Text, UniqueConstraint
 from sqlalchemy import Table, Column, MetaData, and_, or_
 from sqlalchemy import create_engine, inspect
@@ -123,6 +124,8 @@ class DatabaseComtrade(Database):
             Column("product_code", Text),
             Column("product_description", Text),
             Column("parent", Text),
+            Column("is_leaf", Integer),
+            Column("aggregate_level", Integer),
             UniqueConstraint(
                 "product_code",
             ),
@@ -153,36 +156,36 @@ class DatabaseComtrade(Database):
         table = Table(
             name,
             self.metadata,
+            Column("dataset_code", Text),
+            Column("classification_search_code", Text),
             Column("classification", Text),
+            Column("is_original_classification", Integer),
+            Column("frequency", Text),
+            Column("ref_date", Integer),
             Column("year", Integer),
+            Column("month", Integer),
             Column("period", Integer),
-            Column("period_description", Text),
-            Column("aggregate_level", Integer),
-            Column("is_leaf", Integer),
-            Column("flow_code", Integer),
-            Column("flow", Text),
+            Column("is_reported", Integer),
+            Column("is_aggregated", Integer),
+            Column("flow_code", Text),
             Column("reporter_code", Integer, index=True),
-            Column("reporter", Text),
-            Column("reporter_iso", Text),
             Column("partner_code", Integer, index=True),
-            Column("partner", Text),
-            Column("partner_iso", Text),
-            Column("partner_2_code", Text),
-            Column("partner_2", Text),
-            Column("partner_2_iso", Text),
+            Column("partner_2_code", Integer),
             Column("customs_proc_code", Text),
-            Column("customs", Text),
-            Column("mode_of_transport_code", Text),
-            Column("mode_of_transport", Text),
+            Column("mode_of_supply_code", Text),
+            Column("mode_of_transport_code", Integer),
             Column("product_code", Text, index=True),
+            Column("product_type", Text),
             Column("unit_code", Integer),
-            Column("unit", Text),
             Column("quantity", Float),
-            Column("alt_qty_unit_code", Text),
-            Column("alt_qty_unit", Text),
+            Column("is_quantity_estimated", Integer),
+            Column("alt_qty_unit_code", Integer),
             Column("alt_qty", Float),
+            Column("is_alt_quantity_estimated", Integer),
             Column("net_weight", Float),
+            Column("is_net_weight_estimated", Integer),
             Column("gross_weight", Float),
+            Column("is_gross_weight_estimated", Integer),
             Column("trade_value", Float),
             Column("cif_value", Float),
             Column("fob_value", Float),
@@ -319,8 +322,6 @@ class DatabaseComtrade(Database):
         :param str table: name of the database table to select from
         :param list or str reporter: list of reporter names
         :param list or str partner: list of partner names
-        :param list or str flow: list of flow directions
-            ['Imports', 'Exports', 'Re-imports', 'Re-exports']
         :param list or int reporter_code: list of reporter codes
         :param list or int partner_code: list of partner codes
         :param list or int product_code: list of product codes
@@ -345,22 +346,93 @@ class DatabaseComtrade(Database):
             reporter = [reporter]
         if isinstance(partner, str):
             partner = [partner]
-        if isinstance(reporter_code, (int, str)):
+        if isinstance(reporter_code, int):
             reporter_code = [reporter_code]
-        if isinstance(partner_code, (int, str)):
+        if isinstance(partner_code, int):
             partner_code = [partner_code]
-        if isinstance(product_code, (int, str)):
+        if isinstance(product_code, str):
             product_code = [product_code]
-        if isinstance(product_code_start, (int, str)):
+        if isinstance(product_code_start, str):
             product_code_start = [product_code_start]
         if isinstance(flow, str):
             flow = [flow]
         # Build the select statement
         stmt = table.select()
+        # Define complementary data and columns to be selected and renamed
+        column_dict = {
+            "reporterCode": "reporter_code",
+            "reporterDesc": "reporter",
+            "reporterCodeIsoAlpha3": "reporter_iso",
+            "PartnerCode": "partner_code",
+            "PartnerDesc": "partner",
+            "PartnerCodeIsoAlpha3": "partner_iso",
+            "qtyCode": "unit_code",
+            "qtyDescription": "unit",
+        }
+        # reporter data
+        reporter_data = comtradeapicall.getReference("reporter")[
+            ["reporterCode", "reporterDesc", "reporterCodeIsoAlpha3"]
+        ].rename(columns=column_dict)
+        # partner data
+        partner_data = comtradeapicall.getReference("partner")[
+            ["PartnerCode", "PartnerDesc", "PartnerCodeIsoAlpha3"]
+        ].rename(columns=column_dict)
+        # quantity data
+        quantity_data = comtradeapicall.getReference("qtyunit")[
+            ["qtyCode", "qtyDescription"]
+        ].rename(columns=column_dict)
+        # define a compiled regex
+        regex_pat = re.compile(r"\W+")
+        # flow data
+        flow_data = comtradeapicall.getReference("flow")[["id", "text"]].rename(
+            columns={"id": "flow_code", "text": "flow"}
+        )
+        # rename flow column content to snake case using the compiled regex
+        flow_data["flow"] = (
+            flow_data["flow"]
+            .str.replace(regex_pat, "_", regex=True)
+            .str.lower()
+        )
+        # mode of transport data
+        mot_data = (
+            comtradeapicall.getReference("mot")[["id", "text"]]
+            .astype({"id": int})
+            .rename(
+                columns={
+                    "id": "mode_of_transport_code",
+                    "text": "mode_of_transport",
+                }
+            )
+        )
+        # custom procedure data
+        customs_data = comtradeapicall.getReference("customs")[
+            ["id", "text"]
+        ].rename(
+            columns={
+                "id": "customs_proc_code",
+                "text": "customs",
+            }
+        )
         if reporter is not None:
-            stmt = stmt.where(table.c.reporter.in_(reporter))
+            # Obtain codes from reporter data
+            reporter = reporter_data[
+                reporter_data.reporter.isin(reporter)
+            ].reporter_code.tolist()
+            # Add already defined reporter codes
+            if isinstance(reporter_code, list):
+                reporter_code += reporter
+            else:
+                reporter_code = reporter
         if partner is not None:
-            stmt = stmt.where(table.c.partner.in_(partner))
+            # Obtain codes from partner data
+            partner = partner_data[
+                partner_data.partner.isin(partner)
+            ].partner_code.tolist()
+            # Add already defined reporter codes
+            if isinstance(partner_code, list):
+                partner_code += partner
+            else:
+                partner_code = partner
         if reporter_code is not None:
             stmt = stmt.where(table.c.reporter_code.in_(reporter_code))
         if partner_code is not None:
@@ -369,16 +441,32 @@ class DatabaseComtrade(Database):
             stmt = stmt.where(table.c.product_code.in_(product_code))
         if product_code_start is not None:
             stmt = stmt.where(
-                or_(table.c.product_code.ilike(f"{c}%") for c in product_code_start)
+                or_(
+                    table.c.product_code.ilike(f"{c}%")
+                    for c in product_code_start
+                )
             )
         if flow is not None:
-            stmt = stmt.where(table.c.flow.in_(flow))
+            # Rename flow list to snake case using the compiled regex
+            flow = [regex_pat.sub("_", item).lower() for item in flow]
+            # Obtain codes from flow data
+            flow_code = flow_data[flow_data.flow.isin(flow)].flow_code.tolist()
+            stmt = stmt.where(table.c.flow_code.in_(flow_code))
         if period_start is not None:
             stmt = stmt.where(table.c.period >= period_start)
         if period_end is not None:
             stmt = stmt.where(table.c.period <= period_end)
         # Query the database and return a data frame
         df = pandas.read_sql_query(stmt, self.engine)
+        # Merge with complementary data
+        df = (
+            df.merge(reporter_data, on="reporter_code", how="left")
+            .merge(partner_data, on="partner_code", how="left")
+            .merge(quantity_data, on="unit_code", how="left")
+            .merge(flow_data, on="flow_code", how="left")
+            .merge(mot_data, on="mode_of_transport_code", how="left")
+            .merge(customs_data, on="customs_proc_code", how="left")
+        )
         return df
 
     def select_long(self, *args, **kwargs):
@@ -400,7 +488,9 @@ class DatabaseComtrade(Database):
         # Rename column content to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
         if "flow" in df.columns:
-            df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+            df["flow"] = (
+                df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+            )
             # Remove the plural "s"
             df["flow"] = df["flow"].str.replace("s", "", regex=True)
         # TODO: Change period to a date time object

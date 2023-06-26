@@ -44,12 +44,12 @@ except Exception as e:
     msg = "Failed to import requests, you will not be able to load data from Comtrade,"
     msg += "but you can still use other methods.\n"
     print(msg, str(e))
-import gzip
 
 # Third party modules
 import json
 import logging
 import pandas
+import numpy as np
 
 try:
     import comtradeapicall
@@ -149,6 +149,8 @@ class Pump:
         mapping = self.column_names.set_index(renaming_from).to_dict()[
             renaming_to
         ]
+        # Discard nan keys of mapping dictionary
+        mapping.pop(np.nan, None)
         df.rename(columns=mapping, inplace=True)
         # Rename column content to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
@@ -180,7 +182,9 @@ class Pump:
         # Temporary folder creation
         temp_dir = Path(tempfile.mkdtemp())
         self.logger.info(
-            "Downloading data from:\n %s.%s",
+            "Downloading %s data for period %s from:\n %s.%s",
+            "yearly" if frequency == "A" else "monthly",
+            period,
             comtradeapicall.__name__,
             comtradeapicall.bulkDownloadFinalFile.__name__,
         )
@@ -211,6 +215,9 @@ class Pump:
                     response_code = 404
             except Exception as error:
                 response_code = error
+            # To avoid system exit exception
+            except BaseException as base_error:
+                response_code = base_error
             sleep_time *= 2
             self.logger.info(f"HTTP response code: {response_code}")
         return temp_dir, response_code
@@ -285,9 +292,8 @@ class Pump:
     ):
         """
         Pump method to transfer gz files to db using dataframe.
-        # TODO check values below
-        500k data frame rows ~ 500 MB of memory usage
-        2 millions data frame rows ~ 2 GB of memory usage
+        500k data frame rows ~ 350 MB of memory usage
+        4 millions data frame rows ~ 2.8 GB of memory usage
 
         :param (path) temp_dir, path of the folder containing the gz files
             to copy into db
@@ -296,63 +302,92 @@ class Pump:
         :param (bool) check_data_presence, to delete data in case of existing
             rows into db
         :param (int) api_period, period to delete existing data
+        :return (int) records_transferred, rows uploaded to db
         """
-        # Number of records transferred from csv file
-        records_downloaded_csv = 0
         # List of chunk rows
         chunk_list = []
+        # Preallocate a dataframe
+        df = pandas.DataFrame()
         # Read the gz files
         for temp_file in os.listdir(temp_dir):
             # Loop on gz files and upload them
-            df = pandas.read_csv(
-                temp_dir / temp_file,
-                sep="\t",
-                dtype={"cmdCode": str},
-            )
+            try:
+                df = pandas.read_csv(
+                    temp_dir / temp_file,
+                    sep="\t",
+                    dtype={"datasetCode": str, "cmdCode": str, "mosCode": str},
+                )
+            # Continue with the next file
+            except Exception as error_gz:
+                self.logger.warning(
+                    f"Unable to load data from {temp_file} for period {api_period} due to\n {error_gz}"
+                )
+                continue
             # If length is > 0 select rows
             if not df.empty:
+                # Remove potential white spaces between tab delimiter in string columns
+                strip_cols = df.select_dtypes(["object"]).columns
+                df[strip_cols] = df[strip_cols].apply(lambda x: x.str.strip())
+                nrow_before = len(df)
+                memory_before = round(
+                    df.memory_usage(deep=True).sum() / (1024**2), 2
+                )
+                selector = (
+                    (df["customsCode"] == "C00")
+                    & (df["motCode"] == 0)
+                    & (df["mosCode"] == "0")
+                    & (df["partner2Code"] == 0)
+                    & (df["flowCode"].isin(["M", "X", "RM", "RX"]))
+                )
                 if table_name in ("monthly", "yearly"):
-                    # Store codes with bioeconomy label and 6 digits, not differentiating modality of transport (0) and procedures ("C00")
-                    df = df[
-                        (df["cmdCode"].str.startswith(bioeconomy_tuple))
+                    # Store codes with bioeconomy label and 6 digits, not differentiating modality of transport (0), supply ("0"), 2nd partner (0)  and procedures ("C00")
+                    # only (re)exported and (re)imported data
+                    selector_6d = (
+                        selector
+                        & df["cmdCode"].str.startswith(bioeconomy_tuple)
                         & (df["cmdCode"].str.len() == 6)
-                        & (df["customsCode"] == "C00")
-                        & (df["motCode"] == 0)
-                    ]
+                    )
+                    df = df[selector_6d]
                 elif table_name == "yearly_hs2":
-                    # Store codes with bioeconomy label and 2 digits, not differentiating modality of transport (0) and procedures ("C00")
-                    df = df[
-                        (df["cmdCode"].isin(bioeconomy_tuple))
-                        & (df["customsCode"] == "C00")
-                        & (df["motCode"] == 0)
-                    ]
+                    # Store codes with bioeconomy label and 2 digits, not differentiating modality of transport (0), supply ("0"), 2nd partner (0)  and procedures ("C00")
+                    # only (re)exported and (re)imported data
+                    selector_2d = selector & df["cmdCode"].isin(
+                        bioeconomy_tuple
+                    )
+                    df = df[selector_2d]
+                msg = f"Before filtering {temp_file[:-3]} file, the dataframe occupies {memory_before} MB and number of rows are {nrow_before}, after {round(df.memory_usage(deep=True).sum() / (1024**2), 2)} MB with {len(df)} rows"
+                print(msg)
                 # Append rows
                 chunk_list.append(df)
         # Construct the final df to upload to db
-        df = pandas.concat(chunk_list)
-        self.logger.info(
-            "Memory usage:\n%s GB",
-            round(df.memory_usage(deep=True).sum() / (1024**3), 2),
-        )
-        # if not df.empty:
-        # TODO add new sanitized columns
-        # Call method to rename column names
-        # df = self.sanitize_variable_names(
-        #     df, renaming_from="comtrade_human", renaming_to="biotrade"
-        # )
-        # TODO uncomment delete and upload of data
-        # # Delete already existing data
-        # if check_data_presence:
-        #     self.db.delete_data(
-        #         table_name,
-        #         api_period,
-        #         api_period,
-        #     )
-        # # Append data to db
-        # self.db.append(df, table_name)
-        # Keep track of the the length of the data in the log file
-        records_downloaded_csv += len(df)
-        return records_downloaded_csv
+        if chunk_list:
+            df = pandas.concat(chunk_list)
+            self.logger.info(
+                "Memory usage of the filtered dataframe corresponding to period %s:\n%s GB",
+                api_period,
+                round(df.memory_usage(deep=True).sum() / (1024**3), 2),
+            )
+        if not df.empty:
+            # Call method to rename column names
+            df = self.sanitize_variable_names(
+                df, renaming_from="comtrade_apicall", renaming_to="biotrade"
+            )
+            # Delete already existing data
+            if check_data_presence:
+                self.db.delete_data(
+                    table_name,
+                    api_period,
+                    api_period,
+                )
+            # Append data to db
+            self.db.append(df, table_name)
+        else:
+            self.logger.warning(
+                f"Dataframe for period {api_period} is empty. Previous data in the db are not deleted."
+            )
+        # Keep track of the length of the transferred data in the log file
+        records_transferred = len(df)
+        return records_transferred
 
     def transfer_csv_chunk(
         self,
@@ -455,7 +490,6 @@ class Pump:
         end_year,
         frequency,
         check_data_presence,
-        use_package=False,
     ):
         """
         Pump method to transfer bulk files of Comtrade API requests/package to
@@ -469,27 +503,30 @@ class Pump:
         :param (int) start_year, year from the download should end
         :param (str) frequency, as "A" yearly or "M" monthly
         :param (bool) check_data_presence, if data already exists into db
-        :param (bool) use_package: if True use the python package comtradeapicall, if False Comtrade API requests from https://comtrade.un.org/data/doc/api/bulk/
 
         Example for uploading data from 2016 to 2017 with monthly data into
         "monthly" comtrade table:
 
-        First check if data already exists into db.
+        First check if data already exists into db
+
             >>> from biotrade.comtrade import comtrade
             >>> data_check = comtrade.db.check_data_presence(
-                    table = "monthly"
-                    start_year = 2016,
-                    end_year = 2017,
-                    frequency = "M",
-                )
+            >>>     table = "monthly",
+            >>>     start_year = 2016,
+            >>>     end_year = 2017,
+            >>>     frequency = "M",
+            >>> )
+
         Upload data to db
+
             >>> comtrade.pump.transfer_bulk_csv(
-                    table_name = "monthly",
-                    start_year = 2016,
-                    end_year = 2017,
-                    frequency = "M",
-                    check_data_presence = data_check,
-                )
+            >>>     table_name = "monthly",
+            >>>     start_year = 2016,
+            >>>     end_year = 2017,
+            >>>     frequency = "M",
+            >>>     check_data_presence = data_check,
+            >>> )
+
         """
         # Adjust frequency parameter in case it is wrong provided
         if table_name in ("yearly", "yearly_hs2"):
@@ -549,55 +586,33 @@ class Pump:
                 # Construct the period to pass to transfer_csv_chunk method
                 api_period = int(str(period) + month)
                 # Use the new Comtrade API package
-                if use_package:
-                    # Store gz data into the temporary directory
-                    temp_dir, response_code = self.download_bulk_gz(
-                        api_period,
-                        frequency,
-                    )
-                # Use the dismissed Comtrade APIs
-                else:
-                    # Store zip data into the temporary directory
-                    temp_dir, response_code = self.download_bulk_csv(
-                        api_period,
-                        frequency,
-                    )
+                # Store gz data into the temporary directory
+                temp_dir, response_code = self.download_bulk_gz(
+                    api_period,
+                    frequency,
+                )
                 # If data are downloaded (response = 200) copy data into a pandas data frame and upload it to the db
                 if response_code == 200:
                     # Store into the database
                     try:
                         # Transfer gz files to db
-                        if use_package:
-                            records_downloaded = self.transfer_gz_files(
-                                temp_dir,
-                                table_name,
-                                bioeconomy_tuple,
-                                check_data_presence,
-                                api_period,
-                            )
-                        # If data are downloaded (response = 200) copy the csv of
-                        # the zip file into a pandas data frame
-                        else:
-                            # Temporary zip file path
-                            temp_file = temp_dir / os.listdir(temp_dir)[0]
-                            # Transfer large csv files into chunks
-                            records_downloaded = self.transfer_csv_chunk(
-                                temp_file,
-                                table_name,
-                                bioeconomy_tuple,
-                                check_data_presence,
-                                api_period,
-                            )
+                        records_downloaded = self.transfer_gz_files(
+                            temp_dir,
+                            table_name,
+                            bioeconomy_tuple,
+                            check_data_presence,
+                            api_period,
+                        )
                         # Total number of records
                         total_records += records_downloaded
                         self.logger.info(
-                            f"Update database table {table_name} for period"
+                            f"Updated database table {table_name} for period"
                             + f" {api_period}\n"
                             + f"{total_records} records uploaded in total."
                         )
                     # Failed to store data into db
                     except Exception as error_db:
-                        self.logger.info(
+                        self.logger.warning(
                             "Failed to store data into the database for table"
                             + f" {table_name} and period {api_period}\n"
                             + f"{error_db}"
@@ -605,7 +620,7 @@ class Pump:
                         period_list_failed.append(api_period)
                 # Data not downloaded from API requests/package
                 else:
-                    self.logger.info(
+                    self.logger.warning(
                         "Failed to download from API request for"
                         + f" period {api_period} due to HTTP/URL error"
                     )
@@ -619,9 +634,7 @@ class Pump:
                 + f" {table_name}: {period_list_failed}"
             )
 
-    def update_db(
-        self, table_name, frequency, start_year=None, use_package=False
-    ):
+    def update_db(self, table_name, frequency, start_year=None):
         """
         Pump method to update db. If data from 2016 are already present,
         it updates data of the last and current year, otherwise it uploads
@@ -631,7 +644,6 @@ class Pump:
         :param (string) frequency, "M" for monthly data or "A" for annual
         :param (int) start_year, year to start the download from, defaults to
             2016 if not specified
-        :param (bool) use_package: if True use the python package comtradeapicall, if False Comtrade API requests from https://comtrade.un.org/data/doc/api/bulk/
 
         Return an error if some periods are not uploaded to the database.
 
@@ -668,7 +680,6 @@ class Pump:
             current_year,
             frequency,
             data_present,
-            use_package,
         )
 
     def download_df(
@@ -791,9 +802,14 @@ class Pump:
 
         """
         # Reload the data from Comtrade
-        hs = self.get_parameter_list("classificationHS.json")
+        hs = comtradeapicall.getReference("cmd:HS")
         hs = hs.rename(
-            columns={"id": "product_code", "text": "product_description"}
+            columns={
+                "id": "product_code",
+                "text": "product_description",
+                "isLeaf": "is_leaf",
+                "aggrLevel": "aggregate_level",
+            }
         )
         duplicated = hs.duplicated("product_code")
         if any(duplicated):
@@ -802,6 +818,7 @@ class Pump:
             )
             hs = hs[~duplicated]
         # Delete existing data in the database
+        self.logger.info("Dropping existing product table rows.")
         self.db.tables["product"].delete().execute()
         # Store the data in the database
         self.db.append(hs, "product", drop_description=False)

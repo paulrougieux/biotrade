@@ -12,7 +12,7 @@ Script made to export data related to harvested area/production of countries ass
 def main():
     from scripts.front_end.functions import (
         main_product_list,
-        consistency_check_china_data,
+        aggregated_data,
         reporter_iso_codes,
         replace_zero_with_nan_values,
         save_file,
@@ -21,7 +21,9 @@ def main():
     import pandas as pd
 
     # Obtain the main product codes
-    main_product_list = main_product_list(["crop_production", "forestry_production"])
+    main_product_list = main_product_list(
+        ["crop_production", "forestry_production"]
+    )
     # Select quantities from Faostat db for crop data for all countries (code < 1000)
     crop_data = faostat.db.select(
         table="crop_production",
@@ -37,12 +39,15 @@ def main():
     # Merge data
     crop_data = pd.concat([crop_data, wood_data], ignore_index=True)
     crop_data = crop_data[crop_data["reporter_code"] < 1000]
-    # China Mainland + Taiwan data
-    df_china = consistency_check_china_data(crop_data)
-    # Add China data to crop_data (exclude Taiwan data)
-    crop_data = pd.concat(
-        [crop_data[~(crop_data["reporter_code"] == 214)], df_china],
-        ignore_index=True,
+    # Aggregate french territories values to France and add them to the dataframe
+    code_list = [68, 69, 87, 135, 182, 270, 281]
+    agg_country_code = 68
+    agg_country_name = faostat.country_groups.df
+    agg_country_name = agg_country_name[
+        agg_country_name.faost_code == agg_country_code
+    ].fao_table_name.values[0]
+    crop_data = aggregated_data(
+        crop_data, code_list, agg_country_code, agg_country_name
     )
     # Substitute faostat codes with iso3 codes
     crop_data = reporter_iso_codes(crop_data)
@@ -52,9 +57,13 @@ def main():
     dropna_col = ["value"]
     crop_data = replace_zero_with_nan_values(crop_data, dropna_col)
     crop_data = crop_data.dropna(subset=dropna_col)
-    harvested_area = crop_data[crop_data["element"] == "area_harvested"][column_list]
+    harvested_area = crop_data[crop_data["element"] == "area_harvested"][
+        column_list
+    ]
     # Production data
-    production = crop_data[crop_data["element"].isin(["production", "stocks"])][column_list]
+    production = crop_data[crop_data["element"].isin(["production", "stocks"])][
+        column_list
+    ]
     # Save csv files to env variable path or into biotrade data folder
     save_file(harvested_area, "harvested_area_annual_variation.csv")
     save_file(production, "production_annual_variation.csv")

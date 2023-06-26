@@ -52,8 +52,8 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 259,,,JG,CHI,CHI,830,areas and territories,Channel Islands,Channel Islands,Channel Islands,Channel Islands,,,,,,,,,0,
 40,51,CL,CL,CHL,CHL,152,member,Chile,the Republic of Chile,Chile,Chile,1945,,World,Americas,5200,South America,5207,Developing,0,
 351,,,,,,,member,China,"China (China mainland, Hong Kong SAR, Macao SAR, Taiwan)",China,China,1945,,World,Asia,5300,Eastern Asia,5302,Developing,0,
-41,53,,,,,1248,areas and territories,"China, mainland",the People's Republic of China,China mainland,China,,,World,Asia,5300,Eastern Asia,5302,Developing,0,
-357,,CN,CN,CHN,CHN,156,areas and territories,China mainland and Taiwan,"China (China mainland, Taiwan)",China mainland and Taiwan,China,,,World,Asia,5300,Eastern Asia,5302,Developing,0,
+41,53,CN,CN,CHN,CHN,156,areas and territories,"China, mainland",the People's Republic of China,China mainland,China,,,World,Asia,5300,Eastern Asia,5302,Developing,0,
+357,,,,,,,areas and territories,China mainland and Taiwan,"China (China mainland, Taiwan)",China mainland and Taiwan,China,,,World,Asia,5300,Eastern Asia,5302,Developing,0,
 96,33364,HK,HK,HKG,HKG,344,areas and territories,"China, Hong Kong SAR","China, Hong Kong Special Administrative Region",Hong Kong,"China, RAE de Hong Kong",,,World,Asia,5300,Eastern Asia,5302,Developing,0,
 128,149,MO,MO,MAC,MAC,446,areas and territories,"China, Macao SAR","China, Macao Special Administrative Region",Macao,"China, RAE de Macao",,,World,Asia,5300,Eastern Asia,5302,Developing,0,
 42,54,CX,CX,CXR,CXR,162,areas and territories,Christmas Island,Christmas Island,Christmas Island,Isla Christmas,,,,,,,,,0,
@@ -126,7 +126,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 104,119,IE,IE,IRL,IRL,372,member,Ireland,Ireland,Ireland,Irlanda,1955,,World,Europe,5400,Northern Europe,5402,Developed,1,Western Europe
 264,120,IM,IM,IMN,IMY,833,areas and territories,Isle of Man,Isle of Man,Isle of Man,Isla de Man,,,World,Europe,5400,Northern Europe,5402,Developed,0,
 105,121,IL,IL,ISR,ISR,376,member,Israel,the State of Israel,Israel,Israel,1949,,World,Asia,5300,Western Asia,5305,Developing,0,
-106,122,IT,IT,ITA,ITA,381,member,Italy,the Republic of Italy,Italy,Italia,1955,,World,Europe,5400,Southern Europe,5403,Developed,1,Southern Europe
+106,122,IT,IT,ITA,ITA,380,member,Italy,the Republic of Italy,Italy,Italia,1955,,World,Europe,5400,Southern Europe,5403,Developed,1,Southern Europe
 109,123,JM,JM,JAM,JAM,388,member,Jamaica,Jamaica,Jamaica,Jamaica,1962,,World,Americas,5200,Caribbean,5206,Developing,0,
 110,126,JP,JP,JPN,JPN,392,member,Japan,Japan,Japan,Japón,1956,,World,Asia,5300,Eastern Asia,5302,Developed,0,
 ,127,,,,,,areas and territories,Jarvis Island,Jarvis Island,Jarvis Island,Isla Jarvis,,,,,,,,,0,
@@ -173,7 +173,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 147,172,NA,NA,NAM,NAM,516,member,Namibia,the Republic of Namibia,Namibia,Namibia,1990,,World,Africa,5100,Southern Africa,5104,Developing,0,
 148,173,NR,NR,NRU,NRU,520,member,Nauru,the Republic of Nauru,Nauru,Nauru,1999,,World,Oceania,5500,Micronesia,5503,Developing,0,
 149,175,NP,NP,NPL,NPL,524,member,Nepal,the Federal Democratic Republic of Nepal,Nepal,Nepal,1955,,World,Asia,5300,Southern Asia,5303,Developing,0,
-150,177,NL,NL,NLD,NLD,528,member,Netherlands,the Kingdom of the Netherlands,Netherlands,Países Bajos,1945,,World,Europe,5400,Western Europe,5404,Developed,1,Western Europe
+150,177,NL,NL,NLD,NLD,528,member,Netherlands (Kingdom of the),the Kingdom of the Netherlands,Netherlands,Países Bajos,1945,,World,Europe,5400,Western Europe,5404,Developed,1,Western Europe
 151,176,AN,AN,ANT,ANT,530,old,Netherlands Antilles (former),Netherlands Antilles,Netherlands Antilles,Netherlands Antilles,1986,2009,World,Americas,5200,Caribbean,5206,Developing,0,
 ,,,,,,532,old,Netherlands Antilles,Netherlands Antilles,Netherlands Antilles,Netherlands Antilles,1945,1985,,,,,,,0,
 152,,,,,,,areas and territories,Neutral Zone,Neutral Zone,Neutral Zone,Zona Neutral,,,,,,,,,0,
