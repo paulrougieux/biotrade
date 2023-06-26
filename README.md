@@ -3,6 +3,9 @@ the agriculture and forestry sectors, from primary production to secondary produ
 transformation. It loads bilateral trade data from UN Comtrade, production and trade
 data from FAOSTAT and socio-economic indicators from the World Bank.
 
+
+# Documentation
+
 The documentation is available at:
 https://bioeconomy.gitlab.io/forobs/biotrade/
 
@@ -222,7 +225,5 @@ These tests are run as part of the Continuous Integration.
 # Acknowledgements
 
 The authors would like to acknowledge ideas and feedback received from the following
-persons: Lucas Sinclair, Roberto Pilli, Mirco Migliavacca, Giovanni Bausano.
-
-Noemi Cazzaniga's package [eurostat](https://pypi.org/project/eurostat/) was taken as an
-inspiration to load Eurostat data from the bulk download repository.
+persons: Giovanni Bausano, Noemi Cazzaniga, Mirco Migliavacca, Roberto Pilli, Lucas
+Sinclair.

@@ -4,6 +4,10 @@
 """
 Download data from the Eurostat bulk download facility.
 
+Noemi Cazzaniga's package [eurostat](https://pypi.org/project/eurostat/) was
+taken as an inspiration to load Eurostat data from the bulk download
+repository.
+
 """
 # Standard imports
 import logging
