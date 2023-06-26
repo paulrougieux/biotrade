@@ -138,20 +138,26 @@ class Pump:
         Use snake case in column names and replace some symbols
         """
         # Rename columns to snake case
-        df.rename(columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True)
+        df.rename(
+            columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True
+        )
         # Remove parenthesis and dots, used only for human readable dataset
         df.rename(columns=lambda x: re.sub(r"[()\.]", "", x), inplace=True)
         # Replace $ sign by d, used only for human readable dataset
         df.rename(columns=lambda x: re.sub(r"\$", "d", x), inplace=True)
         # Rename columns using the naming convention defined in self.column_names
-        mapping = self.column_names.set_index(renaming_from).to_dict()[renaming_to]
+        mapping = self.column_names.set_index(renaming_from).to_dict()[
+            renaming_to
+        ]
         # Discard nan keys of mapping dictionary
         mapping.pop(np.nan, None)
         df.rename(columns=mapping, inplace=True)
         # Rename column content to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
         if "flow" in df.columns:
-            df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+            df["flow"] = (
+                df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+            )
             # Remove the plural "s"
             df["flow"] = df["flow"].str.replace("s", "", regex=True)
         return df
@@ -323,6 +329,9 @@ class Pump:
                 strip_cols = df.select_dtypes(["object"]).columns
                 df[strip_cols] = df[strip_cols].apply(lambda x: x.str.strip())
                 nrow_before = len(df)
+                memory_before = round(
+                    df.memory_usage(deep=True).sum() / (1024**2), 2
+                )
                 selector = (
                     (df["customsCode"] == "C00")
                     & (df["motCode"] == 0)
@@ -342,17 +351,20 @@ class Pump:
                 elif table_name == "yearly_hs2":
                     # Store codes with bioeconomy label and 2 digits, not differentiating modality of transport (0), supply ("0"), 2nd partner (0)  and procedures ("C00")
                     # only (re)exported and (re)imported data
-                    selector_2d = selector & df["cmdCode"].isin(bioeconomy_tuple)
+                    selector_2d = selector & df["cmdCode"].isin(
+                        bioeconomy_tuple
+                    )
                     df = df[selector_2d]
-                msg = f"Number of rows before filtering {nrow_before:,} after {len(df)}"
-                self.logger.info(msg)
+                msg = f"Before filtering {temp_file[:-3]} file, the dataframe occupies {memory_before} MB and number of rows are {nrow_before}, after {round(df.memory_usage(deep=True).sum() / (1024**2), 2)} MB with {len(df)} rows"
+                print(msg)
                 # Append rows
                 chunk_list.append(df)
         # Construct the final df to upload to db
         if chunk_list:
             df = pandas.concat(chunk_list)
             self.logger.info(
-                "Memory usage:\n%s GB",
+                "Memory usage of the filtered dataframe corresponding to period %s:\n%s GB",
+                api_period,
                 round(df.memory_usage(deep=True).sum() / (1024**3), 2),
             )
         if not df.empty:
@@ -431,7 +443,9 @@ class Pump:
                         elif table_name == "yearly_hs2":
                             # Store codes with bioeconomy label and 2 digits
                             df_chunk = df_chunk[
-                                df_chunk["Commodity Code"].isin(bioeconomy_tuple)
+                                df_chunk["Commodity Code"].isin(
+                                    bioeconomy_tuple
+                                )
                             ]
                         elif table_name == "yearly":
                             # Store codes with bioeconomy label and 6 digits
@@ -476,7 +490,6 @@ class Pump:
         end_year,
         frequency,
         check_data_presence,
-        use_package=False,
     ):
         """
         Pump method to transfer bulk files of Comtrade API requests/package to
@@ -490,7 +503,6 @@ class Pump:
         :param (int) start_year, year from the download should end
         :param (str) frequency, as "A" yearly or "M" monthly
         :param (bool) check_data_presence, if data already exists into db
-        :param (bool) use_package: if True use the python package comtradeapicall, if False Comtrade API requests from https://comtrade.un.org/data/doc/api/bulk/
 
         Example for uploading data from 2016 to 2017 with monthly data into
         "monthly" comtrade table:
@@ -554,7 +566,9 @@ class Pump:
                 "12",
             ]
         # Date object of today
-        current_date = datetime.datetime.now(pytz.timezone("Europe/Rome")).date()
+        current_date = datetime.datetime.now(
+            pytz.timezone("Europe/Rome")
+        ).date()
         # Loop on year and eventually month, depending on the frequency
         # parameter
         for period in period_block:
@@ -564,50 +578,31 @@ class Pump:
             for month in month_list:
                 if frequency == "M":
                     # Data not available in the future
-                    if datetime.datetime(period, int(month), 1).date() > current_date:
+                    if (
+                        datetime.datetime(period, int(month), 1).date()
+                        > current_date
+                    ):
                         break
                 # Construct the period to pass to transfer_csv_chunk method
                 api_period = int(str(period) + month)
                 # Use the new Comtrade API package
-                if use_package:
-                    # Store gz data into the temporary directory
-                    temp_dir, response_code = self.download_bulk_gz(
-                        api_period,
-                        frequency,
-                    )
-                # Use the dismissed Comtrade APIs
-                else:
-                    # Store zip data into the temporary directory
-                    temp_dir, response_code = self.download_bulk_csv(
-                        api_period,
-                        frequency,
-                    )
+                # Store gz data into the temporary directory
+                temp_dir, response_code = self.download_bulk_gz(
+                    api_period,
+                    frequency,
+                )
                 # If data are downloaded (response = 200) copy data into a pandas data frame and upload it to the db
                 if response_code == 200:
                     # Store into the database
                     try:
                         # Transfer gz files to db
-                        if use_package:
-                            records_downloaded = self.transfer_gz_files(
-                                temp_dir,
-                                table_name,
-                                bioeconomy_tuple,
-                                check_data_presence,
-                                api_period,
-                            )
-                        # If data are downloaded (response = 200) copy the csv of
-                        # the zip file into a pandas data frame
-                        else:
-                            # Temporary zip file path
-                            temp_file = temp_dir / os.listdir(temp_dir)[0]
-                            # Transfer large csv files into chunks
-                            records_downloaded = self.transfer_csv_chunk(
-                                temp_file,
-                                table_name,
-                                bioeconomy_tuple,
-                                check_data_presence,
-                                api_period,
-                            )
+                        records_downloaded = self.transfer_gz_files(
+                            temp_dir,
+                            table_name,
+                            bioeconomy_tuple,
+                            check_data_presence,
+                            api_period,
+                        )
                         # Total number of records
                         total_records += records_downloaded
                         self.logger.info(
@@ -639,7 +634,7 @@ class Pump:
                 + f" {table_name}: {period_list_failed}"
             )
 
-    def update_db(self, table_name, frequency, start_year=None, use_package=False):
+    def update_db(self, table_name, frequency, start_year=None):
         """
         Pump method to update db. If data from 2016 are already present,
         it updates data of the last and current year, otherwise it uploads
@@ -649,7 +644,6 @@ class Pump:
         :param (string) frequency, "M" for monthly data or "A" for annual
         :param (int) start_year, year to start the download from, defaults to
             2016 if not specified
-        :param (bool) use_package: if True use the python package comtradeapicall, if False Comtrade API requests from https://comtrade.un.org/data/doc/api/bulk/
 
         Return an error if some periods are not uploaded to the database.
 
@@ -666,7 +660,9 @@ class Pump:
             frequency = "A"
         elif table_name == "monthly":
             frequency = "M"
-        current_year = datetime.datetime.now(pytz.timezone("Europe/Rome")).date().year
+        current_year = (
+            datetime.datetime.now(pytz.timezone("Europe/Rome")).date().year
+        )
         # Check if data from the start year are present into the database
         data_present = self.db.check_data_presence(
             table_name,
@@ -684,7 +680,6 @@ class Pump:
             current_year,
             frequency,
             data_present,
-            use_package,
         )
 
     def download_df(
@@ -745,7 +740,9 @@ class Pump:
 
         # Load the data in json format
         if fmt == "json":
-            response = requests.get(url=url_api_call, headers=self.header, stream=True)
+            response = requests.get(
+                url=url_api_call, headers=self.header, stream=True
+            )
             print(f"HTTP response code: {response.status_code}")
             json_content = json.load(response.raw)
             # If the data was downloaded incorrectly, raise an error with the validation status
@@ -937,9 +934,9 @@ class Pump:
         # list of years
         years = [str(i) for i in range(start_year, end_year + 1)]
         for reporter_code in reporters.id:
-            reporter_name = reporters.text[reporters.id == reporter_code].to_string(
-                index=False
-            )
+            reporter_name = reporters.text[
+                reporters.id == reporter_code
+            ].to_string(index=False)
             # https://comtrade.un.org/data/doc/api
             # "1 request every second (per IP address or authenticated user)."
             time.sleep(2)
@@ -955,14 +952,18 @@ class Pump:
                 nr_product = 5
             # Select the first 5 products code at a time to avoid row limits to download
             product_block = product_code[
-                product_counter * nr_product : (product_counter + 1) * nr_product
+                product_counter
+                * nr_product : (product_counter + 1)
+                * nr_product
             ]
             # no more products to query
             while product_block != []:
                 # differentiate selection of the period based on the frequency
                 if frequency == "A":
                     # selection of 5 years
-                    period = years[period_counter * 5 : (period_counter + 1) * 5]
+                    period = years[
+                        period_counter * 5 : (period_counter + 1) * 5
+                    ]
                 elif frequency == "M":
                     # selection of 1 year(12 months)
                     period = years[period_counter : period_counter + 1]
@@ -1055,7 +1056,9 @@ class Pump:
                 )
                 # Trace API parameters and db status into table
                 self.write_log(
-                    timedate=datetime.datetime.now(pytz.timezone("Europe/Rome")),
+                    timedate=datetime.datetime.now(
+                        pytz.timezone("Europe/Rome")
+                    ),
                     table=table_name,
                     max=100000,
                     type="C",
@@ -1103,9 +1106,9 @@ class Pump:
         years = [str(year - i) for i in range(1, 6)]
         years = ",".join(years)
         for reporter_code in reporters.id:
-            reporter_name = reporters.text[reporters.id == reporter_code].to_string(
-                index=False
-            )
+            reporter_name = reporters.text[
+                reporters.id == reporter_code
+            ].to_string(index=False)
             download_successful = False
             # https://comtrade.un.org/data/doc/api
             # "1 request every second (per IP address or authenticated user)."
