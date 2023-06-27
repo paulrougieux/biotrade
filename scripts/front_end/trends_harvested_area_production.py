@@ -15,7 +15,7 @@ def main():
     import pandas as pd
     import numpy as np
     from scripts.front_end.functions import (
-        consistency_check_china_data,
+        aggregated_data,
         main_product_list,
         reporter_iso_codes,
         replace_zero_with_nan_values,
@@ -48,12 +48,15 @@ def main():
     # Merge data
     crop_data = pd.concat([crop_data, wood_data], ignore_index=True)
     crop_data = crop_data[crop_data["reporter_code"] < 1000]
-    # China Mainland + Taiwan data
-    df_china = consistency_check_china_data(crop_data)
-    # Add China data to crop_data (exclude Taiwan data)
-    crop_data = pd.concat(
-        [crop_data[~(crop_data["reporter_code"] == 214)], df_china],
-        ignore_index=True,
+    # Aggregate french territories values to France and add them to the dataframe
+    code_list = [68, 69, 87, 135, 182, 270, 281]
+    agg_country_code = 68
+    agg_country_name = faostat.country_groups.df
+    agg_country_name = agg_country_name[
+        agg_country_name.faost_code == agg_country_code
+    ].fao_table_name.values[0]
+    crop_data = aggregated_data(
+        crop_data, code_list, agg_country_code, agg_country_name
     )
     # Substitute faostat codes with iso3 codes
     crop_data = reporter_iso_codes(crop_data)

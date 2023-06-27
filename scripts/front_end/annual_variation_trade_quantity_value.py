@@ -10,16 +10,16 @@ Script made to export data related to trade quantities of countries associated t
 
 
 def main():
-    import pandas as pd
     from scripts.front_end.functions import (
         main_product_list,
         comtrade_products,
         merge_faostat_comtrade_data,
-        consistency_check_china_data,
+        aggregated_data,
         reporter_iso_codes,
         replace_zero_with_nan_values,
         save_file,
     )
+    from biotrade.faostat import faostat
     from biotrade.faostat.aggregate import agg_trade_eu_row
 
     # Obtain faostat product codes
@@ -30,21 +30,15 @@ def main():
     trade_data = merge_faostat_comtrade_data(
         faostat_list, comtrade_regulation, aggregate=False
     )
-    # China Mainland + Taiwan data
-    df_china = consistency_check_china_data(trade_data)
-    # Add China data to trade_data (exclude Taiwan data)
-    trade_data = pd.concat(
-        [
-            trade_data[
-                ~(
-                    (trade_data[["reporter_code", "partner_code"]] == 214).any(
-                        axis=1
-                    )
-                )
-            ],
-            df_china,
-        ],
-        ignore_index=True,
+    # Aggregate french territories values to France and add them to the dataframe
+    code_list = [68, 69, 87, 135, 182, 270, 281]
+    agg_country_code = 68
+    agg_country_name = faostat.country_groups.df
+    agg_country_name = agg_country_name[
+        agg_country_name.faost_code == agg_country_code
+    ].fao_table_name.values[0]
+    trade_data = aggregated_data(
+        trade_data, code_list, agg_country_code, agg_country_name
     )
     # Substitute faostat codes with iso3 codes
     trade_data = reporter_iso_codes(trade_data)
@@ -111,9 +105,6 @@ def main():
         drop_index_col=[
             "year",
             "flag",
-            "faost_code",
-            "iso3_code",
-            "fao_status_info",
         ],
     )
     # Substitute with name and codes of the aggregations for the web platform
@@ -151,9 +142,6 @@ def main():
         drop_index_col=[
             "year",
             "flag",
-            "faost_code",
-            "iso3_code",
-            "fao_status_info",
         ],
     )
     # Substitute with name and codes of the aggregations for the web platform

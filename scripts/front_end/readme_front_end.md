@@ -4,11 +4,12 @@ Table names and metadata of the web platform output scripts. Currently 36 csv fi
 > N.B.
 >- Zero and NaN values are not reported.
 >- Only official GISCO Estat countries are reported.
->- Production, harvest area and trade data related to China are for:
->    - China mainland + Taiwan which corresponds to UN Comtrade code 156
->    - Removed FAOSTAT data on China Mainland because it doesn't have a UN country code
->    - Removed FAOSTAT data on Taiwan (not reported separately by UN Comtrade) to avoid double counting Taiwan already included in UN code 156
->    - Hong Kong and Macao are reported separately both in the UN Comtrade and FAOSTAT data.
+>- Production, harvest area and trade data clarifications:
+>    - Free zones transit data are removed
+>    - China data do not include Taiwan trades
+>    - Hong Kong and Macao are reported separately from China both in the UN Comtrade and FAOSTAT data
+>    - Data related to France include French Guiana, Guadaloupe, Martinique, Mayotte, Reunion and Saint-Martin (plus Monaco only for Comtrade data)
+
 
 ## product_list.csv
 Csv that contains the list of faostat selected products for production. There are 3 columns:
