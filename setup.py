@@ -21,7 +21,7 @@ with open(readme_path, encoding="utf-8") as handle:
 # Call setup #
 setup(
     name="biotrade",
-    version="0.2.0",
+    version="0.2.2",
     description="Agriculture and forestry statistics.",
     license="MIT",
     url="https://gitlab.com/bioeconomy/forobs/biotrade/",
@@ -32,7 +32,7 @@ setup(
         "pandas",
         "sqlalchemy",
         "sqlalchemy_utils",
-        "psycopg2",
+        "psycopg2-binary",
         "requests",
         "scipy",
         "pymannkendall",
