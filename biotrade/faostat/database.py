@@ -46,17 +46,26 @@ class DatabaseFaostat(Database):
     using a pandas data frame:
 
         >>> import pandas
+        >>> from biotrade.faostat import faostat
         >>> db = faostat.db
         >>> reporter = db.forestry_production.columns.get("reporter")
         >>> statement = db.forestry_production.select().where(reporter == "Italy")
-        >>> fp_it = pandas.read_sql_query(statement, db.engine)
+        >>> with faostat.db.engine.connect() as conn:
+        >>>     fp_it = pandas.read_sql_query(statement, conn)
 
     Use a SQL select statement directly
 
-        >>> query = "SELECT * FROM forestry_production WHERE reporter = 'Italy'"
-        >>> fp_it = pandas.read_sql_query(query, db.engine)
-        >>> query = "SELECT * FROM forestry_trade WHERE reporter = 'Italy'"
-        >>> ft_it = pandas.read_sql_query(query, db.engine)
+        >>> from sqlalchemy import text
+        >>> # In case you are using an SQLite database
+        >>> schema = "main"
+        >>> # In case you are using a PostGreSQL database
+        >>> schema = "raw_faostat"
+        >>> query = text(f"SELECT * FROM {schema}.forestry_production WHERE reporter = 'Italy'")
+        >>> with faostat.db.engine.connect() as conn:
+        >>>     fp_it = pandas.read_sql_query(query, conn)
+        >>> query = text(f"SELECT * FROM {schema}.forestry_trade  WHERE reporter = 'Italy'")
+        >>> with faostat.db.engine.connect() as conn:
+        >>>     ft_it = pandas.read_sql_query(query, conn)
 
     Database update methods are in the faostat.pump object.
 
@@ -89,8 +98,10 @@ class DatabaseFaostat(Database):
         if hasattr(self.engine.dialect, "has_schema") and callable(
             getattr(self.engine.dialect, "has_schema")
         ):
-            if not self.engine.dialect.has_schema(self.engine, self.schema):
-                self.engine.execute(CreateSchema(self.schema))
+            with self.engine.connect() as conn:
+                if not self.engine.dialect.has_schema(conn, self.schema):
+                    conn.execute(CreateSchema(self.schema))
+                    conn.commit()
 
         # Describe table metadata
         self.forestry_production = self.describe_production_table(
@@ -293,7 +304,9 @@ class DatabaseFaostat(Database):
 
     def read_sql_query(self, stmt):
         """A wrapper around pandas.read_sql_query"""
-        return pandas.read_sql_query(stmt, self.engine)
+        with self.engine.connect() as conn:
+            df = pandas.read_sql_query(stmt, conn)
+        return df
 
     def select(
         self,
@@ -445,7 +458,7 @@ class DatabaseFaostat(Database):
         if period_end is not None:
             stmt = stmt.where(table.c.period <= period_end)
         # Query the database and return a data frame
-        df = pandas.read_sql_query(stmt, self.engine)
+        df = self.read_sql_query(stmt)
         return df
 
     def agg_reporter_partner_eu_row(
@@ -537,7 +550,7 @@ class DatabaseFaostat(Database):
         # Aggregate by columns the join selection
         stmt = stmt.group_by(*join_columns)
         # Return the dataframe from the query to db
-        df = pandas.read_sql_query(stmt, self.engine)
+        df = self.read_sql_query(stmt)
         return df
 
     def extract_product_names_codes(self, table_list):
@@ -570,7 +583,7 @@ class DatabaseFaostat(Database):
                 .distinct(faostat_table.c.product_code, faostat_table.c.product)
             )
             # Retrieve dataset
-            table_products = pandas.read_sql_query(stmt, self.engine)
+            table_products = self.read_sql_query(stmt)
             faostat_products = pandas.concat(
                 [faostat_products, table_products], ignore_index=True
             )
