@@ -72,13 +72,14 @@ def split_by_partners(
 ) -> pandas.DataFrame:
     """Reallocate a quantity, by splitting it between different trade partners"""
     index = ["reporter", "primary_product", "year"]
-    # Add optional code columns only if they are present in df
+    # Add optional code columns if they are present in df
     optional_cols = ["reporter_code", "primary_product_code"]
-    index += [col for col in optional_cols if col in df_trade.columns]
-    df = df_prod.merge(df_trade, on=index, how="left")
+    optional_cols = [col for col in optional_cols if col in df_trade.columns]
+    df = df_prod.merge(df_trade, on=index + optional_cols, how="left")
     # Compute the proportion among all trade partners
-    index = ["primary_product", "year"]
-    df["prop"] = df.groupby(index)["import_quantity"].transform(lambda x: x / x.sum())
+    df["prop"] = df.groupby(index + optional_cols)["import_quantity"].transform(
+        lambda x: x / x.sum()
+    )
     var_this_step = f"primary_eq_imp_{allocation_step}"
     var_previous_step = f"primary_eq_imp_{allocation_step - 1}"
     # Reallocate the import to partners according to the proportion

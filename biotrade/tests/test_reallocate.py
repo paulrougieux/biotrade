@@ -66,7 +66,7 @@ def test_split_by_partners():
             "reporter": ["a", "b"],
             "reporter_code": [1, 2],
             "primary_product": ["p", "p"],
-            "primary_eq_imp": [6, 14],
+            "primary_eq_imp_0": [6, 14],
         }
     )
     df_trade = pandas.DataFrame(
@@ -77,7 +77,7 @@ def test_split_by_partners():
             "partner": ["x", "y", "x", "z"],
             "partner_code": [24, 25, 24, 26],
             "primary_product": ["p", "p", "p", "p"],
-            "value": [1, 2, 3, 4],
+            "import_quantity": [1, 2, 3, 4],
         }
     )
     output = split_by_partners(df_prod, df_trade, 1)
