@@ -52,3 +52,15 @@ industrial_roundwood,1865,industrial_roundwood,1865,sawnwood,1872,0
 industrial_roundwood,1865,industrial_roundwood,1865,wood_based_panels,1873,0
 industrial_roundwood,1865,industrial_roundwood,1865,wood_pulp,1875,0
 industrial_roundwood,1865,wood_pulp,1875,paper_and_paperboard,1876,0
+maize_corn,56,maize_corn,56,flour_of_maize,58,0
+maize_corn,56,maize_corn,56,bran_of_maize,59,0
+maize_corn,56,maize_corn,56,germ_of_maize,57,0
+maize_corn,56,maize_corn,56,brewing_or_distilling_dregs_and_waste,654,0
+maize_corn,56,maize_corn,56,undenatured_ethyl_alcohol_of_an_alcoholic_strength_by_volume_of_less_than_80_vol_spirits_liqueurs_and_other_spirituous_beverages,634,0
+maize_corn,56,maize_corn,56,breakfast_cereals,41,0
+maize_corn,56,maize_corn,56,cereal_preparations,113,0
+maize_corn,56,bran_of_maize,59,gluten_feed_and_meal,846,0
+maize_corn,56,germ_of_maize,57,cake_of_maize,61,1
+maize_corn,56,germ_of_maize,57,oil_of_maize,60,1
+maize_corn,56,oil_of_maize,60,margarine_and_shortening,1242,0
+maize_corn,56,oil_of_maize,60,liquid_margarine,1241,0
