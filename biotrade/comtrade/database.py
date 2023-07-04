@@ -92,8 +92,10 @@ class DatabaseComtrade(Database):
         if hasattr(self.engine.dialect, "has_schema") and callable(
             getattr(self.engine.dialect, "has_schema")
         ):
-            if not self.engine.dialect.has_schema(self.engine, self.schema):
-                self.engine.execute(CreateSchema(self.schema))
+            with self.engine.connect() as conn:
+                if not self.engine.dialect.has_schema(conn, self.schema):
+                    conn.execute(CreateSchema(self.schema))
+                    conn.commit()
 
         # Describe table metadata and create them if they don't exist
         # Product table
@@ -204,7 +206,9 @@ class DatabaseComtrade(Database):
 
     def read_sql_query(self, stmt):
         """A wrapper around pandas.read_sql_query"""
-        return pandas.read_sql_query(stmt, self.engine)
+        with self.engine.connect() as conn:
+            df = pandas.read_sql_query(stmt, conn)
+        return df
 
     def check_data_presence(
         self,
@@ -389,9 +393,7 @@ class DatabaseComtrade(Database):
         )
         # rename flow column content to snake case using the compiled regex
         flow_data["flow"] = (
-            flow_data["flow"]
-            .str.replace(regex_pat, "_", regex=True)
-            .str.lower()
+            flow_data["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
         )
         # mode of transport data
         mot_data = (
@@ -405,9 +407,7 @@ class DatabaseComtrade(Database):
             )
         )
         # custom procedure data
-        customs_data = comtradeapicall.getReference("customs")[
-            ["id", "text"]
-        ].rename(
+        customs_data = comtradeapicall.getReference("customs")[["id", "text"]].rename(
             columns={
                 "id": "customs_proc_code",
                 "text": "customs",
@@ -441,10 +441,7 @@ class DatabaseComtrade(Database):
             stmt = stmt.where(table.c.product_code.in_(product_code))
         if product_code_start is not None:
             stmt = stmt.where(
-                or_(
-                    table.c.product_code.ilike(f"{c}%")
-                    for c in product_code_start
-                )
+                or_(table.c.product_code.ilike(f"{c}%") for c in product_code_start)
             )
         if flow is not None:
             # Rename flow list to snake case using the compiled regex
@@ -457,7 +454,7 @@ class DatabaseComtrade(Database):
         if period_end is not None:
             stmt = stmt.where(table.c.period <= period_end)
         # Query the database and return a data frame
-        df = pandas.read_sql_query(stmt, self.engine)
+        df = self.read_sql_query(stmt)
         # Merge with complementary data
         df = (
             df.merge(reporter_data, on="reporter_code", how="left")
@@ -488,9 +485,7 @@ class DatabaseComtrade(Database):
         # Rename column content to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
         if "flow" in df.columns:
-            df["flow"] = (
-                df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
-            )
+            df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
             # Remove the plural "s"
             df["flow"] = df["flow"].str.replace("s", "", regex=True)
         # TODO: Change period to a date time object
