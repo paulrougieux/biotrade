@@ -65,25 +65,34 @@ def split_prod_imp(df: pandas.DataFrame) -> Tuple[pandas.Series, pandas.Series]:
     return prod, imp
 
 
+def compute_share_by_partners(
+    df: pandas.DataFrame,
+) -> pandas.DataFrame:
+    """Compute the share of import between different trade partners"""
+    index = ["reporter", "primary_product", "year"]
+    optional_cols = ["reporter_code", "primary_product_code"]
+    optional_cols = [col for col in optional_cols if col in df.columns]
+    # Compute the proportion among all trade partners
+    return df.groupby(index + optional_cols)["import_quantity"].transform(
+        lambda x: x / x.sum()
+    )
+
+
 def split_by_partners(
     df_prod: pandas.DataFrame,
     df_trade: pandas.DataFrame,
     allocation_step: int,
 ) -> pandas.DataFrame:
     """Reallocate a quantity, by splitting it between different trade partners"""
+    # Merge index with optional code columns
     index = ["reporter", "primary_product", "year"]
-    # Add optional code columns if they are present in df
     optional_cols = ["reporter_code", "primary_product_code"]
     optional_cols = [col for col in optional_cols if col in df_trade.columns]
     df = df_prod.merge(df_trade, on=index + optional_cols, how="left")
-    # Compute the proportion among all trade partners
-    df["prop"] = df.groupby(index + optional_cols)["import_quantity"].transform(
-        lambda x: x / x.sum()
-    )
-    var_this_step = f"primary_eq_imp_{allocation_step}"
-    var_previous_step = f"primary_eq_imp_{allocation_step - 1}"
-    # Reallocate the import to partners according to the proportion
-    df[var_this_step] = df[var_previous_step] * df["prop"]
+    var_split = f"primary_eq_imp_split_{allocation_step}"
+    var_agg = f"primary_eq_imp_{allocation_step}"
+    # Reallocate import quantities to partners according to the proportion
+    df[var_split] = df[var_agg] * df["imp_share_by_p"]
     return df
 
 
