@@ -57,11 +57,15 @@ def compute_share_prod_imp(
     return df
 
 
-def split_prod_imp(df: pandas.DataFrame) -> Tuple[pandas.Series, pandas.Series]:
+def split_prod_imp(
+    df: pandas.DataFrame,
+    allocation_step: int,
+) -> Tuple[pandas.Series, pandas.Series]:
     """Split a quantity between what is produced domestically and what is imported
     The input data frame must contain the share used for splitting."""
-    prod = df["primary_eq"] * df["share_prod_imp"]
-    imp = df["primary_eq"] * (1 - df["share_prod_imp"])
+    primary_eq_var = f"primary_eq_{allocation_step - 1}"
+    prod = df[primary_eq_var] * df["share_prod_imp"]
+    imp = df[primary_eq_var] * (1 - df["share_prod_imp"])
     return prod, imp
 
 
@@ -78,7 +82,7 @@ def compute_share_by_partners(
     )
 
 
-def split_by_partners(
+def allocate_by_partners(
     df_prod: pandas.DataFrame,
     df_trade: pandas.DataFrame,
     allocation_step: int,
@@ -89,10 +93,10 @@ def split_by_partners(
     optional_cols = ["reporter_code", "primary_product_code"]
     optional_cols = [col for col in optional_cols if col in df_trade.columns]
     df = df_prod.merge(df_trade, on=index + optional_cols, how="left")
-    var_split = f"primary_eq_imp_split_{allocation_step}"
+    var_alloc = f"primary_eq_imp_alloc_{allocation_step}"
     var_agg = f"primary_eq_imp_{allocation_step}"
     # Reallocate import quantities to partners according to the proportion
-    df[var_split] = df[var_agg] * df["imp_share_by_p"]
+    df[var_alloc] = df[var_agg] * df["imp_share_by_p"]
     return df
 
 
