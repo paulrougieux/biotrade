@@ -8,9 +8,11 @@ Test the import reallocation functions
 import pandas
 from pandas.testing import assert_series_equal
 from pandas.testing import assert_frame_equal
+
+from biotrade.common.reallocate import allocate_by_partners
+from biotrade.common.reallocate import compute_share_by_partners
 from biotrade.common.reallocate import compute_share_prod_imp
 from biotrade.common.reallocate import split_prod_imp
-from biotrade.common.reallocate import split_by_partners
 
 
 def test_compute_share_prod_imp():
@@ -45,11 +47,11 @@ def test_split_prod_imp():
             "reporter": ["a", "b", "c"],
             "reporter_code": [1, 2, 3],
             "primary_product": ["p", "p", "q"],
-            "primary_eq": [1, 2, 4],
+            "primary_eq_0": [1, 2, 4],
             "share_prod_imp": [0, 1, 0.5],
         }
     )
-    output_prod, output_imp = split_prod_imp(df)
+    output_prod, output_imp = split_prod_imp(df, 1)
     # Use float in the expected series to avoid AssertionError: Attributes of
     # Series are different Attribute "dtype" are different [left]:  float64
     # [right]: int64
@@ -59,14 +61,14 @@ def test_split_prod_imp():
     assert_series_equal(output_imp, expected_imp)
 
 
-def test_split_by_partners():
+def test_allocate_by_partners():
     df_prod = pandas.DataFrame(
         {
             "year": 1,
             "reporter": ["a", "b"],
             "reporter_code": [1, 2],
             "primary_product": ["p", "p"],
-            "primary_eq_imp_0": [6, 14],
+            "primary_eq_imp_1": [6, 14],
         }
     )
     df_trade = pandas.DataFrame(
@@ -80,10 +82,12 @@ def test_split_by_partners():
             "import_quantity": [1, 2, 3, 4],
         }
     )
-    output = split_by_partners(df_prod, df_trade, 1)
     expected = df_trade.copy()
+    # Share by partners
+    df_trade["imp_share_by_p"] = compute_share_by_partners(df_trade)
+    output = allocate_by_partners(df_prod, df_trade, 1)
     # Use float in the expected series
-    expected["primary_eq_imp_1"] = [2, 4, 6, 8.0]
+    expected["primary_eq_imp_alloc_1"] = [2, 4, 6, 8.0]
     assert_frame_equal(output[expected.columns], expected)
 
 
