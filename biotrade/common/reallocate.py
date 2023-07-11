@@ -160,9 +160,12 @@ def reallocate(
     df["primary_eq_prod_1"], df["primary_eq_imp_1"] = split_prod_imp(df, prod_share, 1)
     real[("trade", 1)] = allocate_by_partners(df_prod=df, df_trade=trade, step=1)
     real[("prod", 1)] = df
+    nrows_trade = len(real[("trade", 1)])
+    msg = f"Reallocation step: {1}, production rows:{len(df)}, "
+    msg += f"trade rows: {nrows_trade}"
+    print(msg)
     # Subsequent steps
     for step in range(2, n_steps + 1):
-        print(f"step: {step}")
         df = aggregate_on_partners(real[("trade", step - 1)], step)
         df[f"primary_eq_prod_{step}"], df[f"primary_eq_imp_{step}"] = split_prod_imp(
             df, prod_share, step
@@ -171,5 +174,42 @@ def reallocate(
             df_prod=df, df_trade=trade, step=step
         )
         real[("prod", step)] = df
+        nrows_trade = len(real[("trade", step)])
+        msg = f"Reallocation step: {step}, production rows:{len(df)}, "
+        msg += f"trade rows: {nrows_trade}"
+        print(msg)
     # Return
     return real
+
+
+def merge_reallocated_production(real: dict):
+    """Merge the reallocated production data frame
+    To compare the primary_eq_n columns Check how primary_eq columns change
+    with increasing step numbers.
+    """
+    index = ["reporter", "product", "primary_product", "year"]
+    index += code_columns(index)
+    real_steps = [x[1] for x in real if x[0] == "trade"]
+    real_prod = real[("prod", 1)].copy()
+    for step in real_steps[1:]:
+        df = real[("prod", step)]
+        new_cols = sorted(list(set(df.columns) - set(index)))
+        print("Step", step, "rows:", len(df), "new columns:", new_cols)
+        real_prod = real_prod.merge(df, on=index, how="outer")
+    return real_prod
+
+
+def merge_reallocated_trade(real: dict):
+    """Merge the reallocated trade data frame"""
+    index = ["reporter", "partner", "product", "primary_product", "year"]
+    index += code_columns(index)
+    real_steps = [x[1] for x in real if x[0] == "trade"]
+    real_trade = real[("trade", 1)].copy()
+    for step in real_steps[1:]:
+        df = real[("trade", step)]
+        cols_remove = ["imp_share_by_p", "import_quantity", "period"]
+        new_cols = sorted(list(set(df.columns) - set(index) - set(cols_remove)))
+        print("Step", step, "rows:", len(df), "new columns:", new_cols)
+        real_trade = real_trade.merge(df[index + new_cols], on=index, how="outer")
+        print("N rows real trade", len(real_trade))
+    return real_trade
