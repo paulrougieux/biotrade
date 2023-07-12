@@ -104,7 +104,7 @@ class Database:
         """
         #  Create the table if it doesn't exist
         if not self.inspector.has_table(table.name, schema=self.schema):
-            table.create()
+            table.create(bind=self.engine)
             self.logger.info("Created table %s in schema %s.", table.name, self.schema)
         return table
 
