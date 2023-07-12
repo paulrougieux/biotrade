@@ -317,7 +317,7 @@ class Pump:
                 return
         # Drop and recreate the table
         table = self.db.tables[short_name]
-        table.drop()
+        table.drop(self.db.engine)
         self.db.create_if_not_existing(table)
         # Read in chunk and pass each chunk to the database
         for df_chunk in pandas.read_csv(
