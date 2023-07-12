@@ -47,11 +47,20 @@ def test_split_prod_imp():
             "reporter": ["a", "b", "c"],
             "reporter_code": [1, 2, 3],
             "primary_product": ["p", "p", "q"],
+            "year": 1,
             "primary_eq_0": [1, 2, 4],
+        }
+    )
+    df_share = pandas.DataFrame(
+        {
+            "reporter": ["a", "b", "c"],
+            "reporter_code": [1, 2, 3],
+            "primary_product": ["p", "p", "q"],
+            "year": 1,
             "share_prod_imp": [0, 1, 0.5],
         }
     )
-    output_prod, output_imp = split_prod_imp(df, 1)
+    output_prod, output_imp = split_prod_imp(df, df_share, 1)
     # Use float in the expected series to avoid AssertionError: Attributes of
     # Series are different Attribute "dtype" are different [left]:  float64
     # [right]: int64
