@@ -133,15 +133,15 @@ def aggregate_on_partners(df: pandas.DataFrame, step: int) -> pandas.DataFrame:
 
 
 def reallocate(
-    crop_prod: pandas.DataFrame,
-    crop_trade: pandas.DataFrame,
+    prim_prod: pandas.DataFrame,
+    prim_trade: pandas.DataFrame,
     process_prod: pandas.DataFrame,
     n_steps: int,
 ):
-    """Perform all steps of the reallocation of the oil production in primary
-    crop equivalent
-    param: crop_prod, crop production (for example sunflower seeds)
-    param: crop_trade, crop trade (for example sunflower seeds)
+    """Perform all steps of the reallocation of secondary product production in
+    primary commodity equivalent
+    param: prim_prod, crop production (for example sunflower seeds)
+    param: prim_trade, crop trade (for example sunflower seeds)
     param: process_prod, production of processed products (for example sunflower oil)
     param: n_steps number of steps
     """
@@ -150,9 +150,9 @@ def reallocate(
         "product": "primary_product",
     }
     # Crop production with import and share of production and import
-    prod_share = compute_share_prod_imp(crop_prod, crop_trade)
+    prod_share = compute_share_prod_imp(prim_prod, prim_trade)
     prod_share.rename(columns=product_to_primary_product, inplace=True)
-    trade = crop_trade.rename(columns=product_to_primary_product).copy()
+    trade = prim_trade.rename(columns=product_to_primary_product).copy()
     real = dict()
     trade["imp_share_by_p"] = compute_share_by_partners(trade)
     # First step
