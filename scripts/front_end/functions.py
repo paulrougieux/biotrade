@@ -117,7 +117,7 @@ def main_product_list(table_list):
     # Define db and pre allocate dataframe
     db = faostat.db
     df = pd.DataFrame(columns=["product_code"])
-    # Define which products are inside the production list
+    # Define which products are inside the production/trade list
     for table in table_list:
         table = db.tables[table]
         df_table = pd.read_sql_query(
@@ -267,7 +267,7 @@ def merge_faostat_comtrade_data(
             ]
             df = df.groupby(index_list)["value"].agg(sum).reset_index()
         df_merge = pd.concat([df_merge, df], ignore_index=True)
-        # Avoid to retreive all the cycle the same faostat data
+        # Avoid to retrieve for all the cycle the same faostat data
         if i == 0:
             faostat_code = None
     # Use period instead of year column

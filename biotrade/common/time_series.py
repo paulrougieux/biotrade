@@ -86,7 +86,9 @@ def plot_relative_absolute_change(df):
     )
     ax.set_xlabel("Time [y]", fontsize=20)
     if "unit" in group_data_pivot_table:
-        ax.set_ylabel(f"[{'/'.join(df['unit'].unique().tolist())}]", fontsize=20)
+        ax.set_ylabel(
+            f"[{'/'.join(df['unit'].unique().tolist())}]", fontsize=20
+        )
     ax.set_title("Absolute change" + add_title, fontsize=20)
     # Show plot
     plt.show()
@@ -169,11 +171,14 @@ def plot_segmented_regression(df):
         )
         # Plot segments
         for year_range in (
-            df_key[["year_range_lower", "year_range_upper"]].drop_duplicates().values
+            df_key[["year_range_lower", "year_range_upper"]]
+            .drop_duplicates()
+            .values
         ):
             # Extract segment dataframe
             df_key_segment = df_key[
-                (df_key["year"] >= year_range[0]) & (df_key["year"] <= year_range[1])
+                (df_key["year"] >= year_range[0])
+                & (df_key["year"] <= year_range[1])
             ]
             # Extract information to plot
             pvalue_segment = df_key_segment["pvalue"].unique()[0]
@@ -185,15 +190,21 @@ def plot_segmented_regression(df):
             if pvalue_segment < alpha:
                 x_interval = np.array([lower_year_segment, upper_year_segment])
                 y_interval = slope_segment * x_interval + intercept_segment
-                plt.plot(x_interval, y_interval, "ro-", label="Segmented regression")
+                plt.plot(
+                    x_interval, y_interval, "ro-", label="Segmented regression"
+                )
             # For the last segment the Mann Kendall test has been performed
             if upper_year_segment == x.max():
                 mk_ha_segment = df_key_segment["mk_ha_test"].unique()[0]
                 # If the test succeeded, plot the associated results
                 if mk_ha_segment:
                     mk_slope_segment = df_key_segment["mk_slope"].unique()[0]
-                    mk_intercept_segment = df_key_segment["mk_intercept"].unique()[0]
-                    x_mk_interval = np.array([lower_year_segment, upper_year_segment])
+                    mk_intercept_segment = df_key_segment[
+                        "mk_intercept"
+                    ].unique()[0]
+                    x_mk_interval = np.array(
+                        [lower_year_segment, upper_year_segment]
+                    )
                     y_mk_interval = (
                         mk_slope_segment * x_mk_interval + mk_intercept_segment
                     )
@@ -221,7 +232,9 @@ def plot_segmented_regression(df):
     plt.show()
 
 
-def obj_function(breakpoints, x, y, num_breakpoints, function, min_data_points, fcache):
+def obj_function(
+    breakpoints, x, y, num_breakpoints, function, min_data_points, fcache
+):
     """
     Function which computes the obj of the segmented regressions
     based on the mean of coefficient of determination (R2) with respect to the number of break points or based on the Residual Sum of Squares (RSS),
@@ -244,7 +257,9 @@ def obj_function(breakpoints, x, y, num_breakpoints, function, min_data_points, 
     # Calculate obj function if not already done for the specific breakpoint location
     if breakpoints not in fcache:
         # Calculate the linear regression coefficients for the segments cut by breakpoint locations
-        result = find_best_piecewise_polynomial(breakpoints, x, y, min_data_points)
+        result = find_best_piecewise_polynomial(
+            breakpoints, x, y, min_data_points
+        )
         # Segments with more than 6 point
         if result:
             # Initialization
@@ -266,7 +281,8 @@ def obj_function(breakpoints, x, y, num_breakpoints, function, min_data_points, 
                     # If mean of values is 0, do not divide by it
                     else:
                         obj += -(
-                            1 - (np.sum((yi - (f.slope * xi + f.intercept)) ** 2))
+                            1
+                            - (np.sum((yi - (f.slope * xi + f.intercept)) ** 2))
                         ) / (num_breakpoints + 1)
         # Penalize segments with less than min_data_points
         else:
@@ -409,6 +425,10 @@ def optimize_breakpoints(
             if xi.max() == x.max():
                 # Significance level alpha (0.05 is the default)
                 mk_results = mk.original_test(yi, alpha)
+                # The estimate of slope is divided by the mean of time lags
+                mk_results = mk_results._replace(
+                    slope=mk_results.slope / np.mean(np.diff(xi))
+                )
                 # The estimate of the intercept is calculated by use of the Conover (1980) equation
                 mk_results = mk_results._replace(
                     intercept=np.median(yi) - np.median(xi) * mk_results.slope
@@ -558,14 +578,20 @@ def segmented_regression(
                 groups,
             )
             # Concat results of the multi processing
-            df_segmented_regression = pd.concat(segmented_regression, ignore_index=True)
+            df_segmented_regression = pd.concat(
+                segmented_regression, ignore_index=True
+            )
     else:
         # Use the pd.apply function
         df_segmented_regression = groupby.apply(func).reset_index(drop=True)
     # Transform year lower and upper columns into int type
     df_segmented_regression[
         ["year_range_lower", "year_range_upper"]
-    ] = df_segmented_regression[["year_range_lower", "year_range_upper"]].astype("int")
+    ] = df_segmented_regression[
+        ["year_range_lower", "year_range_upper"]
+    ].astype(
+        "int"
+    )
     # Add information regarding the obj function used
     df_segmented_regression["obj_function"] = function
     # Add information regarding the significance level
@@ -633,7 +659,8 @@ def calculate_changes(
             # The last column is the mean of the corresponding values of the year range
             if year_range:
                 df[column] = df.loc[
-                    (df["year"] >= year_range[0]) & (df["year"] <= year_range[1]),
+                    (df["year"] >= year_range[0])
+                    & (df["year"] <= year_range[1]),
                     value_column,
                 ].mean()
             # The last column is the mean of the previous year values
@@ -821,7 +848,9 @@ def merge_analysis(df_change, df_segmented_regression):
 
     """
     # Columns in common for the two dataframes
-    join_columns = list(set(df_change.columns) & set(df_segmented_regression.columns))
+    join_columns = list(
+        set(df_change.columns) & set(df_segmented_regression.columns)
+    )
     # Columns not to be considered for the join
     remove_columns = ["year_range_lower", "year_range_upper"]
     # Final join columns
