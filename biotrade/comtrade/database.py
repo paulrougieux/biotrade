@@ -54,7 +54,7 @@ import re
 
 # Third party modules
 import comtradeapicall
-from sqlalchemy import Integer, Float, Text, UniqueConstraint
+from sqlalchemy import Integer, Float, Text, UniqueConstraint, DateTime, Boolean
 from sqlalchemy import Table, Column, MetaData, and_, or_
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.schema import CreateSchema
@@ -100,6 +100,18 @@ class DatabaseComtrade(Database):
         # Describe table metadata and create them if they don't exist
         # Product table
         self.product = self.describe_product_table(name="product")
+        # Reporter/Partner table
+        self.reporter = self.describe_country_table(name="reporter")
+        self.partner = self.describe_country_table(name="partner")
+        # Additional info tables
+        self.quantity = self.describe_additional_info_table(
+            name="quantity_unit"
+        )
+        self.flow = self.describe_additional_info_table(name="flow")
+        self.transport = self.describe_additional_info_table(
+            name="modality_of_transport"
+        )
+        self.custom = self.describe_additional_info_table(name="custom")
         # Trade tables with data at the HS 6 digit level
         self.monthly = self.describe_trade_table(name="monthly")
         self.yearly = self.describe_trade_table(name="yearly")
@@ -107,6 +119,12 @@ class DatabaseComtrade(Database):
         self.yearly_hs2 = self.describe_trade_table(name="yearly_hs2")
         self.tables = {
             "product": self.product,
+            "reporter": self.reporter,
+            "partner": self.partner,
+            "quantity_unit": self.quantity,
+            "flow": self.flow,
+            "modality_of_transport": self.transport,
+            "custom": self.custom,
             "monthly": self.monthly,
             "yearly": self.yearly,
             "yearly_hs2": self.yearly_hs2,
@@ -114,6 +132,49 @@ class DatabaseComtrade(Database):
         # Create tables if they don't exist
         for table in self.tables.values():
             self.create_if_not_existing(table)
+
+    def describe_country_table(self, name):
+        """Define the metadata of a table containing reporter/partner codes
+
+        :param str table: name of the table to create
+        """
+        # Additional columns depending on the specific table
+        table_dict = {
+            "reporter": [
+                Column("reporter_code", Integer),
+                Column("reporter", Text),
+                Column("reporter_note", Text),
+                Column("reporter_iso2", Text),
+                Column("reporter_iso", Text),
+                UniqueConstraint(
+                    "reporter_code",
+                ),
+            ],
+            "partner": [
+                Column("partner_code", Integer),
+                Column("partner", Text),
+                Column("partner_note", Text),
+                Column("partner_iso2", Text),
+                Column("partner_iso", Text),
+                UniqueConstraint(
+                    "partner_code",
+                ),
+            ],
+        }
+        # Common structure of the table
+        table = Table(
+            name,
+            self.metadata,
+            Column("id", Integer),
+            Column("text", Text),
+            Column("entry_effective_date", DateTime),
+            Column("is_group", Boolean),
+            Column("entry_expired_date", DateTime),
+            schema=self.schema,
+        )
+        for col in table_dict[name]:
+            table.append_column(col)
+        return table
 
     def describe_product_table(self, name):
         """Define the metadata of a table containing product codes
@@ -133,6 +194,53 @@ class DatabaseComtrade(Database):
             ),
             schema=self.schema,
         )
+        return table
+
+    def describe_additional_info_table(self, name):
+        """Define the metadata of tables containing additional info
+
+        :param str table: name of the table to create
+        """
+        # Additional columns depending on the specific table
+        table_dict = {
+            "quantity_unit": [
+                Column("unit_code", Integer),
+                Column("unit_abbreviation", Text),
+                Column("unit", Text),
+                UniqueConstraint(
+                    "unit_code",
+                ),
+            ],
+            "flow": [
+                Column("flow_code", Text),
+                Column("flow", Text),
+                UniqueConstraint(
+                    "flow_code",
+                ),
+            ],
+            "modality_of_transport": [
+                Column("mode_of_transport_code", Integer),
+                Column("mode_of_transport", Text),
+                UniqueConstraint(
+                    "mode_of_transport_code",
+                ),
+            ],
+            "custom": [
+                Column("custom_code", Text),
+                Column("custom", Text),
+                UniqueConstraint(
+                    "custom_code",
+                ),
+            ],
+        }
+        # Common structure of the table
+        table = Table(
+            name,
+            self.metadata,
+            schema=self.schema,
+        )
+        for col in table_dict[name]:
+            table.append_column(col)
         return table
 
     def describe_trade_table(self, name):
@@ -393,7 +501,9 @@ class DatabaseComtrade(Database):
         )
         # rename flow column content to snake case using the compiled regex
         flow_data["flow"] = (
-            flow_data["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+            flow_data["flow"]
+            .str.replace(regex_pat, "_", regex=True)
+            .str.lower()
         )
         # mode of transport data
         mot_data = (
@@ -407,7 +517,9 @@ class DatabaseComtrade(Database):
             )
         )
         # custom procedure data
-        customs_data = comtradeapicall.getReference("customs")[["id", "text"]].rename(
+        customs_data = comtradeapicall.getReference("customs")[
+            ["id", "text"]
+        ].rename(
             columns={
                 "id": "customs_proc_code",
                 "text": "customs",
@@ -441,7 +553,10 @@ class DatabaseComtrade(Database):
             stmt = stmt.where(table.c.product_code.in_(product_code))
         if product_code_start is not None:
             stmt = stmt.where(
-                or_(table.c.product_code.ilike(f"{c}%") for c in product_code_start)
+                or_(
+                    table.c.product_code.ilike(f"{c}%")
+                    for c in product_code_start
+                )
             )
         if flow is not None:
             # Rename flow list to snake case using the compiled regex
@@ -485,7 +600,9 @@ class DatabaseComtrade(Database):
         # Rename column content to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
         if "flow" in df.columns:
-            df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+            df["flow"] = (
+                df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
+            )
             # Remove the plural "s"
             df["flow"] = df["flow"].str.replace("s", "", regex=True)
         # TODO: Change period to a date time object

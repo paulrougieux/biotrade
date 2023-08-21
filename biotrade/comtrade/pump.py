@@ -37,6 +37,7 @@ import pytz
 import os
 import re
 import time
+from collections import OrderedDict
 
 try:
     import requests
@@ -801,28 +802,96 @@ class Pump:
             >>> comtrade.pump.update_db_parameter()
 
         """
-        # Reload the data from Comtrade
-        hs = comtradeapicall.getReference("cmd:HS")
-        hs = hs.rename(
-            columns={
-                "id": "product_code",
-                "text": "product_description",
-                "isLeaf": "is_leaf",
-                "aggrLevel": "aggregate_level",
-            }
-        )
-        duplicated = hs.duplicated("product_code")
-        if any(duplicated):
+        # Dict for mapping table names and columns
+        table_name_dict = {
+            "cmd:HS": "product",
+            "reporter": "reporter",
+            "partner": "partner",
+            "qtyunit": "quantity_unit",
+            "flow": "flow",
+            "mot": "modality_of_transport",
+            "customs": "custom",
+        }
+        # First element of the ordered dict is the unique constraint column of the related table
+        table_col_dict = {
+            "cmd:HS": OrderedDict(
+                {
+                    "id": "product_code",
+                    "text": "product_description",
+                    "isLeaf": "is_leaf",
+                    "aggrLevel": "aggregate_level",
+                }
+            ),
+            "reporter": OrderedDict(
+                {
+                    "reporterCode": "reporter_code",
+                    "reporterDesc": "reporter",
+                    "reporterNote": "reporter_note",
+                    "reporterCodeIsoAlpha2": "reporter_iso2",
+                    "reporterCodeIsoAlpha3": "reporter_iso",
+                    "entryEffectiveDate": "entry_effective_date",
+                    "isGroup": "is_group",
+                    "entryExpiredDate": "entry_expired_date",
+                }
+            ),
+            "partner": OrderedDict(
+                {
+                    "PartnerCode": "partner_code",
+                    "PartnerDesc": "partner",
+                    "partnerNote": "partner_note",
+                    "PartnerCodeIsoAlpha2": "partner_iso2",
+                    "PartnerCodeIsoAlpha3": "partner_iso",
+                    "entryEffectiveDate": "entry_effective_date",
+                    "isGroup": "is_group",
+                    "entryExpiredDate": "entry_expired_date",
+                }
+            ),
+            "qtyunit": OrderedDict(
+                {
+                    "qtyCode": "unit_code",
+                    "qtyAbbr": "unit_abbreviation",
+                    "qtyDescription": "unit",
+                }
+            ),
+            "flow": OrderedDict({"id": "flow_code", "text": "flow"}),
+            "mot": OrderedDict(
+                {
+                    "id": "mode_of_transport_code",
+                    "text": "mode_of_transport",
+                }
+            ),
+            "customs": OrderedDict(
+                {
+                    "id": "custom_code",
+                    "text": "custom",
+                }
+            ),
+        }
+        # Load data of complementary Comtrade tables
+        for table in table_col_dict.keys():
+            df = comtradeapicall.getReference(table)
+            df = df.rename(columns=table_col_dict[table])
+            # Delete existing data in the database
             self.logger.info(
-                "Dropping the following duplicated rows:\n %s", hs[duplicated]
+                "Dropping existing %s table.", table_name_dict[table]
             )
-            hs = hs[~duplicated]
-        # Delete existing data in the database
-        self.logger.info("Dropping existing product table rows.")
-        self.db.tables["product"].delete().execute()
-        # Store the data in the database
-        self.db.append(hs, "product", drop_description=False)
-        self.logger.info("The product table has been updated.")
+            self.db.tables[table_name_dict[table]].delete().execute()
+            # Remove potential duplicated id codes of the new data
+            duplicated = df.duplicated(
+                list(table_col_dict[table].items())[0][1]
+            )
+            if any(duplicated):
+                self.logger.info(
+                    "Dropping the following duplicated rows from %s new data:\n %s",
+                    table_name_dict[table],
+                    df[duplicated],
+                )
+                df = df[~duplicated]
+            # Store the data in the database
+            self.db.append(df, table_name_dict[table], drop_description=False)
+            self.logger.info(
+                "The %s table has been updated.", table_name_dict[table]
+            )
 
     def write_log(
         self,
