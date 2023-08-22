@@ -91,9 +91,13 @@ def replace_exclusively(df, code_column, code_dict, na_value=-1):
     # Extract the corresponding names to get a nicer warning when available
     name_column = code_column.replace("_code", "")
     if name_column in df.columns:
-        missing = df.loc[~selector, [code_column, name_column]].drop_duplicates()
+        missing = df.loc[
+            ~selector, [code_column, name_column]
+        ].drop_duplicates()
     else:
-        missing = df.loc[~selector, [code_column]].drop_duplicates().drop_duplicates()
+        missing = (
+            df.loc[~selector, [code_column]].drop_duplicates().drop_duplicates()
+        )
     # If there are missing values display a warning and set the code to na_value
     if not missing.empty:
         warnings.warn(
@@ -102,7 +106,9 @@ def replace_exclusively(df, code_column, code_dict, na_value=-1):
         )
         # Add missing keys to the dictionary and map them to the na_value
         code_dict = code_dict.copy()
-        code_dict.update(dict(zip(missing[code_column], [na_value] * len(missing))))
+        code_dict.update(
+            dict(zip(missing[code_column], [na_value] * len(missing)))
+        )
     return df[code_column].replace(code_dict)
 
 
@@ -137,11 +143,15 @@ def transform_comtrade_using_faostat_codes(
     if faostat_code:
         # Define the mapping codes of Faostat
         if comtrade_code is None:
-            selector = comtrade_faostat_mapping["faostat_code"].isin(faostat_code)
+            selector = comtrade_faostat_mapping["faostat_code"].isin(
+                faostat_code
+            )
             product_mapping = comtrade_faostat_mapping[selector]
             comtrade_code = product_mapping["comtrade_code"]
     elif comtrade_code is None:
-        raise ValueError("You need to specify at least a faostat or comtrade code")
+        raise ValueError(
+            "You need to specify at least a faostat or comtrade code"
+        )
     # 2. Load Comtrade data for the corresponding codes
     df_wide = comtrade.db.select(comtrade_table, product_code=comtrade_code)
     # Replace Comtrade country codes by the FAOSTAT country codes
@@ -150,7 +160,9 @@ def transform_comtrade_using_faostat_codes(
     df_wide["reporter_code"] = replace_exclusively(
         df_wide, "reporter_code", country_dict
     )
-    df_wide["partner_code"] = replace_exclusively(df_wide, "partner_code", country_dict)
+    df_wide["partner_code"] = replace_exclusively(
+        df_wide, "partner_code", country_dict
+    )
     # Monthly and Yearly Comtrade data may slightly differ for country names. Use Faostat country names for consistency
     country_table = faostat.db.select("country")
     df_wide = df_wide.merge(
@@ -192,13 +204,17 @@ def transform_comtrade_using_faostat_codes(
         value_name="value",
     )
     # Add units
-    df["unit"] = df["element"].replace({"net_weight": "kg", "trade_value": "usd"})
+    df["unit"] = df["element"].replace(
+        {"net_weight": "kg", "trade_value": "usd"}
+    )
     # A query of the Comtrade monthly data shows that the "quantity" column is always empty
     #     select * from raw_comtrade.monthly where quantity is not null limit 4;
     # Returns 0 rows
     # Rename element="net_weight" to "quantity" to be similar to FAOSTAT
     df["element"] = (
-        df["flow"].str.lower().replace("-", "_", regex=True) + "_" + df["element"]
+        df["flow"].str.lower().replace("-", "_", regex=True)
+        + "_"
+        + df["element"]
     )
     df["element"] = (
         df["element"]
@@ -211,7 +227,9 @@ def transform_comtrade_using_faostat_codes(
         product_dict = product_mapping.set_index("comtrade_code").to_dict()[
             "faostat_code"
         ]
-        df["product_code"] = replace_exclusively(df, "product_code", product_dict)
+        df["product_code"] = replace_exclusively(
+            df, "product_code", product_dict
+        )
         # The "flag" column is kept out of the index so lines with different flags can be aggregated
         index = [
             "reporter_code",
@@ -292,14 +310,20 @@ def merge_faostat_comtrade(
     # 1. Load FAOSTAT bilateral trade data for the given codes
     if faostat_code:
         df_faostat = faostat.db.select(faostat_table, product_code=faostat_code)
-        product_names = df_faostat[["product_code", "product"]].drop_duplicates()
+        product_names = df_faostat[
+            ["product_code", "product"]
+        ].drop_duplicates()
         # Convert trade values from 1000 USD to USD
         selector = df_faostat["unit"] == "1000 US$"
-        df_faostat.loc[selector, "value"] = df_faostat.loc[selector, "value"] * 1e3
+        df_faostat.loc[selector, "value"] = (
+            df_faostat.loc[selector, "value"] * 1e3
+        )
         df_faostat.loc[selector, "unit"] = "usd"
         # Convert tonnes to kg
         selector = df_faostat["unit"] == "tonnes"
-        df_faostat.loc[selector, "value"] = df_faostat.loc[selector, "value"] * 1e3
+        df_faostat.loc[selector, "value"] = (
+            df_faostat.loc[selector, "value"] * 1e3
+        )
         df_faostat.loc[selector, "unit"] = "kg"
     else:
         df_faostat = pandas.DataFrame(
@@ -347,16 +371,20 @@ def merge_faostat_comtrade(
         # be advanced countries which reported January 2022, but other countries
         # which still have their last reporting period as June 2021, or even
         # further back in 2020.
-        df_comtrade = df_comtrade.copy()  # .query("year >= year.max() - 3").copy()
-        df_comtrade["max_period"] = df_comtrade.groupby("reporter")["period"].transform(
-            max
-        )
+        df_comtrade = (
+            df_comtrade.copy()
+        )  # .query("year >= year.max() - 3").copy()
+        df_comtrade["max_period"] = df_comtrade.groupby("reporter")[
+            "period"
+        ].transform(max)
         df_comtrade["last_month"] = df_comtrade["max_period"] % 100
         df_comtrade["previous_year"] = df_comtrade["max_period"] // 100 - 1
         # For the special case of December, last year stays the same
         # last month is zero so that 0+1 becomes January
         is_december = df_comtrade["last_month"] == 12
-        df_comtrade.loc[is_december, "previous_year"] = df_comtrade["max_period"] // 100
+        df_comtrade.loc[is_december, "previous_year"] = (
+            df_comtrade["max_period"] // 100
+        )
         df_comtrade.loc[is_december, "last_month"] = 0
         df_comtrade["max_minus_12"] = (
             df_comtrade["previous_year"] * 100 + df_comtrade["last_month"] + 1
@@ -365,7 +393,9 @@ def merge_faostat_comtrade(
         df_recent["year"] = df_recent["previous_year"] + 1
         df_recent_agg = df_recent.groupby(index)["value"].agg(value_est=sum)
         # Combine the aggregated yearly values with the estimate for the last year
-        df = pandas.concat([df_comtrade_agg, df_recent_agg], axis=1).reset_index()
+        df = pandas.concat(
+            [df_comtrade_agg, df_recent_agg], axis=1
+        ).reset_index()
     else:
         # Add column value estimation with nan values since yearly data are not estimated and drop column period
         df = df_comtrade
@@ -389,11 +419,12 @@ def merge_faostat_comtrade(
     # Retrieve element codes of Faostat db
     for table_name in ["crop_trade", "forestry_trade"]:
         table = db.tables[table_name]
-        element_code = pandas.read_sql_query(
+        element_code = db.read_sql_query(
             table.select()
             .distinct(table.c.element, table.c.element_code, table.c.unit)
-            .with_only_columns([table.c.element, table.c.element_code, table.c.unit]),
-            db.engine,
+            .with_only_columns(
+                table.c.element, table.c.element_code, table.c.unit
+            )
         )
         element_code_faostat = pandas.concat(
             [element_code_faostat, element_code], ignore_index=True
@@ -422,9 +453,9 @@ def merge_faostat_comtrade(
     df_concat = df_concat[cols]
     # Raise a warning if there are duplicates of country names associated to the same country code
     for col in ["reporter", "partner"]:
-        country_code_unique = df_concat.drop_duplicates(subset=[col, col + "_code"])[
-            [col, col + "_code"]
-        ]
+        country_code_unique = df_concat.drop_duplicates(
+            subset=[col, col + "_code"]
+        )[[col, col + "_code"]]
         duplicates = country_code_unique[
             country_code_unique.duplicated(subset=col + "_code", keep=False)
         ]
