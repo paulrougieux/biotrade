@@ -53,10 +53,9 @@ import pandas
 import re
 
 # Third party modules
-import comtradeapicall
 from sqlalchemy import Integer, Float, Text, UniqueConstraint, DateTime, Boolean
 from sqlalchemy import Table, Column, MetaData, and_, or_
-from sqlalchemy import create_engine, inspect
+from sqlalchemy import create_engine, inspect, select, join
 from sqlalchemy.schema import CreateSchema
 
 # Internal modules
@@ -226,10 +225,10 @@ class DatabaseComtrade(Database):
                 ),
             ],
             "custom": [
-                Column("custom_code", Text),
-                Column("custom", Text),
+                Column("custom_proc_code", Text),
+                Column("custom_proc", Text),
                 UniqueConstraint(
-                    "custom_code",
+                    "custom_proc_code",
                 ),
             ],
         }
@@ -281,7 +280,7 @@ class DatabaseComtrade(Database):
             Column("reporter_code", Integer, index=True),
             Column("partner_code", Integer, index=True),
             Column("partner_2_code", Integer),
-            Column("customs_proc_code", Text),
+            Column("custom_proc_code", Text),
             Column("mode_of_supply_code", Text),
             Column("mode_of_transport_code", Integer),
             Column("product_code", Text, index=True),
@@ -451,7 +450,6 @@ class DatabaseComtrade(Database):
             >>> comtrade.db.select("monthly", product_code="440791")
 
         """
-        table = self.tables[table]
         # Change character or integer arguments to lists suitable for a
         # column.in_() clause or for a list comprehension.
         if isinstance(reporter, str):
@@ -468,83 +466,39 @@ class DatabaseComtrade(Database):
             product_code_start = [product_code_start]
         if isinstance(flow, str):
             flow = [flow]
-        # Build the select statement
-        stmt = table.select()
-        # Define complementary data and columns to be selected and renamed
-        column_dict = {
-            "reporterCode": "reporter_code",
-            "reporterDesc": "reporter",
-            "reporterCodeIsoAlpha3": "reporter_iso",
-            "PartnerCode": "partner_code",
-            "PartnerDesc": "partner",
-            "PartnerCodeIsoAlpha3": "partner_iso",
-            "qtyCode": "unit_code",
-            "qtyDescription": "unit",
-        }
-        # reporter data
-        reporter_data = comtradeapicall.getReference("reporter")[
-            ["reporterCode", "reporterDesc", "reporterCodeIsoAlpha3"]
-        ].rename(columns=column_dict)
-        # partner data
-        partner_data = comtradeapicall.getReference("partner")[
-            ["PartnerCode", "PartnerDesc", "PartnerCodeIsoAlpha3"]
-        ].rename(columns=column_dict)
-        # quantity data
-        quantity_data = comtradeapicall.getReference("qtyunit")[
-            ["qtyCode", "qtyDescription"]
-        ].rename(columns=column_dict)
-        # define a compiled regex
-        regex_pat = re.compile(r"\W+")
-        # flow data
-        flow_data = comtradeapicall.getReference("flow")[["id", "text"]].rename(
-            columns={"id": "flow_code", "text": "flow"}
-        )
-        # rename flow column content to snake case using the compiled regex
-        flow_data["flow"] = (
-            flow_data["flow"]
-            .str.replace(regex_pat, "_", regex=True)
-            .str.lower()
-        )
-        # mode of transport data
-        mot_data = (
-            comtradeapicall.getReference("mot")[["id", "text"]]
-            .astype({"id": int})
-            .rename(
-                columns={
-                    "id": "mode_of_transport_code",
-                    "text": "mode_of_transport",
-                }
-            )
-        )
-        # custom procedure data
-        customs_data = comtradeapicall.getReference("customs")[
-            ["id", "text"]
-        ].rename(
-            columns={
-                "id": "customs_proc_code",
-                "text": "customs",
-            }
-        )
+        # Select complementary tables
+        reporter_table = self.tables["reporter"]
+        partner_table = self.tables["partner"]
+        quantity_table = self.tables["quantity_unit"]
+        flow_table = self.tables["flow"]
+        transport_table = self.tables["modality_of_transport"]
+        custom_table = self.tables["custom"]
         if reporter is not None:
-            # Obtain codes from reporter data
-            reporter = reporter_data[
-                reporter_data.reporter.isin(reporter)
-            ].reporter_code.tolist()
-            # Add already defined reporter codes
-            if isinstance(reporter_code, list):
-                reporter_code += reporter
-            else:
-                reporter_code = reporter
+            # Obtain codes from reporter table
+            stmt = reporter_table.select().where(
+                reporter_table.c.reporter.in_(reporter)
+            )
+            # Define the new select table
+            reporter_table = stmt.subquery()
         if partner is not None:
-            # Obtain codes from partner data
-            partner = partner_data[
-                partner_data.partner.isin(partner)
-            ].partner_code.tolist()
-            # Add already defined reporter codes
-            if isinstance(partner_code, list):
-                partner_code += partner
-            else:
-                partner_code = partner
+            # Obtain codes from partner table
+            stmt = partner_table.select().where(
+                partner_table.c.partner.in_(partner)
+            )
+            # Define the new select table
+            partner_table = stmt.subquery()
+        if flow is not None:
+            # Define a compiled regex
+            regex_pat = re.compile(r"\W+")
+            # Rename flow list to snake case using the compiled regex
+            flow = [regex_pat.sub("_", item).lower() for item in flow]
+            # Obtain codes from flow table
+            stmt = flow_table.select().where(flow_table.c.flow.in_(flow))
+            # Define the new select table
+            flow_table = stmt.subquery()
+        # Build the main select statement
+        table = self.tables[table]
+        stmt = table.select()
         if reporter_code is not None:
             stmt = stmt.where(table.c.reporter_code.in_(reporter_code))
         if partner_code is not None:
@@ -554,31 +508,56 @@ class DatabaseComtrade(Database):
         if product_code_start is not None:
             stmt = stmt.where(
                 or_(
-                    table.c.product_code.ilike(f"{c}%")
-                    for c in product_code_start
+                    table.c.product_code.ilike(f"{code}%")
+                    for code in product_code_start
                 )
             )
-        if flow is not None:
-            # Rename flow list to snake case using the compiled regex
-            flow = [regex_pat.sub("_", item).lower() for item in flow]
-            # Obtain codes from flow data
-            flow_code = flow_data[flow_data.flow.isin(flow)].flow_code.tolist()
-            stmt = stmt.where(table.c.flow_code.in_(flow_code))
         if period_start is not None:
             stmt = stmt.where(table.c.period >= period_start)
         if period_end is not None:
             stmt = stmt.where(table.c.period <= period_end)
-        # Query the database and return a data frame
-        df = self.read_sql_query(stmt)
-        # Merge with complementary data
-        df = (
-            df.merge(reporter_data, on="reporter_code", how="left")
-            .merge(partner_data, on="partner_code", how="left")
-            .merge(quantity_data, on="unit_code", how="left")
-            .merge(flow_data, on="flow_code", how="left")
-            .merge(mot_data, on="mode_of_transport_code", how="left")
-            .merge(customs_data, on="customs_proc_code", how="left")
+        # Subquery results
+        table = stmt.subquery()
+        # Join tables
+        join_table = select(
+            table,
+            reporter_table.c.reporter,
+            reporter_table.c.reporter_iso,
+            partner_table.c.partner,
+            partner_table.c.partner_iso,
+            quantity_table.c.unit,
+            flow_table.c.flow,
+            transport_table.c.mode_of_transport,
+            custom_table.c.custom_proc,
+        ).select_from(
+            table.join(
+                reporter_table,
+                table.c.reporter_code == reporter_table.c.reporter_code,
+            )
+            .join(
+                partner_table,
+                table.c.partner_code == partner_table.c.partner_code,
+            )
+            .join(
+                quantity_table,
+                table.c.unit_code == quantity_table.c.unit_code,
+            )
+            .join(
+                flow_table,
+                table.c.flow_code == flow_table.c.flow_code,
+            )
+            .join(
+                transport_table,
+                table.c.mode_of_transport_code
+                == transport_table.c.mode_of_transport_code,
+            )
+            .join(
+                custom_table,
+                table.c.custom_proc_code == custom_table.c.custom_proc_code,
+            )
         )
+        # Query the database and return a data frame
+        df = self.read_sql_query(join_table)
         return df
 
     def select_long(self, *args, **kwargs):

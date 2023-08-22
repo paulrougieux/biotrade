@@ -862,8 +862,8 @@ class Pump:
             ),
             "customs": OrderedDict(
                 {
-                    "id": "custom_code",
-                    "text": "custom",
+                    "id": "custom_proc_code",
+                    "text": "custom_proc",
                 }
             ),
         }
@@ -871,6 +871,14 @@ class Pump:
         for table in table_col_dict.keys():
             df = comtradeapicall.getReference(table)
             df = df.rename(columns=table_col_dict[table])
+            if "flow" in df.columns:
+                # Rename column content to snake case using a compiled regex
+                regex_pat = re.compile(r"\W+")
+                df["flow"] = (
+                    df["flow"]
+                    .str.replace(regex_pat, "_", regex=True)
+                    .str.lower()
+                )
             # Delete existing data in the database
             self.logger.info(
                 "Dropping existing %s table.", table_name_dict[table]
