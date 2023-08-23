@@ -21,7 +21,7 @@ with open(readme_path, encoding="utf-8") as handle:
 # Call setup #
 setup(
     name="biotrade",
-    version="0.2.6",
+    version="0.2.7",
     description="Agriculture and forestry statistics.",
     license="MIT",
     url="https://gitlab.com/bioeconomy/forobs/biotrade/",
