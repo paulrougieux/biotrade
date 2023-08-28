@@ -428,7 +428,7 @@ class DatabaseComtrade(Database):
         period_end=None,
     ):
         """
-        Select comtrade trade data for the given arguments
+        Select comtrade trade data for the given arguments, performing a join with additional information tables
 
         :param str table: name of the database table to select from
         :param list or str reporter: list of reporter names
@@ -558,6 +558,70 @@ class DatabaseComtrade(Database):
         )
         # Query the database and return a data frame
         df = self.read_sql_query(join_table)
+        return df
+
+    def select_simple(
+        self,
+        table,
+        reporter_code=None,
+        partner_code=None,
+        product_code=None,
+        product_code_start=None,
+        period_start=None,
+        period_end=None,
+    ):
+        """
+        Select comtrade trade data for the given arguments
+
+        :param str table: name of the database table to select from
+        :param list or int reporter_code: list of reporter codes
+        :param list or int partner_code: list of partner codes
+        :param list or int product_code: list of product codes
+            Exact matches of product codes
+        :param list or int product_code_start: list of product codes
+            Partial matches of all products that start with this code
+        :param int period_start: filter on start period data
+        :param int period_end: filter on end period data
+        :return: A data frame of trade flows
+
+        For example select monthly time series of Oak sawnwood trade
+
+            >>> from biotrade.comtrade import comtrade
+            >>> comtrade.db.select_simple("monthly", product_code="440791")
+
+        """
+        # Change character or integer arguments to lists suitable for a
+        # column.in_() clause or for a list comprehension.
+        if isinstance(reporter_code, int):
+            reporter_code = [reporter_code]
+        if isinstance(partner_code, int):
+            partner_code = [partner_code]
+        if isinstance(product_code, str):
+            product_code = [product_code]
+        if isinstance(product_code_start, str):
+            product_code_start = [product_code_start]
+        # Build the main select statement
+        table = self.tables[table]
+        stmt = table.select()
+        if reporter_code is not None:
+            stmt = stmt.where(table.c.reporter_code.in_(reporter_code))
+        if partner_code is not None:
+            stmt = stmt.where(table.c.partner_code.in_(partner_code))
+        if product_code is not None:
+            stmt = stmt.where(table.c.product_code.in_(product_code))
+        if product_code_start is not None:
+            stmt = stmt.where(
+                or_(
+                    table.c.product_code.ilike(f"{code}%")
+                    for code in product_code_start
+                )
+            )
+        if period_start is not None:
+            stmt = stmt.where(table.c.period >= period_start)
+        if period_end is not None:
+            stmt = stmt.where(table.c.period <= period_end)
+        # Query the database and return a data frame
+        df = self.read_sql_query(stmt)
         return df
 
     def select_long(self, *args, **kwargs):
