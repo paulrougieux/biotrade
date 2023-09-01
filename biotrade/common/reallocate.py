@@ -13,10 +13,10 @@ according to the share of trade coming from those countries into B. Quantities
 are expressed in weight equivalent of the primary commodity. The conversion to
 a footprint in terms of area occurs at a later stage.
 
-Example: see obs3df_methods trade_share_reallocation.py
+Example use: see obs3df_methods trade_share_reallocation.py
 
 TODO: hard code the conversion factors and value share for a small list of
-      selected products and paste the example here.
+      selected products and share a reproducible example here.
 
 """
 
@@ -140,10 +140,12 @@ def reallocate(
 ):
     """Perform all steps of the reallocation of secondary product production in
     primary commodity equivalent
-    param: prim_prod, crop production (for example sunflower seeds)
-    param: prim_trade, crop trade (for example sunflower seeds)
-    param: process_prod, production of processed products (for example sunflower oil)
+    param: prim_prod, crop production (for example sunflower seeds production)
+    param: prim_trade, crop trade (for example sunflower seeds trade)
+    param: process_prod, production of processed products (sunflower oil production)
     param: n_steps number of steps
+
+    Returns a dictionary with trade and production for each step.
     """
     product_to_primary_product = {
         "product_code": "primary_product_code",
@@ -166,6 +168,7 @@ def reallocate(
     print(msg)
     # Subsequent steps
     for step in range(2, n_steps + 1):
+        # TODO: remove this and keep disaggregated
         df = aggregate_on_partners(real[("trade", step - 1)], step)
         df[f"primary_eq_prod_{step}"], df[f"primary_eq_imp_{step}"] = split_prod_imp(
             df, prod_share, step
