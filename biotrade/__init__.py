@@ -56,9 +56,13 @@ Some paths are defined at the top level:
  codes and country codes mapping tables in `biotrade/config data`.
 
  - `data_dir` contains the location of the directory where data is stored (if
- SQLite databases are used, they will be stored there as well). By default
- it is located in the user's home directory, but this can be changed with
- the environment variable BIOTRADE_DATA.
+   SQLite databases are used, they will be stored there as well). By default it
+   is located in the user's home directory, but this can be changed with the
+   environment variable BIOTRADE_DATA. To check that you have added the
+   environment variable correctly, you can call the following from python:
+
+        >>> import os
+        >>> os.environ["BIOTRADE_DATA"]
 
  - `database_url` is equal to `None` by default and then a local on-disk SQLite
  database is used. It can be changed to a PostGreSQL database through the
