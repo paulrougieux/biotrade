@@ -65,6 +65,10 @@ Some paths are defined at the top level:
         >>> import os
         >>> os.environ["BIOTRADE_DATA"]
 
+ - For more information on how to set up environment variables in Windows, Mac
+   or Unix see
+   https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them
+
  - `database_url` is equal to `None` by default and then a local on-disk SQLite
  database is used. It can be changed to a PostGreSQL database through the
  environment variable BIOTRADE_DATABASE_URL that specifies the location of the
