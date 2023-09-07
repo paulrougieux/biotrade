@@ -165,7 +165,7 @@ def agg_trade_eu_row(
         if "partner_code" not in df.columns:
             index.remove("partner_code")
     # Aggregate
-    df_agg = df.groupby(index, dropna=False)[value_col].agg(sum).reset_index()
+    df_agg = df.groupby(index, dropna=False)[value_col].agg("sum").reset_index()
     # When aggregating over partner groups, rename country_group to partner
     if grouping_side == "partner":
         df_agg = df_agg.rename(columns={country_group: "partner"})

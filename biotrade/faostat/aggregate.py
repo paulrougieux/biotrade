@@ -146,7 +146,7 @@ def agg_by_country_groups(df, agg_reporter=None, agg_partner=None):
             if column == f"{agg_partner}_partner"
         ]
     # Aggregate
-    df_agg = df.groupby(index, dropna=False).agg(value=("value", sum)).reset_index()
+    df_agg = df.groupby(index, dropna=False).agg(value=("value", "sum")).reset_index()
     # Check that the total value isn't changed
     np.testing.assert_allclose(
         df_agg["value"].sum(),

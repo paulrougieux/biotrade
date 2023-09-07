@@ -58,7 +58,7 @@ def compute_share_prod_imp(
         for col in code_columns(index)
         if col in df_trade.columns and col in df_prod.columns
     ]
-    df_trade_agg = df_trade.groupby(index)["import_quantity"].agg(sum).reset_index()
+    df_trade_agg = df_trade.groupby(index)["import_quantity"].agg("sum").reset_index()
     df = df_prod.merge(df_trade_agg, on=index, how="outer")
     df.fillna({"import_quantity": 0, "production": 0}, inplace=True)
     df["share_prod_imp"] = df["production"] / (df["import_quantity"] + df["production"])
