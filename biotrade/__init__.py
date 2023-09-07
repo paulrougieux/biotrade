@@ -57,8 +57,9 @@ Some paths are defined at the top level:
 
  - `data_dir` contains the location of the directory where data is stored (if
    SQLite databases are used, they will be stored there as well). By default it
-   is located in the user's home directory, but this can be changed with the
-   environment variable BIOTRADE_DATA. To check that you have added the
+   is located in the user's home directory, in a sub-directory called
+   "$HOME/repos/forobs/biotrade_data/" but this can be changed with the
+   environment variable BIOTRADE_DATA. To check that you have entered the
    environment variable correctly, you can call the following from python:
 
         >>> import os
