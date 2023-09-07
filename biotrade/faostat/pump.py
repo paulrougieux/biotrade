@@ -146,7 +146,7 @@ class Pump:
         # Mapping table used to rename columns
         self.column_names = self.parent.column_names
         # Number of lines to transfer from csv files to the database at once
-        self.chunk_size = 10**5
+        self.chunk_size = 10**7
 
     def download_zip_csv(self, zip_file_name):
         """Download a compressed csv file from the FAOSTAT website
