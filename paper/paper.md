@@ -120,8 +120,9 @@ from biotrade.faostat import faostat
 faostat.pump.update(["crop_production"])
 ```
 
-The following code loads sawnwood other (HS code 440799) and soya beans (HS code 120190)
-trade reported by Italy (reporter code 381) in 2020 from the Comtrade API:
+The following code loads sawnwood other Harmonized System (HS) code 440799 and
+soya beans (HS code 120190) trade reported by Italy (reporter code 381) in 2020
+from the Comtrade API:
 
 ```
 from biotrade.comtrade import comtrade
