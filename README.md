@@ -73,10 +73,11 @@ analysis. The data is then stored into an SQLite database (or PostgreSQL). The f
 commands download and transfer the given datasets to the database:
 
     >>> from biotrade.faostat import faostat
-    >>> faostat.pump.update(["crop_production", "crop_trade"])
-    >>> faostat.pump.update(["forestry_production", "forestry_trade", "forest_land"])
+    >>> faostat.pump.update(["crop_production", "forestry_production"])
+    >>> # Loading trade data can take a long time on slow connections
+    >>> faostat.pump.update(["crop_trade", "forestry_trade"])
     >>> faostat.pump.update(["food_balance"])
-    >>> faostat.pump.update(["land_use", "land_cover"])
+    >>> faostat.pump.update(["land_use", "land_cover", "forest_land"])
 
 List available datasets and metadata links:
 
