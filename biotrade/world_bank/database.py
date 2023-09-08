@@ -36,7 +36,7 @@ https://data.worldbank.org/indicator/NY.GDP.MKTP.KD
 import logging
 
 # Third party modules
-import pandas as pd
+import pandas
 from sqlalchemy import Integer, Float, Text, UniqueConstraint
 from sqlalchemy import Table, Column
 from sqlalchemy import MetaData
@@ -86,8 +86,10 @@ class DatabaseWorldBank(Database):
         if hasattr(self.engine.dialect, "has_schema") and callable(
             getattr(self.engine.dialect, "has_schema")
         ):
-            if not self.engine.dialect.has_schema(self.engine, self.schema):
-                self.engine.execute(CreateSchema(self.schema))
+            with self.engine.connect() as conn:
+                if not self.engine.dialect.has_schema(conn, self.schema):
+                    conn.execute(CreateSchema(self.schema))
+                    conn.commit()
 
         # Describe table metadata
         self.indicator = self.describe_indicator_table(name="indicator")
@@ -183,7 +185,8 @@ class DatabaseWorldBank(Database):
         if year_stop is not None:
             stmt = stmt.where(table.c.year <= year_stop)
         # Query the database and return a data frame
-        df = pd.read_sql_query(stmt, self.engine)
+        with self.engine.connect() as conn:
+            df = pandas.read_sql_query(stmt, conn)
         return df
 
 
