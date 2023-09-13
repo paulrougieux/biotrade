@@ -133,16 +133,23 @@ def aggregate_on_partners(df: pandas.DataFrame, step: int) -> pandas.DataFrame:
 
 
 def reallocate(
+    df: pandas.DataFrame,
     prim_prod: pandas.DataFrame,
     prim_trade: pandas.DataFrame,
-    process_prod: pandas.DataFrame,
     n_steps: int,
 ):
     """Perform all steps of the reallocation of secondary product production in
     primary commodity equivalent
+
+    The `df` argument contains the production or trade flows to be reallocated,
+    values expressed in terms of primary crop equivalent. The arguments
+    `prim_prod` and `prim_trade` argument are just used to compute the share of
+    primary crop production and import and to build the trade reallocation
+    matrix for the primary crop.
+
     param: prim_prod, crop production (for example sunflower seeds production)
     param: prim_trade, crop trade (for example sunflower seeds trade)
-    param: process_prod, production of processed products (sunflower oil production)
+    param: df, production of processed products (sunflower oil production)
     param: n_steps number of steps
 
     Returns a dictionary with trade and production for each step.
@@ -158,7 +165,7 @@ def reallocate(
     real = dict()
     trade["imp_share_by_p"] = compute_share_by_partners(trade)
     # First step
-    df = process_prod.copy()
+    df = df.copy()
     df["primary_eq_prod_1"], df["primary_eq_imp_1"] = split_prod_imp(df, prod_share, 1)
     real[("trade", 1)] = allocate_by_partners(df_prod=df, df_trade=trade, step=1)
     real[("prod", 1)] = df
