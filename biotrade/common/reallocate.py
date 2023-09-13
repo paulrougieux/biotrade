@@ -97,9 +97,16 @@ def allocate_by_partners(
     step: int,
 ) -> pandas.DataFrame:
     """Reallocate a quantity, by splitting it between different trade partners"""
+    df_trade = df_trade.copy()  # We don't change the input
     # Merge index with optional code columns
-    index = ["reporter", "primary_product", "year"]
-    index += [col for col in code_columns(index) if col in df_prod.columns]
+    index = ["primary_product", "year"]
+    if step == 1:
+        index += ["reporter"]
+    else:
+        index += [f"partner_{step-1}"]
+        df_trade.rename(columns={"reporter": f"partner_{step-1}"}, inplace=True)
+    index += [col for col in code_columns(index) if col in df_trade.columns]
+    df_trade.rename(columns={"partner": f"partner_{step}"}, inplace=True)
     df = df_prod.merge(df_trade, on=index, how="left")
     var_alloc = f"primary_eq_imp_alloc_{step}"
     var_agg = f"primary_eq_imp_{step}"
@@ -164,6 +171,10 @@ def reallocate(
     trade = prim_trade.rename(columns=product_to_primary_product).copy()
     real = dict()
     trade["imp_share_by_p"] = compute_share_by_partners(trade)
+    # Drop these columns to avoid having them added at each step
+    trade.drop(
+        columns=["import_quantity", "reporter_code", "partner_code"], inplace=True
+    )
     # First step
     df = df.copy()
     df["primary_eq_prod_1"], df["primary_eq_imp_1"] = split_prod_imp(df, prod_share, 1)
@@ -175,8 +186,12 @@ def reallocate(
     print(msg)
     # Subsequent steps
     for step in range(2, n_steps + 1):
-        # TODO: remove this and keep disaggregated
-        df = aggregate_on_partners(real[("trade", step - 1)], step)
+        df = real[("trade", step - 1)]
+        # Keep only rows above threshold
+        selector = df[f"primary_eq_imp_alloc_{step - 1}"] > 1
+        df = df.loc[selector].copy()
+        df[f"primary_eq_{step - 1 }"] = df[f"primary_eq_imp_{step - 1 }"]
+        df.drop(columns="imp_share_by_p", inplace=True)
         df[f"primary_eq_prod_{step}"], df[f"primary_eq_imp_{step}"] = split_prod_imp(
             df, prod_share, step
         )
