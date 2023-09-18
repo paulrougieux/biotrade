@@ -246,9 +246,15 @@ df = df[
     & (df.element == "export_quantity")
     & (df.year > 2010)
 ]
-df_pivot = df.pivot(index=["reporter", "year", "partner"], columns="source", values="value")
+df_pivot = df.pivot(
+    index=["reporter", "year", "partner"], columns="source", values="value"
+)
 fig, ax = plt.subplots()
-ax.axline([ax.get_xlim()[0], ax.get_ylim()[0]], [ax.get_xlim()[1], ax.get_ylim()[1]], color='r')
+ax.axline(
+    [ax.get_xlim()[0], ax.get_ylim()[0]],
+    [ax.get_xlim()[1], ax.get_ylim()[1]],
+    color="r",
+)
 ax.scatter(df_pivot.faostat / 1000, df_pivot.comtrade / 1000)
 plt.xlabel("Faostat [tonnes]")
 plt.ylabel("Comtrade [tonnes]")
@@ -276,7 +282,8 @@ palm_oil = faostat.db.select(
 )
 
 palm_oil_agg = agg_trade_eu_row(palm_oil, grouping_side="partner")
-selected_columns = ["reporter", "partner", "product", "element", "year", "unit", "value"]
+selected_columns = ["reporter", "partner", "product", "element"]
+selected_columns += ["year", "unit", "value"]
 print(palm_oil_agg[selected_columns])
 
     reporter partner   product          element  year    unit        value
@@ -305,26 +312,25 @@ df = merge_faostat_comtrade(
 df = df[
     (df.reporter.isin(["Brazil", "Argentina"]))
     & (df.partner.isin(["Brazil", "Argentina"]))
-    & (df.year > 2020)
+    & (df.year == 2021)
     & (df.element.isin(["import_quantity", "export_quantity"]))
 ]
 df = put_mirror_beside(df)
-selected_columns = ["source", "reporter", "partner", "product"]
+selected_columns = ["source", "reporter", "partner"]
 selected_columns += ["element", "year", "unit", "value", "value_mirror"]
-print(df)
+print(df[selected_columns])
 
-      source   reporter    partner     product          element  year unit        value value_mirror
-0    faostat     Brazil  Argentina  soya_beans  import_quantity  2021   kg    4840840.0    2499580.0
-1    faostat     Brazil  Argentina  soya_beans  export_quantity  2021   kg  218176100.0  218176890.0
-2    faostat  Argentina     Brazil  soya_beans  import_quantity  2021   kg  218176890.0  218176100.0
-3    faostat  Argentina     Brazil  soya_beans  export_quantity  2021   kg    2499580.0    4840840.0
-4   comtrade  Argentina  Argentina  soya_beans  import_quantity  2021   kg     689204.0          NaN
-5   comtrade  Argentina     Brazil  soya_beans  export_quantity  2021   kg    2499580.0    4840836.0
-6   comtrade  Argentina     Brazil  soya_beans  import_quantity  2021   kg  218176890.0  218176103.0
-7   comtrade     Brazil  Argentina  soya_beans  export_quantity  2021   kg  218176103.0  218176890.0
-8   comtrade     Brazil  Argentina  soya_beans  import_quantity  2021   kg    4840836.0    2499580.0
-9   comtrade     Brazil  Argentina  soya_beans  export_quantity  2022   kg  289472763.0          NaN
-10  comtrade     Brazil  Argentina  soya_beans  import_quantity  2022   kg     675419.0          NaN
+  source   reporter    partner  element  year unit        value value_mirror
+ faostat     Brazil  Argentina   import  2021   kg    4840840.0    2499580.0
+ faostat     Brazil  Argentina   export  2021   kg  218176100.0  218176890.0
+ faostat  Argentina     Brazil   import  2021   kg  218176890.0  218176100.0
+ faostat  Argentina     Brazil   export  2021   kg    2499580.0    4840840.0
+comtrade  Argentina  Argentina   import  2021   kg     689204.0          NaN
+comtrade  Argentina     Brazil   export  2021   kg    2499580.0    4840836.0
+comtrade  Argentina     Brazil   import  2021   kg  218176890.0  218176103.0
+comtrade     Brazil  Argentina   export  2021   kg  218176103.0  218176890.0
+comtrade     Brazil  Argentina   import  2021   kg    4840836.0    2499580.0
+
 ```
 
 
