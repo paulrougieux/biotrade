@@ -91,7 +91,8 @@ def test_allocate_by_partners():
             "import_quantity": [1, 2, 3, 4],
         }
     )
-    expected = df_trade.copy()
+    expected = df_trade.copy().drop(columns="partner_code")
+    expected.rename(columns={"partner": "partner_1"}, inplace=True)
     # Share by partners
     df_trade["imp_share_by_p"] = compute_share_by_partners(df_trade)
     output = allocate_by_partners(df_prod, df_trade, 1)
