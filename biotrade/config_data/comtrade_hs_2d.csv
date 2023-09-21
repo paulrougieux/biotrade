@@ -27,7 +27,7 @@
 "26","26 - Ores, slag and ash",0,0,0
 "27","27 - Mineral fuels, mineral oils and products of their distillation; bituminous substances; mineral waxes",0,0,0
 "28","28 - Inorganic chemicals; organic and inorganic compounds of precious metals; of rare earth metals, of radio-active elements and of isotopes",0,0,0
-"29","29 - Organic chemicals",0,0,0
+"29","29 - Organic chemicals",0,0,1
 "30","30 - Pharmaceutical products",0,0,0
 "31","31 - Fertilizers",0,0,0
 "32","32 - Tanning or dyeing extracts; tannins and their derivatives; dyes, pigments and other colouring matter; paints, varnishes; putty, other mastics; inks",0,0,0
@@ -36,7 +36,7 @@
 "35","35 - Albuminoidal substances; modified starches; glues; enzymes",0,0,0
 "36","36 - Explosives; pyrotechnic products; matches; pyrophoric alloys; certain combustible preparations",0,0,0
 "37","37 - Photographic or cinematographic goods",0,0,0
-"38","38 - Chemical products n.e.s.",0,0,0
+"38","38 - Chemical products n.e.s.",0,0,1
 "39","39 - Plastics and articles thereof",0,0,0
 "40","40 - Rubber and articles thereof",0,0,1
 "41","41 - Raw hides and skins (other than furskins) and leather",0,0,1
