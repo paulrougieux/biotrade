@@ -72,13 +72,35 @@ def split_prod_imp(
 ) -> Tuple[pandas.Series, pandas.Series]:
     """Split a quantity between what is produced domestically and what is imported
     The input data frame must contain the share used for splitting."""
-    index = ["reporter", "primary_product", "year"]
+    # Join on reporter or partner
+    if step == 1:
+        rep_or_par = "reporter"
+    if step > 1:
+        rep_or_par = f"partner_{step-1}"
+        df_share = df_share.copy()
+        df_share.rename(columns={"reporter": rep_or_par}, inplace=True)
+    index = [rep_or_par, "primary_product", "year"]
     index += [col for col in code_columns(index) if col in df.columns]
     df_output = df.merge(df_share[index + ["share_prod_imp"]], on=index, how="left")
     primary_eq_var = f"primary_eq_{step - 1}"
-    prod = df_output[primary_eq_var] * df_output["share_prod_imp"]
-    imp = df_output[primary_eq_var] * (1 - df_output["share_prod_imp"])
-    return prod, imp
+
+    # Debug start
+    # if step == 2:
+    #     breakpoint()
+    #     df_output_fc  = df_output.query("reporter == 'France' and partner_1 == 'Chile' and year == 2018 and product == 'sunflower_seed_oil_crude'")
+    #     df_output_fc[["primary_eq_1", "share_prod_imp"]]
+    #     df.query("reporter == 'France' and partner_1 == 'Chile' and year == 2018 and product == 'sunflower_seed_oil_crude'")[["primary_eq_1", "prod", "imp"]]
+    # # Debug end
+
+    df_output[f"primary_eq_prod_{step}"] = (
+        df_output[primary_eq_var] * df_output["share_prod_imp"]
+    )
+    df_output[f"primary_eq_imp_{step}"] = df_output[primary_eq_var] * (
+        1 - df_output["share_prod_imp"]
+    )
+    # Remove the share
+    df_output.drop(columns="share_prod_imp", inplace=True)
+    return df_output
 
 
 def compute_share_by_partners(
@@ -144,6 +166,7 @@ def reallocate(
     prim_prod: pandas.DataFrame,
     prim_trade: pandas.DataFrame,
     n_steps: int,
+    threshold: float = None,
 ):
     """Perform all steps of the reallocation of secondary product production in
     primary commodity equivalent
@@ -161,6 +184,8 @@ def reallocate(
 
     Returns a dictionary with trade and production for each step.
     """
+    if threshold is None:
+        threshold = 1
     product_to_primary_product = {
         "product_code": "primary_product_code",
         "product": "primary_product",
@@ -177,7 +202,12 @@ def reallocate(
     )
     # First step
     df = df.copy()
-    df["primary_eq_prod_1"], df["primary_eq_imp_1"] = split_prod_imp(df, prod_share, 1)
+    # Drop code columns because renaming of partner to reporter is needed at some point
+    # and we don't want to rename also partner_code to reporter_code.
+    df.drop(columns=["reporter_code"], inplace=True)
+    # Previous version
+    # df["primary_eq_prod_1"], df["primary_eq_imp_1"] = split_prod_imp(df, prod_share, 1)
+    df = split_prod_imp(df, prod_share, 1)
     real[("trade", 1)] = allocate_by_partners(df_prod=df, df_trade=trade, step=1)
     real[("prod", 1)] = df
     nrows_trade = len(real[("trade", 1)])
@@ -188,13 +218,11 @@ def reallocate(
     for step in range(2, n_steps + 1):
         df = real[("trade", step - 1)]
         # Keep only rows above threshold
-        selector = df[f"primary_eq_imp_alloc_{step - 1}"] > 1
+        selector = df[f"primary_eq_imp_alloc_{step - 1}"] > threshold
         df = df.loc[selector].copy()
-        df[f"primary_eq_{step - 1 }"] = df[f"primary_eq_imp_{step - 1 }"]
+        df[f"primary_eq_{step - 1 }"] = df[f"primary_eq_imp_alloc_{step - 1 }"]
         df.drop(columns="imp_share_by_p", inplace=True)
-        df[f"primary_eq_prod_{step}"], df[f"primary_eq_imp_{step}"] = split_prod_imp(
-            df, prod_share, step
-        )
+        df = split_prod_imp(df, prod_share, step)
         real[("trade", step)] = allocate_by_partners(
             df_prod=df, df_trade=trade, step=step
         )
@@ -213,11 +241,11 @@ def merge_reallocated_production(real: dict):
     with increasing step numbers.
     """
     index = ["reporter", "product", "primary_product", "year"]
-    index += code_columns(index)
     real_steps = [x[1] for x in real if x[0] == "trade"]
     real_prod = real[("prod", 1)].copy()
     for step in real_steps[1:]:
         df = real[("prod", step)]
+        index += [col for col in code_columns(index) if col in df.columns]
         new_cols = sorted(list(set(df.columns) - set(index)))
         print("Step", step, "rows:", len(df), "new columns:", new_cols)
         real_prod = real_prod.merge(df, on=index, how="outer")
