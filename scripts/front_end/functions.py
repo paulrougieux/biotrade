@@ -538,32 +538,81 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
         harvested_area_legend = df_legend[
             df_legend["element"] == "area_harvested"
         ][column_list]
-        # Transform in million hectares
-        harvested_area_legend[["min_value", "max_value"]] = (
-            harvested_area_legend[["min_value", "max_value"]] / 10**6
-        ).round(2)
-        harvested_area_legend["unit"] = (
-            "Million " + harvested_area_legend["unit"]
+        # Put legend in million hectares
+        selector = harvested_area_legend.interval == 0
+        harvested_area_legend.loc[selector, "description"] = "up to " + (
+            harvested_area_legend.loc[selector, "max_value"] / 10**6
+        ).round(2).astype(str)
+        harvested_area_legend.loc[~selector, "description"] = (
+            "from "
+            + (harvested_area_legend.loc[~selector, "min_value"] / 10**6)
+            .round(2)
+            .astype(str)
+            + " to "
+            + (harvested_area_legend.loc[~selector, "max_value"] / 10**6)
+            .round(2)
+            .astype(str)
+        )
+        harvested_area_legend["description"] = (
+            harvested_area_legend["description"]
+            + " M"
+            + harvested_area_legend.unit
         )
         save_file(harvested_area_legend, "harvested_area_average_legend.csv")
         production_legend = df_legend[
             df_legend["element"].isin(["production", "stocks"])
         ][column_list]
-        # Transform in Million or kilo (for products 839 and 869) tonnes, m3 and heads
-        selector = production_legend.product_code.isin([839, 869])
-        production_legend.loc[selector, ["min_value", "max_value"]] = (
-            production_legend.loc[selector, ["min_value", "max_value"]]
-            / 10**3
-        ).round(2)
-        production_legend.loc[selector, "unit"] = (
-            "k" + production_legend.loc[selector, "unit"]
+        # Put legend in Million or kilo (for products 839 and 869) tonnes, m3 and heads
+        selector = (production_legend.interval == 0) & (
+            production_legend.product_code.isin([839, 869])
         )
-        production_legend.loc[~selector, ["min_value", "max_value"]] = (
-            production_legend.loc[~selector, ["min_value", "max_value"]]
-            / 10**6
-        ).round(2)
-        production_legend.loc[~selector, "unit"] = (
-            "Million " + production_legend.loc[~selector, "unit"]
+        production_legend.loc[selector, "description"] = (
+            "up to "
+            + (production_legend.loc[selector, "max_value"] / 10**3)
+            .round(2)
+            .astype(str)
+            + " k"
+        )
+        selector = (production_legend.interval == 0) & ~(
+            production_legend.product_code.isin([839, 869])
+        )
+        production_legend.loc[selector, "description"] = (
+            "up to "
+            + (production_legend.loc[selector, "max_value"] / 10**6)
+            .round(2)
+            .astype(str)
+            + " M"
+        )
+        selector = (production_legend.interval != 0) & (
+            production_legend.product_code.isin([839, 869])
+        )
+        production_legend.loc[selector, "description"] = (
+            "from "
+            + (production_legend.loc[selector, "min_value"] / 10**3)
+            .round(2)
+            .astype(str)
+            + " to "
+            + (production_legend.loc[selector, "max_value"] / 10**3)
+            .round(2)
+            .astype(str)
+            + " k"
+        )
+        selector = (production_legend.interval != 0) & ~(
+            production_legend.product_code.isin([839, 869])
+        )
+        production_legend.loc[selector, "description"] = (
+            "from "
+            + (production_legend.loc[selector, "min_value"] / 10**6)
+            .round(2)
+            .astype(str)
+            + " to "
+            + (production_legend.loc[selector, "max_value"] / 10**6)
+            .round(2)
+            .astype(str)
+            + " M"
+        )
+        production_legend["description"] = (
+            production_legend["description"] + production_legend["unit"]
         )
         save_file(production_legend, "production_average_legend.csv")
     # Associate the avg productions (eventually with intervals) to the final dataframe
