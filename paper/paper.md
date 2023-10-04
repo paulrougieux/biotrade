@@ -18,7 +18,7 @@ authors:
     orcid: 0000-0003-3546-8407
     affiliation: "1"
 affiliations:
- - name: European Commission Joint Research Centre, Ispra, Italy
+ - name: European Commission, Joint Research Centre, Ispra, Italy
    index: 1
  - name: JRC Consultant, ARCADIA SIT s.r.l., Vigevano (PV), Italy
    index: 2
