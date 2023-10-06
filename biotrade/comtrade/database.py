@@ -55,7 +55,7 @@ import re
 # Third party modules
 from sqlalchemy import Integer, Float, Text, UniqueConstraint, DateTime, Boolean
 from sqlalchemy import Table, Column, MetaData, and_, or_
-from sqlalchemy import create_engine, inspect, select, join
+from sqlalchemy import create_engine, inspect, select
 from sqlalchemy.schema import CreateSchema
 
 # Internal modules
@@ -103,9 +103,7 @@ class DatabaseComtrade(Database):
         self.reporter = self.describe_country_table(name="reporter")
         self.partner = self.describe_country_table(name="partner")
         # Additional info tables
-        self.quantity = self.describe_additional_info_table(
-            name="quantity_unit"
-        )
+        self.quantity = self.describe_additional_info_table(name="quantity_unit")
         self.flow = self.describe_additional_info_table(name="flow")
         self.transport = self.describe_additional_info_table(
             name="modality_of_transport"
@@ -405,7 +403,8 @@ class DatabaseComtrade(Database):
             )
         )
         # Execute delete statement
-        stmt.execute()
+        with self.engine.connect() as conn:
+            conn.execute(stmt)
         self.logger.info(
             "Delete data from database table %s, from %s to %s",
             table,
@@ -482,9 +481,7 @@ class DatabaseComtrade(Database):
             reporter_table = stmt.subquery()
         if partner is not None:
             # Obtain codes from partner table
-            stmt = partner_table.select().where(
-                partner_table.c.partner.in_(partner)
-            )
+            stmt = partner_table.select().where(partner_table.c.partner.in_(partner))
             # Define the new select table
             partner_table = stmt.subquery()
         if flow is not None:
@@ -643,9 +640,7 @@ class DatabaseComtrade(Database):
         # Rename column content to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
         if "flow" in df.columns:
-            df["flow"] = (
-                df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
-            )
+            df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
             # Remove the plural "s"
             df["flow"] = df["flow"].str.replace("s", "", regex=True)
         # TODO: Change period to a date time object
