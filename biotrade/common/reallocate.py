@@ -22,6 +22,7 @@ TODO: hard code the conversion factors and value share for a small list of
 
 from typing import Tuple
 import pandas
+import numpy as np
 
 
 def code_columns(cols: list):
@@ -220,9 +221,12 @@ def reallocate(
         # Keep only rows above threshold
         selector = df[f"primary_eq_imp_alloc_{step - 1}"] > threshold
         df = df.loc[selector].copy()
+        # Temporary column needed by the split_prod_imp function
         df[f"primary_eq_{step - 1 }"] = df[f"primary_eq_imp_alloc_{step - 1 }"]
         df.drop(columns="imp_share_by_p", inplace=True)
         df = split_prod_imp(df, prod_share, step)
+        # Remove temporary column
+        df.drop(columns=f"primary_eq_{step - 1 }")
         real[("trade", step)] = allocate_by_partners(
             df_prod=df, df_trade=trade, step=step
         )
@@ -235,34 +239,50 @@ def reallocate(
     return real
 
 
-def merge_reallocated_production(real: dict):
-    """Merge the reallocated production data frame
-    To compare the primary_eq_n columns Check how primary_eq columns change
-    with increasing step numbers.
+def merge_reallocated(real: dict, rtol: float = None):
     """
-    index = ["reporter", "product", "primary_product", "year"]
-    real_steps = [x[1] for x in real if x[0] == "trade"]
-    real_prod = real[("prod", 1)].copy()
-    for step in real_steps[1:]:
-        df = real[("prod", step)]
-        index += [col for col in code_columns(index) if col in df.columns]
-        new_cols = sorted(list(set(df.columns) - set(index)))
-        print("Step", step, "rows:", len(df), "new columns:", new_cols)
-        real_prod = real_prod.merge(df, on=index, how="outer")
-    return real_prod
+    Keep only the import that was actually produced in each partner country.
 
-
-def merge_reallocated_trade(real: dict):
-    """Merge the reallocated trade data frame"""
-    index = ["reporter", "partner", "product", "primary_product", "year"]
-    index += code_columns(index)
-    real_steps = [x[1] for x in real if x[0] == "trade"]
-    real_trade = real[("trade", 1)].copy()
-    for step in real_steps[1:]:
-        df = real[("trade", step)]
-        cols_remove = ["imp_share_by_p", "import_quantity", "period"]
-        new_cols = sorted(list(set(df.columns) - set(index) - set(cols_remove)))
-        print("Step", step, "rows:", len(df), "new columns:", new_cols)
-        real_trade = real_trade.merge(df[index + new_cols], on=index, how="outer")
-        print("N rows real trade", len(real_trade))
-    return real_trade
+    In case of production data, step 1 returns only the production in country
+    A. Step 2 returns the import from first level partners that is actually
+    produced in those countries. Step 3 returns the imports from second level
+    partners which is the quantity imported from the first level partners
+    partners but not produced in these countries, it was reimported.
+    """
+    if rtol is None:
+        rtol = 1e-3
+    # Add a partner_0 column for the first step
+    # Add prepare an grouping index for the consistency check
+    index = ["reporter", "primary_product", "year"]
+    if "partner" not in real[("prod", 1)].columns:
+        real[("prod", 1)]["partner_0"] = np.nan
+    else:
+        real[("prod", 1)]["partner_0"] = real[("prod", 1)]["partner"]
+        index += ["partner"]
+    # Assemble the import that was actually produced in each partner country
+    df = pandas.DataFrame()
+    last_step = pandas.DataFrame(real.keys())[1].max()
+    selected_columns = ["primary_product", "year", "reporter", "partner"]
+    selected_columns += ["primary_eq", "step"]
+    for i in range(1, last_step + 1):
+        df_step = real[("prod", i)].copy()
+        print(df_step.columns)
+        df_step["partner"] = df_step[f"partner_{i-1}"]
+        df_step["primary_eq"] = df_step[f"primary_eq_prod_{i}"]
+        intermediate_partners = df_step.columns[
+            df_step.columns.str.contains("partner_")
+        ]
+        intermediate_partners = intermediate_partners.to_list()
+        df_step["step"] = i
+        df = pandas.concat([df, df_step[selected_columns + intermediate_partners]])
+    # Check that the aggregation didn't loose data
+    df_agg = df.groupby(index)["primary_eq"].agg("sum")
+    real_prod_agg = real[("prod", 1)].groupby(index)["primary_eq_0"].agg("sum")
+    selector = np.isclose(df_agg, real_prod_agg, rtol=rtol)
+    if not all(selector):
+        df_check = pandas.concat([df_agg, real_prod_agg], axis=1)
+        msg = f"With a relative tolerance of {rtol},"
+        msg += "the primary equivalent sum doesn't match for the following rows\n"
+        msg += f"{df_check.loc[~selector]}"
+        raise ValueError(msg)
+    return df
