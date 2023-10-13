@@ -241,13 +241,17 @@ def reallocate(
 
 def merge_reallocated(real: dict, rtol: float = None):
     """
-    Keep only the import that was actually produced in each partner country.
+    Merge reallocated imports produced in the importing country.
+
+    At each step, look at the production import split and keep only the import
+    that was actually produced in each partner country.
 
     In case of production data, step 1 returns only the production in country
-    A. Step 2 returns the import from first level partners that is actually
-    produced in those countries. Step 3 returns the imports from second level
-    partners which is the quantity imported from the first level partners
-    partners but not produced in these countries, it was reimported.
+    A. Step 2 returns the import from first level partners that are actually
+    produced in those countries. Step 3 returns the imports from the second
+    level partners which is the quantity imported from the first level partners
+    partners but not produced in these countries, because it was reimported
+    from the second level partners.
     """
     if rtol is None:
         rtol = 1e-3
@@ -266,7 +270,6 @@ def merge_reallocated(real: dict, rtol: float = None):
     selected_columns += ["primary_eq", "step"]
     for i in range(1, last_step + 1):
         df_step = real[("prod", i)].copy()
-        print(df_step.columns)
         df_step["partner"] = df_step[f"partner_{i-1}"]
         df_step["primary_eq"] = df_step[f"primary_eq_prod_{i}"]
         intermediate_partners = df_step.columns[
