@@ -191,13 +191,13 @@ class Pump:
         )
         # Variable for checking successful gz download
         download_successful = False
-        # Default sleep time before downloading gz files
-        sleep_time = 5
+        # Default time to download gz files
+        time_start = time.time()
+        sleep_time = 0
         # Send the request: if successful put the gz files into the temporary
-        # folder else retry and double the wait time at each try
+        # folder else retry.
         # If the wait raises to more than 1 hour the loop stops.
         while not download_successful and sleep_time < 3600:
-            time.sleep(sleep_time)
             try:
                 # Create a request
                 comtradeapicall.bulkDownloadFinalFile(
@@ -214,12 +214,12 @@ class Pump:
                 # No data available
                 if len(os.listdir(temp_dir)) == 0:
                     response_code = 404
-            except Exception as error:
+            except (Exception, BaseException) as error:
                 response_code = error
-            # To avoid system exit exception
-            except BaseException as base_error:
-                response_code = base_error
-            sleep_time *= 2
+                # Remove eventual files downloaded
+                shutil.rmtree(temp_dir)
+                os.makedirs(temp_dir)
+            sleep_time = time.time() - time_start
             self.logger.info(f"HTTP response code: {response_code}")
         return temp_dir, response_code
 
