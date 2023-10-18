@@ -205,7 +205,7 @@ def reallocate(
     df = df.copy()
     # Drop code columns because renaming of partner to reporter is needed at some point
     # and we don't want to rename also partner_code to reporter_code.
-    df.drop(columns=["reporter_code"], inplace=True)
+    df.drop(columns=["reporter_code"], inplace=True, error="ignore")
     # Previous version
     # df["primary_eq_prod_1"], df["primary_eq_imp_1"] = split_prod_imp(df, prod_share, 1)
     df = split_prod_imp(df, prod_share, 1)
