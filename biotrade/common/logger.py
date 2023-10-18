@@ -27,6 +27,8 @@ any sub module or script:
 
 # Third party modules
 import logging
+import os
+from pathlib import Path
 
 # Internal modules
 from biotrade import data_dir
@@ -41,8 +43,12 @@ def create_logger():
         return
     # Set level
     logger.setLevel(logging.DEBUG)
+    if os.environ.get("BIOTRADE_LOG"):
+        path = Path(os.environ["BIOTRADE_LOG"])
+    else:
+        path = data_dir
     # create file handler which logs even debug messages
-    fh = logging.FileHandler(data_dir / "biotrade.log")
+    fh = logging.FileHandler(path / "biotrade.log")
     fh.setLevel(logging.DEBUG)
     # create console handler
     ch = logging.StreamHandler()
