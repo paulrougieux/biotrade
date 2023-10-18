@@ -216,9 +216,6 @@ class Pump:
                     response_code = 404
             except (Exception, BaseException) as error:
                 response_code = error
-                # Remove eventual files downloaded
-                shutil.rmtree(temp_dir)
-                os.makedirs(temp_dir)
             sleep_time = time.time() - time_start
             self.logger.info(f"HTTP response code: {response_code}")
         return temp_dir, response_code
@@ -307,23 +304,45 @@ class Pump:
         """
         # List of chunk rows
         chunk_list = []
-        # Preallocate a dataframe
-        df = pandas.DataFrame()
         # Read the gz files
         for temp_file in os.listdir(temp_dir):
-            # Loop on gz files and upload them
-            try:
-                df = pandas.read_csv(
-                    temp_dir / temp_file,
-                    sep="\t",
-                    dtype={"datasetCode": str, "cmdCode": str, "mosCode": str},
-                )
-            # Continue with the next file
-            except Exception as error_gz:
-                self.logger.warning(
-                    f"Unable to load data from {temp_file} for period {api_period} due to\n {error_gz}"
-                )
-                continue
+            # Preallocate a dataframe
+            df = pandas.DataFrame()
+            nr_attempts = 0
+            df_from_gz = False
+            while not df_from_gz and nr_attempts < 10:
+                # Loop on gz files and upload them
+                try:
+                    df = pandas.read_csv(
+                        temp_dir / temp_file,
+                        sep="\t",
+                        dtype={
+                            "datasetCode": str,
+                            "cmdCode": str,
+                            "mosCode": str,
+                        },
+                    )
+                    df_from_gz = True
+                # Continue until max number of attempts is reached
+                except Exception as error_gz:
+                    self.logger.warning(
+                        f"Unable to load data from {temp_file} for period {api_period} due to\n {error_gz}.\n Retrying to download it.."
+                    )
+                    file_str = re.split(r"[-\[\]]", temp_file)[2]
+                    frequency = file_str[1]
+                    reporter_code = int(file_str[2:5])
+                    period = int(file_str[5:-2])
+                    comtradeapicall.bulkDownloadFinalFile(
+                        self.token,
+                        temp_dir,
+                        typeCode="C",
+                        freqCode=frequency,
+                        clCode="HS",
+                        period=period,
+                        reporterCode=reporter_code,
+                        decompress=False,
+                    )
+                nr_attempts += 1
             # If length is > 0 select rows
             if not df.empty:
                 # Remove potential white spaces between tab delimiter in string columns
