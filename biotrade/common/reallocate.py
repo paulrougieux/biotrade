@@ -178,6 +178,10 @@ def reallocate(
     primary crop production and import and to build the trade reallocation
     matrix for the primary crop.
 
+    If we use comtrade data, it should be both for the df and prim_trade
+    arguments. Note the prim_prod argument will necessarily be from FAOSTAT
+    because it's the only source that provides this information.
+
     param: prim_prod, crop production (for example sunflower seeds production)
     param: prim_trade, crop trade (for example sunflower seeds trade)
     param: df, production of processed products (sunflower oil production)
@@ -187,6 +191,8 @@ def reallocate(
     """
     if threshold is None:
         threshold = 1
+    # TODO: move this to a separate function that does the reallocation of
+    # production only Keep a function that does the reallocation of trade only
     product_to_primary_product = {
         "product_code": "primary_product_code",
         "product": "primary_product",
@@ -197,6 +203,7 @@ def reallocate(
     trade = prim_trade.rename(columns=product_to_primary_product).copy()
     real = dict()
     trade["imp_share_by_p"] = compute_share_by_partners(trade)
+    breakpoint()
     # Drop these columns to avoid having them added at each step
     trade.drop(
         columns=["import_quantity", "reporter_code", "partner_code"], inplace=True
@@ -205,7 +212,7 @@ def reallocate(
     df = df.copy()
     # Drop code columns because renaming of partner to reporter is needed at some point
     # and we don't want to rename also partner_code to reporter_code.
-    df.drop(columns=["reporter_code"], inplace=True, error="ignore")
+    df.drop(columns=["reporter_code"], inplace=True, errors="ignore")
     # Previous version
     # df["primary_eq_prod_1"], df["primary_eq_imp_1"] = split_prod_imp(df, prod_share, 1)
     df = split_prod_imp(df, prod_share, 1)
