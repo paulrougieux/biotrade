@@ -328,20 +328,25 @@ class Pump:
                     self.logger.warning(
                         f"Unable to load data from {temp_file} for period {api_period} due to\n {error_gz}.\n Retrying to download it.."
                     )
-                    file_str = re.split(r"[-\[\]]", temp_file)[2]
-                    frequency = file_str[1]
-                    reporter_code = int(file_str[2:5])
-                    period = int(file_str[5:-2])
-                    comtradeapicall.bulkDownloadFinalFile(
-                        self.token,
-                        temp_dir,
-                        typeCode="C",
-                        freqCode=frequency,
-                        clCode="HS",
-                        period=period,
-                        reporterCode=reporter_code,
-                        decompress=False,
-                    )
+                    try:
+                        file_str = re.split(r"[-\[\]]", temp_file)[2]
+                        frequency = file_str[1]
+                        reporter_code = int(file_str[2:5])
+                        period = int(file_str[5:-2])
+                        comtradeapicall.bulkDownloadFinalFile(
+                            self.token,
+                            temp_dir,
+                            typeCode="C",
+                            freqCode=frequency,
+                            clCode="HS",
+                            period=period,
+                            reporterCode=reporter_code,
+                            decompress=False,
+                        )
+                        response_code = 200
+                    except (Exception, BaseException) as error:
+                        response_code = error
+                    self.logger.info(f"HTTP response code: {response_code}")
                 nr_attempts += 1
             # If length is > 0 select rows
             if not df.empty:
