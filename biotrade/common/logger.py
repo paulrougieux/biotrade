@@ -63,5 +63,5 @@ def create_logger():
     logger.addHandler(fh)
     logger.addHandler(ch)
     logger.info(
-        "Created a logger with file handler %s.", str(data_dir / "biotrade.log")
+        "Created a logger with file handler %s.", str(path / "biotrade.log")
     )
