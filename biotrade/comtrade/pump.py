@@ -325,7 +325,7 @@ class Pump:
                     df_from_gz = True
                 # Continue until max number of attempts is reached
                 except Exception as error_gz:
-                    self.logger.warning(
+                    self.logger.info(
                         f"Unable to load data from {temp_file} for period {api_period} due to\n {error_gz}.\n Retrying to download it.."
                     )
                     try:
