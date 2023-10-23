@@ -346,8 +346,12 @@ class Pump:
                         response_code = 200
                     except (Exception, BaseException) as error:
                         response_code = error
-                    self.logger.info(f"HTTP response code: {response_code}")
-                nr_attempts += 1
+                    self.logger.info(f"Response: {response_code}")
+                    nr_attempts += 1
+            if nr_attempts == 10:
+                self.logger.warning(
+                    f"Reached the max number of attempts, {nr_attempts}. Unable to load data from {temp_file} for period {api_period}"
+                )
             # If length is > 0 select rows
             if not df.empty:
                 # Remove potential white spaces between tab delimiter in string columns
