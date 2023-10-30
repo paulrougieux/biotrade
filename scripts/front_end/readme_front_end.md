@@ -51,12 +51,13 @@ Csv that contains annual data of production for each product and the related rep
 - `unit`: measurement units of the data
 
 ## harvested_area_average_legend.csv
-Csv that contains for each product the minimum and maximum values associated to the interval ranking of the average harvested area across periods and countries, together with the specific units. Each interval is defined with the left boundary (minimum) excluded, while the right extreme (maximum) is included. There are 5 columns:
+Csv that contains for each product the minimum and maximum values associated to the interval ranking of the average harvested area across periods and countries, together with the specific units. Each interval is defined with the left boundary (minimum) excluded, while the right extreme (maximum) is included. There are 6 columns:
 - `interval`: value between 0 and 10 which allows to rank the harvested area across periods and countries for a specific product. 0 includes values lower than the 5% of the maximum average of the total annual harvested area reported, while 10 covers values higher than the 95%. The other thresholds, for intervals between 1 and 9, are: 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%
 - `min_value`: minimum value of the average of the total annual harvested area for the associated interval and product code (value not included)
 - `max_value`: maximum value of the average of the total annual harvested area for the associated interval and product code (value included)
 - `product_code`: FAO code of the product
 - `unit`: measurement units of the data
+- `description`: text for the web platform legend
 
 ## harvested_area_average.csv
 Csv that contains for each product the average value of the harvested area across reporters and for each reporter the average value of the harvested area across products. 
@@ -76,12 +77,13 @@ Percentage values are also reported for products and reporters. The average valu
 - `interval`: value between 0 and 10 which allows to rank the harvested area across periods and countries for a specific product. 0 includes values lower than the 5% of the maximum average of the total annual harvested area reported, while 10 covers values higher than the 95%. The other thresholds, for intervals between 1 and 9, are: 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%
 
 ## production_average_legend.csv
-Csv that contains for each product the minimum and maximum values associated to the interval ranking of the average production across periods and countries, together with the specific units. Each interval is defined with the left boundary (minimum) excluded, while the right extreme (maximum) is included. There are 5 columns:
+Csv that contains for each product the minimum and maximum values associated to the interval ranking of the average production across periods and countries, together with the specific units. Each interval is defined with the left boundary (minimum) excluded, while the right extreme (maximum) is included. There are 6 columns:
 - `interval`: value between 0 and 10 which allows to rank the production across periods and countries for a specific product. 0 includes values lower than the 5% of the maximum average of the total annual production reported, while 10 covers values higher than the 95%. The other thresholds, for intervals between 1 and 9, are: 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%
 - `min_value`: minimum value of the average of the total annual production for the associated interval and product code (value not included)
 - `max_value`: maximum value of the average of the total annual production for the associated interval and product code (value included)
 - `product_code`: FAO code of the product
 - `unit`: measurement units of the data
+- `description`: text for the web platform legend
 
 ## production_average.csv
 Csv that contains for each product the average value of the production across reporters and for each reporter the average value of the production across products. 
