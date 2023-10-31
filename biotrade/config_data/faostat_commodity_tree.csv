@@ -38,7 +38,9 @@ cattle,866,cattle_fat_unrendered,869,fat_preparations_n_e_c,1243,0
 cattle,866,cattle_fat_unrendered,869,animal_oils_and_fats_n_e_c,1168,0
 cattle,866,cattle_fat_unrendered,869,tallow,1225,0
 cattle,866,raw_hides_and_skins_of_cattle,919,hides_wet_salted_of_cattle,920,0
+cattle,866,hides_wet_salted_of_cattle,920,hides_cattle_dry_salted,921,0
 cattle,866,raw_hides_and_skins_of_cattle,919,skins_wet_salted_of_calves,928,0
+cattle,866,skins_wet_salted_of_calves,928,skins_calve_dry_salted,929,0
 coffee_green,656,coffee_green,656,coffee_decaffeinated_or_roasted,657,0
 coffee_green,656,coffee_green,656,coffee_husks_and_skins,660,0
 coffee_green,656,coffee_decaffeinated_or_roasted,657,coffee_substitutes_containing_coffee,658,0
