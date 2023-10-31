@@ -88,12 +88,12 @@ def main():
     selector = df.relative_change.isnull() & df.absolute_change.isnull()
     df.loc[selector, "period_change"] = np.nan
     df = df.dropna(subset=dropna_col, how="all")
-    # Harvested area data (only the most recent year of db)
-    most_recent_year = sorted(df.year.unique(), reverse=True)[0]
+    # Harvested area data (only the most common recent year of db)
+    most_recent_year = df.groupby("element")["year"].max().min()
     harvested_area = df[
         (df["element"] == "area_harvested") & (df["year"] == most_recent_year)
     ][column_list]
-    # Production data (only the most recent year of db)
+    # Production data (only the most common recent year of db)
     production = df[
         (df["element"].isin(["production", "stocks"]))
         & (df["year"] == most_recent_year)
