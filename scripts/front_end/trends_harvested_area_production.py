@@ -47,6 +47,9 @@ def main():
     )
     # Merge data
     crop_data = pd.concat([crop_data, wood_data], ignore_index=True)
+    # Filter crop_data with the common most recent year of the several element types
+    most_recent_year = crop_data.groupby("element")["year"].max().min()
+    crop_data = crop_data[crop_data.year <= most_recent_year]
     crop_data = crop_data[crop_data["reporter_code"] < 1000]
     # Aggregate french territories values to France and add them to the dataframe
     code_list = [68, 69, 87, 135, 182, 270, 281]

@@ -42,6 +42,9 @@ def main():
     )
     # Merge data
     df = pd.concat([crop_df, wood_df], ignore_index=True)
+    # Filter df with the common most recent year of the several element types
+    most_recent_year = df.groupby("element")["year"].max().min()
+    df = df[df.year <= most_recent_year]
     # Select only reporter with code lower than 1000
     df = df[df["reporter_code"] < 1000].reset_index(drop=True)
     # Aggregate french territories values to France and add them to the dataframe
