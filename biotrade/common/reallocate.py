@@ -303,3 +303,17 @@ def merge_reallocated(real: dict, rtol: float = None):
         msg += f"{df_check.loc[~selector]}"
         raise ValueError(msg)
     return df
+
+
+def sum_last_partner(df):
+    """Sum up flows for the last partner at each step, to obtain flows
+    between a reporter country and its last partners"""
+    cols = df.columns
+    cols = cols[cols.str.contains("partner_")]
+    df["final_partner"] = "---"
+    for col in cols:
+        selector = df[col].isna()
+        df.loc[~selector, "final_partner"] = df.loc[~selector, col]
+    index = ["primary_product", "year", "reporter", "final_partner"]
+    df_agg = df.groupby(index)["primary_eq"].agg("sum").reset_index()
+    return df_agg
