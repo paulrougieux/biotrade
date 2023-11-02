@@ -3,20 +3,28 @@
 """
 Reallocate import quantities to the original country of production of a commodity.
 
+When attempting to attribute a land footprint of import to a particular
+country, the country of import is not necessarily the country of production.
 For example if country A imports a commodity from country B and country B has
-imported that commodity from country C. You don't want to attribute country A's
-land footprint to country B. The purpose of this script is to reallocate A's
-footprint to country C. It is done by first splitting the imported quantity
-from B into a share produced in B and a share imported by B (from 0% to 100%).
-Then the share imported by B is reallocated to all its import partners
-according to the share of trade coming from those countries into B. Quantities
-are expressed in weight equivalent of the primary commodity. The conversion to
-a footprint in terms of area occurs at a later stage.
+itself imported that commodity from country C. You don't want to directly
+attribute country A's land footprint to country B. The purpose of this script
+is to reallocate A's footprint to country C. It is done by:
+
+1. Splitting the imported quantity from B into a share produced in B and a
+   share imported by B (from 0% to 100%).
+
+2. Then the share imported by B is reallocated to all its trade partners
+   according to the share of trade coming from those countries into B. Quantities
+   are expressed in weight equivalent of the primary commodity. The conversion to
+   a footprint in terms of area occurs at a later stage.
+
+In particular, if there is no production of the crop in country B, then it
+makes sense for that production to be fully reattributed to country C.
 
 Example use: see obs3df_methods trade_share_reallocation.py
 
 TODO: hard code the conversion factors and value share for a small list of
-      selected products and share a reproducible example here.
+      selected products. Then add a reproducible example here.
 
 """
 
@@ -203,7 +211,6 @@ def reallocate(
     trade = prim_trade.rename(columns=product_to_primary_product).copy()
     real = dict()
     trade["imp_share_by_p"] = compute_share_by_partners(trade)
-    breakpoint()
     # Drop these columns to avoid having them added at each step
     trade.drop(
         columns=["import_quantity", "reporter_code", "partner_code"], inplace=True
@@ -216,8 +223,8 @@ def reallocate(
     # Previous version
     # df["primary_eq_prod_1"], df["primary_eq_imp_1"] = split_prod_imp(df, prod_share, 1)
     df = split_prod_imp(df, prod_share, 1)
-    real[("trade", 1)] = allocate_by_partners(df_prod=df, df_trade=trade, step=1)
     real[("prod", 1)] = df
+    real[("trade", 1)] = allocate_by_partners(df_prod=df, df_trade=trade, step=1)
     nrows_trade = len(real[("trade", 1)])
     msg = f"Reallocation step: {1}, production rows:{len(df)}, "
     msg += f"trade rows: {nrows_trade}"
@@ -234,10 +241,10 @@ def reallocate(
         df = split_prod_imp(df, prod_share, step)
         # Remove temporary column
         df.drop(columns=f"primary_eq_{step - 1 }")
+        real[("prod", step)] = df
         real[("trade", step)] = allocate_by_partners(
             df_prod=df, df_trade=trade, step=step
         )
-        real[("prod", step)] = df
         nrows_trade = len(real[("trade", step)])
         msg = f"Reallocation step: {step}, production rows:{len(df)}, "
         msg += f"trade rows: {nrows_trade}"
