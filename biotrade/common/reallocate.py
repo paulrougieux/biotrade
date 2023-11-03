@@ -253,7 +253,7 @@ def reallocate(
     return real
 
 
-def merge_reallocated(real: dict, rtol: float = None):
+def merge_reallocated(real: dict, rtol: float = None, check_ignores_na: bool = False):
     """
     Merge reallocated imports produced in the importing country.
 
@@ -293,11 +293,16 @@ def merge_reallocated(real: dict, rtol: float = None):
         df_step["step"] = i
         df = pandas.concat([df, df_step[selected_columns + intermediate_partners]])
     # Check that the aggregation didn't loose data
-    df_agg = df.groupby(index)["primary_eq"].agg("sum")
-    real_prod_agg = real[("prod", 1)].groupby(index)["primary_eq_0"].agg("sum")
-    selector = np.isclose(df_agg, real_prod_agg, rtol=rtol)
+    df_agg = df.groupby(index)["primary_eq"].agg("sum").reset_index()
+    real_prod_agg = (
+        real[("prod", 1)].groupby(index)["primary_eq_0"].agg("sum").reset_index()
+    )
+    df_check = df_agg.merge(real_prod_agg, on=index, how="outer")
+    # Ignore NA values in the check
+    if check_ignores_na:
+        df_check.dropna(inplace=True)
+    selector = np.isclose(df_check["primary_eq"], df_check["primary_eq_0"], rtol=rtol)
     if not all(selector):
-        df_check = pandas.concat([df_agg, real_prod_agg], axis=1)
         msg = f"With a relative tolerance of {rtol},"
         msg += "the primary equivalent sum doesn't match for the following rows\n"
         msg += f"{df_check.loc[~selector]}"
