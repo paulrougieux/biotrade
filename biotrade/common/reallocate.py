@@ -81,10 +81,11 @@ def split_prod_imp(
 ) -> Tuple[pandas.Series, pandas.Series]:
     """Split a quantity between what is produced domestically and what is imported
     The input data frame must contain the share used for splitting."""
+    # Depending on whether df contains production or trade data,
     # Join on reporter or partner
-    if step == 1:
+    if step == 1 and "partner" not in df.columns:
         rep_or_par = "reporter"
-    if step > 1:
+    else:
         rep_or_par = f"partner_{step-1}"
         df_share = df_share.copy()
         df_share.rename(columns={"reporter": rep_or_par}, inplace=True)
@@ -220,10 +221,16 @@ def reallocate(
     # Drop code columns because renaming of partner to reporter is needed at some point
     # and we don't want to rename also partner_code to reporter_code.
     df.drop(columns=["reporter_code"], inplace=True, errors="ignore")
-    # Previous version
-    # df["primary_eq_prod_1"], df["primary_eq_imp_1"] = split_prod_imp(df, prod_share, 1)
+    # Depending on whether df contains production data or trade data
+    # add a partner_0 column
+    if "partner" not in df.columns:
+        df["partner_0"] = np.nan
+    else:
+        df["partner_0"] = df["partner"]
+    # Split production and import
     df = split_prod_imp(df, prod_share, 1)
     real[("prod", 1)] = df
+    # Allocate by partners
     real[("trade", 1)] = allocate_by_partners(df_prod=df, df_trade=trade, step=1)
     nrows_trade = len(real[("trade", 1)])
     msg = f"Reallocation step: {1}, production rows:{len(df)}, "
@@ -238,10 +245,12 @@ def reallocate(
         # Temporary column needed by the split_prod_imp function
         df[f"primary_eq_{step - 1 }"] = df[f"primary_eq_imp_alloc_{step - 1 }"]
         df.drop(columns="imp_share_by_p", inplace=True)
+        # Split production and import
         df = split_prod_imp(df, prod_share, step)
         # Remove temporary column
         df.drop(columns=f"primary_eq_{step - 1 }")
         real[("prod", step)] = df
+        # Allocate by partners
         real[("trade", step)] = allocate_by_partners(
             df_prod=df, df_trade=trade, step=step
         )
@@ -253,7 +262,9 @@ def reallocate(
     return real
 
 
-def merge_reallocated(real: dict, rtol: float = None, check_ignores_na: bool = False):
+def merge_reallocated(
+    real: dict, rtol: float = None, atol: float = None, check_ignores_na: bool = False
+):
     """
     Merge reallocated imports produced in the importing country.
 
@@ -269,14 +280,16 @@ def merge_reallocated(real: dict, rtol: float = None, check_ignores_na: bool = F
     """
     if rtol is None:
         rtol = 1e-3
+    if atol is None:
+        atol = 100
     # Add a partner_0 column for the first step
-    # Add prepare an grouping index for the consistency check
+    # Prepare a grouping index for the consistency check
     index = ["reporter", "primary_product", "year"]
     if "partner" not in real[("prod", 1)].columns:
         real[("prod", 1)]["partner_0"] = np.nan
     else:
         real[("prod", 1)]["partner_0"] = real[("prod", 1)]["partner"]
-        index += ["partner"]
+        index += ["partner_0"]
     # Assemble the import that was actually produced in each partner country
     df = pandas.DataFrame()
     last_step = pandas.DataFrame(real.keys())[1].max()
@@ -301,11 +314,16 @@ def merge_reallocated(real: dict, rtol: float = None, check_ignores_na: bool = F
     # Ignore NA values in the check
     if check_ignores_na:
         df_check.dropna(inplace=True)
-    selector = np.isclose(df_check["primary_eq"], df_check["primary_eq_0"], rtol=rtol)
+    selector = np.isclose(
+        df_check["primary_eq"], df_check["primary_eq_0"], rtol=rtol, atol=atol
+    )
     if not all(selector):
-        msg = f"With a relative tolerance of {rtol},"
+        msg = f"With a relative tolerance of {rtol} "
+        msg += f"and an absolute tolerance of {atol}, "
         msg += "the primary equivalent sum doesn't match for the following rows\n"
         msg += f"{df_check.loc[~selector]}"
+        msg += "\n The primary_eq_0 column comes from the input data,"
+        msg += " primary_eq is after the reallocation."
         raise ValueError(msg)
     return df
 
