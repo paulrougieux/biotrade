@@ -45,8 +45,24 @@ def code_columns(cols: list):
 def compute_share_prod_imp(
     df_prod: pandas.DataFrame, df_trade: pandas.DataFrame
 ) -> pandas.Series:
-    """Compute the share between production and import for the given list of products.
-    This function works on input data frames in wide format.
+    """Compute the share between production and import for the given list of
+    products. This function works on input data frames in wide format.
+
+
+    If df_trade contains the primary commodity equivalent of all products (i.e.
+    I_primcrop + I_productseq), then this will compute  the following share:
+
+                          P_primcrop
+            ----------------------------------------
+            (P_primcrop + I_primcrop + I_productseq)
+
+    If df_trade contains only the trade in primary commodity (for example
+    crops) then this will compute the following share:
+
+                    P_primcrop
+            --------------------------
+            (P_primcrop + I_primcrop)
+
     It performs the following steps:
 
         1. Aggregate the trade data frame by reporters, year and product
