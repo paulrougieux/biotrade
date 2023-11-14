@@ -155,7 +155,8 @@ def allocate_by_partners(
         df_trade.rename(columns={"reporter": f"partner_{step-1}"}, inplace=True)
     index += [col for col in code_columns(index) if col in df_trade.columns]
     df_trade.rename(columns={"partner": f"partner_{step}"}, inplace=True)
-    df = df_prod.merge(df_trade, on=index, how="left")
+    selected_cols = index + [f"partner_{step}", "imp_share_by_p"]
+    df = df_prod.merge(df_trade[selected_cols], on=index, how="left")
     var_alloc = f"primary_eq_imp_alloc_{step}"
     var_agg = f"primary_eq_imp_{step}"
     # Reallocate import quantities to partners according to the proportion
