@@ -93,13 +93,14 @@ def test_allocate_by_partners():
             "import_quantity": [1, 2, 3, 4],
         }
     )
-    expected = df_trade.copy().drop(columns="partner_code")
+    expected = df_trade.copy()
     expected.rename(columns={"partner": "partner_1"}, inplace=True)
+    expected = expected[["year", "reporter", "partner_1", "primary_product"]]
+    # Use float in the expected series
+    expected["primary_eq_imp_alloc_1"] = [2, 4, 6, 8.0]
     # Share by partners
     df_trade["imp_share_by_p"] = compute_share_by_partners(df_trade)
     output = allocate_by_partners(df_prod, df_trade, 1)
-    # Use float in the expected series
-    expected["primary_eq_imp_alloc_1"] = [2, 4, 6, 8.0]
     assert_frame_equal(output[expected.columns], expected)
 
 
