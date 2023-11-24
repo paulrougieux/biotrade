@@ -30,6 +30,8 @@ def main():
     trade_data = merge_faostat_comtrade_data(
         faostat_list, comtrade_regulation, aggregate=False
     )
+    # Remove trade products where unit is heads
+    trade_data = trade_data[trade_data.unit != "Head"].reset_index(drop=True)
     # Aggregate french territories values to France and add them to the dataframe
     code_list = [68, 69, 87, 135, 182, 270, 281]
     agg_country_code = 68
@@ -61,8 +63,7 @@ def main():
     ][column_list]
     save_file(df, "faostat_annual_variation.csv")
     df = trade_data[
-        (trade_data["source"] == "faostat")
-        & (trade_data["element"] == "import_value")
+        (trade_data["source"] == "faostat") & (trade_data["element"] == "import_value")
     ][column_list]
     save_file(df, "faostat_value_annual_variation.csv")
     # Consider selected columns of export quantities and values and save the files (drop nan)
@@ -72,8 +73,7 @@ def main():
     ][column_list]
     save_file(df, "faostat_annual_variation_mf.csv")
     df = trade_data[
-        (trade_data["source"] == "faostat")
-        & (trade_data["element"] == "export_value")
+        (trade_data["source"] == "faostat") & (trade_data["element"] == "export_value")
     ][column_list]
     save_file(df, "faostat_value_annual_variation_mf.csv")
     # Consider selected columns of import quantities and values and save the files (drop nan)
@@ -83,8 +83,7 @@ def main():
     ][column_list]
     save_file(df, "comtrade_annual_variation.csv")
     df = trade_data[
-        (trade_data["source"] == "comtrade")
-        & (trade_data["element"] == "import_value")
+        (trade_data["source"] == "comtrade") & (trade_data["element"] == "import_value")
     ][column_list]
     save_file(df, "comtrade_value_annual_variation.csv")
     # Consider selected columns of export quantities and values and save the files (drop nan)
@@ -94,8 +93,7 @@ def main():
     ][column_list]
     save_file(df, "comtrade_annual_variation_mf.csv")
     df = trade_data[
-        (trade_data["source"] == "comtrade")
-        & (trade_data["element"] == "export_value")
+        (trade_data["source"] == "comtrade") & (trade_data["element"] == "export_value")
     ][column_list]
     save_file(df, "comtrade_value_annual_variation_mf.csv")
     # Aggregate to EU and ROW for reporters
