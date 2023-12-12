@@ -176,9 +176,7 @@ def reporter_iso_codes(df):
     if "partner_code" in df.columns:
         df = df[df.partner_code.isin(country_codes)].reset_index(drop=True)
         # Remove free zones internal trade data
-        df = df[df["reporter_code"] != df["partner_code"]].reset_index(
-            drop=True
-        )
+        df = df[df["reporter_code"] != df["partner_code"]].reset_index(drop=True)
     return df
 
 
@@ -303,15 +301,11 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
     )
     # Define the min year inside each period
     df_periods_min = (
-        df_periods.groupby(["period_aggregation"])
-        .agg({"year": "min"})
-        .reset_index()
+        df_periods.groupby(["period_aggregation"]).agg({"year": "min"}).reset_index()
     )
     # Define the max year inside each period
     df_periods_max = (
-        df_periods.groupby(["period_aggregation"])
-        .agg({"year": "max"})
-        .reset_index()
+        df_periods.groupby(["period_aggregation"]).agg({"year": "max"}).reset_index()
     )
     # Merge on the periods
     df_periods = df_periods.merge(
@@ -328,14 +322,10 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
     )
     # Define the structure yyyy-yyyy for the period aggregation column
     df_periods["period_aggregation"] = (
-        df_periods["year_min"].astype(str)
-        + "-"
-        + df_periods["year_max"].astype(str)
+        df_periods["year_min"].astype(str) + "-" + df_periods["year_max"].astype(str)
     )
     # Assign the associated period to each data
-    df = df.merge(
-        df_periods[["year", "period_aggregation"]], on="year", how="left"
-    )
+    df = df.merge(df_periods[["year", "period_aggregation"]], on="year", how="left")
     df["period"] = df["period_aggregation"]
     # Default index list for aggregations + the adds from the arguments
     index_list = ["element", "period", "unit"]
@@ -383,9 +373,7 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
         df_new = df_new.merge(df_mean, how="left", on=index_list_upd)
         df_new = df_new.merge(df_total, how="left", on=index_list_upd)
         # Percentage associated to the percentage column on a given aggregated period
-        df_new[percentage_col_name] = (
-            df_new["value"] / df_new[total_col_name] * 100
-        )
+        df_new[percentage_col_name] = df_new["value"] / df_new[total_col_name] * 100
         # Sort by percentage, compute the cumulative sum and shift it by one
         df_new.sort_values(
             by=[*index_list_upd, percentage_col_name],
@@ -394,12 +382,10 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
             ignore_index=True,
         )
         # Skip nan values is True for cumsum by default
-        df_new["cumsum"] = df_new.groupby(index_list_upd)[
-            percentage_col_name
-        ].cumsum()
-        df_new["cumsum_lag"] = df_new.groupby(index_list_upd)[
-            "cumsum"
-        ].transform("shift", fill_value=0)
+        df_new["cumsum"] = df_new.groupby(index_list_upd)[percentage_col_name].cumsum()
+        df_new["cumsum_lag"] = df_new.groupby(index_list_upd)["cumsum"].transform(
+            "shift", fill_value=0
+        )
         # Create a grouping variable instead of the percentage column, which will be 'Others' for
         # values above the threshold
         df_new[dict["percentage_col"]] = df_new[dict["percentage_col"]].where(
@@ -417,9 +403,7 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
             )
             .reset_index()
         )
-        df_new[percentage_col_name] = (
-            df_new["value"] / df_new[total_col_name] * 100
-        )
+        df_new[percentage_col_name] = df_new["value"] / df_new[total_col_name] * 100
         if df_final.empty:
             df_final = df_new
         else:
@@ -503,15 +487,9 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
                     df_key["avg_value"],
                     bins=bins,
                 )
-                key_legend["interval"] = df_key[
-                    "interval"
-                ].cat.categories.values
-                key_legend["min_value"] = df_key[
-                    "interval_range"
-                ].cat.categories.left
-                key_legend["max_value"] = df_key[
-                    "interval_range"
-                ].cat.categories.right
+                key_legend["interval"] = df_key["interval"].cat.categories.values
+                key_legend["min_value"] = df_key["interval_range"].cat.categories.left
+                key_legend["max_value"] = df_key["interval_range"].cat.categories.right
                 key_legend["product_code"] = key[0]
                 key_legend["element"] = key[1]
                 key_legend["unit"] = key[2]
@@ -535,9 +513,9 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
         column_list = df_legend.columns.tolist()
         column_list.remove(drop_column)
         # Save interval legends
-        harvested_area_legend = df_legend[
-            df_legend["element"] == "area_harvested"
-        ][column_list]
+        harvested_area_legend = df_legend[df_legend["element"] == "area_harvested"][
+            column_list
+        ]
         # Put legend in million hectares
         selector = harvested_area_legend.interval == 0
         harvested_area_legend.loc[selector, "description"] = "up to " + (
@@ -554,9 +532,7 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
             .astype(str)
         )
         harvested_area_legend["description"] = (
-            harvested_area_legend["description"]
-            + " M"
-            + harvested_area_legend.unit
+            harvested_area_legend["description"] + " M" + harvested_area_legend.unit
         )
         save_file(harvested_area_legend, "harvested_area_average_legend.csv")
         production_legend = df_legend[
@@ -620,7 +596,21 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
     return df_final
 
 
-def aggregated_data(df, code_list, agg_country_code, agg_country_name):
+def aggregated_data(
+    df,
+    code_list,
+    agg_country_code,
+    agg_country_name,
+    groupby_cols=[
+        "product_code",
+        "product",
+        "element_code",
+        "element",
+        "year",
+        "unit",
+    ],
+    value_cols=["value"],
+):
     """
     Script that aggregates country data in order to overcome inconsistencies
 
@@ -628,42 +618,36 @@ def aggregated_data(df, code_list, agg_country_code, agg_country_name):
     :param code_list (list), country codes to be aggregated
     :param agg_country_code (int), country code to be assigned for the aggregation
     :param agg_country_name (string), country name to be assigned for the aggregation
+    :param groupby_cols (list), columns to consider for the groupby functions
+    :param value_cols (list), columns on which to calculate the sum
+
     :return df (DataFrame), with aggregated data
 
     """
     # Trade data
     if "partner_code" in df.columns:
-        # Define aggregated data both for reporter and parnter
-        df_agg = df[
-            df[["reporter_code", "partner_code"]].isin(code_list).any(axis=1)
-        ]
+        # Define aggregated data both for reporter and partner
+        df_agg = df[df[["reporter_code", "partner_code"]].isin(code_list).any(axis=1)]
         # Avoid counting internal trades
         mask = (df_agg.reporter_code.isin(code_list)) & (
             df_agg.partner_code.isin(code_list)
         )
         df_agg = df_agg[~mask]
         # Remove country code list data from df dataset
-        df = df[
-            ~(df[["reporter_code", "partner_code"]].isin(code_list)).any(axis=1)
-        ]
+        df = df[~(df[["reporter_code", "partner_code"]].isin(code_list)).any(axis=1)]
         # Aggregation on the reporter side
         df_agg_1 = (
             df_agg[df_agg["reporter_code"].isin(code_list)]
             .groupby(
                 [
+                    *groupby_cols,
                     "source",
                     "partner_code",
                     "partner",
-                    "product_code",
-                    "product",
-                    "element_code",
-                    "element",
-                    "year",
-                    "unit",
                 ]
             )
             # If all null values, do not return 0 but Nan
-            .agg({"value": lambda x: x.sum(min_count=1)})
+            .agg({col: lambda x: x.sum(min_count=1) for col in value_cols})
             .reset_index()
         )
         df_agg_1["reporter_code"] = agg_country_code
@@ -678,19 +662,14 @@ def aggregated_data(df, code_list, agg_country_code, agg_country_name):
             df_agg_1[df_agg_1["partner_code"].isin(code_list)]
             .groupby(
                 [
+                    *groupby_cols,
                     "source",
                     "reporter_code",
                     "reporter",
-                    "product_code",
-                    "product",
-                    "element_code",
-                    "element",
-                    "year",
-                    "unit",
                 ]
             )
             # If all null values, do not return 0 but Nan
-            .agg({"value": lambda x: x.sum(min_count=1)})
+            .agg({col: lambda x: x.sum(min_count=1) for col in value_cols})
             .reset_index()
         )
         df_agg_2["partner_code"] = agg_country_code
@@ -711,18 +690,11 @@ def aggregated_data(df, code_list, agg_country_code, agg_country_name):
         # Remove country code list data from df dataset
         df = df[~(df["reporter_code"].isin(code_list))]
         df_agg = (
-            df_agg.groupby(
-                [
-                    "product_code",
-                    "product",
-                    "element_code",
-                    "element",
-                    "year",
-                    "unit",
-                ]
-            )
+            df_agg.groupby([*groupby_cols])
             # If all null values, do not return 0 but Nan
-            .agg({"value": lambda x: x.sum(min_count=1)}).reset_index()
+            .agg(
+                {col: lambda x: x.sum(min_count=1) for col in value_cols}
+            ).reset_index()
         )
         df_agg["reporter_code"] = agg_country_code
         df_agg["reporter"] = agg_country_name
