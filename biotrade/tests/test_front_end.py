@@ -86,8 +86,17 @@ def test_aggregated_data():
             "value": [500, 300, 400, 1100, 600],
         }
     )
+    # Sort column values
+    expected_output = expected_output.sort_values(
+        expected_output.columns.tolist()
+    ).reset_index(drop=True)
     # Call the function
     result = aggregated_data(df, code_list, agg_country_code, agg_country_name)
+    # Sort column values
+    result = result.sort_values(result.columns.tolist()).reset_index(drop=True)
     # Assert the result
-    assert_series_equal(result["value"], expected_output["value"])
+    assert_series_equal(
+        result["value"],
+        expected_output["value"],
+    )
     assert_frame_equal(result, expected_output)
