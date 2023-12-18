@@ -99,8 +99,8 @@ def test_allocate_by_partners():
     # Use float in the expected series
     expected["primary_eq_imp_alloc_1"] = [2, 4, 6, 8.0]
     # Share by partners
-    df_trade["imp_share_by_p"] = compute_share_by_partners(df_trade)
-    output = allocate_by_partners(df_prod, df_trade, 1)
+    df_trade_2 = compute_share_by_partners(df_trade, threshold=0)
+    output = allocate_by_partners(df_prod, df_trade_2, 1)
     assert_frame_equal(output[expected.columns], expected)
 
 
