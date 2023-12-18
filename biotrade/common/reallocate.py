@@ -130,13 +130,26 @@ def split_prod_imp(
 
 
 def compute_share_by_partners(
-    df: pandas.DataFrame,
+    df: pandas.DataFrame, value=None, threshold=None
 ) -> pandas.DataFrame:
-    """Compute the share of import between different trade partners"""
+    """Compute the share of import between different trade partners
+
+    param threshold: Threshold in tons below which the rows will be eliminated from the computation
+
+    """
+    if value is None:
+        value = "import_quantity"
+    if threshold is None:
+        threshold = 100
     index = ["reporter", "primary_product", "year"]
     index += [col for col in code_columns(index) if col in df.columns]
     # Compute the proportion among all trade partners
-    return df.groupby(index)["import_quantity"].transform(lambda x: x / x.sum())
+    locator = df[value] > threshold
+    df_out = df.loc[locator].copy()
+    df_out["imp_share_by_p"] = df_out.groupby(index)[value].transform(
+        lambda x: x / x.sum()
+    )
+    return df_out
 
 
 def allocate_by_partners(
@@ -198,6 +211,10 @@ def reallocate(
     """Perform all steps of the reallocation of secondary product production in
     primary commodity equivalent
 
+    TODO: define an object at the level of the primary crop (soybans and
+    products, palm and related products, chocolate and related products) Which
+    has methods to perform the reallocation.
+
     The `df` argument contains the production or trade flows to be reallocated,
     values expressed in terms of primary crop equivalent. The arguments
     `prim_prod` and `prim_trade` argument are just used to compute the share of
@@ -227,8 +244,8 @@ def reallocate(
     prod_share = compute_share_prod_imp(prim_prod, prim_trade)
     prod_share.rename(columns=product_to_primary_product, inplace=True)
     trade = prim_trade.rename(columns=product_to_primary_product).copy()
+    trade = compute_share_by_partners(trade)
     real = dict()
-    trade["imp_share_by_p"] = compute_share_by_partners(trade)
     # Drop these columns to avoid having them added at each step
     trade.drop(
         columns=["import_quantity", "reporter_code", "partner_code"], inplace=True
