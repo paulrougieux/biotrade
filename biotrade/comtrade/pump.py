@@ -900,13 +900,13 @@ class Pump:
                 )
                 df = df[~duplicated]
             # Keep only columns actually present in the database structure
-            cols_in_db = [m.key for m in self.db.tables[table_name_dict[table]].c]
+            cols_in_db = self.db.tables[table_name_dict[table]].columns.keys()
             # Warn about missing columns
             missing_cols = set(df.columns) - set(cols_in_db)
             if missing_cols:
                 msg = "The following columns are present in the Comtrade metadata "
                 msg += f"{missing_cols} but they are not present in the database "
-                msg += f"table structure\n {cols_in_db} \n "
+                msg += f"{table_name_dict[table]} table structure\n {cols_in_db} \n "
                 msg += f"or in the {table_name_dict[table]} renaming dict\n"
                 msg += f"{table_col_dict[table]}"
                 warnings.warn(msg)
