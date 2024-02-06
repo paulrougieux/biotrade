@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Warning: this script is deprecated and will be move to deforestfoot
+Warning: this reallocation script is deprecated and will be move to deforestfoot.
 
 
 Reallocate import quantities to the original country of production of a commodity.
