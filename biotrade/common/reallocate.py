@@ -198,7 +198,7 @@ def aggregate_on_partners(df: pandas.DataFrame, step: int) -> pandas.DataFrame:
     index += [col for col in code_columns(index) if col in df.columns]
     df_agg = (
         df.groupby(index)[f"primary_eq_imp_alloc_{step - 1}"]
-        .agg(sum)
+        .agg("sum")
         .reset_index()
         .rename(
             columns={

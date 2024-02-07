@@ -50,7 +50,7 @@ def agg_4d(product_code_start, table=None):
         "flow_code",
         "flow",
     ]
-    df_agg = df.groupby(index)[["net_weight", "quantity", "trade_value"]].agg(sum)
+    df_agg = df.groupby(index)[["net_weight", "quantity", "trade_value"]].agg("sum")
 
     del df
     return df_agg
