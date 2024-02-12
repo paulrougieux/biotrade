@@ -263,7 +263,7 @@ def merge_faostat_comtrade_data(
             df.loc[selector, "product_code"] = df.loc[
                 selector, "product_code_regulation"
             ]
-            df = df.groupby(index_list)["value"].agg(sum).reset_index()
+            df = df.groupby(index_list)["value"].agg("sum").reset_index()
         df_merge = pd.concat([df_merge, df], ignore_index=True)
         # Avoid to retrieve for all the cycle the same faostat data
         if i == 0:

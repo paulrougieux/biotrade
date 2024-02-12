@@ -51,7 +51,7 @@ product_map = cf_mapping_wood.merge(
 # Check that aggregates of sawnwood products correspond to the sum of their parts
 sawn_prod = fp.query("product_code in [1632, 1633, 1872] and element == 'production'")
 index = ["reporter_code", "reporter", "product_code", "product", "year", "unit"]
-sawn_prod_agg = sawn_prod.groupby(index)["value"].agg(sum).reset_index()
+sawn_prod_agg = sawn_prod.groupby(index)["value"].agg("sum").reset_index()
 # Compare for Italy in 2020
 sawn_prod_agg.query("reporter=='Italy' and year == 2020")
 
@@ -65,7 +65,7 @@ fuel_prod = fp.query(
     "product_code in [1630 , 1693 , 1694 , 1696 , 1864] and element == 'production'"
 )
 index = ["reporter_code", "reporter", "product_code", "product", "year", "unit"]
-fuel_prod_agg = fuel_prod.groupby(index)["value"].agg(sum).reset_index()
+fuel_prod_agg = fuel_prod.groupby(index)["value"].agg("sum").reset_index()
 # Compare for Italy in 2020
 fuel_prod_agg.query("reporter=='Italy' and year == 2020")
 

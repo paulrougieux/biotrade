@@ -448,6 +448,10 @@ class DatabaseComtrade(Database):
             >>> from biotrade.comtrade import comtrade
             >>> comtrade.db.select("monthly", product_code="440791")
 
+        Select yearly time series of saw bean oil crude and other
+
+            >>> comtrade.db.select("yearly", product_code=["150710", "150790"])
+
         """
         # Change character or integer arguments to lists suitable for a
         # column.in_() clause or for a list comprehension.

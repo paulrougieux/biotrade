@@ -287,10 +287,10 @@ def nlargest(df, value_vars, time_vars=None, agg_groups=None, slice_groups=None,
     # Compute the sum within each group for each time period (such as each year)
     # Then compute the average for each group over the years
     if agg_groups is not None:
-        df_agg = df.groupby(agg_groups + time_vars)[value_vars].agg(sum)
+        df_agg = df.groupby(agg_groups + time_vars)[value_vars].agg("sum")
         df_agg = df_agg.groupby(agg_groups)[value_vars].agg("mean")
     else:
-        df_agg = df.groupby(time_vars)[value_vars].agg(sum)
+        df_agg = df.groupby(time_vars)[value_vars].agg("sum")
     # Sort rows by ascending slice_groups and descending first value column
     if slice_groups is not None:
         df_slice = (

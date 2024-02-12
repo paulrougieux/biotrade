@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+
+Warning: this reallocation script is deprecated and will be move to deforestfoot.
+
+
 Reallocate import quantities to the original country of production of a commodity.
 
 When attempting to attribute a land footprint of import to a particular
@@ -29,8 +33,14 @@ TODO: hard code the conversion factors and value share for a small list of
 """
 
 from typing import Tuple
+import warnings
 import pandas
 import numpy as np
+
+msg = "This script is deprecated and will be moved to the deforestfoot package.\n"
+msg += "Update your import path as follows:\n"
+msg += "from deforestfoot.common.reallocate import reallocate"
+warnings.warn(msg)
 
 
 def code_columns(cols: list):
@@ -188,7 +198,7 @@ def aggregate_on_partners(df: pandas.DataFrame, step: int) -> pandas.DataFrame:
     index += [col for col in code_columns(index) if col in df.columns]
     df_agg = (
         df.groupby(index)[f"primary_eq_imp_alloc_{step - 1}"]
-        .agg(sum)
+        .agg("sum")
         .reset_index()
         .rename(
             columns={

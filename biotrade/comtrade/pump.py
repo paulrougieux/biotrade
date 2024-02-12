@@ -29,6 +29,7 @@ Where the cronjob_update_db.py file contains
 """
 # Built-in modules
 from pathlib import Path
+import warnings
 import tempfile
 import shutil
 from zipfile import ZipFile
@@ -139,26 +140,20 @@ class Pump:
         Use snake case in column names and replace some symbols
         """
         # Rename columns to snake case
-        df.rename(
-            columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True
-        )
+        df.rename(columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True)
         # Remove parenthesis and dots, used only for human readable dataset
         df.rename(columns=lambda x: re.sub(r"[()\.]", "", x), inplace=True)
         # Replace $ sign by d, used only for human readable dataset
         df.rename(columns=lambda x: re.sub(r"\$", "d", x), inplace=True)
         # Rename columns using the naming convention defined in self.column_names
-        mapping = self.column_names.set_index(renaming_from).to_dict()[
-            renaming_to
-        ]
+        mapping = self.column_names.set_index(renaming_from).to_dict()[renaming_to]
         # Discard nan keys of mapping dictionary
         mapping.pop(np.nan, None)
         df.rename(columns=mapping, inplace=True)
         # Rename column content to snake case using a compiled regex
         regex_pat = re.compile(r"\W+")
         if "flow" in df.columns:
-            df["flow"] = (
-                df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
-            )
+            df["flow"] = df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
             # Remove the plural "s"
             df["flow"] = df["flow"].str.replace("s", "", regex=True)
         return df
@@ -358,9 +353,7 @@ class Pump:
                 strip_cols = df.select_dtypes(["object"]).columns
                 df[strip_cols] = df[strip_cols].apply(lambda x: x.str.strip())
                 nrow_before = len(df)
-                memory_before = round(
-                    df.memory_usage(deep=True).sum() / (1024**2), 2
-                )
+                memory_before = round(df.memory_usage(deep=True).sum() / (1024**2), 2)
                 selector = (
                     (df["customsCode"] == "C00")
                     & (df["motCode"] == 0)
@@ -380,9 +373,7 @@ class Pump:
                 elif table_name == "yearly_hs2":
                     # Store codes with bioeconomy label and 2 digits, not differentiating modality of transport (0), supply ("0"), 2nd partner (0)  and procedures ("C00")
                     # only (re)exported and (re)imported data
-                    selector_2d = selector & df["cmdCode"].isin(
-                        bioeconomy_tuple
-                    )
+                    selector_2d = selector & df["cmdCode"].isin(bioeconomy_tuple)
                     df = df[selector_2d]
                 msg = f"Before filtering {temp_file[:-3]} file, the dataframe occupies {memory_before} MB and number of rows are {nrow_before}, after {round(df.memory_usage(deep=True).sum() / (1024**2), 2)} MB with {len(df)} rows"
                 print(msg)
@@ -472,9 +463,7 @@ class Pump:
                         elif table_name == "yearly_hs2":
                             # Store codes with bioeconomy label and 2 digits
                             df_chunk = df_chunk[
-                                df_chunk["Commodity Code"].isin(
-                                    bioeconomy_tuple
-                                )
+                                df_chunk["Commodity Code"].isin(bioeconomy_tuple)
                             ]
                         elif table_name == "yearly":
                             # Store codes with bioeconomy label and 6 digits
@@ -595,9 +584,7 @@ class Pump:
                 "12",
             ]
         # Date object of today
-        current_date = datetime.datetime.now(
-            pytz.timezone("Europe/Rome")
-        ).date()
+        current_date = datetime.datetime.now(pytz.timezone("Europe/Rome")).date()
         # Loop on year and eventually month, depending on the frequency
         # parameter
         for period in period_block:
@@ -607,10 +594,7 @@ class Pump:
             for month in month_list:
                 if frequency == "M":
                     # Data not available in the future
-                    if (
-                        datetime.datetime(period, int(month), 1).date()
-                        > current_date
-                    ):
+                    if datetime.datetime(period, int(month), 1).date() > current_date:
                         break
                 # Construct the period to pass to transfer_csv_chunk method
                 api_period = int(str(period) + month)
@@ -689,9 +673,7 @@ class Pump:
             frequency = "A"
         elif table_name == "monthly":
             frequency = "M"
-        current_year = (
-            datetime.datetime.now(pytz.timezone("Europe/Rome")).date().year
-        )
+        current_year = datetime.datetime.now(pytz.timezone("Europe/Rome")).date().year
         # Check if data from the start year are present into the database
         data_present = self.db.check_data_presence(
             table_name,
@@ -769,9 +751,7 @@ class Pump:
 
         # Load the data in json format
         if fmt == "json":
-            response = requests.get(
-                url=url_api_call, headers=self.header, stream=True
-            )
+            response = requests.get(url=url_api_call, headers=self.header, stream=True)
             print(f"HTTP response code: {response.status_code}")
             json_content = json.load(response.raw)
             # If the data was downloaded incorrectly, raise an error with the validation status
@@ -903,19 +883,15 @@ class Pump:
                 # Rename column content to snake case using a compiled regex
                 regex_pat = re.compile(r"\W+")
                 df["flow"] = (
-                    df["flow"]
-                    .str.replace(regex_pat, "_", regex=True)
-                    .str.lower()
+                    df["flow"].str.replace(regex_pat, "_", regex=True).str.lower()
                 )
             # Delete existing data in the database
-            self.logger.info(
-                "Dropping existing %s table.", table_name_dict[table]
-            )
-            self.db.tables[table_name_dict[table]].delete().execute()
+            self.logger.info("Dropping existing %s table.", table_name_dict[table])
+            # session.execute(delete_stmt)
+            with self.db.engine.connect() as conn:
+                conn.execute(self.db.tables[table_name_dict[table]].delete())
             # Remove potential duplicated id codes of the new data
-            duplicated = df.duplicated(
-                list(table_col_dict[table].items())[0][1]
-            )
+            duplicated = df.duplicated(list(table_col_dict[table].items())[0][1])
             if any(duplicated):
                 self.logger.info(
                     "Dropping the following duplicated rows from %s new data:\n %s",
@@ -923,11 +899,22 @@ class Pump:
                     df[duplicated],
                 )
                 df = df[~duplicated]
+            # Keep only columns actually present in the database structure
+            cols_in_db = self.db.tables[table_name_dict[table]].columns.keys()
+            # Warn about missing columns
+            missing_cols = set(df.columns) - set(cols_in_db)
+            if missing_cols:
+                msg = "The following columns are present in the Comtrade metadata "
+                msg += f"{missing_cols} but they are not present in the database "
+                msg += f"{table_name_dict[table]} table structure\n {cols_in_db} \n "
+                msg += f"or in the {table_name_dict[table]} renaming dict\n"
+                msg += f"{table_col_dict[table]}"
+                warnings.warn(msg)
             # Store the data in the database
-            self.db.append(df, table_name_dict[table], drop_description=False)
-            self.logger.info(
-                "The %s table has been updated.", table_name_dict[table]
+            self.db.append(
+                df[cols_in_db], table_name_dict[table], drop_description=False
             )
+            self.logger.info("The %s table has been updated.", table_name_dict[table])
 
     def write_log(
         self,
@@ -1039,9 +1026,9 @@ class Pump:
         # list of years
         years = [str(i) for i in range(start_year, end_year + 1)]
         for reporter_code in reporters.id:
-            reporter_name = reporters.text[
-                reporters.id == reporter_code
-            ].to_string(index=False)
+            reporter_name = reporters.text[reporters.id == reporter_code].to_string(
+                index=False
+            )
             # https://comtrade.un.org/data/doc/api
             # "1 request every second (per IP address or authenticated user)."
             time.sleep(2)
@@ -1057,18 +1044,14 @@ class Pump:
                 nr_product = 5
             # Select the first 5 products code at a time to avoid row limits to download
             product_block = product_code[
-                product_counter
-                * nr_product : (product_counter + 1)
-                * nr_product
+                product_counter * nr_product : (product_counter + 1) * nr_product
             ]
             # no more products to query
             while product_block != []:
                 # differentiate selection of the period based on the frequency
                 if frequency == "A":
                     # selection of 5 years
-                    period = years[
-                        period_counter * 5 : (period_counter + 1) * 5
-                    ]
+                    period = years[period_counter * 5 : (period_counter + 1) * 5]
                 elif frequency == "M":
                     # selection of 1 year(12 months)
                     period = years[period_counter : period_counter + 1]
@@ -1161,9 +1144,7 @@ class Pump:
                 )
                 # Trace API parameters and db status into table
                 self.write_log(
-                    timedate=datetime.datetime.now(
-                        pytz.timezone("Europe/Rome")
-                    ),
+                    timedate=datetime.datetime.now(pytz.timezone("Europe/Rome")),
                     table=table_name,
                     max=100000,
                     type="C",
@@ -1211,9 +1192,9 @@ class Pump:
         years = [str(year - i) for i in range(1, 6)]
         years = ",".join(years)
         for reporter_code in reporters.id:
-            reporter_name = reporters.text[
-                reporters.id == reporter_code
-            ].to_string(index=False)
+            reporter_name = reporters.text[reporters.id == reporter_code].to_string(
+                index=False
+            )
             download_successful = False
             # https://comtrade.un.org/data/doc/api
             # "1 request every second (per IP address or authenticated user)."

@@ -166,10 +166,11 @@ class Dump:
             >>> file_path = comtrade.dump.data_dir / "raw_comtrade_monthly_15.csv.gz"
             >>> comtrade.dump.load_2d_csv("monthly", file_path)
             >>> # Load yearly data for many 2 digit level codes and all child codes under it
+            >>> periodicity = "yearly"
             >>> for code in ["12", "15", "23"]:
             >>>     file_path = comtrade.dump.data_dir
-            >>>     file_path = file_path / f"raw_comtrade_monthly_{code}.csv.gz"
-            >>>     comtrade.dump.load_2d_csv("yearly", file_path)
+            >>>     file_path = file_path / f"raw_comtrade_{periodicity}_{code}.csv.gz"
+            >>>     comtrade.dump.load_2d_csv(periodicity, file_path)
 
         """
         # Read the csv file in memory
