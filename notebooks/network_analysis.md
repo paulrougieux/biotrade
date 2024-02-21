@@ -22,28 +22,39 @@ from biotrade.comtrade import comtrade
 from biotrade.faostat import faostat
 import networkx as nx
 import plotly.graph_objs as go
+import os
+from pathlib import Path
+from plotly.subplots import make_subplots
+import plotly.express as px
+
+output_folder = Path(os.environ["BIOTRADE_DATA"]) / "plots" / "centrality"
 ```
 
 ```python
 # Select products
-product_codes = ["120100", "120110", "120190"]
+product_codes = ["230400"]
 # Select countries
-country_codes = faostat.country_groups.df["iso3_code"].dropna().tolist()
-# Select South America as partners
-# partner_codes = list(
-#     df_country[
-#         (df_country["continent"] == "Americas")
-#         & (df_country["sub_continent"] == "South America")
-#     ]["un_code"]
-# )
-# # Select MS, China and USA as reporters
-# reporter_codes = [*list(df_country[df_country["eu27"] == 1]["un_code"]), 156, 842]
+df_country = faostat.country_groups.df
+country_codes = df_country["iso3_code"].dropna().tolist()
+# Select only certain souther countries
+country_codes = ["ARG", "BRA", "PRY", "URY", "BOL"]
+# Select all reporters and partners
+reporter_codes = None
+partner_codes = None
+# Select only South America trades
+reporter_codes = list(
+    df_country[
+        (df_country["continent"] == "Americas")
+        & (df_country["sub_continent"] == "South America")
+    ]["un_code"]
+)
+partner_codes = reporter_codes
 trade_data = comtrade.db.select(
     table="yearly",
     product_code=product_codes,
     flow="import",
-    # reporter_code=reporter_codes,
-    # partner_code=partner_codes,
+    reporter_code=reporter_codes,
+    partner_code=partner_codes,
     period_start=2018,
     period_end=2023,
 )
@@ -62,7 +73,6 @@ avg_exp = (
     (
         trade_data.groupby(["partner_iso", "year"]).agg({"net_weight": "sum"})
         / trade_data.groupby(["year"]).agg({"net_weight": "sum"})
-        * 100
     )
     .reset_index()
     .rename(columns={"partner_iso": "country_iso", "net_weight": "value"})
@@ -73,18 +83,18 @@ avg_imp = (
     (
         trade_data.groupby(["reporter_iso", "year"]).agg({"net_weight": "sum"})
         / trade_data.groupby(["year"]).agg({"net_weight": "sum"})
-        * 100
     )
     .reset_index()
     .rename(columns={"reporter_iso": "country_iso", "net_weight": "value"})
 )
 avg_imp["type"] = "is-c"
 # Concat results
-avg = pd.concat([avg_imp, avg_exp], ignore_index = True)
+avg = pd.concat([avg_imp, avg_exp], ignore_index=True)
 ```
 
 ```python
 df = pd.DataFrame()
+# Calculate betweeness centrality for each year
 for year in sorted(trade_data["year"].unique()):
     G = nx.DiGraph()
     df_year = trade_data[trade_data["year"] == year]
@@ -106,34 +116,78 @@ for year in sorted(trade_data["year"].unique()):
     btc["year"] = year
     btc["type"] = "bt-c"
     df = pd.concat([df, btc], ignore_index=True)
+# Concat results
 df = pd.concat([df, avg], ignore_index=True)
+# Put as zeros values < 0.01
+df.loc[df["value"] < 0.001, "value"] = 0
+# Pivot table
+df = df.pivot(values="value", index=["country_iso", "year"], columns="type")
 ```
 
 ```python
-# Plot
-fig = go.Figure()
-
-# Per ogni riga nel DataFrame
-for index, row in df.sort_values(by="iso3_code").iterrows():
-    # Aggiungi una traccia per ogni nazione
-    fig.add_trace(
-        go.Scatter(
-            x=df.columns[1:],
-            y=row[1:],
-            mode="lines",
-            name=row["iso3_code"],
-            visible="legendonly",
-        )
+product = "soya_cake"
+region = "south_america"
+subplot = True
+if subplot:
+    # Create a subplot with bar charts for each country
+    fig = make_subplots(
+        rows=1, cols=len(df.index.levels[0]), subplot_titles=sorted(df.index.levels[0])
     )
-
-# Imposta il layout del grafico
-fig.update_layout(
-    title="Soyabeans",
-    xaxis_title="Time [y]",
-    yaxis_title="Bewtweeness centrality",
-    hovermode="closest",
-)
-
-# Visualizza il grafico
-fig.show()
+    fig.update_layout(
+        barmode="group",
+        title_text=f"{product.replace('_', ' ').title()}",
+        xaxis_title="Time [y]",
+        yaxis_title="Centrality",
+        height=1000,
+        width=2000,
+        font=dict(size=24),
+    )
+    for i, country in enumerate(sorted(df.index.levels[0])):
+        country_df = df.loc[country]
+        colors = px.colors.qualitative.Plotly[:3]
+        color_dict = {
+            "bt-c": colors[0],
+            "is-c": colors[1],
+            "os-c": colors[2],
+        }
+        if i == 0:
+            legend = True
+        else:
+            legend = False
+        for column in color_dict.keys():
+            fig.add_trace(
+                go.Bar(
+                    x=country_df.index.get_level_values("year"),
+                    y=country_df[column],
+                    name=column,
+                    marker_color=color_dict[column],
+                    showlegend=legend,
+                ),
+                row=1,
+                col=i + 1,
+            )
+    fig.update_annotations(font_size=24)
+    fig.update_yaxes(range=[0, 1])
+    fig.write_image(output_folder / f"{product}_{region}_trade.png")
+    df.to_csv(output_folder / f"{product}_{region}_trade.csv")
+else:
+    for country in sorted(df.index.levels[0]):
+        # Create a bar chart for each country
+        fig = go.Figure()
+        country_df = df.loc[country]
+        for col in ["bt-c", "is-c", "os-c"]:
+            fig.add_trace(
+                go.Bar(
+                    x=country_df.index.get_level_values("year"),
+                    y=country_df[col],
+                    name=col,
+                )
+            )
+            fig.update_layout(
+                barmode="group",
+                title_text=f"{product.replace('_', ' ').title()}",
+                xaxis_title="Time [y]",
+                yaxis_title="Centrality",
+            )
+        fig.write_image(output_folder / f"{product}_{region}_trade_{country}.png")
 ```
