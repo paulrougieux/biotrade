@@ -1,202 +1,202 @@
-product_code,product_name,asso_lafo
-47,wood pulp,1
-48,paper and paperboard,1
-102,live cattle,1
-201,fresh meat of cattle,1
-202,frozen meat of cattle,1
-901,coffee,1
-1201,soya beans,1
-1507,soya-bean oil,1
-1511,palm oil,1
-1801,cocoa beans,1
-1802,cocoa shells,1
-1803,cocoa paste,1
-1804,cocoa butter,1
-1805,cocoa powder,1
-1806,chocolate,1
-2304,soya-bean cake,1
-4001,natural rubber,1
-4005,compounded rubber,1
-4006,unvulcanised rubber,1
-4007,vulcanised rubber,1
-4008,plates sheets and strips of vulcanised rubber,1
-4010,conveyer of vulcanised rubber,1
-4011,new pneumatic tyres of rubber,1
-4012,retreaded or used pneumatic tyres of rubber,1
-4013,inner tubes of rubber,1
-4015,articles of apparel and clothing of vulcanised rubber,1
-4016,articles of vulcanised rubber other,1
-4017,hard rubber ebonite ,1
-4101,raw hides and skins of cattle,1
-4104,tanned or crust hides and skins of cattle,1
-4107,leather of cattle,1
-4401,fuel wood,1
-4402,wood charcoal,1
-4403,industrial roundwood,1
-4404,poles,1
-4405,wood wool,1
-4406,railway sleepers,1
-4407,sawnwood,1
-4408,veneer sheets,1
-4409,moulded wood,1
-4410,particle board,1
-4411,fibreboard,1
-4412,plywood and veneer,1
-4413,densified wood,1
-4414,wooden frames,1
-4415,packing cases and boxes,1
-4416,casks and barrels,1
-4417,tools of wood,1
-4418,joinery,1
-4419,tableware of wood,1
-4420,wood marquetry,1
-4421,other articles of wood,1
-4701,mechanical wood pulp,1
-4702,chemical wood pulp dissolving grades,1
-4703,chemical wood pulp soda or sulphate,1
-4704,Chemical wood pulp sulphite,1
-4705,wood pulp mechanical and chemical combined,1
-4801,newsprint,
-4802,uncoated paper,
-4803,sanitary paper and tissue,
-4804,uncoated kraft paper,
-4805,uncoated paper other,
-4810,coated paper,
-4811,paper paperboard,
-4818,toilet paper,
-4819,carton boxes,
-4823,paper of cellulose fibres,
-4900,books and newspapers,1
-9401,wooden seats,1
-20610,fresh edible offal of cattle,1
-20622,frozen edible cattle livers,1
-20629,frozen edible cattle offal (excluding tongues and livers),1
-120710,palm nuts and kernels,1
-120810,soya bean flour and meal,1
-151321,crude palm kernel,1
-151329,palm kernel and babassu oil,1
-160250,other prepared meat of bovine animals,1
-230660,oilcake,1
-290545,glycerol,1
-291570,palmitic acid and stearic acid,1
-291590,saturated acyclic monocarboxylic acids,1
-382311,industrial stearic acid,1
-382312,industrial oleic acid,1
-382319,fatty acids,1
-382370,industrial fatty alcohols,1
-440121,wood fuel in chips or particles,1
-440131,wood fuel in pellets,1
-440290,wood charcoal,1
-440310,roundwood 10,1
-440311,roundwood coniferous treated 11,1
-440312,roundwood non coniferous 12,1
-440320,roundwood coniferous 20,1
-440321,roundwood pine,1
-440322,roundwood pine <15cm,1
-440323,roundwood fir and spruce,1
-440324,roundwood fir and spruce <15cm,1
-440325,roundwood coniferous 25,1
-440326,roundwood coniferous <15cm 26,1
-440331,roundwoood trop 31 red meranti,1
-440332,roundwood trop 32 lauan,1
-440333,roundwood trop 33 keruing,1
-440334,roundwood trop 34 okume,1
-440335,roundwood trop 35 tiama,1
-440341,roundwood trop 41 ,1
-440342,roundwood trop 42 teak,1
-440349,roundwood trop 49 other,1
-440391,roundwood oak,1
-440392,roundwood beech 92,1
-440393,roundwood beech 93,1
-440394,roundwood beech <15cm,1
-440395,roundwood birch,1
-440396,roundwood birch <15cm,1
-440397,roundwood poplar,1
-440398,roundwood eucalyptus,1
-440399,roundwood other 99,1
-440710,sawnwood coniferous 10,1
-440711,sawnwood pine,1
-440712,sawnwood spruce,1
-440713,sawnwood fir,1
-440714,sawnwood hem-fir,1
-440719,sawnwood coniferous other 19,1
-440721,sawnwood trop 21,1
-440722,sawnwood trop 22,1
-440723,sawnwood teak,1
-440724,sawnwood trop 24 virola,1
-440725,sawnwood trop 25 red meranti,1
-440726,sawnwood trop 26 white lauan,1
-440727,sawnwood trop 27 sapelli,1
-440728,sawnwood trop 28 iroko,1
-440729,sawnwood trop 29 other,1
-440791,sawnwood oak,1
-440792,sawnwood beech,1
-440793,sawnwood maple,1
-440794,sawnwood cherry,1
-440795,sawnwood ash,1
-440796,sawnwood birch,1
-440797,sawnwood poplar,1
-440799,sawnwood other 99,1
-440890,sheets for veneer or plywood,1
-440910,wood flooring,1
-441010,particle board 10,1
-441011,particle board 11,1
-441012,osb,1
-441019,wafer board,1
-441021,wafer borad and osb unworked,1
-441029,wafer board and osb unworked,1
-441031,particle board unworked,1
-441032,particle board with malamine paper,1
-441033,particle board with decorative plastic,1
-441039,particle board other 39,1
-441090,particle board osb and similar 90,1
-441111,fibreboard > 0.8g/cm3 not covered,1
-441112,mdf < 5mm,1
-441113,mdf 5-9mm,1
-441114,mdf > 9mm,1
-441119,fibreboard > 0.8g/cm3 covered,1
-441121,fibreboard 0.5-0.8 g/cm3 not covered,1
-441129,fibreboard 0.5-0.8 g/cm3 covered,1
-441131,fibreboard 0.3-0.5 g/cm3 not covered,1
-441139,fibreboard 0.3-0.5 g/cm3 covered,1
-441191,fibreboard 91 other,1
-441192,fibreboard > 0.8g/cm3 92,1
-441193,fibreboard 0.5-0.8 g/cm3 93,1
-441194,fibreboard 0.3-0.5 g/cm3 94,1
-441199,fibreboard 99 other,1
-441210,plywood of bamboo,1
-441211,plywood of meranti & other tropical,1
-441212,plywood 12 non coniferous,1
-441213,plywood 13 tropical,1
-441214,plywood 14 non coniferous,1
-441219,plywood 19,1
-441221,plywood 21 with particle board,1
-441222,plywood 22 non coniferous and tropical,1
-441223,plywood 23 with particle board,1
-441229,plywood 29 ,1
-441231,plywood 31 tropical,1
-441232,plywood 32 non coniferous,1
-441233,plywood 33 non coniferous,1
-441234,plywood 34 non coniferous,1
-441239,plywood 39 coniferous,1
-441241,plywood 41 tropical,1
-441242,lvl 42,1
-441249,lvl 49,1
-441251,blockboard tropical,1
-441252,blockboard non coniferous,1
-441259,blockboard coniferous,1
-441291,plywood 91 tropical,1
-441292,plywood 92 non coniferous,1
-441293,plywood 93 coniferous with particle board,1
-441294,blockboard 94,1
-441299,plywood 99 coniferous,1
-441520,wood pallets and box pallets,1
-441875,wood assembled flooring panels,1
-441899,builders joinery - others,1
-442199,wood frames,1
-940330,wooden furniture 30,1
-940340,wooden furniture 40,1
-940350,wooden furniture 50,1
-940360,wooden furniture 60,1
-940610,prefabricated buildings of wood,1
-94039030,wooden furniture 9030,1
+,product_code,product_name,asso_lafo,product_group
+0,47,wood pulp,1.0,
+1,48,paper and paperboard,1.0,
+2,102,live cattle,1.0,
+3,201,fresh meat of cattle,1.0,
+4,202,frozen meat of cattle,1.0,
+5,901,coffee,1.0,
+6,1201,soya beans,1.0,
+7,1507,soya-bean oil,1.0,
+8,1511,palm oil,1.0,
+9,1801,cocoa beans,1.0,
+10,1802,cocoa shells,1.0,
+11,1803,cocoa paste,1.0,
+12,1804,cocoa butter,1.0,
+13,1805,cocoa powder,1.0,
+14,1806,chocolate,1.0,
+15,2304,soya-bean cake,1.0,
+16,4001,natural rubber,1.0,
+17,4005,compounded rubber,1.0,
+18,4006,unvulcanised rubber,1.0,
+19,4007,vulcanised rubber,1.0,
+20,4008,plates sheets and strips of vulcanised rubber,1.0,
+21,4010,conveyer of vulcanised rubber,1.0,
+22,4011,new pneumatic tyres of rubber,1.0,
+23,4012,retreaded or used pneumatic tyres of rubber,1.0,
+24,4013,inner tubes of rubber,1.0,
+25,4015,articles of apparel and clothing of vulcanised rubber,1.0,
+26,4016,articles of vulcanised rubber other,1.0,
+27,4017,hard rubber ebonite ,1.0,
+28,4101,raw hides and skins of cattle,1.0,
+29,4104,tanned or crust hides and skins of cattle,1.0,
+30,4107,leather of cattle,1.0,
+31,4401,fuel wood,1.0,fuel wood
+32,4402,wood charcoal,1.0,fuel wood
+33,4403,industrial roundwood,1.0,industrial roundwood
+34,4404,poles,1.0,other solid wood products
+35,4405,wood wool,1.0,other solid wood products
+36,4406,railway sleepers,1.0,other solid wood products
+37,4407,sawnwood,1.0,sawnwood
+38,4408,veneer sheets,1.0,wood panels
+39,4409,moulded wood,1.0,other solid wood products
+40,4410,particle board,1.0,wood panels
+41,4411,fibreboard,1.0,wood panels
+42,4412,plywood and veneer,1.0,wood panels
+43,4413,densified wood,1.0,wood panels
+44,4414,wooden frames,1.0,other solid wood products
+45,4415,packing cases and boxes,1.0,other solid wood products
+46,4416,casks and barrels,1.0,other solid wood products
+47,4417,tools of wood,1.0,other solid wood products
+48,4418,joinery,1.0,other solid wood products
+49,4419,tableware of wood,1.0,other solid wood products
+50,4420,wood marquetry,1.0,other solid wood products
+51,4421,other articles of wood,1.0,other solid wood products
+52,4701,mechanical wood pulp,1.0,wood pulp
+53,4702,chemical wood pulp dissolving grades,1.0,wood pulp
+54,4703,chemical wood pulp soda or sulphate,1.0,wood pulp
+55,4704,Chemical wood pulp sulphite,1.0,wood pulp
+56,4705,wood pulp mechanical and chemical combined,1.0,wood pulp
+57,4801,newsprint,,paper and paperboard
+58,4802,uncoated paper,,paper and paperboard
+59,4803,sanitary paper and tissue,,paper and paperboard
+60,4804,uncoated kraft paper,,paper and paperboard
+61,4805,uncoated paper other,,paper and paperboard
+62,4810,coated paper,,paper and paperboard
+63,4811,paper paperboard,,paper and paperboard
+64,4818,toilet paper,,paper and paperboard
+65,4819,carton boxes,,paper and paperboard
+66,4823,paper of cellulose fibres,,paper and paperboard
+67,4900,books and newspapers,1.0,
+68,9401,wooden seats,1.0,
+69,20610,fresh edible offal of cattle,1.0,
+70,20622,frozen edible cattle livers,1.0,
+71,20629,frozen edible cattle offal (excluding tongues and livers),1.0,
+72,120710,palm nuts and kernels,1.0,
+73,120810,soya bean flour and meal,1.0,
+74,151321,crude palm kernel,1.0,
+75,151329,palm kernel and babassu oil,1.0,
+76,160250,other prepared meat of bovine animals,1.0,
+77,230660,oilcake,1.0,
+78,290545,glycerol,1.0,
+79,291570,palmitic acid and stearic acid,1.0,
+80,291590,saturated acyclic monocarboxylic acids,1.0,
+81,382311,industrial stearic acid,1.0,
+82,382312,industrial oleic acid,1.0,
+83,382319,fatty acids,1.0,
+84,382370,industrial fatty alcohols,1.0,
+85,440121,wood fuel in chips or particles,1.0,
+86,440131,wood fuel in pellets,1.0,
+87,440290,wood charcoal,1.0,
+88,440310,roundwood 10,1.0,
+89,440311,roundwood coniferous treated 11,1.0,
+90,440312,roundwood non coniferous 12,1.0,
+91,440320,roundwood coniferous 20,1.0,
+92,440321,roundwood pine,1.0,
+93,440322,roundwood pine <15cm,1.0,
+94,440323,roundwood fir and spruce,1.0,
+95,440324,roundwood fir and spruce <15cm,1.0,
+96,440325,roundwood coniferous 25,1.0,
+97,440326,roundwood coniferous <15cm 26,1.0,
+98,440331,roundwoood trop 31 red meranti,1.0,
+99,440332,roundwood trop 32 lauan,1.0,
+100,440333,roundwood trop 33 keruing,1.0,
+101,440334,roundwood trop 34 okume,1.0,
+102,440335,roundwood trop 35 tiama,1.0,
+103,440341,roundwood trop 41 ,1.0,
+104,440342,roundwood trop 42 teak,1.0,
+105,440349,roundwood trop 49 other,1.0,
+106,440391,roundwood oak,1.0,
+107,440392,roundwood beech 92,1.0,
+108,440393,roundwood beech 93,1.0,
+109,440394,roundwood beech <15cm,1.0,
+110,440395,roundwood birch,1.0,
+111,440396,roundwood birch <15cm,1.0,
+112,440397,roundwood poplar,1.0,
+113,440398,roundwood eucalyptus,1.0,
+114,440399,roundwood other 99,1.0,
+115,440710,sawnwood coniferous 10,1.0,
+116,440711,sawnwood pine,1.0,
+117,440712,sawnwood spruce,1.0,
+118,440713,sawnwood fir,1.0,
+119,440714,sawnwood hem-fir,1.0,
+120,440719,sawnwood coniferous other 19,1.0,
+121,440721,sawnwood trop 21,1.0,
+122,440722,sawnwood trop 22,1.0,
+123,440723,sawnwood teak,1.0,
+124,440724,sawnwood trop 24 virola,1.0,
+125,440725,sawnwood trop 25 red meranti,1.0,
+126,440726,sawnwood trop 26 white lauan,1.0,
+127,440727,sawnwood trop 27 sapelli,1.0,
+128,440728,sawnwood trop 28 iroko,1.0,
+129,440729,sawnwood trop 29 other,1.0,
+130,440791,sawnwood oak,1.0,
+131,440792,sawnwood beech,1.0,
+132,440793,sawnwood maple,1.0,
+133,440794,sawnwood cherry,1.0,
+134,440795,sawnwood ash,1.0,
+135,440796,sawnwood birch,1.0,
+136,440797,sawnwood poplar,1.0,
+137,440799,sawnwood other 99,1.0,
+138,440890,sheets for veneer or plywood,1.0,
+139,440910,wood flooring,1.0,
+140,441010,particle board 10,1.0,
+141,441011,particle board 11,1.0,
+142,441012,osb,1.0,
+143,441019,wafer board,1.0,
+144,441021,wafer borad and osb unworked,1.0,
+145,441029,wafer board and osb unworked,1.0,
+146,441031,particle board unworked,1.0,
+147,441032,particle board with malamine paper,1.0,
+148,441033,particle board with decorative plastic,1.0,
+149,441039,particle board other 39,1.0,
+150,441090,particle board osb and similar 90,1.0,
+151,441111,fibreboard > 0.8g/cm3 not covered,1.0,
+152,441112,mdf < 5mm,1.0,
+153,441113,mdf 5-9mm,1.0,
+154,441114,mdf > 9mm,1.0,
+155,441119,fibreboard > 0.8g/cm3 covered,1.0,
+156,441121,fibreboard 0.5-0.8 g/cm3 not covered,1.0,
+157,441129,fibreboard 0.5-0.8 g/cm3 covered,1.0,
+158,441131,fibreboard 0.3-0.5 g/cm3 not covered,1.0,
+159,441139,fibreboard 0.3-0.5 g/cm3 covered,1.0,
+160,441191,fibreboard 91 other,1.0,
+161,441192,fibreboard > 0.8g/cm3 92,1.0,
+162,441193,fibreboard 0.5-0.8 g/cm3 93,1.0,
+163,441194,fibreboard 0.3-0.5 g/cm3 94,1.0,
+164,441199,fibreboard 99 other,1.0,
+165,441210,plywood of bamboo,1.0,
+166,441211,plywood of meranti & other tropical,1.0,
+167,441212,plywood 12 non coniferous,1.0,
+168,441213,plywood 13 tropical,1.0,
+169,441214,plywood 14 non coniferous,1.0,
+170,441219,plywood 19,1.0,
+171,441221,plywood 21 with particle board,1.0,
+172,441222,plywood 22 non coniferous and tropical,1.0,
+173,441223,plywood 23 with particle board,1.0,
+174,441229,plywood 29 ,1.0,
+175,441231,plywood 31 tropical,1.0,
+176,441232,plywood 32 non coniferous,1.0,
+177,441233,plywood 33 non coniferous,1.0,
+178,441234,plywood 34 non coniferous,1.0,
+179,441239,plywood 39 coniferous,1.0,
+180,441241,plywood 41 tropical,1.0,
+181,441242,lvl 42,1.0,
+182,441249,lvl 49,1.0,
+183,441251,blockboard tropical,1.0,
+184,441252,blockboard non coniferous,1.0,
+185,441259,blockboard coniferous,1.0,
+186,441291,plywood 91 tropical,1.0,
+187,441292,plywood 92 non coniferous,1.0,
+188,441293,plywood 93 coniferous with particle board,1.0,
+189,441294,blockboard 94,1.0,
+190,441299,plywood 99 coniferous,1.0,
+191,441520,wood pallets and box pallets,1.0,
+192,441875,wood assembled flooring panels,1.0,
+193,441899,builders joinery - others,1.0,
+194,442199,wood frames,1.0,
+195,940330,wooden furniture 30,1.0,
+196,940340,wooden furniture 40,1.0,
+197,940350,wooden furniture 50,1.0,
+198,940360,wooden furniture 60,1.0,
+199,940610,prefabricated buildings of wood,1.0,
+200,94039030,wooden furniture 9030,1.0,
