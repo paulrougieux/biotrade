@@ -355,7 +355,7 @@ def merge_reallocated(
         real[("prod", 1)].groupby(index)["primary_eq_0"].agg("sum").reset_index()
     )
     df_check = df_agg.merge(real_prod_agg, on=index, how="outer")
-    # Ignore NA values in the check
+    # Ignore NA values in the check, drop any rows that contain NA value in a column
     if check_ignores_na:
         df_check.dropna(inplace=True)
     selector = np.isclose(
