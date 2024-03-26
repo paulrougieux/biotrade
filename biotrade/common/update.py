@@ -5,7 +5,7 @@ from biotrade.world_bank import world_bank
 
 def cron_quarterly():
     """Update of yearly datasets every three months"""
-    comtrade.pump.update_db(table_name="yearly", frequency="A")
+    comtrade.pump.update_db(table_name="yearly", frequency="A", start_year=2000)
     comtrade.pump.update_db_parameter()
     faostat_tables = [
         "country",
@@ -19,9 +19,7 @@ def cron_quarterly():
         "land_cover",
     ]
     faostat.pump.update(faostat_tables, skip_confirmation=True)
-    world_bank.pump.update(
-        ["indicator", "indicator_name"], skip_confirmation=True
-    )
+    world_bank.pump.update(["indicator", "indicator_name"], skip_confirmation=True)
 
 
 def cron_bi_weekly():
