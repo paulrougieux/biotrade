@@ -656,7 +656,7 @@ class Pump:
         :param (string) table_name, name of Comtrade db table
         :param (string) frequency, "M" for monthly data or "A" for annual
         :param (int) start_year, year to start the download from, defaults to
-            2016 if not specified
+        last year if not specified
 
         Return an error if some periods are not uploaded to the database.
 
@@ -666,14 +666,15 @@ class Pump:
             >>> comtrade.pump.update_db(table_name = "monthly", frequency = "M")
 
         """
-        if start_year is None:
-            start_year = 2016
         # Adjust frequency parameter in case it is wrongly provided
         if table_name in ("yearly", "yearly_hs2"):
             frequency = "A"
         elif table_name == "monthly":
             frequency = "M"
         current_year = datetime.datetime.now(pytz.timezone("Europe/Rome")).date().year
+        # If start year not specified, update from the last year only
+        if start_year is None:
+            start_year = current_year - 1
         # Check if data from the start year are present into the database
         data_present = self.db.check_data_presence(
             table_name,
@@ -681,9 +682,6 @@ class Pump:
             current_year,
             frequency,
         )
-        # If data are already inside DB, update from the year before last only
-        if data_present:
-            start_year = current_year - 1
         # Transfer from api bulk requests to db
         self.transfer_bulk_csv(
             table_name,
