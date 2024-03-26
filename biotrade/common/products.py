@@ -67,7 +67,7 @@ regulation_products = pandas.read_csv(
     # Force Comtrade codes to be strings
     dtype={
         "regulation_code": "str",
-        "regulation_name": "str",
+        "comtrade_primary_code": "str",
         "hs_4d_code": "str",
         "hs_6d_code": "str",
     },
