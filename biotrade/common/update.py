@@ -28,13 +28,14 @@ def cron_bi_weekly():
 
 
 def cron_front_end():
-    """Update of web platform datasets every three months"""
+    """Update of web platform datasets every six months"""
     from scripts.front_end import product_list
     from scripts.front_end import annual_variation_harvested_area_production
     from scripts.front_end import average_harvested_area_production
     from scripts.front_end import trends_harvested_area_production
     from scripts.front_end import annual_variation_trade_quantity_value
     from scripts.front_end import average_trade_quantity
+    from scripts.front_end import statement
 
     product_list.main()
     annual_variation_harvested_area_production.main()
@@ -42,3 +43,4 @@ def cron_front_end():
     trends_harvested_area_production.main()
     annual_variation_trade_quantity_value.main()
     average_trade_quantity.main()
+    statement.main()
