@@ -9,6 +9,7 @@ Script which contains functions used to produce data for the Web Platform
 """
 
 import os
+import warnings
 import pandas as pd
 import numpy as np
 from pathlib import Path
@@ -33,6 +34,12 @@ def filter_production_data(df):
     """
     # All units in lower case
     df["unit"] = df["unit"].str.lower()
+    units_allowed = ["100 g/an", "100 g/ha", "an", "ha", "m3", "t"]
+    # Put control on unit names
+    if sorted(df["unit"].unique()) != units_allowed:
+        warnings.warn(
+            f"Units of production dataset have been changed from\n{units_allowed}\nto\n{sorted(df['unit'].unique())}"
+        )
     # Remove yields for animals
     df = df[df["unit"] != "100 g/an"]
     # Use ton as unit name for tonnes
@@ -614,6 +621,23 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
             production_legend["description"] + production_legend["unit"]
         )
         save_file(production_legend, "production_average_legend.csv")
+        # Save yield interval legends
+        yield_legend = df_legend[df_legend["element"] == "yield"][column_list]
+        # Define two statements
+        selector = yield_legend.interval == 0
+        yield_legend.loc[selector, "description"] = "up to " + (
+            yield_legend.loc[selector, "max_value"]
+        ).round(2).astype(str)
+        yield_legend.loc[~selector, "description"] = (
+            "from "
+            + (yield_legend.loc[~selector, "min_value"]).round(2).astype(str)
+            + " to "
+            + (yield_legend.loc[~selector, "max_value"]).round(2).astype(str)
+        )
+        yield_legend["description"] = (
+            yield_legend["description"] + " " + yield_legend.unit
+        )
+        save_file(yield_legend, "yield_average_legend.csv")
     # Associate the avg productions (eventually with intervals) to the final dataframe
     df_final = df_final.merge(df_avg, on=groupby_avg_cols, how="left")
     return df_final
