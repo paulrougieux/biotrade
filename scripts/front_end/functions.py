@@ -27,6 +27,29 @@ COLUMN_PERC_SUFFIX = "_percentage"
 COLUMN_TOT_SUFFIX = "_tot_value"
 
 
+def filter_production_data(df):
+    """
+    Filter crop data and change units
+    """
+    # All units in lower case
+    df["unit"] = df["unit"].str.lower()
+    # Remove yields for animals
+    df = df[df["unit"] != "100 g/an"]
+    # Use ton as unit name for tonnes
+    selector = df["unit"] == "t"
+    df.loc[selector, "unit"] = "ton"
+    # Use head as unit name for animal
+    selector = df["unit"] == "an"
+    df.loc[selector, "unit"] = "head"
+    # Yield data transformed from hg/ha into ton/ha
+    selector = df["element"] == "yield"
+    df.loc[selector, "value"] = df.loc[selector, "value"] / 10**4
+    df.loc[selector, "unit"] = "ton/ha"
+    # Select only at country level
+    df = df[df["reporter_code"] < 1000].reset_index(drop=True)
+    return df
+
+
 def replace_zero_with_nan_values(df, column_list):
     """
     Replace zero value columns with nan, to let the values be dropped afterwards
