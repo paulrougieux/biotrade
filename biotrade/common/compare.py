@@ -69,10 +69,16 @@ Use monthly Comtrade data:
 import warnings
 import pandas
 import numpy as np
+import pandas as pd
 import math
 from biotrade.faostat import faostat
 from biotrade.comtrade import comtrade
 from biotrade.common.products import comtrade_faostat_mapping
+
+ELEMENT_DICT = {
+    "element_code": [5610, 5622, 5910, 5922],
+    "element": ["import_quantity", "import_value", "export_quantity", "export_value"],
+}
 
 
 def replace_exclusively(df, code_column, code_dict, na_value=-1):
@@ -383,7 +389,7 @@ def merge_faostat_comtrade(
         # Add FAOSTAT product names
         df = df.merge(product_names, on="product_code")
     # Add faostat element codes to comtrade data for consistency
-    cols = ["element", "element_code", "unit"]
+    cols = ["element_code", "element"]
     element_code_faostat = pandas.DataFrame(columns=cols)
     db = faostat.db
     # Retrieve element codes of Faostat db
@@ -391,22 +397,29 @@ def merge_faostat_comtrade(
         table = db.tables[table_name]
         element_code = db.read_sql_query(
             table.select()
-            .distinct(table.c.element, table.c.element_code, table.c.unit)
-            .with_only_columns(table.c.element, table.c.element_code, table.c.unit)
+            .distinct(table.c.element_code, table.c.element)
+            .with_only_columns(table.c.element_code, table.c.element)
         )
         element_code_faostat = pandas.concat(
             [element_code_faostat, element_code], ignore_index=True
         )
-    element_code_faostat = element_code_faostat.drop_duplicates(subset=cols)[
-        cols
-    ].reset_index(drop=True)
-    # Convert trade units from 1000 USD to USD
-    selector = element_code_faostat["unit"] == "1000 US$"
-    element_code_faostat.loc[selector, "unit"] = "usd"
-    # Convert tonnes to kg
-    selector = element_code_faostat["unit"] == "tonnes"
-    element_code_faostat.loc[selector, "unit"] = "kg"
-    df = df.merge(element_code_faostat, how="left", on=["element", "unit"])
+    element_code_faostat = element_code_faostat.drop_duplicates().reset_index(drop=True)
+    element_code_faostat = (
+        element_code_faostat[
+            element_code_faostat["element_code"].isin(ELEMENT_DICT["element_code"])
+        ].sort_values(by="element_code")
+    ).reset_index(drop=True)
+    # Put as int element code
+    element_code_faostat["element_code"] = element_code_faostat["element_code"].astype(
+        "int64"
+    )
+    # Put a check on element codes
+    if not element_code_faostat.equals(pd.DataFrame.from_dict(ELEMENT_DICT)):
+        warnings.warn(
+            f"Element types for trade have changed from\n{pd.DataFrame.from_dict(ELEMENT_DICT)}\nPlease check them"
+        )
+    # Merge on element
+    df = df.merge(element_code_faostat, how="left", on=["element"])
     # Fill nan with -1 to let potential joins on element_code column too for comtrade data
     df["element_code"] = df["element_code"].fillna(-1).astype(int)
     # 4. Concatenate FAOSTAT and Comtrade data
