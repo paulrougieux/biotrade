@@ -299,12 +299,19 @@ def merge_faostat_comtrade(
     if faostat_code:
         df_faostat = faostat.db.select(faostat_table, product_code=faostat_code)
         product_names = df_faostat[["product_code", "product"]].drop_duplicates()
+        element_df = pd.DataFrame.from_dict(ELEMENT_DICT)
         # Convert trade values from 1000 USD to USD
-        selector = df_faostat["unit"] == "1000 US$"
+        codes = element_df[element_df["element"].str.endswith("_value")][
+            "element_code"
+        ].values.tolist()
+        selector = df_faostat["element_code"].isin(codes)
         df_faostat.loc[selector, "value"] = df_faostat.loc[selector, "value"] * 1e3
         df_faostat.loc[selector, "unit"] = "usd"
         # Convert tonnes to kg
-        selector = df_faostat["unit"] == "tonnes"
+        codes = element_df[element_df["element"].str.endswith("_quantity")][
+            "element_code"
+        ].values.tolist()
+        selector = df_faostat["element_code"].isin(codes)
         df_faostat.loc[selector, "value"] = df_faostat.loc[selector, "value"] * 1e3
         df_faostat.loc[selector, "unit"] = "kg"
     else:
