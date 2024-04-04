@@ -15,7 +15,7 @@ import numpy as np
 from pathlib import Path
 from biotrade.faostat import faostat
 from biotrade import data_dir
-from biotrade.common.compare import merge_faostat_comtrade
+from biotrade.common.compare import merge_faostat_comtrade, ELEMENT_DICT
 from biotrade.common.time_series import (
     relative_absolute_change,
     segmented_regression,
@@ -26,6 +26,32 @@ from biotrade.common.time_series import (
 COLUMN_AVG_SUFFIX = "_avg_value"
 COLUMN_PERC_SUFFIX = "_percentage"
 COLUMN_TOT_SUFFIX = "_tot_value"
+
+
+def filter_trade_data(df):
+    """
+    Filter trade data and change units
+    """
+    # Remove trade products where unit is different from kg and usd
+    df = df[df["element_code"].isin(ELEMENT_DICT["element_code"])].reset_index(
+        drop=True
+    )
+    element_df = pd.DataFrame.from_dict(ELEMENT_DICT)
+    # Convert trade values from USD to Million USD
+    codes = element_df[element_df["element"].str.endswith("_value")][
+        "element_code"
+    ].values.tolist()
+    selector = df["element_code"].isin(codes)
+    df.loc[selector, "value"] = df.loc[selector, "value"] * 1e-6
+    df.loc[selector, "unit"] = "Mdollar"
+    # Convert kg to tonnes
+    codes = element_df[element_df["element"].str.endswith("_quantity")][
+        "element_code"
+    ].values.tolist()
+    selector = df["element_code"].isin(codes)
+    df.loc[selector, "value"] = df.loc[selector, "value"] * 1e-3
+    df.loc[selector, "unit"] = "ton"
+    return df
 
 
 def filter_production_data(df):
