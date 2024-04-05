@@ -16,6 +16,7 @@ def main():
     from biotrade.faostat import faostat
     from scripts.front_end.functions import COLUMN_PERC_SUFFIX
     from scripts.front_end.functions import (
+        filter_production_data,
         aggregated_data,
         main_product_list,
         average_results,
@@ -25,14 +26,12 @@ def main():
     )
 
     # Obtain the main product codes
-    main_product_list = main_product_list(
-        ["crop_production", "forestry_production"]
-    )
+    main_product_list = main_product_list(["crop_production", "forestry_production"])
     # Query db to obtain data
     crop_df = faostat.db.select(
         table="crop_production",
         product_code=main_product_list,
-        element=["production", "area_harvested", "stocks"],
+        element=["production", "area_harvested", "stocks", "yield"],
     )
     # Select wood production data
     wood_df = faostat.db.select(
@@ -45,8 +44,8 @@ def main():
     # Filter df with the common most recent year of the several element types
     most_recent_year = df.groupby("element")["year"].max().min()
     df = df[df.year <= most_recent_year]
-    # Select only reporter with code lower than 1000
-    df = df[df["reporter_code"] < 1000].reset_index(drop=True)
+    # Filter at country level and change units
+    df = filter_production_data(df)
     # Aggregate french territories values to France and add them to the dataframe
     code_list = [68, 69, 87, 135, 182, 270, 281]
     agg_country_code = 68
@@ -87,24 +86,29 @@ def main():
         intervals,
     )
     # Columns to keep
-    drop_column = "element"
-    column_list = df_final.columns.tolist()
-    column_list.remove(drop_column)
-    # Define dropna columns
-    dropna_col = [
-        col for col in df_final.columns if col.endswith(COLUMN_PERC_SUFFIX)
+    drop_column = [
+        "element",
+        "reporter_code_avg_value",
+        "product_code_percentage",
+        "product_code_avg_value",
+        "reporter_code_percentage",
     ]
+    column_list = df_final.columns.tolist()
+    for col in drop_column:
+        column_list.remove(col)
+    # Define dropna columns
+    dropna_col = [col for col in df_final.columns if col.endswith(COLUMN_PERC_SUFFIX)]
     df_final = replace_zero_with_nan_values(df_final, dropna_col)
     df_final = df_final.dropna(subset=dropna_col, how="all")
     # Save csv files to env variable path or into biotrade data folder
-    harvested_area = df_final[df_final["element"] == "area_harvested"][
-        column_list
-    ]
+    harvested_area = df_final[df_final["element"] == "area_harvested"][column_list]
     save_file(harvested_area, "harvested_area_average.csv")
     production = df_final[df_final["element"].isin(["production", "stocks"])][
         column_list
     ]
     save_file(production, "production_average.csv")
+    yields = df_final[df_final["element"] == "yield"][column_list]
+    save_file(yields, "yield_average.csv")
 
 
 # Needed to avoid running module when imported

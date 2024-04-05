@@ -14,6 +14,7 @@ def main():
         main_product_list,
         comtrade_products,
         merge_faostat_comtrade_data,
+        filter_trade_data,
         aggregated_data,
         reporter_iso_codes,
         average_results,
@@ -36,8 +37,8 @@ def main():
     trade_data = merge_faostat_comtrade_data(
         faostat_list, comtrade_regulation, aggregate=False
     )
-    # Remove trade products where units is head
-    trade_data = trade_data[trade_data.unit != "Head"].reset_index(drop=True)
+    # Filter and change units
+    trade_data = filter_trade_data(trade_data)
     # Aggregate french territories values to France and add them to the dataframe
     code_list = [68, 69, 87, 135, 182, 270, 281]
     agg_country_code = 68
@@ -94,6 +95,8 @@ def main():
         for col in column_list
         if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
     ]
+    # Remove columns not needed for front end
+    column_list.remove("product_code_avg_value")
     # Consider selected columns of import quantities and save the file (drop nan)
     df_faostat_avg_imp = df_faostat.copy()
     df_faostat_avg_imp = replace_zero_with_nan_values(df_faostat_avg_imp, dropna_col)
@@ -110,35 +113,35 @@ def main():
         df_comtrade_avg_imp["element"] == "import_quantity"
     ][column_list]
     save_file(df_comtrade_reporter, "comtrade_average.csv")
-    drop_column_list = [
-        "element",
-        dict_list[0]["percentage_col"] + COLUMN_PERC_SUFFIX,
-    ]
-    column_list = df_faostat.columns.tolist()
-    for drop_column in drop_column_list:
-        column_list.remove(drop_column)
-    # Define dropna columns
-    dropna_col = [
-        col
-        for col in column_list
-        if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
-    ]
-    # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
-    df_faostat_avg_exp = df_faostat.copy()
-    df_faostat_avg_exp = replace_zero_with_nan_values(df_faostat_avg_exp, dropna_col)
-    df_faostat_avg_exp = df_faostat_avg_exp.dropna(subset=dropna_col)
-    df_faostat_partner = df_faostat_avg_exp[
-        df_faostat_avg_exp["element"] == "export_quantity"
-    ][column_list]
-    save_file(df_faostat_partner, "faostat_average_mf.csv")
-    # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
-    df_comtrade_avg_exp = df_comtrade.copy()
-    df_comtrade_avg_exp = replace_zero_with_nan_values(df_comtrade_avg_exp, dropna_col)
-    df_comtrade_avg_exp = df_comtrade_avg_exp.dropna(subset=dropna_col)
-    df_comtrade_partner = df_comtrade_avg_exp[
-        df_comtrade_avg_exp["element"] == "export_quantity"
-    ][column_list]
-    save_file(df_comtrade_partner, "comtrade_average_mf.csv")
+    # drop_column_list = [
+    #     "element",
+    #     dict_list[0]["percentage_col"] + COLUMN_PERC_SUFFIX,
+    # ]
+    # column_list = df_faostat.columns.tolist()
+    # for drop_column in drop_column_list:
+    #     column_list.remove(drop_column)
+    # # Define dropna columns
+    # dropna_col = [
+    #     col
+    #     for col in column_list
+    #     if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
+    # ]
+    # # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
+    # df_faostat_avg_exp = df_faostat.copy()
+    # df_faostat_avg_exp = replace_zero_with_nan_values(df_faostat_avg_exp, dropna_col)
+    # df_faostat_avg_exp = df_faostat_avg_exp.dropna(subset=dropna_col)
+    # df_faostat_partner = df_faostat_avg_exp[
+    #     df_faostat_avg_exp["element"] == "export_quantity"
+    # ][column_list]
+    # save_file(df_faostat_partner, "faostat_average_mf.csv")
+    # # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
+    # df_comtrade_avg_exp = df_comtrade.copy()
+    # df_comtrade_avg_exp = replace_zero_with_nan_values(df_comtrade_avg_exp, dropna_col)
+    # df_comtrade_avg_exp = df_comtrade_avg_exp.dropna(subset=dropna_col)
+    # df_comtrade_partner = df_comtrade_avg_exp[
+    #     df_comtrade_avg_exp["element"] == "export_quantity"
+    # ][column_list]
+    # save_file(df_comtrade_partner, "comtrade_average_mf.csv")
     # Consider averages for EU and rest of the world partners
     # Aggregate data with reporters as eu and row
     df_group_reporter = agg_trade_eu_row(
@@ -198,6 +201,8 @@ def main():
         for col in column_list
         if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
     ]
+    # Remove columns not needed for front end
+    column_list.remove("product_code_avg_value")
     # Consider selected columns of import quantities and save the file (drop nan)
     df_faostat_avg_imp = df_faostat.copy()
     df_faostat_avg_imp = replace_zero_with_nan_values(df_faostat_avg_imp, dropna_col)
@@ -216,37 +221,37 @@ def main():
         & (df_comtrade_avg_imp["reporter_code"].isin(["EU27", "ROW"]))
     ][column_list]
     save_file(df_comtrade_reporter, "comtrade_average_eu_row.csv")
-    drop_column_list = [
-        "element",
-        dict_list[0]["percentage_col"] + COLUMN_PERC_SUFFIX,
-    ]
-    column_list = df_faostat.columns.tolist()
-    for drop_column in drop_column_list:
-        column_list.remove(drop_column)
-    # Define dropna columns
-    dropna_col = [
-        col
-        for col in column_list
-        if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
-    ]
-    # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
-    df_faostat_avg_exp = df_faostat.copy()
-    df_faostat_avg_exp = replace_zero_with_nan_values(df_faostat_avg_exp, dropna_col)
-    df_faostat_avg_exp = df_faostat_avg_exp.dropna(subset=dropna_col)
-    df_faostat_partner = df_faostat_avg_exp[
-        (df_faostat_avg_exp["element"] == "export_quantity")
-        & (df_faostat_avg_exp["partner_code"].isin(["EU27", "ROW"]))
-    ][column_list]
-    save_file(df_faostat_partner, "faostat_average_eu_row_mf.csv")
-    # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
-    df_comtrade_avg_exp = df_comtrade.copy()
-    df_comtrade_avg_exp = replace_zero_with_nan_values(df_comtrade_avg_exp, dropna_col)
-    df_comtrade_avg_exp = df_comtrade_avg_exp.dropna(subset=dropna_col)
-    df_comtrade_partner = df_comtrade_avg_exp[
-        (df_comtrade_avg_exp["element"] == "export_quantity")
-        & (df_comtrade_avg_exp["partner_code"].isin(["EU27", "ROW"]))
-    ][column_list]
-    save_file(df_comtrade_partner, "comtrade_average_eu_row_mf.csv")
+    # drop_column_list = [
+    #     "element",
+    #     dict_list[0]["percentage_col"] + COLUMN_PERC_SUFFIX,
+    # ]
+    # column_list = df_faostat.columns.tolist()
+    # for drop_column in drop_column_list:
+    #     column_list.remove(drop_column)
+    # # Define dropna columns
+    # dropna_col = [
+    #     col
+    #     for col in column_list
+    #     if col.endswith((COLUMN_AVG_SUFFIX, COLUMN_PERC_SUFFIX))
+    # ]
+    # # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
+    # df_faostat_avg_exp = df_faostat.copy()
+    # df_faostat_avg_exp = replace_zero_with_nan_values(df_faostat_avg_exp, dropna_col)
+    # df_faostat_avg_exp = df_faostat_avg_exp.dropna(subset=dropna_col)
+    # df_faostat_partner = df_faostat_avg_exp[
+    #     (df_faostat_avg_exp["element"] == "export_quantity")
+    #     & (df_faostat_avg_exp["partner_code"].isin(["EU27", "ROW"]))
+    # ][column_list]
+    # save_file(df_faostat_partner, "faostat_average_eu_row_mf.csv")
+    # # Consider selected columns of export quantities and save the file (drop nan) --> mirror flows
+    # df_comtrade_avg_exp = df_comtrade.copy()
+    # df_comtrade_avg_exp = replace_zero_with_nan_values(df_comtrade_avg_exp, dropna_col)
+    # df_comtrade_avg_exp = df_comtrade_avg_exp.dropna(subset=dropna_col)
+    # df_comtrade_partner = df_comtrade_avg_exp[
+    #     (df_comtrade_avg_exp["element"] == "export_quantity")
+    #     & (df_comtrade_avg_exp["partner_code"].isin(["EU27", "ROW"]))
+    # ][column_list]
+    # save_file(df_comtrade_partner, "comtrade_average_eu_row_mf.csv")
 
 
 # Needed to avoid running module when imported

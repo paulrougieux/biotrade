@@ -9,12 +9,13 @@ Script which contains functions used to produce data for the Web Platform
 """
 
 import os
+import warnings
 import pandas as pd
 import numpy as np
 from pathlib import Path
 from biotrade.faostat import faostat
 from biotrade import data_dir
-from biotrade.common.compare import merge_faostat_comtrade
+from biotrade.common.compare import merge_faostat_comtrade, ELEMENT_DICT
 from biotrade.common.time_series import (
     relative_absolute_change,
     segmented_regression,
@@ -25,6 +26,61 @@ from biotrade.common.time_series import (
 COLUMN_AVG_SUFFIX = "_avg_value"
 COLUMN_PERC_SUFFIX = "_percentage"
 COLUMN_TOT_SUFFIX = "_tot_value"
+
+
+def filter_trade_data(df):
+    """
+    Filter trade data and change units
+    """
+    # Remove trade products where unit is different from kg and usd
+    df = df[df["element_code"].isin(ELEMENT_DICT["element_code"])].reset_index(
+        drop=True
+    )
+    element_df = pd.DataFrame.from_dict(ELEMENT_DICT)
+    # Convert trade values from USD to Million USD
+    codes = element_df[element_df["element"].str.endswith("_value")][
+        "element_code"
+    ].values.tolist()
+    selector = df["element_code"].isin(codes)
+    df.loc[selector, "value"] = df.loc[selector, "value"] * 1e-6
+    df.loc[selector, "unit"] = "Mdollar"
+    # Convert kg to tonnes
+    codes = element_df[element_df["element"].str.endswith("_quantity")][
+        "element_code"
+    ].values.tolist()
+    selector = df["element_code"].isin(codes)
+    df.loc[selector, "value"] = df.loc[selector, "value"] * 1e-3
+    df.loc[selector, "unit"] = "ton"
+    return df
+
+
+def filter_production_data(df):
+    """
+    Filter crop data and change units
+    """
+    # All units in lower case
+    df["unit"] = df["unit"].str.lower()
+    units_allowed = ["100 g/an", "100 g/ha", "an", "ha", "m3", "t"]
+    # Put control on unit names
+    if sorted(df["unit"].unique()) != units_allowed:
+        warnings.warn(
+            f"Units of production dataset have been changed from\n{units_allowed}\nto\n{sorted(df['unit'].unique())}"
+        )
+    # Remove yields for animals
+    df = df[df["unit"] != "100 g/an"]
+    # Use ton as unit name for tonnes
+    selector = df["unit"] == "t"
+    df.loc[selector, "unit"] = "ton"
+    # Use head as unit name for animal
+    selector = df["unit"] == "an"
+    df.loc[selector, "unit"] = "head"
+    # Yield data transformed from hg/ha into ton/ha
+    selector = df["element"] == "yield"
+    df.loc[selector, "value"] = df.loc[selector, "value"] / 10**4
+    df.loc[selector, "unit"] = "ton/ha"
+    # Select only at country level
+    df = df[df["reporter_code"] < 1000].reset_index(drop=True)
+    return df
 
 
 def replace_zero_with_nan_values(df, column_list):
@@ -591,6 +647,23 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
             production_legend["description"] + production_legend["unit"]
         )
         save_file(production_legend, "production_average_legend.csv")
+        # Save yield interval legends
+        yield_legend = df_legend[df_legend["element"] == "yield"][column_list]
+        # Define two statements
+        selector = yield_legend.interval == 0
+        yield_legend.loc[selector, "description"] = "up to " + (
+            yield_legend.loc[selector, "max_value"]
+        ).round(2).astype(str)
+        yield_legend.loc[~selector, "description"] = (
+            "from "
+            + (yield_legend.loc[~selector, "min_value"]).round(2).astype(str)
+            + " to "
+            + (yield_legend.loc[~selector, "max_value"]).round(2).astype(str)
+        )
+        yield_legend["description"] = (
+            yield_legend["description"] + " " + yield_legend.unit
+        )
+        save_file(yield_legend, "yield_average_legend.csv")
     # Associate the avg productions (eventually with intervals) to the final dataframe
     df_final = df_final.merge(df_avg, on=groupby_avg_cols, how="left")
     return df_final

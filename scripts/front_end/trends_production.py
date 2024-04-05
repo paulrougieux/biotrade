@@ -17,6 +17,7 @@ def main():
     from scripts.front_end.functions import (
         aggregated_data,
         main_product_list,
+        filter_production_data,
         reporter_iso_codes,
         replace_zero_with_nan_values,
         trend_analysis,
@@ -30,14 +31,12 @@ def main():
         if sys.platform.startswith("win"):
             multi_process = False
     # Obtain the main product codes
-    main_product_list = main_product_list(
-        ["crop_production", "forestry_production"]
-    )
+    main_product_list = main_product_list(["crop_production", "forestry_production"])
     # Select quantities from Faostat db for crop data for all countries (code < 1000)
     crop_data = faostat.db.select(
         table="crop_production",
         product_code=main_product_list,
-        element=["production", "area_harvested", "stocks"],
+        element=["production", "area_harvested", "stocks", "yield"],
     )
     # Select wood production data
     wood_data = faostat.db.select(
@@ -50,7 +49,8 @@ def main():
     # Filter crop_data with the common most recent year of the several element types
     most_recent_year = crop_data.groupby("element")["year"].max().min()
     crop_data = crop_data[crop_data.year <= most_recent_year]
-    crop_data = crop_data[crop_data["reporter_code"] < 1000]
+    # Filter at country level and change units
+    crop_data = filter_production_data(crop_data)
     # Aggregate french territories values to France and add them to the dataframe
     code_list = [68, 69, 87, 135, 182, 270, 281]
     agg_country_code = 68
@@ -101,8 +101,13 @@ def main():
         (df["element"].isin(["production", "stocks"]))
         & (df["year"] == most_recent_year)
     ][column_list]
+    # Yield data (only the most common recent year of db)
+    yields = df[(df["element"] == "yield") & (df["year"] == most_recent_year)][
+        column_list
+    ]
     save_file(harvested_area, "harvested_area_trends.csv")
     save_file(production, "production_trends.csv")
+    save_file(yields, "yield_trends.csv")
 
 
 # Needed to avoid running module when imported
