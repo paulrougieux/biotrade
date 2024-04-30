@@ -18,6 +18,7 @@ Unit D1 Bioeconomy.
 import logging
 import pandas
 from sqlalchemy import distinct, select
+import warnings
 
 # Internal modules
 
@@ -180,6 +181,15 @@ class Dump:
             # otherwise str "01" becomes int 1.
             dtype={"product_code": str},
         )
+        # Temporary fix because of mismatch between the latest Comtrade data
+        # and the database table structure
+        db_cols = self.db.tables["yearly"].c.keys()
+        msg = "Columns present in the dump file but not in the database:"
+        msg += f"{set(df.columns) - set(db_cols)}"
+        warnings.warn(msg)
+        for col in df.columns:
+            if col not in db_cols:
+                df.drop(columns=col, inplace=True)
         # Check that the name of the file contains the unique product code in the data
 
         # Delete existing data for the corresponding product code

@@ -46,6 +46,12 @@ of the monthly data shows that "quantity" is always empty:
     select * from raw_comtrade.monthly where quantity is not null limit 4;
     # Returns 0 rows
 
+The database structure is defined as SQLAlchemy objects, then later translated
+in either SQLite or PostGreSQL dialect. Show the database structure as defined
+in PostGreSQL:
+
+    pg_dump --schema-only -t raw_comtrade.yearly $BIOTRADE_DATABASE_URL > table_structure_dump.sql
+
 """
 # First party modules
 import logging
