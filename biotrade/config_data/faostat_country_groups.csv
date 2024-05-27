@@ -70,7 +70,7 @@ faost_code,adm0_code,iso2_code,iso2_wb_code,iso3_code,iso3_wb_code,un_code,fao_s
 279,,CW,CW,CUW,CUW,531,areas and territories,Curaçao,Curaçao,Curaçao,Curaçao,2010,,World,Americas,5200,Caribbean,5206,Developing,0,
 50,64,CY,CY,CYP,CYP,196,member,Cyprus,the Republic of Cyprus,Cyprus,Chipre,1960,,World,Asia,5300,Western Asia,5305,Developing,1,
 167,65,CZ,CZ,CZE,CZE,203,member,Czechia,the Czech Republic,Czechia,República Checa,1993,,World,Europe,5400,Eastern Europe,5401,Developed,1,
-51,,CS,CS,CSK,CSK,200,old,Czechoslovakia,Czechoslovakia,Czechoslovakia,Czechoslovakia,,1992,World,Europe,5400,Eastern Europe,5401,Developed,0,
+51,,,CS,CSK,CSK,200,old,Czechoslovakia,Czechoslovakia,Czechoslovakia,Czechoslovakia,,1992,World,Europe,5400,Eastern Europe,5401,Developed,0,
 116,67,KP,KP,PRK,PRK,408,member,Democratic People's Republic of Korea,Democratic People's Republic of Korea,North Korea,República Popular Democrática de Corea,1991,,World,Asia,5300,Eastern Asia,5302,Developing,0,
 250,68,CD,CD,COD,ZAR,180,member,Democratic Republic of the Congo,the Democratic Republic of the Congo,DR Congo,República Decomocrática del Congo,1960,,World,Africa,5100,Middle Africa,5102,Developing,0,
 54,69,DK,DK,DNK,DNK,208,member,Denmark,the Kingdom of Denmark,Denmark,Dinamarca,1945,,World,Europe,5400,Northern Europe,5402,Developed,1,Northern Europe
