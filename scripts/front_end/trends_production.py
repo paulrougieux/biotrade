@@ -71,8 +71,6 @@ def main():
     column_list = [
         "reporter_code",
         "product_code",
-        "period",
-        "period_change",
         "period_regression",
         "relative_change",
         "absolute_change",
@@ -87,24 +85,27 @@ def main():
     # To avoid inconsistencies during the replace zero with nan
     selector = df.mk_slope.isnull()
     df.loc[selector, "period_regression"] = np.nan
-    df.loc[selector, "mk_significance_flag"] = np.nan
-    selector = df.relative_change.isnull() & df.absolute_change.isnull()
-    df.loc[selector, "period_change"] = np.nan
+    df.loc[selector, "mk_significance_flag"] = 0
     df = df.dropna(subset=dropna_col, how="all")
     # Harvested area data (only the most common recent year of db)
     most_recent_year = df.groupby("element")["year"].max().min()
-    harvested_area = df[
-        (df["element"] == "area_harvested") & (df["year"] == most_recent_year)
-    ][column_list]
+    df = df[df["year"] == most_recent_year].reset_index(drop=True)
+    df_legend = (
+        df[["period", "period_change"]]
+        .dropna()
+        .drop_duplicates()
+        .reset_index(drop=True)
+    )
+    if len(df_legend) != 1:
+        raise ValueError(
+            f"Legend for trends can have one and only one row.\nThe actual length is: {len(df_legend)}"
+        )
+    harvested_area = df[df["element"] == "area_harvested"][column_list]
     # Production data (only the most common recent year of db)
-    production = df[
-        (df["element"].isin(["production", "stocks"]))
-        & (df["year"] == most_recent_year)
-    ][column_list]
+    production = df[df["element"].isin(["production", "stocks"])][column_list]
     # Yield data (only the most common recent year of db)
-    yields = df[(df["element"] == "yield") & (df["year"] == most_recent_year)][
-        column_list
-    ]
+    yields = df[df["element"] == "yield"][column_list]
+    save_file(df_legend, "trends_legend.csv")
     save_file(harvested_area, "harvested_area_trends.csv")
     save_file(production, "production_trends.csv")
     save_file(yields, "yield_trends.csv")

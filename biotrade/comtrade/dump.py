@@ -145,6 +145,7 @@ class Dump:
 
                 psql $BIOTRADE_DATABASE_URL
                 DELETE FROM raw_comtrade.monthly WHERE product_code like '44%';
+                DELETE FROM raw_comtrade.yearly WHERE product_code like '44%';
 
         If data is already present in the database for that product code, the
         user will be asked to confirm deletion. To avoid this confirmation
