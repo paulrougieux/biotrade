@@ -68,8 +68,8 @@ class Pump:
     # Destination zip and csv file names
     zip_file_name = "WDI_csv.zip"
     datasets = {
-        "indicator": "WDIData.csv",
-        "indicator_name": "WDIData.csv",
+        "indicator": "WDICSV.csv",
+        "indicator_name": "WDICSV.csv",
     }
 
     def __init__(self, parent):
