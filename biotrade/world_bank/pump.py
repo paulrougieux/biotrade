@@ -64,9 +64,9 @@ class Pump:
     # Define URL request headers
     header = HEADER
     # URL to load data from the website
-    url_bulk = "http://databank.worldbank.org/data/download/WDI_csv.zip"
+    url_bulk = "https://databank.worldbank.org/data/download/WDI_CSV.zip?_gl=1*d0bq8i*_gcl_au*MTQ3NTE1NTk2OC4xNzIxMjkwNDE1"
     # Destination zip and csv file names
-    zip_file_name = "WDI_csv.zip"
+    zip_file_name = "WDI_CSV.zip"
     datasets = {
         "indicator": "WDICSV.csv",
         "indicator_name": "WDICSV.csv",
