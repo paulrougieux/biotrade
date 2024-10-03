@@ -28,6 +28,46 @@ COLUMN_PERC_SUFFIX = "_percentage"
 COLUMN_TOT_SUFFIX = "_tot_value"
 
 
+def country_names(df: pd.DataFrame, col: str):
+    """
+    Obtain country names from codes. Reporter and partner columns are added
+
+    :param df (DataFrame), without names
+    :param col (string), columns to be matched to obtain names
+    :return df (DataFrame), with names
+    """
+    # Create a copy
+    df = df.copy()
+    # Reporter codes
+    reporter_file = faostat.config_data_dir / "faostat_country_groups.csv"
+    reporter = pd.read_csv(
+        reporter_file,
+        keep_default_na=False,
+        na_values=[""],
+    )
+    # Obtain names codes for reporters and partners
+    df = df.merge(
+        reporter[[col, "fao_table_name"]].rename(
+            columns={"fao_table_name": "reporter"}
+        ),
+        how="left",
+        left_on="reporter_code",
+        right_on=col,
+    )
+    if "partner_code" in df.columns:
+        df.drop(columns=col, inplace=True)
+        df = df.merge(
+            reporter[[col, "fao_table_name"]].rename(
+                columns={"fao_table_name": "partner"}
+            ),
+            how="left",
+            left_on=["partner_code"],
+            right_on=[col],
+        )
+    df.drop(columns=col, inplace=True)
+    return df
+
+
 def filter_trade_data(df):
     """
     Filter trade data and change units
@@ -190,35 +230,40 @@ def main_product_list(table_list):
     return product_list
 
 
-def reporter_iso_codes(df):
+def reporter_iso_codes(df, col="faost_code"):
     """
-    Script which transforms faostat reporter and partner codes into iso3 codes
+    Script which transforms reporter and partner codes into iso3 codes
 
-    :param df (DataFrame), which contains reporter_code and (if applicable) partner_code columns
+    :param df (DataFrame), which contains reporter_code and (if applicable) partner_code columns,
+    :param col (string), column to be replaced
     :return df (DataFrame), with the substitution into iso3 codes
 
     """
     # Reporter codes
     reporter_file = faostat.config_data_dir / "faostat_country_groups.csv"
-    reporter = pd.read_csv(reporter_file)
+    reporter = pd.read_csv(
+        reporter_file,
+        keep_default_na=False,
+        na_values=[""],
+    )
     # Obtain iso3 codes for reporters and partners
     df = df.merge(
-        reporter[["faost_code", "iso3_code"]],
+        reporter[[col, "iso3_code"]],
         how="left",
         left_on="reporter_code",
-        right_on="faost_code",
+        right_on=col,
     )
     df["reporter_code"] = df["iso3_code"]
     if "partner_code" in df.columns:
-        df.drop(columns=["faost_code", "iso3_code"], inplace=True)
+        df.drop(columns=[col, "iso3_code"], inplace=True)
         df = df.merge(
-            reporter[["faost_code", "iso3_code"]],
+            reporter[[col, "iso3_code"]],
             how="left",
             left_on=["partner_code"],
-            right_on=["faost_code"],
+            right_on=[col],
         )
         df["partner_code"] = df["iso3_code"]
-    df.drop(columns=["faost_code", "iso3_code"], inplace=True)
+    df.drop(columns=[col, "iso3_code"], inplace=True)
     # Consider only data of official country codes by GISCO
     country_codes = (
         pd.read_csv(
@@ -673,7 +718,7 @@ def aggregated_data(
     df,
     code_list,
     agg_country_code,
-    agg_country_name,
+    agg_country_name=None,
     groupby_cols=[
         "product_code",
         "product",
@@ -709,14 +754,22 @@ def aggregated_data(
         # Remove country code list data from df dataset
         df = df[~(df[["reporter_code", "partner_code"]].isin(code_list)).any(axis=1)]
         # Aggregation on the reporter side
+        add_cols = [
+            column
+            for column in df.columns
+            if column
+            in [
+                "source",
+                "partner_code",
+                "partner",
+            ]
+        ]
         df_agg_1 = (
             df_agg[df_agg["reporter_code"].isin(code_list)]
             .groupby(
                 [
                     *groupby_cols,
-                    "source",
-                    "partner_code",
-                    "partner",
+                    *add_cols,
                 ]
             )
             # If all null values, do not return 0 but Nan
@@ -724,21 +777,30 @@ def aggregated_data(
             .reset_index()
         )
         df_agg_1["reporter_code"] = agg_country_code
-        df_agg_1["reporter"] = agg_country_name
+        if agg_country_name:
+            df_agg_1["reporter"] = agg_country_name
         # Concat with reporter codes not in country code list
         df_agg_1 = pd.concat(
             [df_agg[~df_agg["reporter_code"].isin(code_list)], df_agg_1],
             ignore_index=True,
         )
         # Aggregation also on the partner side
+        add_cols = [
+            column
+            for column in df.columns
+            if column
+            in [
+                "source",
+                "reporter_code",
+                "reporter",
+            ]
+        ]
         df_agg_2 = (
             df_agg_1[df_agg_1["partner_code"].isin(code_list)]
             .groupby(
                 [
                     *groupby_cols,
-                    "source",
-                    "reporter_code",
-                    "reporter",
+                    *add_cols,
                 ]
             )
             # If all null values, do not return 0 but Nan
@@ -746,7 +808,8 @@ def aggregated_data(
             .reset_index()
         )
         df_agg_2["partner_code"] = agg_country_code
-        df_agg_2["partner"] = agg_country_name
+        if agg_country_name:
+            df_agg_2["partner"] = agg_country_name
         # Concat with partner codes not in country code list
         df_agg_2 = pd.concat(
             [
@@ -770,7 +833,8 @@ def aggregated_data(
             ).reset_index()
         )
         df_agg["reporter_code"] = agg_country_code
-        df_agg["reporter"] = agg_country_name
+        if agg_country_name:
+            df_agg["reporter"] = agg_country_name
     # Fill period column
     df_agg["period"] = df_agg["year"]
     # Build the final dataset to return

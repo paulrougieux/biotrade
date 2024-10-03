@@ -4,113 +4,97 @@ Written by Selene Patani.
 Copyright (c) 2023 European Union
 Licenced under the MIT licence
 
-Script made to export data for the EUFO web platform, related to lafo values of countries associated to the regulation and commodity tree products
+Script made to export data for the EUFO web platform, related to annual lafo values of countries associated to the regulation and commodity tree products
 
 """
 
 
 def main():
     from scripts.front_end.functions import (
+        country_names,
         aggregated_data,
         reporter_iso_codes,
         replace_zero_with_nan_values,
         save_file,
     )
-    from biotrade.faostat import faostat
-    from biotrade.comtrade import comtrade
-    from biotrade.faostat.aggregate import agg_trade_eu_row
-    import pandas as pd
 
-    # TODO retrieve lafo data from functions (deforestation package), for now reading a csv example file
-    lafo_data = pd.read_csv(comtrade.data_dir / "lafo_example.csv")
-    # Render columns lower case
-    lafo_data.columns = lafo_data.columns.str.lower()
-    # Remove columns
-    lafo_data.drop(
-        columns=[
-            "iso2_code",
-            "primary_commodity_code",
-            "primary_commodity",
-            "area_harvested",
-            "production",
-            "yield",
-            "yield_avg",
-            "flag_out",
-        ],
-        inplace=True,
-    )
-    # Rename to product_code column
-    lafo_data.rename(columns={"reg_code": "product_code"}, inplace=True)
+    from biotrade.faostat.aggregate import agg_trade_eu_row
+    from deforestfoot.crop import Crop
+
+    # Retrieve lafo data from deforestation package
+    crop = Crop(commodity_list=["Coffee"])
+    lafo_data = crop.lafo.df(flow="apparent_consumption")
     # Add period column
     lafo_data["period"] = lafo_data["year"]
     # Aggregate french territories values to France and add them to the dataframe
-    code_list = [68, 69, 87, 135, 182, 270, 281]
-    agg_country_code = 68
-    agg_country_name = faostat.country_groups.df
-    agg_country_name = agg_country_name[
-        agg_country_name.faost_code == agg_country_code
-    ].fao_table_name.values[0]
+    code_list = ["FR", "GF", "GP", "MQ", "RE", "YT", "MF"]
+    agg_country_code = "FR"
+    agg_country_name = None
     lafo_data = aggregated_data(
         lafo_data,
         code_list,
         agg_country_code,
         agg_country_name,
-        groupby_cols=[
-            "product_code",
-            "year",
-        ],
-        value_cols=["pce", "lafo_obs"],
+        groupby_cols=["product_code", "primary_code", "year", "unit"],
     )
-    # Substitute faostat codes with iso3 codes
-    lafo_data = reporter_iso_codes(lafo_data)
-    # Add units
-    lafo_data["pce_unit"] = "tonnes"
-    lafo_data["lafo_obs_unit"] = "ha"
-    # Aggregate to EU and ROW for reporters
-    eu_row_data = agg_trade_eu_row(
-        lafo_data,
-        grouping_side="reporter",
-        drop_index_col=[
-            "year",
-        ],
-        value_col=["pce", "lafo_obs"],
-    )
-    # Substitute with name and codes of the aggregations for the web platform
-    selector = eu_row_data["reporter"] == "eu"
-    eu_row_data.loc[selector, "reporter_code"] = "EU27"
-    eu_row_data.loc[~selector, "reporter_code"] = "ROW"
-    eu_row_data["reporter"].replace(
-        ["eu", "row"], ["European Union", "Rest Of the World"], inplace=True
-    )
+    # Substitute iso2 codes with iso3 codes
+    lafo_data = reporter_iso_codes(lafo_data, col="iso2_code")
+    # Aggregate by reporters
+    group_by_cols = ["reporter_code", "product_code", "primary_code", "period", "unit"]
+    lafo_data = lafo_data.groupby(group_by_cols)["value"].agg("sum").reset_index()
+    # Remove nan data
+    dropna_col = ["value"]
+    lafo_data = replace_zero_with_nan_values(lafo_data, dropna_col)
+    lafo_data = lafo_data.dropna(subset=dropna_col)
     # Columns to be finally retained
     column_list = [
         "reporter_code",
-        "partner_code",
         "product_code",
         "period",
         "value",
         "unit",
     ]
+    # Save data
+    save_file(lafo_data[column_list], "lafo_reporter_annual_variation.csv")
+    # Aggregate at level of primary code
+    group_by_cols.remove("product_code")
+    eu_row_data = lafo_data.groupby(group_by_cols)["value"].agg("sum").reset_index()
+    # Add reporter and partner names to aggregate at EU, ROW level
+    eu_row_data = country_names(eu_row_data, "iso3_code")
+    eu_row_data["partner"] = None
+    # Aggregate to EU and ROW for reporters
+    eu_row_data = agg_trade_eu_row(
+        eu_row_data,
+        grouping_side="reporter",
+    )
+    # Calculate the percentage share of EU and ROW
+    group_by_cols.remove("reporter_code")
+    eu_row_data["sum_value"] = eu_row_data.groupby(group_by_cols)["value"].transform(
+        "sum"
+    )
+    eu_row_data["value_share"] = eu_row_data["value"] / eu_row_data["sum_value"] * 100
+    # Substitute with name and codes of the aggregations for the web platform
+    selector = eu_row_data["reporter"] == "eu"
+    eu_row_data.loc[selector, "reporter_code"] = "EU27"
+    eu_row_data.loc[~selector, "reporter_code"] = "ROW"
     # Consider selected columns of import quantities and values and save the files (drop nan)
     dropna_col = ["value"]
-    for dataset in [lafo_data, eu_row_data]:
-        for value_col in ["pce", "lafo_obs"]:
-            for source in ["faostat", "comtrade"]:
-                df = dataset.copy()
-                df.rename(
-                    columns={value_col: "value", (value_col + "_unit"): "unit"},
-                    inplace=True,
-                )
-                df = replace_zero_with_nan_values(df, dropna_col)
-                df = df.dropna(subset=dropna_col)
-                # Faostat
-                file_name = f"{source}_{value_col.split('_', 1)[0]}_annual_variation"
-                if dataset.equals(eu_row_data):
-                    file_name = file_name + "_eu_row"
-                save_file(
-                    df[df["source"] == source][column_list],
-                    file_name + ".csv",
-                )
+    eu_row_data = replace_zero_with_nan_values(eu_row_data, dropna_col)
+    eu_row_data = eu_row_data.dropna(subset=dropna_col)
+    # Columns to be finally retained
+    column_list = [
+        "reporter_code",
+        "commodity_code",
+        "period",
+        "value",
+        "value_share",
+        "unit",
+    ]
+    # Save data
+    save_file(
+        eu_row_data.rename(columns={"primary_code": "commodity_code"})[column_list],
+        "lafo_reporter_annual_variation_eu_row.csv",
+    )
 
 
 # Needed to avoid running module when imported
