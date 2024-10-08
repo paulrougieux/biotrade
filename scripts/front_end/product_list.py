@@ -25,9 +25,7 @@ def main():
     # Retrieve commodity dataset
     df = pd.read_csv(faostat_commodity_file)
     # Obtain the main product codes of production
-    main_products = main_product_list(
-        ["crop_production", "forestry_production"]
-    )
+    main_products = main_product_list(["crop_production", "forestry_production"])
     # Select only production products
     production_products = df[df.code.isin(main_products)]
     # Filter and rename columns
@@ -39,7 +37,10 @@ def main():
     production_products = production_products[column_rename_dict.keys()]
     production_products = production_products.rename(columns=column_rename_dict)
     # Save csv files to env variable path or into biotrade data folder
-    save_file(production_products, "product_list.csv")
+    save_file(
+        production_products.sort_values(by=["commodity_name", "product_code"]),
+        "product_list.csv",
+    )
     # Obtain the main product codes of trade
     main_products = main_product_list(["crop_trade"])
     # Select only trade products
@@ -47,7 +48,10 @@ def main():
     faostat_products = faostat_products[column_rename_dict.keys()]
     faostat_products = faostat_products.rename(columns=column_rename_dict)
     # Save csv files to env variable path or into biotrade data folder
-    save_file(faostat_products, "faostat_product_list.csv")
+    save_file(
+        faostat_products.sort_values(by=["commodity_name", "product_code"]),
+        "faostat_product_list.csv",
+    )
     # Retrieve regulation products and save the file
     comtrade_products = comtrade_products()
     # Obtain total matches
@@ -56,12 +60,18 @@ def main():
     fao_match = fao_match[fao_match.match == "total"]
     fao_match = fao_match[rename_col_dict.keys()].rename(columns=rename_col_dict)
     fao_match["faostat_code"] = fao_match.faostat_code.astype(int)
-    save_file(fao_match, "mapping_faostat_comtrade_product.csv")
+    save_file(
+        fao_match,
+        "mapping_faostat_comtrade_product.csv",
+    )
     columns = ["product_code", "product_name", "commodity_name"]
     comtrade_products = comtrade_products.drop_duplicates(subset=columns)[
         columns
     ].reset_index(drop=True)
-    save_file(comtrade_products, "comtrade_product_list.csv")
+    save_file(
+        comtrade_products.sort_values(by=["commodity_name", "product_code"]),
+        "comtrade_product_list.csv",
+    )
 
 
 # Needed to avoid running module when imported
