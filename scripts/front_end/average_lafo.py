@@ -67,6 +67,45 @@ def main():
         lafo_data_avg.rename(columns={"primary_code": "commodity_code"})[column_list],
         "lafo_average.csv",
     )
+    # Define the columns for the average calculations
+    dict_list = ["reporter_code", "primary_code", "period", "unit"]
+    # Calculate the averages
+    lafo_data_avg = average_lafo(lafo_data, dict_list, "avg_value")
+    # Calculate total averages
+    dict_list = ["primary_code", "period", "unit"]
+    lafo_data_avg["commodity_avg_value"] = lafo_data_avg.groupby(dict_list)[
+        "avg_value"
+    ].transform("sum")
+    lafo_data_avg["reporter_value_share"] = (
+        lafo_data_avg["avg_value"] / lafo_data_avg["commodity_avg_value"]
+    ) * 100
+    # Calculate total averages
+    dict_list = ["reporter_code", "period", "unit"]
+    lafo_data_avg["reporter_avg_value"] = lafo_data_avg.groupby(dict_list)[
+        "avg_value"
+    ].transform("sum")
+    lafo_data_avg["commodity_value_share"] = (
+        lafo_data_avg["avg_value"] / lafo_data_avg["reporter_avg_value"]
+    ) * 100
+    # Consider selected columns and save the files (drop nan)
+    dropna_col = ["avg_value", "reporter_value_share", "commodity_value_share"]
+    lafo_data_avg = replace_zero_with_nan_values(lafo_data_avg, dropna_col)
+    lafo_data_avg = lafo_data_avg.dropna(subset=dropna_col)
+    # Columns to be finally retained
+    column_list = [
+        "reporter_code",
+        "commodity_code",
+        "period",
+        "avg_value",
+        "reporter_value_share",
+        "commodity_value_share",
+        "unit",
+    ]
+    # Save data
+    save_file(
+        lafo_data_avg.rename(columns={"primary_code": "commodity_code"})[column_list],
+        "lafo_reporter_average.csv",
+    )
 
 
 # Needed to avoid running module when imported
