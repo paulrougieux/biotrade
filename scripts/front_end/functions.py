@@ -28,6 +28,60 @@ COLUMN_PERC_SUFFIX = "_percentage"
 COLUMN_TOT_SUFFIX = "_tot_value"
 
 
+def agg_years_to_periods(df: pd.DataFrame):
+    """
+    Obtain aggregate periods of 5 years, which substitute yearly period
+
+    :param df (DataFrame), contain year column
+    :return df (DataFrame), contain period column with aggregated year ranges
+    """
+
+    # Make a copy of df to avoid overrides
+    df = df.copy()
+    # Query df to obtain most recent year of data
+    most_recent_year = sorted(df.year.unique(), reverse=True)[0]
+    # Consider all the years of the table except the most recent (no aggregation for it)
+    years = sorted(df.year.unique(), reverse=True)[1:]
+    # Define aggregation of 5 years at a time, starting from the most recent year - 1
+    periods = np.array(range(0, len(years))) // 5 + 1
+    # Construct the df_periods containing the periods yyyy-yyyy and merge it with df
+    df_periods = pd.DataFrame(
+        {
+            "year": [most_recent_year, *years],
+            "period_aggregation": [0, *periods],
+        }
+    )
+    # Define the min year inside each period
+    df_periods_min = (
+        df_periods.groupby(["period_aggregation"]).agg({"year": "min"}).reset_index()
+    )
+    # Define the max year inside each period
+    df_periods_max = (
+        df_periods.groupby(["period_aggregation"]).agg({"year": "max"}).reset_index()
+    )
+    # Merge on the periods
+    df_periods = df_periods.merge(
+        df_periods_min,
+        how="left",
+        on="period_aggregation",
+        suffixes=("", "_min"),
+    )
+    df_periods = df_periods.merge(
+        df_periods_max,
+        how="left",
+        on="period_aggregation",
+        suffixes=("", "_max"),
+    )
+    # Define the structure yyyy-yyyy for the period aggregation column
+    df_periods["period_aggregation"] = (
+        df_periods["year_min"].astype(str) + "-" + df_periods["year_max"].astype(str)
+    )
+    # Assign the associated period to each data
+    df = df.merge(df_periods[["year", "period_aggregation"]], on="year", how="left")
+    df["period"] = df["period_aggregation"]
+    return df
+
+
 def country_names(df: pd.DataFrame, col: str):
     """
     Obtain country names from codes. Reporter and partner columns are added
@@ -712,6 +766,30 @@ def average_results(df, threshold, dict_list, interval_array=np.array([])):
     # Associate the avg productions (eventually with intervals) to the final dataframe
     df_final = df_final.merge(df_avg, on=groupby_avg_cols, how="left")
     return df_final
+
+
+def average_lafo(df: pd.DataFrame, agg_cols: list, value_col="value"):
+    """
+    Script which produces the average land footprint according to the columns to aggregate
+
+    :param df (DataFrame), dataframe to perform calculations
+    :param agg_cols (list), list containing the column names for the aggregation
+    :param value_col (string), name of the column after performing the averages
+    :return df (DataFrame), where calculations are performed
+
+    """
+    df = df.copy()
+    df = agg_years_to_periods(df)
+    df = (
+        df.groupby([*agg_cols, "year"])
+        .agg({"value": "sum"})
+        .reset_index()
+        .groupby(agg_cols)
+        .agg({"value": "mean"})
+        .reset_index()
+        .rename(columns={"value": value_col})
+    )
+    return df
 
 
 def aggregated_data(
