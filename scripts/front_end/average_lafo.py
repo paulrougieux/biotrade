@@ -11,6 +11,8 @@ Script used to compute averages of lafo quantities related to the main commoditi
 
 def main():
     from scripts.front_end.functions import (
+        remove_intra_eu_values,
+        country_names,
         aggregated_data,
         reporter_iso_codes,
         average_lafo,
@@ -18,7 +20,7 @@ def main():
         save_file,
     )
 
-    # from biotrade.faostat.aggregate import agg_trade_eu_row
+    from biotrade.faostat.aggregate import agg_trade_eu_row
     from deforestfoot.crop import Crop
 
     # Retrieve lafo data from deforestation package
@@ -105,6 +107,48 @@ def main():
     save_file(
         lafo_data_avg.rename(columns={"primary_code": "commodity_code"})[column_list],
         "lafo_reporter_average.csv",
+    )
+    # Add reporter and partner names to aggregate at EU, ROW level
+    eu_row_data = country_names(lafo_data, "iso3_code")
+    # Remove EU internal trades
+    eu_row_data = remove_intra_eu_values(eu_row_data)
+    # Aggregate to EU and ROW for reporters
+    eu_row_data = agg_trade_eu_row(
+        eu_row_data,
+        grouping_side="reporter",
+    )
+    # Substitute with name and codes of the aggregations for the web platform
+    selector = eu_row_data["reporter"] == "eu"
+    eu_row_data.loc[selector, "reporter_code"] = "EU27"
+    eu_row_data.loc[~selector, "reporter_code"] = "ROW"
+    # Calculate the averages
+    dict_list = ["reporter_code", "primary_code", "period", "unit"]
+    eu_row_data_avg = average_lafo(eu_row_data, dict_list, "avg_value")
+    # Calculate the percentage share of EU and ROW
+    dict_list = ["primary_code", "period", "unit"]
+    eu_row_data_avg["sum_value"] = eu_row_data_avg.groupby(dict_list)[
+        "avg_value"
+    ].transform("sum")
+    eu_row_data_avg["value_share"] = (
+        eu_row_data_avg["avg_value"] / eu_row_data_avg["sum_value"] * 100
+    )
+    # Consider selected columns of import quantities and values and save the files (drop nan)
+    dropna_col = ["avg_value", "value_share"]
+    eu_row_data_avg = replace_zero_with_nan_values(eu_row_data_avg, dropna_col)
+    eu_row_data_avg = eu_row_data_avg.dropna(subset=dropna_col)
+    # Columns to be finally retained
+    column_list = [
+        "reporter_code",
+        "commodity_code",
+        "period",
+        "avg_value",
+        "value_share",
+        "unit",
+    ]
+    # Save data
+    save_file(
+        eu_row_data_avg.rename(columns={"primary_code": "commodity_code"})[column_list],
+        "lafo_reporter_average_eu_row.csv",
     )
 
 

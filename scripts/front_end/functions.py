@@ -15,6 +15,7 @@ import numpy as np
 from pathlib import Path
 from biotrade.faostat import faostat
 from biotrade import data_dir
+from biotrade.common.aggregate import EU_COUNTRY_NAMES_LIST
 from biotrade.common.compare import merge_faostat_comtrade, ELEMENT_DICT
 from biotrade.common.time_series import (
     relative_absolute_change,
@@ -26,6 +27,19 @@ from biotrade.common.time_series import (
 COLUMN_AVG_SUFFIX = "_avg_value"
 COLUMN_PERC_SUFFIX = "_percentage"
 COLUMN_TOT_SUFFIX = "_tot_value"
+
+
+def remove_intra_eu_values(df):
+    """
+    Remove intra EU values
+    :param df (DataFrame), which contains reporter and partner columns
+    :return df (DataFrame), with removed internal EU trades
+    """
+    df = df.copy()
+    df = df[
+        ~df[["reporter", "partner"]].isin(EU_COUNTRY_NAMES_LIST).all(axis=1)
+    ].reset_index(drop=True)
+    return df
 
 
 def agg_years_to_periods(df: pd.DataFrame):
