@@ -60,10 +60,6 @@ def main():
     fao_match = fao_match[fao_match.match == "total"]
     fao_match = fao_match[rename_col_dict.keys()].rename(columns=rename_col_dict)
     fao_match["faostat_code"] = fao_match.faostat_code.astype(int)
-    save_file(
-        fao_match,
-        "mapping_faostat_comtrade_product.csv",
-    )
     columns = ["product_code", "product_name", "commodity_name"]
     comtrade_products = comtrade_products.drop_duplicates(subset=columns)[
         columns
@@ -71,6 +67,15 @@ def main():
     save_file(
         comtrade_products.sort_values(by=["commodity_name", "product_code"]),
         "comtrade_product_list.csv",
+    )
+    # Check on mapping products in the respective lists
+    fao_match = fao_match[
+        (fao_match["faostat_code"].isin(faostat_products["product_code"].unique()))
+        & (fao_match["comtrade_code"].isin(comtrade_products["product_code"].unique()))
+    ].reset_index(drop=True)
+    save_file(
+        fao_match,
+        "mapping_faostat_comtrade_product.csv",
     )
 
 
