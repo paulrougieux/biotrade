@@ -10,6 +10,7 @@ Script used to compute averages of lafo quantities related to the main commoditi
 
 
 def main():
+    import pandas as pd
     from scripts.front_end.functions import (
         remove_intra_eu_values,
         country_names,
@@ -149,6 +150,48 @@ def main():
     save_file(
         eu_row_data_avg.rename(columns={"primary_code": "commodity_code"})[column_list],
         "lafo_reporter_average_eu_row.csv",
+    )
+    # Define the columns for the average calculations
+    dict_list = ["product_code", "primary_code", "period", "unit"]
+    # Calculate the averages
+    lafo_data_avg = average_lafo(lafo_data, dict_list, "avg_value")
+    # Sort by values
+    dict_list = ["primary_code", "period", "unit"]
+    lafo_data_avg = lafo_data_avg.sort_values(
+        by=[*dict_list, "avg_value"],
+        ascending=False,
+        ignore_index=True,
+    )
+    # Obtain the first 3 values and create aggregated data for the remaining parts
+    lafo_head = lafo_data_avg.groupby(dict_list).head(3).reset_index(drop=True)
+    lafo_tail = (
+        lafo_data_avg.groupby(dict_list)
+        .tail(-3)
+        .groupby(dict_list)["avg_value"]
+        .agg("sum")
+        .reset_index()
+    )
+    lafo_tail["product_code"] = "OTH_" + lafo_tail["primary_code"]
+    lafo_data_avg = pd.concat([lafo_head, lafo_tail], ignore_index=True)
+    # Calculate the total and the share
+    lafo_data_avg["sum_value"] = lafo_data_avg.groupby(dict_list)[
+        "avg_value"
+    ].transform("sum")
+    lafo_data_avg["value_share"] = (
+        lafo_data_avg["avg_value"] / lafo_data_avg["sum_value"] * 100
+    )
+    # Columns to be finally retained
+    column_list = [
+        "product_code",
+        "period",
+        "avg_value",
+        "value_share",
+        "unit",
+    ]
+    # Save data
+    save_file(
+        lafo_data_avg[column_list],
+        "lafo_product_average.csv",
     )
 
 
