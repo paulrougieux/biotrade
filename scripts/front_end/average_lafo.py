@@ -12,6 +12,7 @@ Script used to compute averages of lafo quantities related to the main commoditi
 def main():
     import pandas as pd
     from scripts.front_end.functions import (
+        obtain_intervals,
         remove_intra_eu_values,
         country_names,
         aggregated_data,
@@ -94,12 +95,15 @@ def main():
     dropna_col = ["avg_value", "reporter_value_share", "commodity_value_share"]
     lafo_data_avg = replace_zero_with_nan_values(lafo_data_avg, dropna_col)
     lafo_data_avg = lafo_data_avg.dropna(subset=dropna_col)
+    agg_cols = ["primary_code", "unit"]
+    lafo_data_avg = obtain_intervals(lafo_data_avg, agg_cols)
     # Columns to be finally retained
     column_list = [
         "reporter_code",
         "commodity_code",
         "period",
         "avg_value",
+        "interval",
         "reporter_value_share",
         "commodity_value_share",
         "unit",
@@ -108,6 +112,22 @@ def main():
     save_file(
         lafo_data_avg.rename(columns={"primary_code": "commodity_code"})[column_list],
         "lafo_reporter_average.csv",
+    )
+    # Columns to be finally retained
+    column_list = [
+        "interval",
+        "min_value",
+        "max_value",
+        "commodity_code",
+        "unit",
+        "description",
+    ]
+    # Save legend
+    save_file(
+        lafo_data_avg.rename(columns={"primary_code": "commodity_code"})[column_list]
+        .drop_duplicates()
+        .sort_values(by=["commodity_code", "interval"]),
+        "lafo_reporter_average_legend.csv",
     )
     # Add reporter and partner names to aggregate at EU, ROW level
     eu_row_data = country_names(lafo_data, "iso3_code")
