@@ -27,8 +27,8 @@ def cron_bi_weekly():
     comtrade.pump.update_db(table_name="monthly", frequency="M")
 
 
-def cron_front_end():
-    """Update of web platform datasets every six months"""
+def cron_front_end_production_trade():
+    """Update of web platform datasets of production and trade every six months"""
     from scripts.front_end import product_list
     from scripts.front_end import annual_variation_production
     from scripts.front_end import average_production
@@ -44,3 +44,14 @@ def cron_front_end():
     annual_variation_trade.main()
     average_trade.main()
     statement.main()
+
+
+def cron_front_end_lafo():
+    """Update of web platform datasets of land footprint every six months"""
+    from scripts.front_end import product_list_lafo
+    from scripts.front_end import annual_variation_lafo
+    from scripts.front_end import average_lafo
+
+    product_list_lafo.main()
+    annual_variation_lafo.main()
+    average_lafo.main()
