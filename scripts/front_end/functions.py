@@ -303,12 +303,18 @@ def comtrade_products():
     # Retrieve dataset
     df = pd.read_csv(
         main_product_file,
-        dtype={"regulation_code": str, "hs_4d_code": str, "hs_6d_code": str},
+        dtype={
+            "regulation_code": str,
+            "comtrade_primary_code": str,
+            "hs_4d_code": str,
+            "hs_6d_code": str,
+        },
     )
     # Retrieve name and codes and return the dataframe
     columns = [
         "regulation_code",
         "regulation_short_name",
+        "comtrade_primary_code",
         "commodity_short_name",
         "hs_6d_code",
         "fao_code",
@@ -319,6 +325,7 @@ def comtrade_products():
         columns={
             "regulation_code": "product_code",
             "regulation_short_name": "product_name",
+            "comtrade_primary_code": "commodity_code",
             "commodity_short_name": "commodity_name",
             "hs_6d_code": "comtrade_code",
         },
