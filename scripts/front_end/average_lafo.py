@@ -10,7 +10,9 @@ Script used to compute averages of lafo quantities related to the main commoditi
 
 
 def main():
+    import pandas as pd
     from scripts.front_end.functions import (
+        obtain_intervals,
         remove_intra_eu_values,
         country_names,
         aggregated_data,
@@ -24,7 +26,7 @@ def main():
     from deforestfoot.crop import Crop
 
     # Retrieve lafo data from deforestation package
-    crop = Crop(commodity_list=["Coffee"])
+    crop = Crop(commodity_list=["Cocoa", "Coffee", "Palm oil fruit", "Soya"])
     lafo_data = crop.lafo.df(flow="apparent_consumption")
     # Add period column
     lafo_data["period"] = lafo_data["year"]
@@ -93,12 +95,15 @@ def main():
     dropna_col = ["avg_value", "reporter_value_share", "commodity_value_share"]
     lafo_data_avg = replace_zero_with_nan_values(lafo_data_avg, dropna_col)
     lafo_data_avg = lafo_data_avg.dropna(subset=dropna_col)
+    agg_cols = ["primary_code", "unit"]
+    lafo_data_avg = obtain_intervals(lafo_data_avg, agg_cols)
     # Columns to be finally retained
     column_list = [
         "reporter_code",
         "commodity_code",
         "period",
         "avg_value",
+        "interval",
         "reporter_value_share",
         "commodity_value_share",
         "unit",
@@ -108,14 +113,29 @@ def main():
         lafo_data_avg.rename(columns={"primary_code": "commodity_code"})[column_list],
         "lafo_reporter_average.csv",
     )
+    # Columns to be finally retained
+    column_list = [
+        "interval",
+        "min_value",
+        "max_value",
+        "commodity_code",
+        "unit",
+        "description",
+    ]
+    # Save legend
+    save_file(
+        lafo_data_avg.rename(columns={"primary_code": "commodity_code"})[column_list]
+        .drop_duplicates()
+        .sort_values(by=["commodity_code", "interval"]),
+        "lafo_reporter_average_legend.csv",
+    )
     # Add reporter and partner names to aggregate at EU, ROW level
     eu_row_data = country_names(lafo_data, "iso3_code")
     # Remove EU internal trades
     eu_row_data = remove_intra_eu_values(eu_row_data)
     # Aggregate to EU and ROW for reporters
     eu_row_data = agg_trade_eu_row(
-        eu_row_data,
-        grouping_side="reporter",
+        eu_row_data, grouping_side="reporter", drop_index_col=["flag_out"]
     )
     # Substitute with name and codes of the aggregations for the web platform
     selector = eu_row_data["reporter"] == "eu"
@@ -149,6 +169,48 @@ def main():
     save_file(
         eu_row_data_avg.rename(columns={"primary_code": "commodity_code"})[column_list],
         "lafo_reporter_average_eu_row.csv",
+    )
+    # Define the columns for the average calculations
+    dict_list = ["product_code", "primary_code", "period", "unit"]
+    # Calculate the averages
+    lafo_data_avg = average_lafo(lafo_data, dict_list, "avg_value")
+    # Sort by values
+    dict_list = ["primary_code", "period", "unit"]
+    lafo_data_avg = lafo_data_avg.sort_values(
+        by=[*dict_list, "avg_value"],
+        ascending=False,
+        ignore_index=True,
+    )
+    # Obtain the first 3 values and create aggregated data for the remaining parts
+    lafo_head = lafo_data_avg.groupby(dict_list).head(3).reset_index(drop=True)
+    lafo_tail = (
+        lafo_data_avg.groupby(dict_list)
+        .tail(-3)
+        .groupby(dict_list)["avg_value"]
+        .agg("sum")
+        .reset_index()
+    )
+    lafo_tail["product_code"] = "OTH_" + lafo_tail["primary_code"]
+    lafo_data_avg = pd.concat([lafo_head, lafo_tail], ignore_index=True)
+    # Calculate the total and the share
+    lafo_data_avg["sum_value"] = lafo_data_avg.groupby(dict_list)[
+        "avg_value"
+    ].transform("sum")
+    lafo_data_avg["value_share"] = (
+        lafo_data_avg["avg_value"] / lafo_data_avg["sum_value"] * 100
+    )
+    # Columns to be finally retained
+    column_list = [
+        "product_code",
+        "period",
+        "avg_value",
+        "value_share",
+        "unit",
+    ]
+    # Save data
+    save_file(
+        lafo_data_avg[column_list],
+        "lafo_product_average.csv",
     )
 
 

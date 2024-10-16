@@ -29,6 +29,76 @@ COLUMN_PERC_SUFFIX = "_percentage"
 COLUMN_TOT_SUFFIX = "_tot_value"
 
 
+def obtain_intervals(df: pd.DataFrame, agg_cols: list):
+    """
+    Obtain intervals for the legend file
+
+    :param df (DataFrame), containing the avg values
+    :param agg_cols (list), columns for assessing intervals
+
+    :return df(DataFrame), with intervals and ranges
+    """
+    df = df.copy()
+    # Define intervals
+    # TODO: define intervals through argument
+    intervals = np.concatenate(
+        (
+            np.array([0.0]),
+            np.array(np.linspace(5, 95, 10) / 100),
+            np.array([1.0]),
+        )
+    )
+    df["max_avg_value"] = df.groupby(agg_cols)["avg_value"].transform("max")
+    # Obtain bins according to intervals
+    df["bin"] = (
+        df["max_avg_value"].values.reshape(len(df), 1) * np.array([intervals])
+    ).tolist()
+    # Assign interval to avg value for a commodity across periods and countries
+    df["interval"] = df.groupby(agg_cols)["avg_value"].transform(
+        lambda x: pd.cut(
+            x,
+            bins=df.loc[x.index, "bin"].iloc[0],
+            labels=list(range(0, len(intervals) - 1)),
+        )
+    )
+    # Obtain min value of the interval
+    df["min_value"] = (
+        df.groupby(agg_cols)["avg_value"]
+        .transform(
+            lambda x: pd.cut(
+                x,
+                bins=df.loc[x.index, "bin"].iloc[0],
+            )
+        )
+        .apply(lambda x: x.left)
+    ).astype(float)
+    # Obtain max value of the interval
+    df["max_value"] = (
+        df.groupby(agg_cols)["avg_value"]
+        .transform(
+            lambda x: pd.cut(
+                x,
+                bins=df.loc[x.index, "bin"].iloc[0],
+            )
+        )
+        .apply(lambda x: x.right)
+    ).astype(float)
+    # Put legend
+    # TODO: define conversion coefficients through argument
+    selector = df["interval"] == 0
+    df.loc[selector, "description"] = (
+        "up to " + (df.loc[selector, "max_value"] / 10**6).round(2).astype(str) + " M"
+    )
+    df.loc[~selector, "description"] = (
+        "from "
+        + (df.loc[~selector, "min_value"] / 10**6).round(2).astype(str)
+        + " to "
+        + (df.loc[~selector, "max_value"] / 10**6).round(2).astype(str)
+    ) + " M"
+    df["description"] = df["description"] + df["unit"]
+    return df
+
+
 def remove_intra_eu_values(df):
     """
     Remove intra EU values
@@ -233,12 +303,18 @@ def comtrade_products():
     # Retrieve dataset
     df = pd.read_csv(
         main_product_file,
-        dtype={"regulation_code": str, "hs_4d_code": str, "hs_6d_code": str},
+        dtype={
+            "regulation_code": str,
+            "comtrade_primary_code": str,
+            "hs_4d_code": str,
+            "hs_6d_code": str,
+        },
     )
     # Retrieve name and codes and return the dataframe
     columns = [
         "regulation_code",
         "regulation_short_name",
+        "comtrade_primary_code",
         "commodity_short_name",
         "hs_6d_code",
         "fao_code",
@@ -249,6 +325,7 @@ def comtrade_products():
         columns={
             "regulation_code": "product_code",
             "regulation_short_name": "product_name",
+            "comtrade_primary_code": "commodity_code",
             "commodity_short_name": "commodity_name",
             "hs_6d_code": "comtrade_code",
         },
