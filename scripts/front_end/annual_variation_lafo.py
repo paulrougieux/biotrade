@@ -23,7 +23,7 @@ def main():
     from deforestfoot.crop import Crop
 
     # Retrieve lafo data from deforestation package
-    crop = Crop(commodity_list=["Coffee"])
+    crop = Crop(commodity_list=["Cocoa", "Coffee", "Palm oil fruit", "Soya"])
     lafo_data = crop.lafo.df(flow="apparent_consumption")
     # Add period column
     lafo_data["period"] = lafo_data["year"]
@@ -65,8 +65,7 @@ def main():
     eu_row_data = remove_intra_eu_values(eu_row_data)
     # Aggregate to EU and ROW for reporters
     eu_row_data = agg_trade_eu_row(
-        eu_row_data,
-        grouping_side="reporter",
+        eu_row_data, grouping_side="reporter", drop_index_col=["flag_out"]
     )
     # Substitute with name and codes of the aggregations for the web platform
     selector = eu_row_data["reporter"] == "eu"
