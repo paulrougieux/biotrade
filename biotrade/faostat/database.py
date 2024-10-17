@@ -101,7 +101,6 @@ class DatabaseFaostat(Database):
             with self.engine.connect() as conn:
                 if not self.engine.dialect.has_schema(conn, self.schema):
                     conn.execute(CreateSchema(self.schema))
-                    conn.commit()
 
         # Describe table metadata
         self.forestry_production = self.describe_production_table(

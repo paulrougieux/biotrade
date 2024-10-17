@@ -89,7 +89,6 @@ class DatabaseWorldBank(Database):
             with self.engine.connect() as conn:
                 if not self.engine.dialect.has_schema(conn, self.schema):
                     conn.execute(CreateSchema(self.schema))
-                    conn.commit()
 
         # Describe table metadata
         self.indicator = self.describe_indicator_table(name="indicator")
