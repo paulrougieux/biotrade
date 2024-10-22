@@ -39,26 +39,29 @@ def obtain_intervals(df: pd.DataFrame, agg_cols: list):
     :return df(DataFrame), with intervals and ranges
     """
     df = df.copy()
-    # Define intervals
-    # TODO: define intervals through argument
+    # Define intervals according to percentiles
     intervals = np.concatenate(
         (
             np.array([0.0]),
-            np.array(np.linspace(5, 95, 10) / 100),
-            np.array([1.0]),
+            np.array(np.linspace(5, 95, 10)),
+            np.array([100.0]),
         )
     )
-    df["max_avg_value"] = df.groupby(agg_cols)["avg_value"].transform("max")
-    # Obtain bins according to intervals
-    df["bin"] = (
-        df["max_avg_value"].values.reshape(len(df), 1) * np.array([intervals])
-    ).tolist()
+    # Obtain bins for each commodity and merge with df
+    df_bin = (
+        df.groupby(agg_cols)["avg_value"]
+        .apply(lambda x: np.percentile(x, intervals))
+        .reset_index()
+        .rename(columns={"avg_value": "bin"})
+    )
+    df = df.merge(df_bin, how="left", on=agg_cols)
     # Assign interval to avg value for a commodity across periods and countries
     df["interval"] = df.groupby(agg_cols)["avg_value"].transform(
         lambda x: pd.cut(
             x,
             bins=df.loc[x.index, "bin"].iloc[0],
             labels=list(range(0, len(intervals) - 1)),
+            include_lowest=True,
         )
     )
     # Obtain min value of the interval
@@ -68,10 +71,13 @@ def obtain_intervals(df: pd.DataFrame, agg_cols: list):
             lambda x: pd.cut(
                 x,
                 bins=df.loc[x.index, "bin"].iloc[0],
+                include_lowest=True,
             )
         )
         .apply(lambda x: x.left)
     ).astype(float)
+    # Put 0 when bin is negative
+    df["min_value"] = np.where(df["min_value"] >= 0, df["min_value"], 0)
     # Obtain max value of the interval
     df["max_value"] = (
         df.groupby(agg_cols)["avg_value"]
@@ -79,23 +85,23 @@ def obtain_intervals(df: pd.DataFrame, agg_cols: list):
             lambda x: pd.cut(
                 x,
                 bins=df.loc[x.index, "bin"].iloc[0],
+                include_lowest=True,
             )
         )
         .apply(lambda x: x.right)
     ).astype(float)
     # Put legend
-    # TODO: define conversion coefficients through argument
     selector = df["interval"] == 0
-    df.loc[selector, "description"] = (
-        "up to " + (df.loc[selector, "max_value"] / 10**6).round(2).astype(str) + " M"
-    )
+    df.loc[selector, "description"] = "up to " + (df.loc[selector, "max_value"]).round(
+        2
+    ).astype(str)
     df.loc[~selector, "description"] = (
         "from "
-        + (df.loc[~selector, "min_value"] / 10**6).round(2).astype(str)
+        + (df.loc[~selector, "min_value"]).round(2).astype(str)
         + " to "
-        + (df.loc[~selector, "max_value"] / 10**6).round(2).astype(str)
-    ) + " M"
-    df["description"] = df["description"] + df["unit"]
+        + (df.loc[~selector, "max_value"]).round(2).astype(str)
+    )
+    df["description"] = df["description"] + " " + df["unit"]
     return df
 
 

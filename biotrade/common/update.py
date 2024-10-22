@@ -48,10 +48,12 @@ def cron_front_end_production_trade():
 
 def cron_front_end_lafo():
     """Update of web platform datasets of land footprint every six months"""
+    from scripts.front_end import statement_lafo
     from scripts.front_end import product_list_lafo
     from scripts.front_end import annual_variation_lafo
     from scripts.front_end import average_lafo
 
+    statement_lafo.main()
     product_list_lafo.main()
     annual_variation_lafo.main()
     average_lafo.main()
