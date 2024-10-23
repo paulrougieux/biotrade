@@ -244,7 +244,7 @@ def filter_production_data(df):
     """
     # All units in lower case
     df["unit"] = df["unit"].str.lower()
-    units_allowed = ["100 g/an", "100 g/ha", "an", "ha", "m3", "t"]
+    units_allowed = ["100 g/an", "an", "ha", "kg/ha", "m3", "t"]
     # Put control on unit names
     if sorted(df["unit"].unique()) != units_allowed:
         warnings.warn(
@@ -258,9 +258,9 @@ def filter_production_data(df):
     # Use head as unit name for animal
     selector = df["unit"] == "an"
     df.loc[selector, "unit"] = "head"
-    # Yield data transformed from hg/ha into ton/ha
+    # Yield data transformed from kg/ha into ton/ha
     selector = df["element"] == "yield"
-    df.loc[selector, "value"] = df.loc[selector, "value"] / 10**4
+    df.loc[selector, "value"] = df.loc[selector, "value"] / 10**3
     df.loc[selector, "unit"] = "ton/ha"
     # Select only at country level
     df = df[df["reporter_code"] < 1000].reset_index(drop=True)
