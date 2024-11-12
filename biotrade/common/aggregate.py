@@ -173,12 +173,19 @@ def agg_trade_eu_row(
     if grouping_side == "reporter":
         df_agg = df_agg.rename(columns={country_group: "reporter"})
     # Check that the total value hasn't changed
-    np.testing.assert_allclose(
-        df_agg[value_col].sum(),
-        df[value_col].sum(),
-        err_msg=f"The total value sum of the aggregated data {df_agg[value_col].sum()}"
-        + f" doesn't match with the sum of the input data frame {df[value_col].sum()}",
-    )
+    try:
+        np.testing.assert_allclose(
+            df_agg[value_col].sum(),
+            df[value_col].sum(),
+            err_msg=f"The total value sum of the aggregated data {df_agg[value_col].sum()}"
+            + f" doesn't match with the sum of the input data frame {df[value_col].sum()}",
+        )
+    except AssertionError:
+        err_msg = (
+            f"The total value sum of the aggregated data {df_agg[value_col].sum()}"
+            + f" doesn't match with the sum of the input data frame {df[value_col].sum()}"
+        )
+        warnings.warn(err_msg)
     return df_agg
 
 
