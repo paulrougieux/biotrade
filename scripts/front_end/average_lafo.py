@@ -190,7 +190,8 @@ def main():
         .agg("sum")
         .reset_index()
     )
-    lafo_tail["product_code"] = "OTH_" + lafo_tail["primary_code"]
+    # TODO Replace "999" with "OTH_"
+    lafo_tail["product_code"] = "999" + lafo_tail["primary_code"]
     lafo_data_avg = pd.concat([lafo_head, lafo_tail], ignore_index=True)
     # Calculate the total and the share
     lafo_data_avg["sum_value"] = lafo_data_avg.groupby(dict_list)[

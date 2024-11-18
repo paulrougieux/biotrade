@@ -34,7 +34,8 @@ def main():
     )
     # Add "Others" aggregations
     oth_products = products[column_list].drop_duplicates(subset="commodity_code")
-    oth_products["product_code"] = "OTH_" + oth_products["commodity_code"]
+    # TODO Replace "999" with "OTH_"
+    oth_products["product_code"] = "999" + oth_products["commodity_code"]
     oth_products["product_name"] = "Other products"
     products = pd.concat([products, oth_products], ignore_index=True)
     # Columns to be finally retained
