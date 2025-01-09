@@ -22,9 +22,6 @@ from biotrade.common.time_series import (
     segmented_regression,
     merge_analysis,
 )
-from deforestfoot.crop import Crop
-from deforestfoot.livestock import Livestock
-from deforestfoot.wood import Wood
 
 # Define column name suffixes for average, total and percentage calculations
 COLUMN_AVG_SUFFIX = "_avg_value"
@@ -50,6 +47,10 @@ def retrieve_lafo_data(
 
     :return df (DataFrame), containing lafo data
     """
+    from deforestfoot.crop import Crop
+    from deforestfoot.livestock import Livestock
+    from deforestfoot.wood import Wood
+
     crop = Crop(
         commodity_list=["Cocoa", "Coffee", "Palm oil fruit", "Soya"],
         year_start=year_start,
