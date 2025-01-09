@@ -19,7 +19,7 @@ def main():
     # Retrieve regulation products
     comtrade_products = comtrade_products()
     # Filter commodities
-    removed_commodities = ["Maize", "Rubber", "Cattle", "Wood"]
+    removed_commodities = ["Maize", "Rubber"]
     products = comtrade_products[
         ~comtrade_products["commodity_name"].isin(removed_commodities)
     ].reset_index(drop=True)
