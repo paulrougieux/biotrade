@@ -86,7 +86,7 @@ Some paths are defined at the top level:
 from pathlib import Path
 import os
 
-__version__ = "0.3.22"
+__version__ = "0.3.23"
 
 module_dir = Path(__file__).resolve().parent
 
