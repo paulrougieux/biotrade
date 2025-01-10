@@ -29,6 +29,82 @@ COLUMN_PERC_SUFFIX = "_percentage"
 COLUMN_TOT_SUFFIX = "_tot_value"
 
 
+def retrieve_lafo_data(
+    split_years=False,
+    flow="apparent_consumption",
+    year_start=None,
+    year_end=None,
+    remove_intra_eu=False,
+):
+    """
+    Retrieve lafo data from deforestation package for crops, cattle and wood
+
+    :param split_years (boolean), if True splits along years the calculation of wood lafo to avoid memory issues
+    :param flow (string), choices are "import", "apparent_consumption" or "net_import"
+    :param year_start (integer), select specific beginning year for lafo calculation
+    :param year_end (integer), select specific ending year for lafo calculation
+    :param remove_intra_eu (boolean), if True removes intra eu trades before lafo calculation
+
+    :return df (DataFrame), containing lafo data
+    """
+    from deforestfoot.crop import Crop
+    from deforestfoot.livestock import Livestock
+    from deforestfoot.wood import Wood
+
+    crop = Crop(
+        commodity_list=["Cocoa", "Coffee", "Palm oil fruit", "Soya"],
+        year_start=year_start,
+        year_end=year_end,
+    )
+    crop_data = crop.lafo.df(flow=flow, remove_intra_eu=remove_intra_eu)
+    cattle = Livestock(
+        commodity_list=["Cattle"], year_start=year_start, year_end=year_end
+    )
+    cattle_data = cattle.lafo.df(flow=flow, remove_intra_eu=remove_intra_eu)
+    # To sum all lafo according to one commodity
+    cattle_data = substitute_codes(cattle_data, "0102")
+    wood = Wood(commodity_list=["Wood"], year_start=year_start, year_end=year_end)
+    # Loop over years to avoid memory issues
+    if split_years:
+        years = range(year_start, year_end + 1)
+        wood_data = pd.DataFrame()
+        for year in years:
+            wood.year_start = year
+            wood.year_end = year
+            wood_year = wood.lafo.df(flow=flow, remove_intra_eu=remove_intra_eu)
+            wood_data = pd.concat([wood_data, wood_year], ignore_index=True)
+    else:
+        wood_data = wood.lafo.df(flow=flow, remove_intra_eu=remove_intra_eu)
+    wood_data.drop(columns=["reporter", "partner", "product_code_4d"], inplace=True)
+    # To sum all lafo according to one commodity
+    wood_data = substitute_codes(wood_data, "44")
+    df = pd.concat([crop_data, cattle_data, wood_data], ignore_index=True)
+    group_by_cols = [
+        "reporter_code",
+        "partner_code",
+        "product_code",
+        "primary_code",
+        "year",
+        "unit",
+    ]
+    df = df.groupby(group_by_cols)["value"].agg("sum").reset_index()
+    return df
+
+
+def substitute_codes(df, new_code, col="primary_code"):
+    """
+    Replace codes
+
+    :param df (DataFrame), containing codes to modify
+    :param new_code (string or int), new code to use
+    :param col (string), column to edit
+
+    :return df (DataFrame), modified with new code
+    """
+    df[col] = new_code
+    return df
+
+
 def obtain_intervals(df: pd.DataFrame, agg_cols: list):
     """
     Obtain intervals for the legend file
@@ -337,6 +413,9 @@ def comtrade_products():
         },
         inplace=True,
     )
+    # Replace primary code for wood commodity to avoid double entries
+    selector = df["commodity_name"] == "Wood"
+    df.loc[selector, "commodity_code"] = "44"
     return df
 
 
