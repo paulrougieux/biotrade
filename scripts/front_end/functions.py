@@ -60,10 +60,50 @@ def retrieve_lafo_data(
     cattle = Livestock(
         commodity_list=["Cattle"], year_start=year_start, year_end=year_end
     )
+    cols = ["reporter", "partner", "product_code", "year"]
+    cattle_outliers = [
+        ("Egypt", "Australia", "020220", 2013),
+        ("Egypt", "Brazil", "020230", 2013),
+        ("Egypt", "India", "020230", 2013),
+        ("Egypt", "United States of America", "020230", 2013),
+        ("Egypt", "Australia", "020230", 2013),
+        ("Egypt", "United States of America", "020622", 2013),
+        ("Egypt", "Australia", "020622", 2013),
+        ("Egypt", "United States of America", "020629", 2013),
+        ("Egypt", "Brazil", "020629", 2013),
+    ]
+    # Remove outliers
+    mask = ~cattle.trade.imports[cols].apply(tuple, 1).isin(cattle_outliers)
+    cattle.trade.imports = cattle.trade.imports[mask].reset_index(drop=True)
     cattle_data = cattle.lafo.df(flow=flow, remove_intra_eu=remove_intra_eu)
     # To sum all lafo according to one commodity
     cattle_data = substitute_codes(cattle_data, "0102")
     wood = Wood(commodity_list=["Wood"], year_start=year_start, year_end=year_end)
+    wood_outliers = [
+        ("Mexico", "United States of America", "481910", 2004),
+        ("Mexico", "United States of America", "482110", 2004),
+        ("Mexico", "Saudi Arabia", "482110", 2004),
+        ("Mexico", "United States of America", "491110", 2004),
+        ("Mexico", "China, mainland", "491110", 2004),
+        ("Mexico", "United States of America", "482390", 2004),
+        ("Mexico", "Indonesia", "441231", 2009),
+        ("Mexico", "United States of America", "490199", 2004),
+        ("Mexico", "Republic of Korea", "490199", 2004),
+        ("Mexico", "United States of America", "482190", 2004),
+        ("Mexico", "United States of America", "481920", 2004),
+        ("Mexico", "United States of America", "491199", 2004),
+        ("Mexico", "Republic of Korea", "491199", 2004),
+        ("Malaysia", "Singapore", "482110", 2003),
+        ("Mexico", "United States of America", "482390", 2021),
+        ("Mexico", "China, mainland", "482390", 2021),
+        ("Nepal", "India", "441011", 2021),
+        ("Mexico", "United States of America", "480411", 2012),
+        ("Bolivia", "Brazil", "441011", 2019),
+        ("Bolivia", "Argentina", "441011", 2019),
+    ]
+    # Remove outliers
+    mask = ~wood.trade.imports[cols].apply(tuple, 1).isin(wood_outliers)
+    wood.trade.imports = wood.trade.imports[mask].reset_index(drop=True)
     # Loop over years to avoid memory issues
     if split_years:
         years = range(year_start, year_end + 1)
