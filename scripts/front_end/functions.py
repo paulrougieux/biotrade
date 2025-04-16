@@ -50,6 +50,7 @@ def retrieve_lafo_data(
     from deforestfoot.crop import Crop
     from deforestfoot.livestock import Livestock
     from deforestfoot.wood import Wood
+    from deforestfoot.wood.land_footprint import df_agg_regulation_codes
 
     crop = Crop(
         commodity_list=["Cocoa", "Coffee", "Palm oil fruit", "Soya"],
@@ -118,6 +119,8 @@ def retrieve_lafo_data(
     wood_data.drop(columns=["reporter", "partner", "product_code_4d"], inplace=True)
     # To sum all lafo according to one commodity
     wood_data = substitute_codes(wood_data, "44")
+    # Aggregate at regulation code level
+    wood_data = df_agg_regulation_codes(wood, wood_data)
     df = pd.concat([crop_data, cattle_data, wood_data], ignore_index=True)
     group_by_cols = [
         "reporter_code",
