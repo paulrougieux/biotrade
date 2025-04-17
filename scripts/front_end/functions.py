@@ -72,6 +72,12 @@ def retrieve_lafo_data(
         ("Egypt", "Australia", "020622", 2013),
         ("Egypt", "United States of America", "020629", 2013),
         ("Egypt", "Brazil", "020629", 2013),
+        ("Egypt", "Suriname", "020622", 2010),
+        ("Mexico", "Italy", "410719", 2004),
+        ("Mexico", "USA", "410719", 2004),
+        ("Mexico", "Argentina", "410719", 2004),
+        ("Mexico", "China", "410719", 2004),
+        ("Mexico", "USA", "410712", 2004),
     ]
     # Remove outliers
     mask = ~cattle.trade.imports[cols].apply(tuple, 1).isin(cattle_outliers)
@@ -93,8 +99,14 @@ def retrieve_lafo_data(
         ("Mexico", "USA", "482190", 2004),
         ("Mexico", "USA", "481920", 2004),
         ("Mexico", "USA", "491199", 2004),
+        ("Mexico", "USA", "480810", 2004),
+        ("Mexico", "Japan", "480810", 2004),
+        ("Mexico", "USA", "490110", 2004),
+        ("Mexico", "USA", "481960", 2004),
         ("Mexico", "Rep. of Korea", "491199", 2004),
         ("Malaysia", "Singapore", "482110", 2003),
+        ("Malaysia", "Indonesia", "480255", 2002),
+        ("Malaysia", "Indonesia", "480255", 2006),
         ("Mexico", "USA", "482390", 2021),
         ("Mexico", "China", "482390", 2021),
         ("Nepal", "India", "441011", 2021),

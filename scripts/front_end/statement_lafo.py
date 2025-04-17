@@ -23,7 +23,7 @@ def main():
     # Folder modified
     db_update = time.strftime("%d-%m-%Y", time.localtime(info.st_mtime))
     statement_dict = {
-        "order": [1, 2],
+        "ord": [1, 2],
         "source": ["LAFO", "LAFO"],
         "text_before": [
             "Own calculation performed by the EU. Underlying data obtained from UNITED NATIONS. UN COMTRADE DATABASE: licensed under UN COMTRADE conditions available at ",
