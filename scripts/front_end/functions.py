@@ -375,14 +375,12 @@ def filter_production_data(df):
     """
     # All units in lower case
     df["unit"] = df["unit"].str.lower()
-    units_allowed = ["100 g/an", "an", "ha", "kg/ha", "m3", "t"]
+    units_allowed = ["an", "ha", "kg/ha", "m3", "t"]
     # Put control on unit names
     if sorted(df["unit"].unique()) != units_allowed:
         warnings.warn(
             f"Units of production dataset have been changed from\n{units_allowed}\nto\n{sorted(df['unit'].unique())}"
         )
-    # Remove yields for animals
-    df = df[df["unit"] != "100 g/an"]
     # Use ton as unit name for tonnes
     selector = df["unit"] == "t"
     df.loc[selector, "unit"] = "ton"
