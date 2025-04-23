@@ -294,7 +294,14 @@ class Pump:
                 csv_file_name = temp_dir / re.sub(
                     ".zip$", ".csv", self.datasets[short_name]
                 )
-                encoding_var = "latin1"
+                if short_name in [
+                    "forestry_trade",
+                    "land_cover",
+                    "land_use",
+                ]:
+                    encoding_var = "latin1"
+                else:
+                    encoding_var = "utf-8"
                 # Test if the file is corrupted
                 with open(csv_file_name, "r", encoding=encoding_var) as csvfile:
                     # Detect the delimiter
