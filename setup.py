@@ -38,6 +38,7 @@ setup(
         "pymannkendall",
         "matplotlib",
         "comtradeapicall",
+        "dbfread",
     ],
     extras_require={"api": ["fastapi", "uvicorn"]},
     python_requires=">=3.7",
