@@ -18,11 +18,18 @@ def main():
 
     # Retrieve regulation products
     comtrade_products = comtrade_products()
-    # Filter commodities
-    removed_commodities = ["Maize", "Rubber"]
-    products = comtrade_products[
-        ~comtrade_products["commodity_name"].isin(removed_commodities)
-    ].reset_index(drop=True)
+    # Filter commodity products (exclude rubber derived products)
+    removed_commodity_products = ["Rubber"]
+    rubber_primary_code = "4001"
+    products = pd.concat(
+        [
+            comtrade_products[
+                ~comtrade_products["commodity_name"].isin(removed_commodity_products)
+            ],
+            comtrade_products[comtrade_products["product_code"] == rubber_primary_code],
+        ],
+        ignore_index=True,
+    ).reset_index(drop=True)
     # Columns to be considered
     columns = ["product_code", "product_name", "commodity_code", "commodity_name"]
     products = products.drop_duplicates(subset=columns)[columns].reset_index(drop=True)

@@ -13,6 +13,7 @@ import warnings
 import pandas as pd
 import numpy as np
 from pathlib import Path
+from dbfread import DBF
 from biotrade.faostat import faostat
 from biotrade import data_dir
 from biotrade.common.aggregate import EU_COUNTRY_NAMES_LIST
@@ -53,10 +54,27 @@ def retrieve_lafo_data(
     from deforestfoot.wood.land_footprint import df_agg_regulation_codes
 
     crop = Crop(
-        commodity_list=["Cocoa", "Coffee", "Palm oil fruit", "Soya"],
+        commodity_list=["Cocoa", "Coffee", "Palm oil fruit", "Soya", "Maize", "Rubber"],
         year_start=year_start,
         year_end=year_end,
     )
+    # Remove rubber derived products
+    products_excluded = [
+        "4005",
+        "4006",
+        "4007",
+        "4008",
+        "4010",
+        "4011",
+        "4012",
+        "4013",
+        "4015",
+        "4016",
+        "4017",
+    ]
+    crop.regulation_products = crop.regulation_products[
+        ~crop.regulation_products["regulation_code"].isin(products_excluded)
+    ].reset_index(drop=True)
     crop_data = crop.lafo.df(flow=flow, remove_intra_eu=remove_intra_eu)
     cattle = Livestock(
         commodity_list=["Cattle"], year_start=year_start, year_end=year_end
@@ -547,15 +565,9 @@ def reporter_iso_codes(df, col="faost_code"):
         )
         df["partner_code"] = df["iso3_code"]
     df.drop(columns=[col, "iso3_code"], inplace=True)
-    # Consider only data of official country codes by GISCO
-    country_codes = (
-        pd.read_csv(
-            data_dir / "GISCO_CNTR_LIST.txt",
-            sep=";",
-        )
-        .ISO3_CODE.drop_duplicates()
-        .to_list()
-    )
+    # Consider only data of official country codes by GISCO 2024
+    dbf = DBF(data_dir / "CNTR_RG_01M_2024_4326.dbf", encoding="utf-8")
+    country_codes = pd.DataFrame(iter(dbf)).ISO3_CODE.drop_duplicates().to_list()
     df = df[df.reporter_code.isin(country_codes)].reset_index(drop=True)
     if "partner_code" in df.columns:
         df = df[df.partner_code.isin(country_codes)].reset_index(drop=True)
