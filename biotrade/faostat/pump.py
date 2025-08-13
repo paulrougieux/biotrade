@@ -101,11 +101,29 @@ class Pump:
     data frame for a specific country or a specific product, using the
     faostat.db.select method.
 
-    Update a dataset by downloading it again from FAOSTAT:
+    Update a dataset by downloading it again from FAOSTAT,
+    reading it, then writing it to the database. Note this uses
+    low level function, all steps can be handled by the update
+    method automatically:
 
-        >>> faostat.pump.download_zip_csv("Forestry_E_All_Data_(Normalized).zip")
+        >>> zip_file_name = faostat.pump.datasets["forestry_production"]
+        >>> faostat.pump.download_zip_csv(zip_file_name)
         >>> fp = faostat.pump.read_df("forestry_production")
         >>> faostat.self.db.write_df(fp, "forestry_production")
+
+    Which methods calls which one?
+
+    - `update` calls:
+        - `download_zip_csv`
+        - `transfer_to_db`
+    - `transfer_to_db` calls `transfer_csv_to_db_in_chunks`
+    - `transfer_csv_to_db_in_chunks` calls `sanitize_variable_names`
+
+    Other methods:
+    - `read_df` uses read_zip_csv_to_df.
+    - `read_df` is not used by the `update` and `transfer_to_db` methods.
+      `read_df` should be kept for small datasets that are read directly into a
+      data frame in memory.
 
     """
 
@@ -266,6 +284,11 @@ class Pump:
         >>> lu = faostat.pump.read_df("land_use")
         >>> lc = faostat.pump.read_df("land_cover")
         >>> fl = faostat.pump.read_df("forest_land")
+
+        You might need to download the data first:
+
+        >>> zip_file_name = faostat.pump.datasets["forestry_production"]
+        >>> faostat.pump.download_zip_csv(zip_file_name)
 
         """
         # Read the compressed CSV into a data frame
