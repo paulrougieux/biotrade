@@ -269,10 +269,10 @@ class Pump:
         # ft.flag.unique()
         # array(['', '*', 'R', 'Cv', 'P', 'A'], dtype=object)
         if "flag" in df.columns:
-            df.flag.fillna("", inplace=True)
+            df["flag"] = df["flag"].fillna("")
         return df
 
-    def read_df(self, short_name):
+    def read_df(self, short_name, reload=False):
         """Read an entire zip csv file to a data frame
 
         Not recommended for large datasets which don't fit into memory.
