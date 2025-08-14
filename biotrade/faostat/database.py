@@ -12,8 +12,6 @@ Unit D1 Bioeconomy.
 
 You can use this object at the ipython console with the following examples.
 """
-# First party modules
-import logging
 
 # Third party modules
 from sqlalchemy import Integer, Float, SmallInteger, Text, UniqueConstraint
@@ -75,12 +73,10 @@ class DatabaseFaostat(Database):
     database_url = None
     schema = None
 
-    # Log debug and error messages
-    logger = logging.getLogger("biotrade.comtrade")
-
     def __init__(self, parent):
         # Default attributes #
         self.parent = parent
+        self.logger = self.parent.logger
         # Database configuration
         self.engine = create_engine(self.database_url)
         # Create the database if it doesn't exist
