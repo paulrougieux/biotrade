@@ -39,7 +39,6 @@ except Exception as e:
     print(msg, str(e))
 
 # Third party modules
-import logging
 import pandas
 import numpy as np
 
@@ -127,8 +126,6 @@ class Pump:
 
     """
 
-    # Log debug and error messages
-    logger = logging.getLogger("biotrade.faostat")
     # Define URL request headers
     header = HEADER
     # Base URL to load data from the website
@@ -157,8 +154,8 @@ class Pump:
     }
 
     def __init__(self, parent):
-        # Default attributes #
         self.parent = parent
+        self.logger = self.parent.logger
         self.db = self.parent.db
         self.data_dir = self.parent.data_dir
         # Mapping table used to rename columns

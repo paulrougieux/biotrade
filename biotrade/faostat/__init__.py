@@ -37,6 +37,7 @@ Display the list of EU countries names in the FAOSTAT data
 """
 # Third party modules
 import pandas
+import logging
 
 # Internal modules
 from biotrade import module_dir, data_dir, database_url
@@ -69,6 +70,9 @@ class Faostat:
     df = df.filter(regex="biotrade|faostat")
     non_na_values = (~df.filter(like="faostat").isna()).sum(axis=1)
     column_names = df[non_na_values > 0]
+
+    # Logger
+    logger = logging.getLogger("biotrade.faostat")
 
     def __init__(self):
         # Create a faostat subfolder in the data directory if it doesn't exist
