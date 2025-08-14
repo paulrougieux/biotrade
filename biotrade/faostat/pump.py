@@ -10,7 +10,35 @@ Licenced under the MIT licence
 JRC biomass Project.
 Unit D1 Bioeconomy.
 
-Usage: download FAOSTAT datasets and store them in the database defined in
+Download FAOSTAT datasets.
+
+## Renaming variables
+
+It is important to be able to use variables in a sound way. Meaningful variable
+names in snake case makes comparing and merging data across different sources
+easier. In practice renaming is performed on column names and also on the content
+of some columns, such as the element or the product column.
+
+- The function `choose_column_renaming` decides which columns will be renamed
+  according to `config_data/column_names.csv`
+
+- The method `faostat.sanitize_variable_names` renames columns according to the
+  names defined in the mapping table.
+
+
+## Download FAOSTAT data into a data frame
+
+Simply download a compressed CSV file from FAOSTAT and read it into a data
+frame:
+
+    >>> zip_file_name = faostat.pump.datasets["forestry_production"]
+    >>> faostat.pump.download_zip_csv(zip_file_name)
+    >>> fp = faostat.pump.read_df("forestry_production")
+
+
+## Update your database
+
+Usage example: download FAOSTAT datasets and store them in the database defined in
 `faostat.db`:
 
     >>> from biotrade.faostat import faostat
@@ -217,9 +245,10 @@ class Pump:
         return df
 
     def sanitize_variable_names(self, df, column_renaming, short_name):
-        # TODO: use the function sanitize_variable_names common/sanitise.py
         """Sanitize column names using the mapping table.
-        Use snake case in product and element names"""
+        Use snake case in product and element names
+        # TODO: use the function sanitize_variable_names common/sanitise.py
+        """
         # Rename columns to snake case
         df.rename(columns=lambda x: re.sub(r"\W+", "_", str(x)).lower(), inplace=True)
         # Columns of the db table
@@ -282,15 +311,19 @@ class Pump:
         >>> lc = faostat.pump.read_df("land_cover")
         >>> fl = faostat.pump.read_df("forest_land")
 
-        You might need to download the data first:
-
-        >>> zip_file_name = faostat.pump.datasets["forestry_production"]
-        >>> faostat.pump.download_zip_csv(zip_file_name)
-
         """
-        # Read the compressed CSV into a data frame
+        zip_file_name = self.datasets[short_name]
+        zip_file = self.data_dir / zip_file_name
+        # Download the zip file is if it is not already in biotrade_data
+        if not zip_file.exists():
+            msg = f"\nThe file '{zip_file_name}' is absent from '{self.data_dir}'."
+            self.logger.info(msg)
+        if reload or not zip_file.exists():
+            self.logger.info(f"Downloading {zip_file_name} from FAOSTAT.")
+            self.download_zip_csv(zip_file_name)
+        # Read the file into a data frame
         df = self.read_zip_csv_to_df(
-            zip_file=self.data_dir / self.datasets[short_name],
+            zip_file=zip_file,
             column_renaming=choose_column_renaming(short_name),
             short_name=short_name,
         )
