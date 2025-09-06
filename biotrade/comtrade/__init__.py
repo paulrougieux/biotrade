@@ -64,9 +64,7 @@ class Comtrade:
     # Load a mapping table used to rename columns
     df = pandas.read_csv(config_data_dir / "column_names.csv")
     # Select only relevant columns and remove incomplete mappings
-    df = df[
-        ["biotrade", "comtrade_machine", "comtrade_human", "comtrade_apicall"]
-    ]
+    df = df[["biotrade", "comtrade_machine", "comtrade_human", "comtrade_apicall"]]
     column_names = df
 
     def __init__(self):
@@ -74,6 +72,8 @@ class Comtrade:
         self.data_dir = data_dir / "comtrade"
         if not self.data_dir.exists():
             self.data_dir.mkdir()
+        # Location of the bilateral trade data grouped by commodities and products
+        self.products_dir = self.data_dir / "products"
 
     @property
     def country_groups(self):

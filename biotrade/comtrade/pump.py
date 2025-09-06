@@ -60,8 +60,10 @@ except Exception as e:
     msg += "but you can still use other methods.\n"
     print(msg, str(e))
 
+
 # Internal modules
 from biotrade.common.url_request_header import HEADER
+from biotrade.comtrade.pump_products import PumpProducts
 
 
 class Pump:
@@ -133,6 +135,13 @@ class Pump:
             self.token = os.environ["COMTRADE_TOKEN"]
         # Path of CSV log file storing API parameters and download status
         self.csv_log_path = self.parent.data_dir / "pump_comtrade_api_args.csv"
+        # Maximum number of rows in the Comtrade Free API limit
+        self.max_row_free_api_limit = 1e5
+
+    @property
+    def products(self):
+        """Download, cached and read trade data grouped by products"""
+        return PumpProducts(self)
 
     def sanitize_variable_names(self, df, renaming_from, renaming_to):
         """
@@ -706,6 +715,8 @@ class Pump:
         head="M",
     ):
         """Download a CSV file from the UN Comtrade data API and return a pandas data frame.
+
+        TODO: make arguments optional.
 
         The data API is documented at https://comtrade.un.org/data/doc/api/
 
