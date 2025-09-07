@@ -5,8 +5,14 @@ files for different download dates.
 """
 
 from functools import cached_property
+from typing import Union
+import pathlib
+
 import json
 import pandas
+import pyarrow.dataset
+
+from biotrade.common.parquet import harmonize_parquet_schema
 
 try:
     import pyarrow
@@ -23,6 +29,38 @@ except Exception as e:
     )
     msg += "but you can still use other methods.\n"
     print(msg, str(e))
+
+
+def get_latest_download_date(
+    product_code: str, base_dir: Union[str, pathlib.Path]
+) -> str:
+    """
+    Returns the latest download_date for the given product_code using pyarrow's dataset API.
+
+    Parameters
+    ----------
+    product_code : int
+        The product code to search for.
+    base_dir : str
+        Top-level directory.
+
+    Example
+
+        get_latest_download_date("440791", "/home/paul/rp/forobs/biotrade_data/comtrade/products")
+
+    Returns
+    -------
+    int
+        Latest download date, or None.
+    """
+    p = pathlib.Path(base_dir)
+    download_dates = []
+    for d in p.glob("download_date=*"):
+        if (d / f"product_code={product_code}").is_dir():
+            # Extract date string
+            dd = int(d.name.split("=")[1])
+            download_dates.append(dd)
+    return str(max(download_dates)) if download_dates else None
 
 
 class PumpProducts:
@@ -84,8 +122,8 @@ class PumpProducts:
         Usage:
 
             >>> from biotrade.comtrade import comtrade
-            >>> swd_oak_2023 = comtrade.pump.products.download_product_df(440791, 2023)
-            >>> swd_oak_2024 = comtrade.pump.products.download_product_df(440791, 2024)
+            >>> swd_oak_2023 = comtrade.pump.products.download_df(440791, 2023)
+            >>> swd_oak_2024 = comtrade.pump.products.download_df(440791, 2024)
 
         """
         # Construct URL
@@ -130,46 +168,104 @@ class PumpProducts:
         # with product_code, year and download_date as grouping variables.
         df.to_parquet(path=self.products_dir, partition_cols=self.partition_cols)
 
-    def read_df(self, product_code, reload=False, download_date=None):
-        """Read bilateral trade flows for a given product code in all years
-        available. Download the data if no data is available or if reload=True.
-
-        Try to follow the behaviour faostat.read_df  which reads the zip file.
-        The FAOSTAT zip file is a form of cache. In a similar way, the Comtrade
-        parquet file is a cache of the comtrade bilateral trade data (except
-        that it is pre-processed already). If reload is True, it will reload
-        the data.
-
-        Notes:
-
-            - Comtrade can retroactively update bilateral trade flow data.
-              Which means that a trade flows between 2 coutnries in a given year
-              can change value in the future. The download and read functions
-              could have a mechanism to track this through a hash number or
-              simply by storing the download date in the downloaded/cache file
-              name to distinguish different versions of the same trade flows for
-              a given product in a given year. Not implemented.
-
-        Usage:
-
-            >>> from biotrade.comtrade import comtrade
-            >>> swd_oak = comtrade.pump.products.read_df(440791)
-
+    def read_df(
+        self, product_code: int, reload: bool = False, download_date: str = None
+    ) -> pandas.DataFrame:
         """
-        product_directory = self.products_dir / f"product_code={product_code}"
-        if not product_directory.exists() or reload:
-            self.logger.info("Reloading data for product code: %s", product_code)
-            # For all years between year min and last year
+        Read bilateral trade flows for a given product code for all available years.
+
+        This method loads pre-processed bilateral trade flow data for the specified product code.
+        Data is read from a local parquet cache, or downloaded from Comtrade if unavailable or if reload is requested.
+        Supports versioning via download dates, similar to FAOSTAT zip file caches.
+
+        Parameters
+        ----------
+        product_code : int
+            The product code for which bilateral trade data should be retrieved.
+        reload : bool, optional
+            If True, data for all available years is re-downloaded from Comtrade
+            and the local cache is updated. Default is False.
+        download_date : str, optional
+            Download date in format 'YYYYMMDD' identifying which cached version to load.
+            If None, loads the latest available version for the product_code.
+
+        Returns
+        -------
+        df : pandas.DataFrame
+            Bilateral trade flow DataFrame for the provided product_code, with all categorical
+            columns converted to object dtype.
+
+        Notes
+        -----
+        - Comtrade may retroactively update bilateral trade data, so each
+          version is uniquely identified by its download date.
+        - If reload is True, the method downloads and caches all years between
+        ` self.comtrade_year_min` and last available year.
+        - Future improvement: identify cache versions using hash or download
+          date to distinguish updates.
+
+        Implementation errors due to different data types across years.
+
+        Loading the data with pandas.read_parquet() returns an
+        ArrowNotImplementedError: Unsupported cast from double to null using
+        function cast_null
+
+        >>> df = pandas.read_parquet(product_directory)
+
+        Loading the dataset with pyarrow.dataset.dataset, also returns an error:
+        ArrowNotImplementedError: Unsupported cast from double to null using function cast_null
+        >>> dataset = pyarrow.dataset.dataset(product_directory, format="parquet")
+        >>> table = dataset.to_table()
+        >>> df = table.to_pandas()
+
+        Examples
+        --------
+        >>> from biotrade.comtrade import comtrade
+        >>> swd_oak = comtrade.pump.products.read_df(440791)
+        >>> swd_oak_specific = comtrade.pump.products.read_df(440791, download_date='20250906')
+
+        See Also
+        --------
+        - `download_df` : Downloads a single year for the given product_code.
+        - `get_latest_download_date` : Finds the latest cache version by date.
+        """
+        product_directory = (
+            self.products_dir
+            / f"download_date={download_date}"
+            / f"product_code={product_code}"
+        )
+        if download_date is not None and not product_directory.exists():
+            msg = f"The following directory doesn't exist: {product_directory}\n"
+            msg += f"for the specified download date: {download_date}.\n"
+            msg += "To reload data now, leave the download date empty."
+            raise ValueError(msg)
+        # Update the product directory with the latest download date if unspecified
+        if download_date is None:
+            download_date = get_latest_download_date(
+                product_code, base_dir=self.products_dir
+            )
+            product_directory = (
+                self.products_dir
+                / f"download_date={download_date}"
+                / f"product_code={product_code}"
+            )
+        # Download data from the Comtrade API if required
+        if (not product_directory.exists()) or reload:
             last_year = int(pandas.Timestamp.now().strftime("%Y")) - 1
+            msg = "Downloading data from the Comtrade API for product code: %s\n"
+            msg += f"For all years between {self.comtrade_year_min} and {last_year}."
+            self.logger.info(msg, product_code)
             for year in range(self.comtrade_year_min, last_year):
                 self.download_df(product_code, year)
-        if download_date is None:
-            print("TODO: load latest data")
-        else:
-            # TODO: Read data for the selected download date
-            df = pandas.read_parquet(product_directory)
-            print("TODO: load data for specified download_date")
-        # Convert all categories to object column types
+        # Read data
+        self.logger.info("Reading data from parquet files in %s", product_directory)
+        schema = harmonize_parquet_schema(product_directory)
+        dataset = pyarrow.dataset.dataset(
+            product_directory, format="parquet", schema=schema
+        )
+        table = dataset.to_table()
+        df = table.to_pandas()
+        # Convert categories columns to strings
         category_cols = df.select_dtypes(include=["category"]).columns
         df[category_cols] = df[category_cols].astype("object")
         return df
