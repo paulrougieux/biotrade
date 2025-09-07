@@ -40,7 +40,10 @@ setup(
         "comtradeapicall",
         "dbfread",
     ],
-    extras_require={"api": ["fastapi", "uvicorn"]},
+    extras_require={
+        "api": ["fastapi", "uvicorn"],
+        "arrow": ["pyarrow"],
+    },
     python_requires=">=3.7",
     long_description=readme,
     long_description_content_type="text/markdown",
