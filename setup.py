@@ -38,11 +38,11 @@ setup(
         "pymannkendall",
         "matplotlib",
         "comtradeapicall",
-        "dbfread",
     ],
     extras_require={
         "api": ["fastapi", "uvicorn"],
         "arrow": ["pyarrow"],
+        "read": ["dbfread"],
     },
     python_requires=">=3.7",
     long_description=readme,
