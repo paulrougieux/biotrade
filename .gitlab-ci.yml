@@ -47,6 +47,7 @@ pages:
 pytest:
   stage: test
   script:
+    - pip install .[arrow]
     - pytest --junitxml=report.xml
   artifacts:
     when: always
