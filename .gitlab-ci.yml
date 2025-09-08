@@ -35,6 +35,7 @@ pages:
   stage: document
   script:
   # GitLab Pages will only publish files in the public directory
+  - pip install .[arrow]
   - pdoc -o public ./biotrade
   artifacts:
     paths:
