@@ -8,8 +8,13 @@ types in parquet files and find the type if there is only null and a data type.
 
 import pathlib
 from typing import Union
-import pyarrow.dataset
-import pyarrow.parquet
+
+try:
+    import pyarrow
+except Exception as e:
+    msg = "Failed to import the pyarrow package, "
+    msg += "you can still use methods that don't depend on it.\n"
+    print(msg, str(e))
 import pandas
 
 

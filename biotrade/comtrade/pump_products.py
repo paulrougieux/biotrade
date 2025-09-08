@@ -10,7 +10,6 @@ import pathlib
 
 import json
 import pandas
-import pyarrow.dataset
 
 from biotrade.common.parquet import harmonize_parquet_schema
 
