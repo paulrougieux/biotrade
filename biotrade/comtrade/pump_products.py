@@ -264,9 +264,17 @@ class PumpProducts:
         )
         table = dataset.to_table()
         df = table.to_pandas()
-        # Convert categories columns to strings
+        # Convert categories columns to strings.
+        # If there are no category columns, is this necessary?
         category_cols = df.select_dtypes(include=["category"]).columns
         df[category_cols] = df[category_cols].astype("object")
+        # Add back download date and product
+        df["download_date"] = download_date
+        df["product_code"] = product_code
+        # Place these columns first
+        cols = df.columns.to_list()
+        cols = cols[-2:] + cols[:-2]
+        df = df[cols]
         return df
 
     def read_latest_downloaded_df(self, product_code):
