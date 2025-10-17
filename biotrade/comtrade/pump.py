@@ -897,8 +897,13 @@ class Pump:
             # Delete existing data in the database
             self.logger.info("Dropping existing %s table.", table_name_dict[table])
             # session.execute(delete_stmt)
-            with self.db.engine.connect() as conn:
-                conn.execute(self.db.tables[table_name_dict[table]].delete())
+            # Sql version > 1.4
+            try:
+                with self.db.engine.begin() as conn:
+                    conn.execute(self.db.tables[table_name_dict[table]].delete())
+            except Exception:
+                with self.db.engine.connect() as conn:
+                    conn.execute(self.db.tables[table_name_dict[table]].delete())
             # Remove potential duplicated id codes of the new data
             duplicated = df.duplicated(list(table_col_dict[table].items())[0][1])
             if any(duplicated):

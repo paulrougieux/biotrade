@@ -86,9 +86,15 @@ class DatabaseWorldBank(Database):
         if hasattr(self.engine.dialect, "has_schema") and callable(
             getattr(self.engine.dialect, "has_schema")
         ):
-            with self.engine.connect() as conn:
-                if not self.engine.dialect.has_schema(conn, self.schema):
-                    conn.execute(CreateSchema(self.schema))
+            # Sqlalchemy > 1.4
+            try:
+                with self.engine.begin() as conn:
+                    if not self.engine.dialect.has_schema(conn, self.schema):
+                        conn.execute(CreateSchema(self.schema))
+            except Exception:
+                with self.engine.connect() as conn:
+                    if not self.engine.dialect.has_schema(conn, self.schema):
+                        conn.execute(CreateSchema(self.schema))
 
         # Describe table metadata
         self.indicator = self.describe_indicator_table(name="indicator")

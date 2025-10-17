@@ -97,9 +97,15 @@ class DatabaseComtrade(Database):
         if hasattr(self.engine.dialect, "has_schema") and callable(
             getattr(self.engine.dialect, "has_schema")
         ):
-            with self.engine.connect() as conn:
-                if not self.engine.dialect.has_schema(conn, self.schema):
-                    conn.execute(CreateSchema(self.schema))
+            # Sqlalchemy > 1.4
+            try:
+                with self.engine.begin() as conn:
+                    if not self.engine.dialect.has_schema(conn, self.schema):
+                        conn.execute(CreateSchema(self.schema))
+            except Exception:
+                with self.engine.connect() as conn:
+                    if not self.engine.dialect.has_schema(conn, self.schema):
+                        conn.execute(CreateSchema(self.schema))
 
         # Describe table metadata and create them if they don't exist
         # Product table
@@ -408,8 +414,13 @@ class DatabaseComtrade(Database):
             )
         )
         # Execute delete statement
-        with self.engine.connect() as conn:
-            conn.execute(stmt)
+        # Sqlalchemy > 1.4
+        try:
+            with self.engine.begin() as conn:
+                conn.execute(stmt)
+        except Exception:
+            with self.engine.connect() as conn:
+                conn.execute(stmt)
         self.logger.info(
             "Delete data from database table %s, from %s to %s",
             table,
