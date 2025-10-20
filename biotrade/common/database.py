@@ -16,7 +16,7 @@ Parent object to faostat.database.py and comtrade.database.py
 
 from sqlalchemy import select
 from sqlalchemy.sql import func
-from sqlalchemy import UniqueConstraint
+from sqlalchemy import UniqueConstraint, inspect
 
 
 class Database:
@@ -102,6 +102,8 @@ class Database:
 
         table sqlalchemy.sql.schema.Table instance description of a table structure
         """
+        # Overwrite inspector to avoid caches
+        self.inspector = inspect(self.engine)
         #  Create the table if it doesn't exist
         if not self.inspector.has_table(table.name, schema=self.schema):
             table.create(bind=self.engine)
