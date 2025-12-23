@@ -156,7 +156,7 @@ class PumpProducts:
             return
         self.logger.info("Downloaded %s rows.", len(df))
         df = self.pump.sanitize_variable_names(
-            df, renaming_from="comtrade_machine", renaming_to="biotrade"
+            df, renaming_from="comtrade_apicall", renaming_to="biotrade"
         )
         if len(df) >= self.pump.max_row_free_api_limit - 1:
             msg = f"Number of rows {len(df)} equal to the max number for the free API. "
